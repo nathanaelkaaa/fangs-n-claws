@@ -15,6 +15,7 @@ import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.registries.CreativeModeTabs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -30,6 +31,7 @@ public class FangsClawsMod {
 
         ItemsRegistry.register(modEventBus);
         EntityRegistry.register(modEventBus);
+        SoundsRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfigs.SPEC, String.format("%s-server.toml", FangsClawsMod.MOD_ID));

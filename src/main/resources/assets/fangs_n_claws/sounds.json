@@ -1,0 +1,22 @@
+{
+  "ogre.ambient": {
+    "subtitle": "subtitles.entity.ogre.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:ogre/ogre_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:ogre/ogre_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:ogre/ogre_idle3", "weight": 1 }
+    ]
+  },
+  "ogre.hurt": {
+    "subtitle": "subtitles.entity.ogre.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:ogre/ogre_hurt" }
+    ]
+  },
+  "ogre.death": {
+    "subtitle": "subtitles.entity.ogre.death",
+    "sounds": [
+      { "name": "fangs_n_claws:ogre/ogre_dying" }
+    ]
+  }
+}
