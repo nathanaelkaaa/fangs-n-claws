@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
+import net.raptorzizi.fangs_n_claws.effect.StunnedEffect;
 
 public class MobEffectsRegistry {
 
@@ -15,6 +16,9 @@ public class MobEffectsRegistry {
 
     public static final DeferredHolder<MobEffect, BleedingEffect> BLEEDING =
             MOB_EFFECTS.register("bleeding", BleedingEffect::new);
+
+    public static final DeferredHolder<MobEffect, StunnedEffect> STUNNED =
+            MOB_EFFECTS.register("stunned", StunnedEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

@@ -19,6 +19,9 @@ public class ParticlesRegistry {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> BLOOD_GROUND =
             PARTICLES.register("blood_ground", () -> new SimpleParticleType(false));
 
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> STUN_STAR =
+            PARTICLES.register("stun_star", () -> new SimpleParticleType(false));
+
     public static void register(IEventBus eventBus) {
         PARTICLES.register(eventBus);
     }

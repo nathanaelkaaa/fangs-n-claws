@@ -12,7 +12,7 @@ public class OwlbearAttackGoal extends Goal {
 
     public static final double MIN_ATTACK_RANGE = 3.0;
     public static final double MAX_ATTACK_RANGE = 5.5;
-    private static final double CHASE_SPEED     = 1.4;
+    private static final double CHASE_SPEED     = 1.2;
     private static final int    ATTACK_INTERVAL = 20;
 
     private static final int SEARCH_TIMEOUT = 100;
@@ -20,9 +20,7 @@ public class OwlbearAttackGoal extends Goal {
     private static final int HOWL_COOLDOWN  = 600;
 
     private int attackCooldown = 0;
-    private int howlCooldown   = 0;
     private int noSightTick    = 0;
-
     private Vec3 lastKnownPos = null;
     private int  searchTick   = 0;
 
@@ -33,12 +31,14 @@ public class OwlbearAttackGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (owlbear.isFlying()) return false;
         LivingEntity target = owlbear.getTarget();
         return target != null && target.isAlive();
     }
 
     @Override
     public boolean canContinueToUse() {
+        if (owlbear.isFlying()) return false;
         LivingEntity target = owlbear.getTarget();
         if (target != null && target.isAlive()) return true;
         return lastKnownPos != null && searchTick < SEARCH_TIMEOUT;
@@ -51,7 +51,6 @@ public class OwlbearAttackGoal extends Goal {
         lastKnownPos  = null;
         searchTick    = 0;
         noSightTick   = 0;
-        howlCooldown  = 0;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class OwlbearAttackGoal extends Goal {
         LivingEntity target = owlbear.getTarget();
 
         if (attackCooldown > 0) attackCooldown--;
-        if (howlCooldown   > 0) howlCooldown--;
+        if (owlbear.howlCooldown > 0) owlbear.howlCooldown--;
 
         if (owlbear.isAttacking() || owlbear.isHowling()) {
             owlbear.setRunning(false);
@@ -69,9 +68,9 @@ public class OwlbearAttackGoal extends Goal {
         }
 
         if (target != null && target.isAlive()) {
-            if (howlCooldown <= 0) {
+            if (owlbear.howlCooldown <= 0) {
                 owlbear.triggerHowl();
-                howlCooldown = HOWL_COOLDOWN;
+                owlbear.howlCooldown = HOWL_COOLDOWN;
             }
 
             if (owlbear.hasLineOfSight(target)) {

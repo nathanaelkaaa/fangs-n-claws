@@ -11,6 +11,7 @@ import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfRenderer;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodParticle;
+import net.raptorzizi.fangs_n_claws.particle.StunStarParticle;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
@@ -32,5 +33,6 @@ public class ClientSetup {
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ParticlesRegistry.BLOOD_PARTICLE.get(), BloodParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.BLOOD_GROUND.get(),   BloodGroundParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.STUN_STAR.get(),        StunStarParticle.Provider::new);
     }
 }

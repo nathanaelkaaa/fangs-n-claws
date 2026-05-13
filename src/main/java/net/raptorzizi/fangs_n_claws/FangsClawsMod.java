@@ -66,6 +66,9 @@ public class FangsClawsMod {
         if (event.getEffect().getEffect().is(FangsClawsMod.id("bleeding"))) {
             event.setVisible(false);
         }
+        if (event.getEffect().getEffect().is(FangsClawsMod.id("stunned"))) {
+            event.setVisible(false);
+        }
     }
 
     @SubscribeEvent

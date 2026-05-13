@@ -23,6 +23,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -43,6 +44,17 @@ public class OwlbearEntity extends Monster implements GeoEntity {
             SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_SLEEPING =
             SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_FLYING =
+            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_FLAPPING =
+            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DIVE_STATE =
+            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.INT);
+
+    public static final int DIVE_NONE     = 0;
+    public static final int DIVE_CHARGING = 1;
+    public static final int DIVE_DIVING   = 2;
+    public static final int DIVE_LANDING  = 3;
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -52,15 +64,21 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     private boolean currentIsAttack1     = false;
     private int     howlDelayTick        = 0;
 
+    int howlCooldown = 0;
+
     private double prevX, prevZ;
 
-    private static final RawAnimation IDLE_ANIM    = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation WALK_ANIM    = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation RUN_ANIM     = RawAnimation.begin().thenLoop("run");
-    private static final RawAnimation SLEEP_ANIM   = RawAnimation.begin().thenLoop("sleep");
-    private static final RawAnimation ATTACK1_ANIM = RawAnimation.begin().then("attack1", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation ATTACK2_ANIM = RawAnimation.begin().then("attack2", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation HOWL_ANIM    = RawAnimation.begin().then("howl",    Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation IDLE_ANIM        = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation WALK_ANIM        = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation RUN_ANIM         = RawAnimation.begin().thenLoop("run");
+    private static final RawAnimation SLEEP_ANIM       = RawAnimation.begin().thenLoop("sleep");
+    private static final RawAnimation FLY_HOVERING_ANIM  = RawAnimation.begin().thenLoop("fly_hovering");
+    private static final RawAnimation FLY_FLAP_ANIM      = RawAnimation.begin().thenLoop("fly_flap");
+    private static final RawAnimation FLY_DIVE_START_ANIM = RawAnimation.begin().then("fly_dive_attack_start", Animation.LoopType.HOLD_ON_LAST_FRAME);
+    private static final RawAnimation FLY_DIVE_END_ANIM   = RawAnimation.begin().then("fly_dive_attack_end",   Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK1_ANIM     = RawAnimation.begin().then("attack1", Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK2_ANIM     = RawAnimation.begin().then("attack2", Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation HOWL_ANIM        = RawAnimation.begin().then("howl",    Animation.LoopType.PLAY_ONCE);
 
     public OwlbearEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -77,6 +95,9 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         super.defineSynchedData(pBuilder);
         pBuilder.define(IS_RUNNING,  false);
         pBuilder.define(IS_SLEEPING, false);
+        pBuilder.define(IS_FLYING,   false);
+        pBuilder.define(IS_FLAPPING, false);
+        pBuilder.define(DIVE_STATE,  DIVE_NONE);
     }
 
     public boolean isRunning()  { return this.entityData.get(IS_RUNNING); }
@@ -85,10 +106,25 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     public boolean isSleeping()  { return this.entityData.get(IS_SLEEPING); }
     public void setSleeping(boolean sleeping) { this.entityData.set(IS_SLEEPING, sleeping); }
 
+    public boolean isFlying() { return this.entityData.get(IS_FLYING); }
+    public void setFlying(boolean flying) {
+        this.entityData.set(IS_FLYING, flying);
+        if (!this.level().isClientSide) {
+            this.moveControl = flying ? new OwlbearFlyMoveControl(this) : new OwlbearMoveControl(this);
+        }
+    }
+
+    public boolean isFlapping() { return this.entityData.get(IS_FLAPPING); }
+    public void setFlapping(boolean flapping) { this.entityData.set(IS_FLAPPING, flapping); }
+
+    public int  getDiveState()         { return this.entityData.get(DIVE_STATE); }
+    public void setDiveState(int state){ this.entityData.set(DIVE_STATE, state); }
+
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new OwlbearAttackGoal(this));
+        this.goalSelector.addGoal(1, new OwlbearFlyingAttackGoal(this));
+        this.goalSelector.addGoal(2, new OwlbearAttackGoal(this));
         this.goalSelector.addGoal(4, new OwlbearSleepGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -142,6 +178,17 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     @Override protected SoundEvent getDeathSound() { return SoundEvents.POLAR_BEAR_DEATH; }
 
     @Override
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource source) {
+        if (this.isFlying()) return false;
+        return super.causeFallDamage(fallDistance, damageMultiplier, source);
+    }
+
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {
+        if (!this.isFlying()) super.checkFallDamage(y, onGround, state, pos);
+    }
+
+    @Override
     public boolean doHurtTarget(@NotNull Entity target) {
         if (this.random.nextInt(3) == 0) {
             this.triggerAnim("attack_controller", "attack1");
@@ -165,6 +212,16 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         super.tick();
 
         if (!this.level().isClientSide) {
+            if (this.isFlying()) {
+                this.setNoGravity(true);
+                if (!this.isFlapping() && this.getDiveState() == DIVE_NONE) {
+                    Vec3 mov = this.getDeltaMovement();
+                    this.setDeltaMovement(mov.x, Math.max(mov.y - 0.072, -0.15), mov.z);
+                }
+            } else {
+                this.setNoGravity(false);
+            }
+
             if (attackDelayTick > 0) {
                 attackDelayTick++;
                 if (attackDelayTick == currentAttackHitTick) {
@@ -222,12 +279,22 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
         registrar.add(new AnimationController<>(this, "movement", 10, state -> {
+            if (this.isFlying() || this.getDiveState() != DIVE_NONE) return PlayState.STOP;
             if (this.isSleeping()) return state.setAndContinue(SLEEP_ANIM);
             if (state.isMoving()) {
                 if (this.isRunning()) return state.setAndContinue(RUN_ANIM);
                 return state.setAndContinue(WALK_ANIM);
             }
             return state.setAndContinue(IDLE_ANIM);
+        }));
+
+        registrar.add(new AnimationController<>(this, "flying", 3, state -> {
+            int ds = this.getDiveState();
+            if (ds == DIVE_CHARGING || ds == DIVE_DIVING) return state.setAndContinue(FLY_DIVE_START_ANIM);
+            if (ds == DIVE_LANDING) return state.setAndContinue(FLY_DIVE_END_ANIM);
+            if (!this.isFlying()) return PlayState.STOP;
+            if (this.isFlapping()) return state.setAndContinue(FLY_FLAP_ANIM);
+            return state.setAndContinue(FLY_HOVERING_ANIM);
         }));
 
         registrar.add(new AnimationController<>(this, "attack_controller", 3, state -> PlayState.STOP)
