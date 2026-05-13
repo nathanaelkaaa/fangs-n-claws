@@ -19,6 +19,10 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> WEREWOLF_SPAWN_EGG =  ITEMS.register("werewolf_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.WEREWOLF, 0x39363c, 0xe42e2e, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> OWLBEAR_SPAWN_EGG =  ITEMS.register("owlbear_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.OWLBEAR, 0x39363c, 0xe42e2e, new Item.Properties().stacksTo(64)));
+
+
     public static void register(IEventBus eventBus)  {
         ITEMS.register(eventBus);
     }

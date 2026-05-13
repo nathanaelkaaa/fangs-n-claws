@@ -68,7 +68,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     private static final RawAnimation RUN_ANIM    = RawAnimation.begin().thenLoop("run");
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().then("attack",      Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation BITE_ANIM   = RawAnimation.begin().then("attack_bite", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation HOWL_ANIM   = RawAnimation.begin().then("owl",         Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation HOWL_ANIM   = RawAnimation.begin().then("howl",         Animation.LoopType.PLAY_ONCE);
 
     public WerewolfEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);

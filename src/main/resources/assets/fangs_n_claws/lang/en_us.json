@@ -3,9 +3,11 @@
 
   "item.fangs_n_claws.ogre_spawn_egg": "Ogre Spawn Egg",
   "item.fangs_n_claws.werewolf_spawn_egg": "Werewolf Spawn Egg",
+  "item.fangs_n_claws.owlbear_spawn_egg": "Owlbear Spawn Egg",
 
   "entity.fangs_n_claws.ogre": "Ogre",
   "entity.fangs_n_claws.werewolf": "Werewolf",
+  "entity.fangs_n_claws.owlbear": "Owlbear",
 
   "effect.fangs_n_claws.bleeding": "Bleeding",
 
