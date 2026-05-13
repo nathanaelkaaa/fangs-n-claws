@@ -21,6 +21,7 @@ public class CreativeModeTabs {
                     .icon(() -> new ItemStack(Items.IRON_HOE))
                     .displayItems((enabledFeatures, entries) -> {
                         entries.accept(ItemsRegistry.OGRE_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.WEREWOLF_SPAWN_EGG.get());
                     })
                     .build());
 

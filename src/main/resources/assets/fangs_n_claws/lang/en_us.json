@@ -2,6 +2,13 @@
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
 
   "item.fangs_n_claws.ogre_spawn_egg": "Ogre Spawn Egg",
+  "item.fangs_n_claws.werewolf_spawn_egg": "Werewolf Spawn Egg",
 
-  "entity.fangs_n_claws.ogre": "Ogre"
+  "entity.fangs_n_claws.ogre": "Ogre",
+  "entity.fangs_n_claws.werewolf": "Werewolf",
+
+  "effect.fangs_n_claws.bleeding": "Bleeding",
+
+  "death.attack.bleeding": "%1$s bled to death",
+  "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s"
 }

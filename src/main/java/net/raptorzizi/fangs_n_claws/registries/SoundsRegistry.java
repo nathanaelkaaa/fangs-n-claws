@@ -19,6 +19,17 @@ public class SoundsRegistry {
             register("ogre.hurt");
     public static final Supplier<SoundEvent> OGRE_DEATH =
             register("ogre.death");
+    //TODO Create werewolf sounds (actual are from mo creatures)
+    public static final Supplier<SoundEvent> WEREWOLF_AMBIENT =
+            register("werewolf.ambient");
+    public static final Supplier<SoundEvent> WEREWOLF_HOWL =
+            register("werewolf.howl");
+    public static final Supplier<SoundEvent> WEREWOLF_BITE =
+            register("werewolf.bite");
+    public static final Supplier<SoundEvent> WEREWOLF_HURT =
+            register("werewolf.hurt");
+    public static final Supplier<SoundEvent> WEREWOLF_DEATH =
+            register("werewolf.death");
 
     private static Supplier<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(FangsClawsMod.id(name)));

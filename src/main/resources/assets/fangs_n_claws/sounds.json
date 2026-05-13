@@ -18,5 +18,39 @@
     "sounds": [
       { "name": "fangs_n_claws:ogre/ogre_dying" }
     ]
+  },
+  "werewolf.ambient": {
+    "subtitle": "subtitles.entity.werewolf.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:werewolf/werewolf_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_idle3", "weight": 1 }
+    ]
+  },
+  "werewolf.howl": {
+    "subtitle": "subtitles.entity.werewolf.howl",
+    "sounds": [
+      { "name": "fangs_n_claws:werewolf/werewolf_howl", "weight": 1 }
+    ]
+  },
+  "werewolf.bite": {
+    "subtitle": "subtitles.entity.werewolf.bite",
+    "sounds": [
+      { "name": "fangs_n_claws:werewolf/werewolf_bite", "weight": 1 }
+    ]
+  },
+  "werewolf.hurt": {
+    "subtitle": "subtitles.entity.werewolf.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:werewolf/werewolf_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_hurt2", "weight": 1 }
+    ]
+  },
+  "werewolf.death": {
+    "subtitle": "subtitles.entity.werewolf.death",
+    "sounds": [
+      { "name": "fangs_n_claws:werewolf/werewolf_dying1", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_dying2", "weight": 1 }
+    ]
   }
 }

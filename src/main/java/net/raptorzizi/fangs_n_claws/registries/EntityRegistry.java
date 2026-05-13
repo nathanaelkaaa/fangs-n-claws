@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 
 public class EntityRegistry {
 
@@ -22,4 +23,9 @@ public class EntityRegistry {
             ENTITIES.register("ogre", () -> EntityType.Builder.of(OgreEntity::new, MobCategory.MONSTER)
                     .sized(2F, 2.8F)
                     .build("ogre"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<WerewolfEntity>> WEREWOLF =
+            ENTITIES.register("werewolf", () -> EntityType.Builder.of(WerewolfEntity::new, MobCategory.MONSTER)
+                    .sized(1.0F, 2.0F)
+                    .build("werewolf"));
 }
