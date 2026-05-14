@@ -23,6 +23,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.OGRE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREWOLF_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.OWLBEAR_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.SILVER_SKELETON_SPAWN_EGG.get());
                     })
                     .build());
 

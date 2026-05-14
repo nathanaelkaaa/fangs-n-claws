@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 
 public class EntityRegistry {
@@ -34,4 +35,9 @@ public class EntityRegistry {
             ENTITIES.register("owlbear", () -> EntityType.Builder.of(OwlbearEntity::new, MobCategory.MONSTER)
                     .sized(2.0F, 2.0F)
                     .build("owlbear"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SilverSkeletonEntity>> SILVER_SKELETON =
+            ENTITIES.register("silver_skeleton", () -> EntityType.Builder.of(SilverSkeletonEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 2.4F)
+                    .build("silver_skeleton"));
 }

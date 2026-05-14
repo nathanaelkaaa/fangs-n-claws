@@ -13,6 +13,8 @@ import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
 public class StunnedEffect extends MobEffect {
 
+    // ---- Inspired by Alex's Caves https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/potion/StunnedEffect.java ----
+
     public StunnedEffect() {
         super(MobEffectCategory.HARMFUL, 0xFFFBC5);
         this.addAttributeModifier(

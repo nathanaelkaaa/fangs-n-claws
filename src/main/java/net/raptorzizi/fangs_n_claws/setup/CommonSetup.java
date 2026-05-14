@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -18,9 +19,10 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        event.put(EntityRegistry.OGRE.get(),     OgreEntity.prepareAttributes().build());
-        event.put(EntityRegistry.WEREWOLF.get(), WerewolfEntity.prepareAttributes().build());
-        event.put(EntityRegistry.OWLBEAR.get(),  OwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.OGRE.get(),           OgreEntity.prepareAttributes().build());
+        event.put(EntityRegistry.WEREWOLF.get(),       WerewolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.OWLBEAR.get(),        OwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
     }
 
     @SubscribeEvent
