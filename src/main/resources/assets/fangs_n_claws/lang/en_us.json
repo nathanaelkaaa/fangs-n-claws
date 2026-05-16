@@ -5,11 +5,13 @@
   "item.fangs_n_claws.werewolf_spawn_egg": "Werewolf Spawn Egg",
   "item.fangs_n_claws.owlbear_spawn_egg": "Owlbear Spawn Egg",
   "item.fangs_n_claws.silver_skeleton_spawn_egg": "Silver Skeleton Spawn Egg",
+  "item.fangs_n_claws.golem_spawn_egg": "Big Golem Spawn Egg",
 
   "entity.fangs_n_claws.ogre": "Ogre",
   "entity.fangs_n_claws.werewolf": "Werewolf",
   "entity.fangs_n_claws.owlbear": "Owlbear",
   "entity.fangs_n_claws.silver_skeleton": "Silver Skeleton",
+  "entity.fangs_n_claws.golem": "Big Golem",
 
   "effect.fangs_n_claws.bleeding": "Bleeding",
 

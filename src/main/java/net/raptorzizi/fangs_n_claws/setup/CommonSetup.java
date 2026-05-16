@@ -6,6 +6,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
@@ -23,6 +24,7 @@ public class CommonSetup {
         event.put(EntityRegistry.WEREWOLF.get(),       WerewolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.OWLBEAR.get(),        OwlbearEntity.prepareAttributes().build());
         event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
+        event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
     }
 
     @SubscribeEvent

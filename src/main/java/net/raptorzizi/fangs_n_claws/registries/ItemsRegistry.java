@@ -14,16 +14,19 @@ public class ItemsRegistry {
      * Spawn eggs
      */
     public static final Supplier<DeferredSpawnEggItem> OGRE_SPAWN_EGG =  ITEMS.register("ogre_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.OGRE, 0xb6a783, 0x89a349, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.OGRE, 0x418e4e, 0x14422e, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> WEREWOLF_SPAWN_EGG =  ITEMS.register("werewolf_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.WEREWOLF, 0x39363c, 0xe42e2e, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> OWLBEAR_SPAWN_EGG =  ITEMS.register("owlbear_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.OWLBEAR, 0x39363c, 0xe42e2e, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.OWLBEAR, 0x554030, 0x2d2625, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> SILVER_SKELETON_SPAWN_EGG = ITEMS.register("silver_skeleton_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.SILVER_SKELETON, 0xc0c0c0, 0x4a4a6a, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.SILVER_SKELETON, 0x7b7871, 0xc2c0be, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> GOLEM_SPAWN_EGG = ITEMS.register("golem_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.GOLEM, 0x9b775b, 0x52a12f, new Item.Properties().stacksTo(64)));
 
 
     public static void register(IEventBus eventBus)  {

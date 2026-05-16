@@ -107,8 +107,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.ATTACK_DAMAGE, 4.0)
                 .add(Attributes.FOLLOW_RANGE, 28.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE, 3.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.4);
+                .add(Attributes.ENTITY_INTERACTION_RANGE, 3.0);
     }
 
     public boolean isAttacking() { return attackDelayTick > 0; }
