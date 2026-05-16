@@ -33,23 +33,20 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class OwlbearEntity extends Monster implements GeoEntity {
 
-    private static final int ATTACK1_HIT_TICK  = 15;
-    private static final int ATTACK2_HIT_TICK  = 18;
-    private static final int ATTACK_TOTAL_TICKS = 25;
-    private static final int    HOWL_TOTAL_TICKS = 60;
-    private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
-    private static final double SLEEP_DETECTION_RANGE = 6.0;
+    // Variables
 
-    private static final EntityDataAccessor<Boolean> IS_RUNNING =
-            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_SLEEPING =
-            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_FLYING =
-            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_FLAPPING =
-            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> DIVE_STATE =
-            SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.INT);
+    private static final int    ATTACK1_HIT_TICK  = 15;
+    private static final int    ATTACK2_HIT_TICK  = 18;
+    private static final int    ATTACK_TOTAL_TICKS = 25;
+    private static final int    HOWL_TOTAL_TICKS   = 60;
+    private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
+    private static final double SLEEP_DETECTION_RANGE           = 6.0;
+
+    private static final EntityDataAccessor<Boolean>  IS_RUNNING  = SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean>  IS_SLEEPING = SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean>  IS_FLYING   = SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean>  IS_FLAPPING = SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer>  DIVE_STATE  = SynchedEntityData.defineId(OwlbearEntity.class, EntityDataSerializers.INT);
 
     public static final int DIVE_NONE     = 0;
     public static final int DIVE_CHARGING = 1;
@@ -68,17 +65,19 @@ public class OwlbearEntity extends Monster implements GeoEntity {
 
     private double prevX, prevZ;
 
-    private static final RawAnimation IDLE_ANIM        = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation WALK_ANIM        = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation RUN_ANIM         = RawAnimation.begin().thenLoop("run");
-    private static final RawAnimation SLEEP_ANIM       = RawAnimation.begin().thenLoop("sleep");
+    private static final RawAnimation IDLE_ANIM          = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation WALK_ANIM          = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation RUN_ANIM           = RawAnimation.begin().thenLoop("run");
+    private static final RawAnimation SLEEP_ANIM         = RawAnimation.begin().thenLoop("sleep");
     private static final RawAnimation FLY_HOVERING_ANIM  = RawAnimation.begin().thenLoop("fly_hovering");
     private static final RawAnimation FLY_FLAP_ANIM      = RawAnimation.begin().thenLoop("fly_flap");
     private static final RawAnimation FLY_DIVE_START_ANIM = RawAnimation.begin().then("fly_dive_attack_start", Animation.LoopType.HOLD_ON_LAST_FRAME);
     private static final RawAnimation FLY_DIVE_END_ANIM   = RawAnimation.begin().then("fly_dive_attack_end",   Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation ATTACK1_ANIM     = RawAnimation.begin().then("attack1", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation ATTACK2_ANIM     = RawAnimation.begin().then("attack2", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation HOWL_ANIM        = RawAnimation.begin().then("howl",    Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK1_ANIM       = RawAnimation.begin().then("attack1", Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK2_ANIM       = RawAnimation.begin().then("attack2", Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation HOWL_ANIM          = RawAnimation.begin().then("howl",    Animation.LoopType.PLAY_ONCE);
+
+    // Spawn
 
     public OwlbearEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -100,25 +99,27 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         pBuilder.define(DIVE_STATE,  DIVE_NONE);
     }
 
-    public boolean isRunning()  { return this.entityData.get(IS_RUNNING); }
-    public void setRunning(boolean running) { this.entityData.set(IS_RUNNING, running); }
+    public boolean isRunning()                   { return this.entityData.get(IS_RUNNING); }
+    public void    setRunning(boolean running)   { this.entityData.set(IS_RUNNING, running); }
 
-    public boolean isSleeping()  { return this.entityData.get(IS_SLEEPING); }
-    public void setSleeping(boolean sleeping) { this.entityData.set(IS_SLEEPING, sleeping); }
+    public boolean isSleeping()                  { return this.entityData.get(IS_SLEEPING); }
+    public void    setSleeping(boolean sleeping) { this.entityData.set(IS_SLEEPING, sleeping); }
 
     public boolean isFlying() { return this.entityData.get(IS_FLYING); }
-    public void setFlying(boolean flying) {
+    public void    setFlying(boolean flying) {
         this.entityData.set(IS_FLYING, flying);
         if (!this.level().isClientSide) {
             this.moveControl = flying ? new OwlbearFlyMoveControl(this) : new OwlbearMoveControl(this);
         }
     }
 
-    public boolean isFlapping() { return this.entityData.get(IS_FLAPPING); }
-    public void setFlapping(boolean flapping) { this.entityData.set(IS_FLAPPING, flapping); }
+    public boolean isFlapping()                  { return this.entityData.get(IS_FLAPPING); }
+    public void    setFlapping(boolean flapping) { this.entityData.set(IS_FLAPPING, flapping); }
 
-    public int  getDiveState()         { return this.entityData.get(DIVE_STATE); }
-    public void setDiveState(int state){ this.entityData.set(DIVE_STATE, state); }
+    public int  getDiveState()          { return this.entityData.get(DIVE_STATE); }
+    public void setDiveState(int state) { this.entityData.set(DIVE_STATE, state); }
+
+    // AI
 
     @Override
     protected void registerGoals() {
@@ -155,13 +156,21 @@ public class OwlbearEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 70.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(Attributes.ATTACK_DAMAGE, 6.0)
-                .add(Attributes.FOLLOW_RANGE, 24.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE, 3.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
+                .add(Attributes.MAX_HEALTH,               70.0)
+                .add(Attributes.MOVEMENT_SPEED,            0.2)
+                .add(Attributes.ATTACK_DAMAGE,             6.0)
+                .add(Attributes.FOLLOW_RANGE,             24.0)
+                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE,      0.5);
     }
+
+    // Sound
+
+    @Override protected SoundEvent getAmbientSound()              { return SoundEvents.POLAR_BEAR_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.POLAR_BEAR_HURT; }
+    @Override protected SoundEvent getDeathSound()                { return SoundEvents.POLAR_BEAR_DEATH; }
+
+    // Combat
 
     public boolean isAttacking() { return attackDelayTick > 0; }
     public boolean isHowling()   { return howlDelayTick   > 0; }
@@ -171,11 +180,6 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         this.howlDelayTick = 1;
         this.playSound(SoundEvents.RAVAGER_ROAR, 1.0F, 0.85F + this.random.nextFloat() * 0.2F);
     }
-
-    @Override
-    protected SoundEvent getAmbientSound() { return SoundEvents.POLAR_BEAR_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.POLAR_BEAR_HURT; }
-    @Override protected SoundEvent getDeathSound() { return SoundEvents.POLAR_BEAR_DEATH; }
 
     @Override
     public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource source) {
@@ -203,6 +207,8 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         this.attackDelayTick = 1;
         return true;
     }
+
+    // Tick
 
     @Override
     public void tick() {
@@ -275,6 +281,8 @@ public class OwlbearEntity extends Monster implements GeoEntity {
             );
         }
     }
+
+    // Animation
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {

@@ -8,6 +8,8 @@ import java.util.EnumSet;
 
 public class OwlbearAttackGoal extends Goal {
 
+    // Variables
+
     private final OwlbearEntity owlbear;
 
     public static final double MIN_ATTACK_RANGE = 3.0;
@@ -23,6 +25,8 @@ public class OwlbearAttackGoal extends Goal {
     private int noSightTick    = 0;
     private Vec3 lastKnownPos = null;
     private int  searchTick   = 0;
+
+    // AI
 
     public OwlbearAttackGoal(OwlbearEntity owlbear) {
         this.owlbear = owlbear;

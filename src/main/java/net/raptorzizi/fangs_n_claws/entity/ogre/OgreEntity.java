@@ -37,6 +37,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class OgreEntity extends Monster implements GeoEntity {
 
+    // Variables
+
     private static final int    ATTACK_HIT_TICK    = 15;
     private static final int    ATTACK_TOTAL_TICKS = 20;
 
@@ -66,6 +68,8 @@ public class OgreEntity extends Monster implements GeoEntity {
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().then("attack",      Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation SLAM_ANIM   = RawAnimation.begin().then("slam_attack", Animation.LoopType.PLAY_ONCE);
 
+    // Spawn
+
     public OgreEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.moveControl = new OgreMoveControl(this);
@@ -82,8 +86,10 @@ public class OgreEntity extends Monster implements GeoEntity {
         pBuilder.define(IS_RUNNING, false);
     }
 
-    public boolean isRunning() { return this.entityData.get(IS_RUNNING); }
-    public void setRunning(boolean running) { this.entityData.set(IS_RUNNING, running); }
+    public boolean isRunning()                   { return this.entityData.get(IS_RUNNING); }
+    public void    setRunning(boolean running)   { this.entityData.set(IS_RUNNING, running); }
+
+    // AI
 
     @Override
     protected void registerGoals() {
@@ -98,20 +104,24 @@ public class OgreEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 50.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.15)
-                .add(Attributes.ATTACK_DAMAGE, 4.0)
-                .add(Attributes.FOLLOW_RANGE, 20.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE, 3.5)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.8);
+                .add(Attributes.MAX_HEALTH,               50.0)
+                .add(Attributes.MOVEMENT_SPEED,            0.15)
+                .add(Attributes.ATTACK_DAMAGE,             4.0)
+                .add(Attributes.FOLLOW_RANGE,             20.0)
+                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.5)
+                .add(Attributes.KNOCKBACK_RESISTANCE,      0.8);
     }
+
+    // Sound
+
+    @Override protected SoundEvent getAmbientSound()                                        { return SoundsRegistry.OGRE_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundsRegistry.OGRE_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                                          { return SoundsRegistry.OGRE_DEATH.get(); }
+
+    // Combat
 
     public boolean isAttacking() { return attackDelayTick > 0; }
     public boolean isSlamming()  { return slamDelayTick  > 0; }
-
-    @Override protected SoundEvent getAmbientSound() { return SoundsRegistry.OGRE_AMBIENT.get(); }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundsRegistry.OGRE_HURT.get(); }
-    @Override protected SoundEvent getDeathSound() { return SoundsRegistry.OGRE_DEATH.get(); }
 
     @Override
     public boolean doHurtTarget(@NotNull Entity target) {
@@ -125,48 +135,6 @@ public class OgreEntity extends Monster implements GeoEntity {
         this.triggerAnim("attack_controller", "slam_attack");
         this.slamImpactPos = impactPos;
         this.slamDelayTick = 1;
-    }
-
-    @Override
-    public void tick() {
-        prevX = this.getX();
-        prevZ = this.getZ();
-
-        super.tick();
-
-        if (!this.level().isClientSide) {
-            if (attackDelayTick > 0) {
-                attackDelayTick++;
-                if (attackDelayTick == ATTACK_HIT_TICK) {
-                    if (pendingAttackTarget != null && pendingAttackTarget.isAlive()
-                            && this.distanceTo(pendingAttackTarget) <= OgreAttackGoal.MAX_ATTACK_RANGE
-                            && this.hasLineOfSight(pendingAttackTarget)) {
-                        super.doHurtTarget(pendingAttackTarget);
-                    }
-                    pendingAttackTarget = null;
-                }
-                if (attackDelayTick >= ATTACK_TOTAL_TICKS) attackDelayTick = 0;
-            }
-
-            if (slamDelayTick > 0) {
-                slamDelayTick++;
-                if (slamDelayTick == SLAM_HIT_TICK) {
-                    executeSlamImpact();
-                }
-                if (slamDelayTick >= SLAM_TOTAL_TICKS) {
-                    slamDelayTick = 0;
-                    slamImpactPos = null;
-                }
-            }
-        }
-
-        if (this.level().isClientSide && this.onGround() && this.isRunning()) {
-            double dx = this.getX() - prevX;
-            double dz = this.getZ() - prevZ;
-            if (Math.sqrt(dx * dx + dz * dz) > SPRINT_PARTICLE_SPEED_THRESHOLD) {
-                spawnSprintBlockParticles();
-            }
-        }
     }
 
     private void executeSlamImpact() {
@@ -210,6 +178,50 @@ public class OgreEntity extends Monster implements GeoEntity {
         }
     }
 
+    // Tick
+
+    @Override
+    public void tick() {
+        prevX = this.getX();
+        prevZ = this.getZ();
+
+        super.tick();
+
+        if (!this.level().isClientSide) {
+            if (attackDelayTick > 0) {
+                attackDelayTick++;
+                if (attackDelayTick == ATTACK_HIT_TICK) {
+                    if (pendingAttackTarget != null && pendingAttackTarget.isAlive()
+                            && this.distanceTo(pendingAttackTarget) <= OgreAttackGoal.MAX_ATTACK_RANGE
+                            && this.hasLineOfSight(pendingAttackTarget)) {
+                        super.doHurtTarget(pendingAttackTarget);
+                    }
+                    pendingAttackTarget = null;
+                }
+                if (attackDelayTick >= ATTACK_TOTAL_TICKS) attackDelayTick = 0;
+            }
+
+            if (slamDelayTick > 0) {
+                slamDelayTick++;
+                if (slamDelayTick == SLAM_HIT_TICK) {
+                    executeSlamImpact();
+                }
+                if (slamDelayTick >= SLAM_TOTAL_TICKS) {
+                    slamDelayTick = 0;
+                    slamImpactPos = null;
+                }
+            }
+        }
+
+        if (this.level().isClientSide && this.onGround() && this.isRunning()) {
+            double dx = this.getX() - prevX;
+            double dz = this.getZ() - prevZ;
+            if (Math.sqrt(dx * dx + dz * dz) > SPRINT_PARTICLE_SPEED_THRESHOLD) {
+                spawnSprintBlockParticles();
+            }
+        }
+    }
+
     private void spawnSprintBlockParticles() {
         BlockPos pos = BlockPos.containing(this.getX(), this.getY() - 0.2, this.getZ());
         BlockState state = this.level().getBlockState(pos);
@@ -225,6 +237,8 @@ public class OgreEntity extends Monster implements GeoEntity {
             );
         }
     }
+
+    // Animation
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {

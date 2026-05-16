@@ -7,12 +7,18 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class OwlbearRenderer extends GeoEntityRenderer<OwlbearEntity> {
 
+    // Variables
+
     private static final float SCALE = 2.0F;
+
+    // Spawn
 
     public OwlbearRenderer(EntityRendererProvider.Context context) {
         super(context, new OwlbearModel());
         this.shadowRadius = 0.8f;
     }
+
+    // Animation
 
     @Override
     public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack,

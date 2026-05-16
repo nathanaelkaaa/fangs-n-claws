@@ -14,31 +14,32 @@ import java.util.EnumSet;
 
 public class OwlbearFlyingAttackGoal extends Goal {
 
+    // Variables
+
     private final OwlbearEntity owlbear;
 
-    // Flying
-    private static final double TARGET_HEIGHT_ABOVE    = 6.0;
-    private static final double FLAP_THRESHOLD         = 1.5;
+    private static final double TARGET_HEIGHT_ABOVE     = 6.0;
+    private static final double FLAP_THRESHOLD          = 1.5;
     private static final double MIN_HEIGHT_ABOVE_PLAYER = 2.5;
-    private static final double FLY_SPEED              = 0.8;
-    private static final int    FLAP_HYSTERESIS        = 8;
+    private static final double FLY_SPEED               = 0.8;
+    private static final int    FLAP_HYSTERESIS         = 8;
 
-    // Dive
-    private static final double DIVE_Y_THRESHOLD       = 5.0;
-    private static final double DIVE_MAX_HORIZ_DIST    = 8.0;
-    private static final double DIVE_SPEED       = 1.0;
-    private static final double DIVE_AOE_RADIUS  = 3.5;
-    private static final float  DIVE_DAMAGE      = 10.0f;
-    private static final int    DIVE_COOLDOWN    = 100;
-    private static final int    SMOKE_COUNT      = 28;
+    private static final double DIVE_Y_THRESHOLD    = 5.0;
+    private static final double DIVE_MAX_HORIZ_DIST = 8.0;
+    private static final double DIVE_SPEED          = 1.0;
+    private static final double DIVE_AOE_RADIUS     = 3.5;
+    private static final float  DIVE_DAMAGE         = 10.0f;
+    private static final int    DIVE_COOLDOWN       = 100;
+    private static final int    SMOKE_COUNT         = 28;
 
-    // Variables
     private int    flapHysteresisTicks = 0;
     private Vec3   lockedTargetPos     = null;
     private int    chargeTick          = 0;
     private int    landingTick         = 0;
     private int    diveCooldown        = 0;
     private double prevDiveVelY        = 0.0;
+
+    // AI
 
     public OwlbearFlyingAttackGoal(OwlbearEntity owlbear) {
         this.owlbear = owlbear;
@@ -85,7 +86,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
 
         switch (owlbear.getDiveState()) {
 
-            // Flying
             case OwlbearEntity.DIVE_NONE -> {
                 if (target == null || !target.isAlive()) {
                     descentTick();
@@ -107,7 +107,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
                 }
             }
 
-            // Charging
             case OwlbearEntity.DIVE_CHARGING -> {
                 owlbear.getNavigation().stop();
                 if (lockedTargetPos != null) {
@@ -122,7 +121,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
                 }
             }
 
-            // Dive
             case OwlbearEntity.DIVE_DIVING -> {
                 owlbear.getNavigation().stop();
                 owlbear.setNoGravity(true);
@@ -130,7 +128,7 @@ public class OwlbearFlyingAttackGoal extends Goal {
                     double survivedVelY = owlbear.getDeltaMovement().y;
                     boolean lostInertia = prevDiveVelY < -0.2 && survivedVelY > prevDiveVelY * 0.3;
 
-                    Vec3 dir = lockedTargetPos.subtract(owlbear.position());
+                    Vec3 dir      = lockedTargetPos.subtract(owlbear.position());
                     Vec3 velocity = dir.normalize().scale(DIVE_SPEED);
                     owlbear.setDeltaMovement(velocity);
                     prevDiveVelY = velocity.y;
@@ -144,7 +142,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
                 }
             }
 
-            // Landing
             case OwlbearEntity.DIVE_LANDING -> {
                 owlbear.setDeltaMovement(Vec3.ZERO);
                 owlbear.getNavigation().stop();
@@ -152,14 +149,12 @@ public class OwlbearFlyingAttackGoal extends Goal {
                 landingTick++;
                 if (landingTick >= 5) {
                     diveCooldown = DIVE_COOLDOWN;
-                    landingTick = 0;
+                    landingTick  = 0;
                     owlbear.setDiveState(OwlbearEntity.DIVE_NONE);
                 }
             }
         }
     }
-
-    // Flying
 
     private void normalFlightTick(LivingEntity target) {
         owlbear.getNavigation().stop();
@@ -188,8 +183,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
         owlbear.getMoveControl().setWantedPosition(targetX, wantedY, targetZ, FLY_SPEED);
     }
 
-    // Soft landing
-
     private void descentTick() {
         owlbear.setFlapping(false);
         owlbear.getNavigation().stop();
@@ -197,8 +190,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
             owlbear.setFlying(false);
         }
     }
-
-    // Dive
 
     private void triggerLanding() {
         if (owlbear.getDiveState() == OwlbearEntity.DIVE_LANDING) return;
@@ -215,7 +206,6 @@ public class OwlbearFlyingAttackGoal extends Goal {
     private void performDiveLanding() {
         ServerLevel serverLevel = (ServerLevel) owlbear.level();
 
-        // AoE
         AABB aoe = new AABB(
                 owlbear.getX() - DIVE_AOE_RADIUS, owlbear.getY() - 0.5, owlbear.getZ() - DIVE_AOE_RADIUS,
                 owlbear.getX() + DIVE_AOE_RADIUS, owlbear.getY() + 2.0, owlbear.getZ() + DIVE_AOE_RADIUS);

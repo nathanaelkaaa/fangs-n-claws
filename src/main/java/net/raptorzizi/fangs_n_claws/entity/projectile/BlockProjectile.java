@@ -26,16 +26,22 @@ import java.util.UUID;
 
 public class BlockProjectile extends ThrowableProjectile {
 
-    private static final EntityDataAccessor<BlockState> BLOCK_STATE = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BLOCK_STATE);
-    private static final EntityDataAccessor<Boolean> REGEN_MODE = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> PARENT_GOLEM_ID = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.INT);
+    // Variables
 
-    private static final double REGEN_ARRIVAL_DIST = 1.0;
-    private static final float  REGEN_LERP_SPEED   = 0.15f;
+    private static final EntityDataAccessor<BlockState> BLOCK_STATE    = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Boolean>    REGEN_MODE     = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer>    PARENT_GOLEM_ID = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.INT);
+
+    private static final double REGEN_ARRIVAL_DIST  = 1.0;
+    private static final float  REGEN_LERP_SPEED    = 0.15f;
     private static final double REGEN_MIN_SPEED     = 0.045;
+    private static final int    MAX_LIFETIME        = 100;
+    private static final byte   EVENT_IMPACT_EXPLODE = 60;
 
-    private float damage = 8.0f;
-    private UUID parentGolemUUID = null;
+    private float damage         = 8.0f;
+    private UUID  parentGolemUUID = null;
+
+    // Spawn
 
     public BlockProjectile(EntityType<? extends ThrowableProjectile> type, Level level) {
         super(type, level);
@@ -76,19 +82,33 @@ public class BlockProjectile extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(BLOCK_STATE,     Blocks.DIRT.defaultBlockState());
-        builder.define(REGEN_MODE,      false);
+        builder.define(BLOCK_STATE,      Blocks.DIRT.defaultBlockState());
+        builder.define(REGEN_MODE,       false);
         builder.define(PARENT_GOLEM_ID, -1);
     }
 
-    public BlockState getBlockState()              { return this.entityData.get(BLOCK_STATE);     }
-    public void       setBlockState(BlockState s)  { this.entityData.set(BLOCK_STATE, s);         }
-    public boolean    isRegenMode()                { return this.entityData.get(REGEN_MODE);      }
-    public void       setRegenMode(boolean v)      { this.entityData.set(REGEN_MODE, v);          }
-    public int        getParentGolemId()           { return this.entityData.get(PARENT_GOLEM_ID); }
-    public void       setParentGolemId(int id)     { this.entityData.set(PARENT_GOLEM_ID, id);    }
+    public BlockState getBlockState()             { return this.entityData.get(BLOCK_STATE);     }
+    public void       setBlockState(BlockState s) { this.entityData.set(BLOCK_STATE, s);         }
+    public boolean    isRegenMode()               { return this.entityData.get(REGEN_MODE);      }
+    public void       setRegenMode(boolean v)     { this.entityData.set(REGEN_MODE, v);          }
+    public int        getParentGolemId()          { return this.entityData.get(PARENT_GOLEM_ID); }
+    public void       setParentGolemId(int id)    { this.entityData.set(PARENT_GOLEM_ID, id);    }
 
-    private static final int MAX_LIFETIME = 100; // 5 s
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putFloat("Damage", this.damage);
+        if (parentGolemUUID != null) tag.putUUID("ParentGolem", parentGolemUUID);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("Damage"))     this.damage = tag.getFloat("Damage");
+        if (tag.hasUUID("ParentGolem")) parentGolemUUID = tag.getUUID("ParentGolem");
+    }
+
+    // Tick
 
     @Override
     public void tick() {
@@ -182,7 +202,7 @@ public class BlockProjectile extends ThrowableProjectile {
         }
     }
 
-    private static final byte EVENT_IMPACT_EXPLODE = 60;
+    // Combat
 
     @Override
     protected void onHit(HitResult result) {
@@ -227,19 +247,5 @@ public class BlockProjectile extends ThrowableProjectile {
             target.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
         }
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putFloat("Damage", this.damage);
-        if (parentGolemUUID != null) tag.putUUID("ParentGolem", parentGolemUUID);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        if (tag.contains("Damage"))     this.damage = tag.getFloat("Damage");
-        if (tag.hasUUID("ParentGolem")) parentGolemUUID = tag.getUUID("ParentGolem");
     }
 }

@@ -9,12 +9,18 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class GolemRenderer extends GeoEntityRenderer<GolemEntity> {
 
+    // Variables
+
     private static final String LEFT_HAND_BONE = "Left Hand";
+
+    // Spawn
 
     public GolemRenderer(EntityRendererProvider.Context context) {
         super(context, new GolemModel());
         this.addRenderLayer(new GolemGrassLayer(this));
     }
+
+    // Animation
 
     @Override
     protected float getDeathMaxRotation(GolemEntity animatable) {

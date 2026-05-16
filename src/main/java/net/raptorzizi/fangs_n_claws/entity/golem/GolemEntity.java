@@ -47,6 +47,8 @@ import java.util.Set;
 
 public class GolemEntity extends Monster implements GeoEntity {
 
+    // Variables
+
     public static final int STATE_NORMAL     = 0;
     public static final int STATE_FALLING    = 1;
     public static final int STATE_VULNERABLE = 2;
@@ -69,7 +71,7 @@ public class GolemEntity extends Monster implements GeoEntity {
     private static final int    REGEN_INTERVAL      = 20;
     private static final int    REGEN_BLOCKS_NEEDED = 5;
     private static final int    REGEN_SCAN_RADIUS   = 6;
-    public static final double  SLEEP_DETECTION_RANGE = 8.0;
+    public  static final double SLEEP_DETECTION_RANGE = 8.0;
 
     private static final Set<Block> REGEN_BLOCKS = Set.of(
             Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.COARSE_DIRT,
@@ -79,8 +81,8 @@ public class GolemEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> IS_SLEEPING = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GOLEM_STATE = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Float> BODY_HEALTH = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.FLOAT);
-    private static final EntityDataAccessor<Float> HAND_SCALE = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float>   BODY_HEALTH = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float>   HAND_SCALE  = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.FLOAT);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -105,6 +107,8 @@ public class GolemEntity extends Monster implements GeoEntity {
     private static final RawAnimation FALL_ANIM         = RawAnimation.begin().then("fall",         Animation.LoopType.HOLD_ON_LAST_FRAME);
     private static final RawAnimation GET_UP_ANIM       = RawAnimation.begin().then("get_up",       Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation DEATH_ANIM        = RawAnimation.begin().then("death",        Animation.LoopType.HOLD_ON_LAST_FRAME);
+
+    // Spawn
 
     public GolemEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -147,7 +151,6 @@ public class GolemEntity extends Monster implements GeoEntity {
     }
     public boolean isWakingUp() { return wakeUpTick > 0; }
 
-    // Spawn
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
                                                   @NotNull DifficultyInstance difficulty,
@@ -158,7 +161,18 @@ public class GolemEntity extends Monster implements GeoEntity {
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
-    // Goals
+    public static AttributeSupplier.Builder prepareAttributes() {
+        return Monster.createMobAttributes()
+                .add(Attributes.MAX_HEALTH,               80.0)
+                .add(Attributes.MOVEMENT_SPEED,            0.18)
+                .add(Attributes.ATTACK_DAMAGE,             7.0)
+                .add(Attributes.FOLLOW_RANGE,             24.0)
+                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
+                .add(Attributes.KNOCKBACK_RESISTANCE,      0.6);
+    }
+
+    // AI
+
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
@@ -172,27 +186,14 @@ public class GolemEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    // Attributs
+    // Sound, Death
 
-    public static AttributeSupplier.Builder prepareAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,               80.0)
-                .add(Attributes.MOVEMENT_SPEED,            0.18)
-                .add(Attributes.ATTACK_DAMAGE,             7.0)
-                .add(Attributes.FOLLOW_RANGE,             24.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE,      0.6);
-    }
-
-    // Sounds
     @Override protected SoundEvent getAmbientSound()                { return SoundEvents.IRON_GOLEM_HURT; }
     @Override protected SoundEvent getHurtSound(DamageSource src)   { return SoundEvents.IRON_GOLEM_HURT; }
     @Override protected SoundEvent getDeathSound()                  { return SoundEvents.IRON_GOLEM_DEATH; }
     @Override protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.IRON_GOLEM_STEP, 0.15F, 1.0F);
     }
-
-    // Death
 
     @Override
     public void die(@NotNull DamageSource cause) {
@@ -224,7 +225,7 @@ public class GolemEntity extends Monster implements GeoEntity {
         }
     }
 
-    // Damage
+    // Combat
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
@@ -291,6 +292,8 @@ public class GolemEntity extends Monster implements GeoEntity {
 
         serverLevel.addFreshEntity(proj);
     }
+
+    // Regen
 
     private boolean spawnRegenBlock(ServerLevel serverLevel) {
         BlockPos center = this.blockPosition();
@@ -506,7 +509,7 @@ public class GolemEntity extends Monster implements GeoEntity {
         }
     }
 
-    // GeckoLib
+    // Animation
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {

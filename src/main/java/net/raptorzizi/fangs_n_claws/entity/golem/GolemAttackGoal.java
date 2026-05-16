@@ -7,6 +7,8 @@ import java.util.EnumSet;
 
 public class GolemAttackGoal extends Goal {
 
+    // Variables
+
     private final GolemEntity golem;
 
     public static final double MIN_ATTACK_RANGE  = 3.0;
@@ -24,6 +26,8 @@ public class GolemAttackGoal extends Goal {
     private int searchTick     = 0;
 
     private Vec3 lastKnownPos = null;
+
+    // AI
 
     public GolemAttackGoal(GolemEntity golem) {
         this.golem = golem;

@@ -7,6 +7,8 @@ import java.util.EnumSet;
 
 public class OwlbearSleepGoal extends Goal {
 
+    // Variables
+
     private final OwlbearEntity owlbear;
 
     private static final int MIN_IDLE_TICKS  = 200;
@@ -18,6 +20,8 @@ public class OwlbearSleepGoal extends Goal {
     private int idleTicks    = 0;
     private int sleepTick    = 0;
     private int sleepDuration = 0;
+
+    // AI
 
     public OwlbearSleepGoal(OwlbearEntity owlbear) {
         this.owlbear = owlbear;

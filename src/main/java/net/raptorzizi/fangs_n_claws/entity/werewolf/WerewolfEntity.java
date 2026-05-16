@@ -40,12 +40,14 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class WerewolfEntity extends Monster implements GeoEntity {
 
+    // Variables
+
     private static final int    ATTACK_HIT_TICK    = 15;
     private static final int    ATTACK_TOTAL_TICKS = 20;
-    private static final int    BITE_HIT_TICK    = 12;
-    private static final int    BITE_TOTAL_TICKS = 22;
-    private static final double BITE_DAMAGE      = 6.0;
-    private static final int    HOWL_TOTAL_TICKS = 60;
+    private static final int    BITE_HIT_TICK      = 12;
+    private static final int    BITE_TOTAL_TICKS   = 22;
+    private static final double BITE_DAMAGE        = 6.0;
+    private static final int    HOWL_TOTAL_TICKS   = 60;
     private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
 
     private static final EntityDataAccessor<Boolean> IS_RUNNING =
@@ -53,13 +55,11 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    private Entity pendingAttackTarget = null;
-    private int    attackDelayTick     = 0;
-
-    private LivingEntity biteTarget   = null;
-    private int          biteDelayTick = 0;
-
-    private int howlDelayTick = 0;
+    private Entity      pendingAttackTarget = null;
+    private int         attackDelayTick     = 0;
+    private LivingEntity biteTarget         = null;
+    private int          biteDelayTick      = 0;
+    private int          howlDelayTick      = 0;
 
     private double prevX, prevZ;
 
@@ -68,7 +68,9 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     private static final RawAnimation RUN_ANIM    = RawAnimation.begin().thenLoop("run");
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().then("attack",      Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation BITE_ANIM   = RawAnimation.begin().then("attack_bite", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation HOWL_ANIM   = RawAnimation.begin().then("howl",         Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation HOWL_ANIM   = RawAnimation.begin().then("howl",        Animation.LoopType.PLAY_ONCE);
+
+    // Spawn
 
     public WerewolfEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
@@ -86,8 +88,10 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         pBuilder.define(IS_RUNNING, false);
     }
 
-    public boolean isRunning() { return this.entityData.get(IS_RUNNING); }
-    public void setRunning(boolean running) { this.entityData.set(IS_RUNNING, running); }
+    public boolean isRunning()                  { return this.entityData.get(IS_RUNNING); }
+    public void    setRunning(boolean running)  { this.entityData.set(IS_RUNNING, running); }
+
+    // AI
 
     @Override
     protected void registerGoals() {
@@ -103,12 +107,20 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.2)
-                .add(Attributes.ATTACK_DAMAGE, 4.0)
-                .add(Attributes.FOLLOW_RANGE, 28.0)
+                .add(Attributes.MAX_HEALTH,        40.0)
+                .add(Attributes.MOVEMENT_SPEED,     0.2)
+                .add(Attributes.ATTACK_DAMAGE,      4.0)
+                .add(Attributes.FOLLOW_RANGE,       28.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE, 3.0);
     }
+
+    // Sound
+
+    @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.WEREWOLF_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.WEREWOLF_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.WEREWOLF_DEATH.get(); }
+
+    // Combat
 
     public boolean isAttacking() { return attackDelayTick > 0; }
     public boolean isBiting()    { return biteDelayTick   > 0; }
@@ -119,10 +131,6 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         this.howlDelayTick = 1;
         this.playSound(SoundsRegistry.WEREWOLF_HOWL.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
     }
-
-@Override protected SoundEvent getAmbientSound() { return SoundsRegistry.WEREWOLF_AMBIENT.get(); }
-    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.WEREWOLF_HURT.get(); }
-    @Override protected SoundEvent getDeathSound() { return SoundsRegistry.WEREWOLF_DEATH.get(); }
 
     @Override
     public boolean doHurtTarget(@NotNull Entity target) {
@@ -136,56 +144,6 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         this.triggerAnim("attack_controller", "attack_bite");
         this.biteTarget    = target;
         this.biteDelayTick = 1;
-    }
-
-    @Override
-    public void tick() {
-        prevX = this.getX();
-        prevZ = this.getZ();
-
-        super.tick();
-
-        if (!this.level().isClientSide) {
-            // Attack
-            if (attackDelayTick > 0) {
-                attackDelayTick++;
-                if (attackDelayTick == ATTACK_HIT_TICK) {
-                    if (pendingAttackTarget != null && pendingAttackTarget.isAlive()
-                            && this.distanceTo(pendingAttackTarget) <= WerewolfAttackGoal.MAX_ATTACK_RANGE
-                            && this.hasLineOfSight(pendingAttackTarget)) {
-                        super.doHurtTarget(pendingAttackTarget);
-                    }
-                    pendingAttackTarget = null;
-                }
-                if (attackDelayTick >= ATTACK_TOTAL_TICKS) attackDelayTick = 0;
-            }
-
-            // Howl
-            if (howlDelayTick > 0) {
-                howlDelayTick++;
-                if (howlDelayTick >= HOWL_TOTAL_TICKS) howlDelayTick = 0;
-            }
-
-            // Bite
-            if (biteDelayTick > 0) {
-                biteDelayTick++;
-                if (biteDelayTick == BITE_HIT_TICK) {
-                    executeBiteImpact();
-                }
-                if (biteDelayTick >= BITE_TOTAL_TICKS) {
-                    biteDelayTick = 0;
-                    biteTarget    = null;
-                }
-            }
-        }
-
-        if (this.level().isClientSide && this.onGround() && this.isRunning()) {
-            double dx = this.getX() - prevX;
-            double dz = this.getZ() - prevZ;
-            if (Math.sqrt(dx * dx + dz * dz) > SPRINT_PARTICLE_SPEED_THRESHOLD) {
-                spawnSprintBlockParticles();
-            }
-        }
     }
 
     private void executeBiteImpact() {
@@ -212,6 +170,55 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         }
     }
 
+    // Tick
+
+    @Override
+    public void tick() {
+        prevX = this.getX();
+        prevZ = this.getZ();
+
+        super.tick();
+
+        if (!this.level().isClientSide) {
+            if (attackDelayTick > 0) {
+                attackDelayTick++;
+                if (attackDelayTick == ATTACK_HIT_TICK) {
+                    if (pendingAttackTarget != null && pendingAttackTarget.isAlive()
+                            && this.distanceTo(pendingAttackTarget) <= WerewolfAttackGoal.MAX_ATTACK_RANGE
+                            && this.hasLineOfSight(pendingAttackTarget)) {
+                        super.doHurtTarget(pendingAttackTarget);
+                    }
+                    pendingAttackTarget = null;
+                }
+                if (attackDelayTick >= ATTACK_TOTAL_TICKS) attackDelayTick = 0;
+            }
+
+            if (howlDelayTick > 0) {
+                howlDelayTick++;
+                if (howlDelayTick >= HOWL_TOTAL_TICKS) howlDelayTick = 0;
+            }
+
+            if (biteDelayTick > 0) {
+                biteDelayTick++;
+                if (biteDelayTick == BITE_HIT_TICK) {
+                    executeBiteImpact();
+                }
+                if (biteDelayTick >= BITE_TOTAL_TICKS) {
+                    biteDelayTick = 0;
+                    biteTarget    = null;
+                }
+            }
+        }
+
+        if (this.level().isClientSide && this.onGround() && this.isRunning()) {
+            double dx = this.getX() - prevX;
+            double dz = this.getZ() - prevZ;
+            if (Math.sqrt(dx * dx + dz * dz) > SPRINT_PARTICLE_SPEED_THRESHOLD) {
+                spawnSprintBlockParticles();
+            }
+        }
+    }
+
     private void spawnSprintBlockParticles() {
         BlockPos pos = BlockPos.containing(this.getX(), this.getY() - 0.2, this.getZ());
         BlockState state = this.level().getBlockState(pos);
@@ -227,6 +234,8 @@ public class WerewolfEntity extends Monster implements GeoEntity {
             );
         }
     }
+
+    // Animation
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {

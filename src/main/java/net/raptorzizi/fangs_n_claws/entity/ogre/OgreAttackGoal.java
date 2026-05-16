@@ -7,6 +7,8 @@ import java.util.EnumSet;
 
 public class OgreAttackGoal extends Goal {
 
+    // Variables
+
     private final OgreEntity ogre;
 
     public static final double MIN_ATTACK_RANGE = 3;
@@ -28,6 +30,8 @@ public class OgreAttackGoal extends Goal {
 
     private Vec3 lastKnownPos = null;
     private int  searchTick   = 0;
+
+    // AI
 
     public OgreAttackGoal(OgreEntity ogre) {
         this.ogre = ogre;

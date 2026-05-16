@@ -8,6 +8,8 @@ import java.util.EnumSet;
 
 public class WerewolfAttackGoal extends Goal {
 
+    // Variables
+
     private final WerewolfEntity werewolf;
 
     public static final double MIN_ATTACK_RANGE = 2.0;
@@ -31,6 +33,8 @@ public class WerewolfAttackGoal extends Goal {
 
     private Vec3 lastKnownPos = null;
     private int  searchTick   = 0;
+
+    // AI
 
     public WerewolfAttackGoal(WerewolfEntity werewolf) {
         this.werewolf = werewolf;

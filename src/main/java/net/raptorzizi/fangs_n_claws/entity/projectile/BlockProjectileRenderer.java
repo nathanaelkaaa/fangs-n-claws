@@ -13,9 +13,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class BlockProjectileRenderer extends EntityRenderer<BlockProjectile> {
 
+    // Spawn
+
     public BlockProjectileRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
+
+    // Animation, Texture
 
     @Override
     public void render(BlockProjectile entity, float entityYaw, float partialTick,

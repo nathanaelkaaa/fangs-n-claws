@@ -6,11 +6,17 @@ import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class OgreRenderer extends GeoEntityRenderer<OgreEntity> {
 
+    // Variables
+
     private static final float SCALE = 1.1F;
+
+    // Spawn
 
     public OgreRenderer(EntityRendererProvider.Context context) {
         super(context, new OgreModel());
     }
+
+    // Animation
 
     @Override
     public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack,

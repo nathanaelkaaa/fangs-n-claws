@@ -11,6 +11,8 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 public class SilverSkeletonRenderer extends GeoEntityRenderer<SilverSkeletonEntity> {
 
+    // Spawn, Animation
+
     public SilverSkeletonRenderer(EntityRendererProvider.Context context) {
         super(context, new SilverSkeletonModel());
 

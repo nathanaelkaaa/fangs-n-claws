@@ -24,24 +24,49 @@ import javax.annotation.Nullable;
 
 public class SilverSkeletonEntity extends Monster implements GeoEntity {
 
+    // Variables
+
     private static final int    ATTACK_HIT_TICK    = 8;
     private static final int    ATTACK_TOTAL_TICKS = 18;
     private static final double ATTACK_RANGE       = 2.5;
-
-    private static final RawAnimation IDLE_ANIM         = RawAnimation.begin().thenLoop("idle");
-    private static final RawAnimation WALK_ANIM         = RawAnimation.begin().thenLoop("walk");
-    private static final RawAnimation ATTACK_RIGHT_ANIM  = RawAnimation.begin().then("attack_right",  Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation ATTACK_LEFT_ANIM   = RawAnimation.begin().then("attack_left",   Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation ATTACK_DOUBLE_ANIM = RawAnimation.begin().then("attack_double", Animation.LoopType.PLAY_ONCE);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     private Entity pendingAttackTarget = null;
     private int    attackDelayTick     = 0;
 
+    private static final RawAnimation IDLE_ANIM          = RawAnimation.begin().thenLoop("idle");
+    private static final RawAnimation WALK_ANIM          = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation ATTACK_RIGHT_ANIM  = RawAnimation.begin().then("attack_right",  Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK_LEFT_ANIM   = RawAnimation.begin().then("attack_left",   Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK_DOUBLE_ANIM = RawAnimation.begin().then("attack_double", Animation.LoopType.PLAY_ONCE);
+
+    // Spawn
+
     public SilverSkeletonEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
+                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
+        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+        this.setItemSlot(EquipmentSlot.OFFHAND,  new ItemStack(Items.IRON_SWORD));
+        return data;
+    }
+
+    public static AttributeSupplier.Builder prepareAttributes() {
+        return Monster.createMobAttributes()
+                .add(Attributes.MAX_HEALTH,               25.0)
+                .add(Attributes.MOVEMENT_SPEED,            0.30)
+                .add(Attributes.ATTACK_DAMAGE,             5.0)
+                .add(Attributes.FOLLOW_RANGE,              24.0)
+                .add(Attributes.ENTITY_INTERACTION_RANGE,  2.5)
+                .add(Attributes.KNOCKBACK_RESISTANCE,      0.1);
+    }
+
+    // AI
 
     @Override
     protected void registerGoals() {
@@ -55,23 +80,7 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
     }
 
-    public static AttributeSupplier.Builder prepareAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,               25.0)
-                .add(Attributes.MOVEMENT_SPEED,            0.30)
-                .add(Attributes.ATTACK_DAMAGE,             5.0)
-                .add(Attributes.FOLLOW_RANGE,              24.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  2.5)
-                .add(Attributes.KNOCKBACK_RESISTANCE,      0.1);
-    }
-
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
-        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
-        this.setItemSlot(EquipmentSlot.OFFHAND,  new ItemStack(Items.IRON_SWORD));
-        return data;
-    }
+    // Combat
 
     public boolean isAttacking() { return attackDelayTick > 0; }
 
@@ -87,6 +96,8 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
         this.attackDelayTick = 1;
         return true;
     }
+
+    // Tick
 
     @Override
     public void tick() {
@@ -105,6 +116,8 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
             if (attackDelayTick >= ATTACK_TOTAL_TICKS) attackDelayTick = 0;
         }
     }
+
+    // Animation
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
