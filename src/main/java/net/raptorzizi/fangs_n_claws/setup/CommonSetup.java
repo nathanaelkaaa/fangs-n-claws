@@ -6,6 +6,7 @@ import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
@@ -20,6 +21,7 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
+        event.put(EntityRegistry.EVIL_BAT.get(),        EvilBatEntity.prepareAttributes().build());
         event.put(EntityRegistry.OGRE.get(),           OgreEntity.prepareAttributes().build());
         event.put(EntityRegistry.WEREWOLF.get(),       WerewolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.OWLBEAR.get(),        OwlbearEntity.prepareAttributes().build());

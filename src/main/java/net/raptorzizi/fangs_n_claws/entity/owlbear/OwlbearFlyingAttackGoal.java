@@ -61,7 +61,7 @@ public class OwlbearFlyingAttackGoal extends Goal {
     @Override
     public void start() {
         owlbear.setFlying(true);
-        owlbear.setFlapping(false);
+        owlbear.setFlapping(true);
         owlbear.setRunning(false);
         owlbear.getNavigation().stop();
         flapHysteresisTicks = 0;

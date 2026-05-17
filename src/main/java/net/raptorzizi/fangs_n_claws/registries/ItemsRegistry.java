@@ -28,6 +28,8 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> GOLEM_SPAWN_EGG = ITEMS.register("golem_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GOLEM, 0x9b775b, 0x52a12f, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> EVIL_BAT_SPAWN_EGG = ITEMS.register("evil_bat_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.EVIL_BAT, 0x43372f, 0xe8d063, new Item.Properties().stacksTo(64)));
 
     public static void register(IEventBus eventBus)  {
         ITEMS.register(eventBus);
