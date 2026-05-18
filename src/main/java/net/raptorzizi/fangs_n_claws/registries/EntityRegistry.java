@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
@@ -54,6 +55,12 @@ public class EntityRegistry {
                     .sized(0.5F, 0.9F)
                     .clientTrackingRange(5)
                     .build("evil_bat"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<GhostEntity>> GHOST =
+            ENTITIES.register("ghost", () -> EntityType.Builder.of(GhostEntity::new, MobCategory.MONSTER)
+                    .sized(0.8F, 1.6F)
+                    .clientTrackingRange(8)
+                    .build("ghost"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<BlockProjectile>> BLOCK_PROJECTILE =
             ENTITIES.register("block_projectile", () -> EntityType.Builder

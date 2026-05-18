@@ -1,6 +1,7 @@
 {
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
 
+  "item.fangs_n_claws.ghost_spawn_egg": "Ghost Spawn Egg",
   "item.fangs_n_claws.evil_bat_spawn_egg": "Evil Bat Spawn Egg",
   "item.fangs_n_claws.ogre_spawn_egg": "Ogre Spawn Egg",
   "item.fangs_n_claws.werewolf_spawn_egg": "Werewolf Spawn Egg",
@@ -8,6 +9,8 @@
   "item.fangs_n_claws.silver_skeleton_spawn_egg": "Silver Skeleton Spawn Egg",
   "item.fangs_n_claws.golem_spawn_egg": "Big Golem Spawn Egg",
 
+
+  "entity.fangs_n_claws.ghost": "Ghost",
   "entity.fangs_n_claws.evil_bat": "Evil Bat",
   "entity.fangs_n_claws.ogre": "Ogre",
   "entity.fangs_n_claws.werewolf": "Werewolf",

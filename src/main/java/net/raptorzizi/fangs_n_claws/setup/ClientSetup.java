@@ -7,6 +7,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatRenderer;
+import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
@@ -34,6 +35,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.OWLBEAR.get(),         OwlbearRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),    BlockProjectileRenderer::new);
     }
 
