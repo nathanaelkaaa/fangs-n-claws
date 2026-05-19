@@ -34,6 +34,9 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x585858, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> GOBLIN_SPAWN_EGG = ITEMS.register("goblin_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.GOBLIN, 0x418e4e, 0x14422e, new Item.Properties().stacksTo(64)));
+
     public static void register(IEventBus eventBus)  {
         ITEMS.register(eventBus);
     }

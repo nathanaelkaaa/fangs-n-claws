@@ -1,6 +1,9 @@
 package net.raptorzizi.fangs_n_claws.entity.silver_skeleton;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -79,6 +82,12 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
     }
+
+    // Sound
+
+    @Override protected SoundEvent getAmbientSound()              { return SoundEvents.SKELETON_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.SKELETON_HURT; }
+    @Override protected SoundEvent getDeathSound()                { return SoundEvents.SKELETON_DEATH; }
 
     // Combat
 

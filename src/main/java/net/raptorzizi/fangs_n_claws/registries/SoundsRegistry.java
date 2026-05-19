@@ -19,6 +19,12 @@ public class SoundsRegistry {
             register("ogre.hurt");
     public static final Supplier<SoundEvent> OGRE_DEATH =
             register("ogre.death");
+
+    public static final Supplier<SoundEvent> OWLBEAR_HOWL =
+            register("owlbear.howl");
+    public static final Supplier<SoundEvent> OWLBEAR_HURT =
+            register("owlbear.hurt");
+
     //TODO Create werewolf sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> WEREWOLF_AMBIENT =
             register("werewolf.ambient");

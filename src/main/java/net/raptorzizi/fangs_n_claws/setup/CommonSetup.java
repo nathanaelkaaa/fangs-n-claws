@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
@@ -29,6 +30,7 @@ public class CommonSetup {
         event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.GHOST.get(),           GhostEntity.prepareAttributes().build());
+        event.put(EntityRegistry.GOBLIN.get(),          GoblinEntity.prepareAttributes().build());
     }
 
     @SubscribeEvent
