@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.entity.projectile;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -7,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -16,20 +18,24 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class BlockProjectile extends ThrowableProjectile {
 
     // Variables
 
-    private static final EntityDataAccessor<BlockState> BLOCK_STATE    = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BLOCK_STATE);
-    private static final EntityDataAccessor<Boolean>    REGEN_MODE     = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<BlockState> BLOCK_STATE     = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Boolean>    REGEN_MODE      = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer>    PARENT_GOLEM_ID = SynchedEntityData.defineId(BlockProjectile.class, EntityDataSerializers.INT);
 
     private static final double REGEN_ARRIVAL_DIST  = 1.0;
@@ -38,8 +44,12 @@ public class BlockProjectile extends ThrowableProjectile {
     private static final int    MAX_LIFETIME        = 100;
     private static final byte   EVENT_IMPACT_EXPLODE = 60;
 
-    private float damage         = 8.0f;
-    private UUID  parentGolemUUID = null;
+    private static final float MUD_RADIUS   = 1.5f;
+    private static final int   MUD_ATTEMPTS = 40;
+
+    private float      damage          = 8.0f;
+    private UUID       parentGolemUUID = null;
+    private final Set<UUID> hitEntities = new HashSet<>();
 
     // Spawn
 
@@ -206,10 +216,17 @@ public class BlockProjectile extends ThrowableProjectile {
 
     @Override
     protected void onHit(HitResult result) {
-        if (!isRegenMode()) {
-            this.level().broadcastEntityEvent(this, EVENT_IMPACT_EXPLODE);
+        if (isRegenMode()) {
+            super.onHit(result);
+            return;
         }
-        super.onHit(result);
+        if (result.getType() == HitResult.Type.ENTITY) {
+            onHitEntity((EntityHitResult) result);
+        } else if (result.getType() == HitResult.Type.BLOCK) {
+            this.level().broadcastEntityEvent(this, EVENT_IMPACT_EXPLODE);
+            onHitBlock((BlockHitResult) result);
+            this.discard();
+        }
     }
 
     @Override
@@ -240,12 +257,52 @@ public class BlockProjectile extends ThrowableProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
         if (this.level().isClientSide || isRegenMode()) return;
 
-        if (result.getEntity() instanceof LivingEntity target) {
-            target.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
-            target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
+        Entity entity = result.getEntity();
+        if (!(entity instanceof LivingEntity target)) return;
+        if (target == this.getOwner()) return;
+        if (hitEntities.contains(target.getUUID())) return;
+
+        hitEntities.add(target.getUUID());
+
+        this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                SoundsRegistry.ROCK_IMPACT.get(), SoundSource.NEUTRAL,
+                1.2F, 0.85F + this.random.nextFloat() * 0.3F);
+
+        target.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
+        target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult result) {
+        if (this.level().isClientSide || isRegenMode()) return;
+
+        ServerLevel serverLevel = (ServerLevel) this.level();
+        Vec3 pos = result.getLocation();
+
+        serverLevel.playSound(null, pos.x, pos.y, pos.z,
+                SoundsRegistry.ROCK_IMPACT.get(), SoundSource.NEUTRAL,
+                1.4F, 0.75F + this.random.nextFloat() * 0.25F);
+        int target  = 2 + this.random.nextInt(4);
+        BlockPos center = BlockPos.containing(pos);
+        int placed   = 0;
+        int attempts = 0;
+
+        while (placed < target && attempts < MUD_ATTEMPTS) {
+            attempts++;
+            double ox = (this.random.nextDouble() * 2.0 - 1.0) * MUD_RADIUS;
+            double oy = (this.random.nextDouble() * 2.0 - 1.0) * MUD_RADIUS;
+            double oz = (this.random.nextDouble() * 2.0 - 1.0) * MUD_RADIUS;
+            if (ox * ox + oy * oy + oz * oz > MUD_RADIUS * MUD_RADIUS) continue;
+
+            BlockPos candidate = center.offset(
+                    (int) Math.round(ox), (int) Math.round(oy), (int) Math.round(oz));
+            BlockState state = serverLevel.getBlockState(candidate);
+            if (state.isAir() || state.canBeReplaced()) {
+                serverLevel.setBlock(candidate, Blocks.PACKED_MUD.defaultBlockState(), 3);
+                placed++;
+            }
         }
     }
 }

@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -64,6 +65,8 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     int howlCooldown = 0;
 
     private double prevX, prevZ;
+    private int    flapSoundTick = 0;
+    private static final int FLAP_SOUND_INTERVAL = 12;
 
     private static final RawAnimation IDLE_ANIM          = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM          = RawAnimation.begin().thenLoop("walk");
@@ -131,7 +134,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false) {
 
             @Override
             public boolean canUse() {
@@ -166,9 +169,14 @@ public class OwlbearEntity extends Monster implements GeoEntity {
 
     // Sound
 
-    @Override protected SoundEvent getAmbientSound()              { return SoundEvents.POLAR_BEAR_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.POLAR_BEAR_HURT; }
-    @Override protected SoundEvent getDeathSound()                { return SoundEvents.POLAR_BEAR_DEATH; }
+    //@Override protected SoundEvent getAmbientSound()              { return SoundEvents.POLAR_BEAR_AMBIENT; }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.OWLBEAR_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.OWLBEAR_DEATH.get(); }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(SoundEvents.WARDEN_STEP, 4.0F, 1.1F + this.random.nextFloat() * 0.2F);
+    }
 
     // Combat
 
@@ -178,7 +186,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     public void triggerHowl() {
         this.triggerAnim("attack_controller", "howl");
         this.howlDelayTick = 1;
-        this.playSound(SoundEvents.RAVAGER_ROAR, 1.0F, 0.85F + this.random.nextFloat() * 0.2F);
+        this.playSound(SoundsRegistry.OWLBEAR_HOWL.get(), 1.0F, 0.85F + this.random.nextFloat() * 0.2F);
     }
 
     @Override
@@ -227,7 +235,6 @@ public class OwlbearEntity extends Monster implements GeoEntity {
             } else {
                 this.setNoGravity(false);
             }
-
             if (attackDelayTick > 0) {
                 attackDelayTick++;
                 if (attackDelayTick == currentAttackHitTick) {
@@ -235,6 +242,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
                             && this.distanceTo(pendingAttackTarget) <= OwlbearAttackGoal.MAX_ATTACK_RANGE
                             && this.hasLineOfSight(pendingAttackTarget)) {
                         if (currentIsAttack1 && pendingAttackTarget instanceof LivingEntity livingTarget) {
+                            this.playSound(SoundsRegistry.OWLBEAR_SLASH.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
                             livingTarget.hurt(this.damageSources().mobAttack(this), 8.0f);
                             double dx = livingTarget.getX() - this.getX();
                             double dz = livingTarget.getZ() - this.getZ();
@@ -254,6 +262,16 @@ public class OwlbearEntity extends Monster implements GeoEntity {
             if (howlDelayTick > 0) {
                 howlDelayTick++;
                 if (howlDelayTick >= HOWL_TOTAL_TICKS) howlDelayTick = 0;
+            }
+
+            if (this.isFlapping()) {
+                flapSoundTick++;
+                if (flapSoundTick >= FLAP_SOUND_INTERVAL) {
+                    flapSoundTick = 0;
+                    this.playSound(SoundsRegistry.OWLBEAR_FLAP.get(), 0.9F, 0.9F + this.random.nextFloat() * 0.2F);
+                }
+            } else {
+                flapSoundTick = 0;
             }
         }
 

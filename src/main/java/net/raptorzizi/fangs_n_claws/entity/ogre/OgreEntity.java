@@ -99,7 +99,7 @@ public class OgreEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -117,6 +117,11 @@ public class OgreEntity extends Monster implements GeoEntity {
     @Override protected SoundEvent getAmbientSound()                                        { return SoundsRegistry.OGRE_AMBIENT.get(); }
     @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundsRegistry.OGRE_HURT.get(); }
     @Override protected SoundEvent getDeathSound()                                          { return SoundsRegistry.OGRE_DEATH.get(); }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(net.minecraft.sounds.SoundEvents.WARDEN_STEP, 10.0F, 0.9F + this.random.nextFloat() * 0.2F);
+    }
 
     // Combat
 

@@ -4,7 +4,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
@@ -68,6 +68,12 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     private float   orbitAngle;
     private int     orbitDirection      = 1;
     private int     orbitDirChangeTick  = 0;
+    private double  prevCombatX         = 0;
+    private double  prevCombatZ         = 0;
+    private int     combatStuckTick     = 0;
+
+    private static final int    COMBAT_STUCK_THRESHOLD = 5;
+    private static final double COMBAT_STUCK_MIN_MOVE  = 0.0025; // 0.05 blocks/tick squared
 
     private static final RawAnimation IDLE_ANIM   = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM   = RawAnimation.begin().thenLoop("walk");
@@ -128,9 +134,9 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
 
     // Sound, Death
 
-    @Override protected SoundEvent getAmbientSound()              { return SoundEvents.PILLAGER_AMBIENT; }
-    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.PILLAGER_HURT; }
-    @Override protected SoundEvent getDeathSound()                { return SoundEvents.PILLAGER_DEATH; }
+    @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.GOBLIN_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.GOBLIN_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.GOBLIN_DEATH.get(); }
     @Override protected float getSoundVolume()                    { return 0.8F; }
 
     @Override
@@ -168,7 +174,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     private void performSteal(LivingEntity target) {
         if (!(target instanceof Player player)) return;
         List<Integer> nonEmpty = new ArrayList<>();
-        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+        for (int i = 9; i <= 35; i++) {
             if (!player.getInventory().getItem(i).isEmpty()) nonEmpty.add(i);
         }
         if (nonEmpty.isEmpty()) return;
@@ -177,6 +183,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
         ItemStack stolen = player.getInventory().getItem(slot).copy();
         player.getInventory().setItem(slot, ItemStack.EMPTY);
         this.setItemSlot(EquipmentSlot.OFFHAND, stolen);
+        this.playSound(SoundsRegistry.GOBLIN_CELEBRATE.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
 
         stealFleeMode  = true;
         fleeTick       = STEAL_FLEE_TICKS;
@@ -239,7 +246,22 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
 
     private void tickCombat() {
         LivingEntity target = this.getTarget();
-        if (target == null || !target.isAlive()) return;
+        if (target == null || !target.isAlive()) {
+            combatStuckTick = 0;
+            return;
+        }
+        double movedSq = Math.pow(this.getX() - prevCombatX, 2) + Math.pow(this.getZ() - prevCombatZ, 2);
+        if (!isActing() && movedSq < COMBAT_STUCK_MIN_MOVE) {
+            combatStuckTick++;
+            if (combatStuckTick >= COMBAT_STUCK_THRESHOLD && this.onGround()) {
+                this.getJumpControl().jump();
+                combatStuckTick = 0;
+            }
+        } else {
+            combatStuckTick = 0;
+        }
+        prevCombatX = this.getX();
+        prevCombatZ = this.getZ();
 
         if (countNearbyAllies() >= 1) {
             tickGroupBehavior(target);
@@ -263,7 +285,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
             return;
         }
 
-        // Chase and attack
         Vec3 chaseTarget = new Vec3(target.getX(), target.getY(), target.getZ());
         faceToward(chaseTarget);
 
@@ -295,7 +316,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
         double  dist        = this.distanceTo(target);
 
         if (lookingAway && attackCooldown == 0) {
-            // Rush in and attack from behind
             Vec3 rushTarget = new Vec3(target.getX(), target.getY(), target.getZ());
             faceToward(rushTarget);
 
@@ -306,7 +326,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
                 steerToward(rushTarget, RUSH_SPEED, 0.25);
             }
         } else {
-            // Orbit around target — direction changes randomly per goblin
             if (--orbitDirChangeTick <= 0) {
                 orbitDirection      = -orbitDirection;
                 orbitDirChangeTick  = ORBIT_DIR_CHANGE_MIN + this.random.nextInt(ORBIT_DIR_CHANGE_MAX - ORBIT_DIR_CHANGE_MIN);

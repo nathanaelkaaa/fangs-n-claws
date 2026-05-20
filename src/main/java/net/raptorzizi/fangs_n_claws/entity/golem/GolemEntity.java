@@ -6,6 +6,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -183,16 +184,16 @@ public class GolemEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
     }
 
     // Sound, Death
 
-    @Override protected SoundEvent getAmbientSound()                { return SoundEvents.IRON_GOLEM_HURT; }
-    @Override protected SoundEvent getHurtSound(DamageSource src)   { return SoundEvents.IRON_GOLEM_HURT; }
-    @Override protected SoundEvent getDeathSound()                  { return SoundEvents.IRON_GOLEM_DEATH; }
+    @Override protected SoundEvent getAmbientSound()                { return SoundsRegistry.GOLEM_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src)   { return SoundsRegistry.GOLEM_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                  { return SoundsRegistry.GOLEM_DEATH.get(); }
     @Override protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.IRON_GOLEM_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.WARDEN_STEP, 12.0F, 0.8F + this.random.nextFloat() * 0.2F);
     }
 
     @Override

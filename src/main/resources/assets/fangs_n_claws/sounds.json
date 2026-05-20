@@ -10,13 +10,114 @@
   "ogre.hurt": {
     "subtitle": "subtitles.entity.ogre.hurt",
     "sounds": [
-      { "name": "fangs_n_claws:ogre/ogre_hurt" }
+      { "name": "fangs_n_claws:ogre/ogre_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:ogre/ogre_hurt2", "weight": 1 },
+      { "name": "fangs_n_claws:ogre/ogre_hurt3", "weight": 1 }
     ]
   },
   "ogre.death": {
     "subtitle": "subtitles.entity.ogre.death",
     "sounds": [
-      { "name": "fangs_n_claws:ogre/ogre_dying" }
+      { "name": "fangs_n_claws:ogre/ogre_death" }
+    ]
+  },
+  "golem.ambient": {
+    "subtitle": "subtitles.entity.golem.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:golem/golem_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:golem/golem_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:golem/golem_idle3", "weight": 1 },
+      { "name": "fangs_n_claws:golem/golem_idle4", "weight": 1 }
+    ]
+  },
+  "golem.hurt": {
+    "subtitle": "subtitles.entity.golem.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:golem/golem_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:golem/golem_hurt2", "weight": 1 },
+      { "name": "fangs_n_claws:golem/golem_hurt3", "weight": 1 }
+    ]
+  },
+  "golem.death": {
+    "subtitle": "subtitles.entity.golem.death",
+    "sounds": [
+      { "name": "fangs_n_claws:golem/golem_death"}
+    ]
+  },
+  "goblin.ambient": {
+    "subtitle": "subtitles.entity.goblin.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:goblin/goblin_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:goblin/goblin_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:goblin/goblin_idle3", "weight": 1 },
+      { "name": "fangs_n_claws:goblin/goblin_idle4", "weight": 1 }
+    ]
+  },
+  "goblin.hurt": {
+    "subtitle": "subtitles.entity.goblin.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:goblin/goblin_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:goblin/goblin_hurt2", "weight": 1 },
+      { "name": "fangs_n_claws:goblin/goblin_hurt3", "weight": 1 }
+    ]
+  },
+  "goblin.death": {
+    "subtitle": "subtitles.entity.goblin.death",
+    "sounds": [
+      { "name": "fangs_n_claws:goblin/goblin_death1", "weight": 1 },
+      { "name": "fangs_n_claws:goblin/goblin_death2", "weight": 1 }
+    ]
+  },
+  "goblin.celebrate": {
+    "subtitle": "subtitles.entity.goblin.celebrate",
+    "sounds": [
+      { "name": "fangs_n_claws:goblin/goblin_celebrate"}
+    ]
+  },
+  "owlbear.howl": {
+    "subtitle": "subtitles.entity.owlbear.howl",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_howl_1", "weight": 1 },
+      { "name": "fangs_n_claws:owlbear/owlbear_howl_2", "weight": 1 },
+      { "name": "fangs_n_claws:owlbear/owlbear_howl_3", "weight": 1 }
+    ]
+  },
+  "owlbear.slash": {
+    "subtitle": "subtitles.entity.owlbear.slash",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_slash" }
+    ]
+  },
+  "owlbear.death": {
+    "subtitle": "subtitles.entity.owlbear.death",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_death" }
+    ]
+  },
+  "owlbear.flap": {
+    "subtitle": "subtitles.entity.owlbear.flap",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_flap_1", "weight": 1 },
+      { "name": "fangs_n_claws:owlbear/owlbear_flap_2", "weight": 1 },
+      { "name": "fangs_n_claws:owlbear/owlbear_flap_3", "weight": 1 }
+    ]
+  },
+  "generic.heavy_impact": {
+    "subtitle": "subtitles.entity.generic.heavy_impact",
+    "sounds": [
+      { "name": "fangs_n_claws:heavy_impact" }
+    ]
+  },
+  "generic.rock_impact": {
+    "subtitle": "subtitles.entity.generic.rock_impact",
+    "sounds": [
+      { "name": "fangs_n_claws:rock_impact" }
+    ]
+  },
+  "owlbear.hurt": {
+    "subtitle": "subtitles.entity.owlbear.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_hurt" }
     ]
   },
   "werewolf.ambient": {
@@ -24,19 +125,22 @@
     "sounds": [
       { "name": "fangs_n_claws:werewolf/werewolf_idle1", "weight": 1 },
       { "name": "fangs_n_claws:werewolf/werewolf_idle2", "weight": 1 },
-      { "name": "fangs_n_claws:werewolf/werewolf_idle3", "weight": 1 }
+      { "name": "fangs_n_claws:werewolf/werewolf_idle3", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_idle4", "weight": 1 }
     ]
   },
   "werewolf.howl": {
     "subtitle": "subtitles.entity.werewolf.howl",
     "sounds": [
-      { "name": "fangs_n_claws:werewolf/werewolf_howl", "weight": 1 }
+      { "name": "fangs_n_claws:werewolf/werewolf_howl1", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_howl2", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_howl3", "weight": 1 }
     ]
   },
   "werewolf.bite": {
     "subtitle": "subtitles.entity.werewolf.bite",
     "sounds": [
-      { "name": "fangs_n_claws:werewolf/werewolf_bite", "weight": 1 }
+      { "name": "fangs_n_claws:werewolf/werewolf_bite"}
     ]
   },
   "werewolf.hurt": {
@@ -49,8 +153,8 @@
   "werewolf.death": {
     "subtitle": "subtitles.entity.werewolf.death",
     "sounds": [
-      { "name": "fangs_n_claws:werewolf/werewolf_dying1", "weight": 1 },
-      { "name": "fangs_n_claws:werewolf/werewolf_dying2", "weight": 1 }
+      { "name": "fangs_n_claws:werewolf/werewolf_death1", "weight": 1 },
+      { "name": "fangs_n_claws:werewolf/werewolf_death2", "weight": 1 }
     ]
   }
 }

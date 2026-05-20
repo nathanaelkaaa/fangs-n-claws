@@ -2,6 +2,7 @@ package net.raptorzizi.fangs_n_claws.entity.owlbear;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
 import java.util.EnumSet;
 
@@ -102,6 +104,8 @@ public class OwlbearFlyingAttackGoal extends Goal {
                     owlbear.setDiveState(OwlbearEntity.DIVE_CHARGING);
                     owlbear.setFlapping(false);
                     chargeTick = 0;
+                    owlbear.playSound(SoundsRegistry.OWLBEAR_HOWL.get(),
+                            1.2F, 0.85F + owlbear.getRandom().nextFloat() * 0.2F);
                 } else {
                     normalFlightTick(target);
                 }
@@ -205,6 +209,10 @@ public class OwlbearFlyingAttackGoal extends Goal {
 
     private void performDiveLanding() {
         ServerLevel serverLevel = (ServerLevel) owlbear.level();
+
+        owlbear.playSound(
+                SoundEvents.MACE_SMASH_GROUND,
+                1.5F, 0.9F + owlbear.getRandom().nextFloat() * 0.2F);
 
         AABB aoe = new AABB(
                 owlbear.getX() - DIVE_AOE_RADIUS, owlbear.getY() - 0.5, owlbear.getZ() - DIVE_AOE_RADIUS,
