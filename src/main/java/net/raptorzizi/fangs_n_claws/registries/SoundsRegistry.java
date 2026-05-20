@@ -17,6 +17,8 @@ public class SoundsRegistry {
             register("generic.heavy_impact");
     public static final Supplier<SoundEvent> ROCK_IMPACT =
             register("generic.rock_impact");
+    public static final Supplier<SoundEvent> BACKSTAB_IMPACT =
+            register("generic.backstab_impact");
 
     //TODO Create ogre sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> OGRE_AMBIENT =

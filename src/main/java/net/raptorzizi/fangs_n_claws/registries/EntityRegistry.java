@@ -8,7 +8,9 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -68,6 +70,21 @@ public class EntityRegistry {
                     .sized(0.6F, 1.4F)
                     .clientTrackingRange(8)
                     .build("goblin"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CatchingClawHookEntity>> CATCHING_CLAW_HOOK =
+            ENTITIES.register("catching_claw_hook", () -> EntityType.Builder
+                    .<CatchingClawHookEntity>of(CatchingClawHookEntity::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(64)
+                    .updateInterval(5)
+                    .build("catching_claw_hook"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EvilEyeProjectile>> EVIL_EYE_PROJECTILE =
+            ENTITIES.register("evil_eye_projectile", () -> EntityType.Builder
+                    .<EvilEyeProjectile>of(EvilEyeProjectile::new, MobCategory.MISC)
+                    .sized(0.25F, 0.25F)
+                    .clientTrackingRange(64)
+                    .build("evil_eye_projectile"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<BlockProjectile>> BLOCK_PROJECTILE =
             ENTITIES.register("block_projectile", () -> EntityType.Builder

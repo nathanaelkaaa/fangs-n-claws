@@ -73,7 +73,7 @@ public class WerewolfAttackGoal extends Goal {
 
         if (target != null && target.isAlive()) {
             combatTick++;
-            if (howlCooldown <= 0) {
+            if (howlCooldown <= 0 && !werewolf.isFleeing()) {
                 werewolf.triggerHowl();
                 howlCooldown = HOWL_COOLDOWN;
             }

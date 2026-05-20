@@ -22,12 +22,14 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
@@ -91,12 +93,20 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     public boolean isRunning()                  { return this.entityData.get(IS_RUNNING); }
     public void    setRunning(boolean running)  { this.entityData.set(IS_RUNNING, running); }
 
+    private boolean fleeing = false;
+    public boolean isFleeing()                  { return fleeing; }
+    public void    setFleeing(boolean fleeing)  { this.fleeing = fleeing; }
+
     // AI
 
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new WerewolfAttackGoal(this));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, SilverSkeletonEntity.class, 25.0f, 2.0, 2.0) {
+            @Override public void start() { super.start(); WerewolfEntity.this.setRunning(true);  WerewolfEntity.this.setFleeing(true);  }
+            @Override public void stop()  { super.stop();  WerewolfEntity.this.setRunning(false); WerewolfEntity.this.setFleeing(false); }
+        });
+        this.goalSelector.addGoal(2, new WerewolfAttackGoal(this));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
@@ -107,7 +117,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,        40.0)
+                .add(Attributes.MAX_HEALTH,        30.0)
                 .add(Attributes.MOVEMENT_SPEED,     0.2)
                 .add(Attributes.ATTACK_DAMAGE,      4.0)
                 .add(Attributes.FOLLOW_RANGE,       28.0)
@@ -115,6 +125,18 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     }
 
     // Sound
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        Entity directEntity = source.getDirectEntity();
+        boolean hasSilverSword = directEntity instanceof Player player
+                && player.getMainHandItem().getItem() instanceof SilverSwordItem;
+
+        if (!hasSilverSword && (directEntity != null || source.getEntity() != null)) {
+            amount *= 0.5f;
+        }
+        return super.hurt(source, amount);
+    }
 
     @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.WEREWOLF_AMBIENT.get(); }
     @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.WEREWOLF_HURT.get(); }

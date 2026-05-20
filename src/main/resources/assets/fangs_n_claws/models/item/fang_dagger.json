@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "fangs_n_claws:item/fang_dagger"
+  },
+  "overrides": [
+    {
+      "predicate": { "fangs_n_claws:backstab": 1.0 },
+      "model": "fangs_n_claws:item/fang_dagger_backstab"
+    }
+  ]
+}

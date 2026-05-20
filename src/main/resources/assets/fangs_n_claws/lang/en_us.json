@@ -10,6 +10,29 @@
   "item.fangs_n_claws.golem_spawn_egg": "Big Golem Spawn Egg",
   "item.fangs_n_claws.goblin_spawn_egg": "Goblin Spawn Egg",
 
+  "item.fangs_n_claws.heavy_claw": "Heavy Claw",
+  "item.fangs_n_claws.long_fang": "Long Fang",
+  "item.fangs_n_claws.fang_dagger": "Fang Dagger",
+  "item.fangs_n_claws.fang_dagger.tooltip1": "§7Attacking from behind inflicts Bleeding",
+
+  "item.fangs_n_claws.silver_sword": "Silver Sword",
+  "item.fangs_n_claws.silver_sword.tooltip1": "§7The only weapon that can effectively kill a Werewolf",
+
+  "item.fangs_n_claws.catching_claw": "Catching Claw",
+  "item.fangs_n_claws.catching_claw.tooltip1": "§7Hook a target, then retrieve to launch it toward your aim",
+
+  "item.fangs_n_claws.evil_eye": "Evil Eye",
+  "item.fangs_n_claws.evil_eye.tooltip1": "§7Blinds all nearby enemies on impact, instant kill flying pest",
+
+  "item.minecraft.potion.effect.fangs_n_claws.blindness": "Potion of Blindness",
+  "item.minecraft.splash_potion.effect.fangs_n_claws.blindness": "Splash Potion of Blindness",
+  "item.minecraft.lingering_potion.effect.fangs_n_claws.blindness": "Lingering Potion of Blindness",
+  "item.minecraft.tipped_arrow.effect.fangs_n_claws.blindness": "Arrow of Blindness",
+  "item.minecraft.potion.effect.fangs_n_claws.long_blindness": "Potion of Blindness",
+  "item.minecraft.splash_potion.effect.fangs_n_claws.long_blindness": "Splash Potion of Blindness",
+  "item.minecraft.lingering_potion.effect.fangs_n_claws.lingering_potion_of_blindness": "Lingering Potion of Blindness",
+  "item.minecraft.tipped_arrow.effect.fangs_n_claws.long_blindness": "Arrow of Blindness",
+
 
   "entity.fangs_n_claws.ghost": "Ghost",
   "entity.fangs_n_claws.evil_bat": "Evil Bat",

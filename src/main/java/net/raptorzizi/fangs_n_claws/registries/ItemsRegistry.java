@@ -1,10 +1,15 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SwordItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
+import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
+import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
+import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
 import java.util.function.Supplier;
 
 public class ItemsRegistry {
@@ -36,6 +41,27 @@ public class ItemsRegistry {
 
     public static final Supplier<DeferredSpawnEggItem> GOBLIN_SPAWN_EGG = ITEMS.register("goblin_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GOBLIN, 0x418e4e, 0x14422e, new Item.Properties().stacksTo(64)));
+
+    /**
+     * Materials
+     */
+    public static final Supplier<Item> HEAVY_CLAW = ITEMS.register("heavy_claw",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<Item> LONG_FANG = ITEMS.register("long_fang",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    /**
+     * Weapons
+     */
+    public static final Supplier<FangDaggerItem>   FANG_DAGGER   = ITEMS.register("fang_dagger",   FangDaggerItem::new);
+    public static final Supplier<CatchingClawItem> CATCHING_CLAW = ITEMS.register("catching_claw", CatchingClawItem::new);
+    public static final Supplier<SilverSwordItem>  SILVER_SWORD  = ITEMS.register("silver_sword",  SilverSwordItem::new);
+
+    /**
+     * Throwables
+     */
+    public static final Supplier<EvilEyeItem> EVIL_EYE = ITEMS.register("evil_eye", EvilEyeItem::new);
 
     public static void register(IEventBus eventBus)  {
         ITEMS.register(eventBus);

@@ -10,11 +10,13 @@ import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinRenderer;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemRenderer;
+import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonRenderer;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfRenderer;
+import net.raptorzizi.fangs_n_claws.particle.BlackFogParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodParticle;
 import net.raptorzizi.fangs_n_claws.particle.StunStarParticle;
@@ -38,6 +40,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOBLIN.get(),              GoblinRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(),  CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),    BlockProjectileRenderer::new);
     }
 
@@ -45,6 +48,7 @@ public class ClientSetup {
     public static void registerParticles(RegisterParticleProvidersEvent event) {
         event.registerSpriteSet(ParticlesRegistry.BLOOD_PARTICLE.get(), BloodParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.BLOOD_GROUND.get(),   BloodGroundParticle.Provider::new);
-        event.registerSpriteSet(ParticlesRegistry.STUN_STAR.get(),        StunStarParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.STUN_STAR.get(),      StunStarParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.BLACK_FOG.get(),      BlackFogParticle.Provider::new);
     }
 }

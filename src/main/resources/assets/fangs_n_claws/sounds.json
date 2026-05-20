@@ -108,6 +108,12 @@
       { "name": "fangs_n_claws:heavy_impact" }
     ]
   },
+  "generic.backstab_impact": {
+    "subtitle": "subtitles.entity.generic.backstab_impact",
+    "sounds": [
+      { "name": "fangs_n_claws:backstab_impact" }
+    ]
+  },
   "generic.rock_impact": {
     "subtitle": "subtitles.entity.generic.rock_impact",
     "sounds": [

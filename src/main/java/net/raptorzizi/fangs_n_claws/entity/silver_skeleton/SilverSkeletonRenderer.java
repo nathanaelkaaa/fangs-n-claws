@@ -1,5 +1,10 @@
 package net.raptorzizi.fangs_n_claws.entity.silver_skeleton;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -31,10 +36,21 @@ public class SilverSkeletonRenderer extends GeoEntityRenderer<SilverSkeletonEnti
             @Override
             protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, SilverSkeletonEntity animatable) {
                 return switch (bone.getName()) {
-                    case "rightItem" -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
-                    case "leftItem"  -> ItemDisplayContext.THIRD_PERSON_LEFT_HAND;
+                    case "rightItem", "leftItem" -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
                     default -> ItemDisplayContext.NONE;
                 };
+            }
+
+            @Override
+            public void renderForBone(PoseStack poseStack, SilverSkeletonEntity animatable, GeoBone bone,
+                                      RenderType renderType, MultiBufferSource bufferSource,
+                                      VertexConsumer buffer, float partialTick,
+                                      int packedLight, int packedOverlay) {
+                poseStack.pushPose();
+                poseStack.translate(0, 0.6, 0.7);
+                poseStack.mulPose(Axis.XP.rotationDegrees(-90));
+                super.renderForBone(poseStack, animatable, bone, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
+                poseStack.popPose();
             }
         });
     }

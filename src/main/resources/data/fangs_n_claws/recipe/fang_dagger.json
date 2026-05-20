@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " L",
+    "S "
+  ],
+  "key": {
+    "L": { "item": "fangs_n_claws:long_fang" },
+    "S": { "item": "minecraft:stick" }
+  },
+  "result": {
+    "id": "fangs_n_claws:fang_dagger",
+    "count": 1
+  }
+}
