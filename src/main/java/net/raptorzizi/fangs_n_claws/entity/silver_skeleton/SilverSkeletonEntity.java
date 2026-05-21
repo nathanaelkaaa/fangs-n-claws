@@ -14,7 +14,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
@@ -115,6 +114,10 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
+            this.igniteForSeconds(8);
+        }
+
         super.tick();
 
         if (!this.level().isClientSide && attackDelayTick > 0) {

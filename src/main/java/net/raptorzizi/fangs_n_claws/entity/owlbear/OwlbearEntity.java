@@ -8,10 +8,11 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -21,7 +22,9 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
@@ -157,6 +160,17 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         });
     }
 
+    public static boolean checkOwlbearSpawnRules(EntityType<? extends OwlbearEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            AABB area = new AABB(pos).inflate(48, 16, 48);
+            if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;
+        }
+        return true;
+    }
+
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,               70.0)
@@ -186,7 +200,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     public void triggerHowl() {
         this.triggerAnim("attack_controller", "howl");
         this.howlDelayTick = 1;
-        this.playSound(SoundsRegistry.OWLBEAR_HOWL.get(), 1.0F, 0.85F + this.random.nextFloat() * 0.2F);
+        this.playSound(SoundsRegistry.OWLBEAR_HOWL.get(), 5.0F, 0.85F + this.random.nextFloat() * 0.2F);
     }
 
     @Override

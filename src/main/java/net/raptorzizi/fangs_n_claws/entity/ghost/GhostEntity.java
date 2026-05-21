@@ -7,11 +7,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -25,7 +23,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -81,6 +82,17 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
     public boolean isAngry()               { return this.entityData.get(IS_ANGRY); }
     public void    setAngry(boolean value) { this.entityData.set(IS_ANGRY, value); }
 
+    public static boolean checkGhostSpawnRules(EntityType<? extends GhostEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) return false;
+        int brightness = level.getLevel().isThundering()
+                ? level.getMaxLocalRawBrightness(pos, 10)
+                : level.getMaxLocalRawBrightness(pos);
+        if (brightness > random.nextInt(8)) return false;
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+    }
+
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,                8.0)
@@ -121,6 +133,10 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
+            this.igniteForSeconds(8);
+        }
+
         super.tick();
         this.setNoGravity(true);
 

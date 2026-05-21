@@ -18,7 +18,7 @@ public class CreativeModeTabs {
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MATERIALS_TAB = CREATIVE_MODE_TAB.register("spellbook_materials",
             () -> CreativeModeTab.builder()
                     .title(Component.translatable("itemGroup." + FangsClawsMod.MOD_ID + ".creative_tab"))
-                    .icon(() -> new ItemStack(Items.IRON_HOE))
+                    .icon(() -> new ItemStack(ItemsRegistry.SILVER_SWORD.get()))
                     .displayItems((enabledFeatures, entries) -> {
                         entries.accept(ItemsRegistry.OGRE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREWOLF_SPAWN_EGG.get());

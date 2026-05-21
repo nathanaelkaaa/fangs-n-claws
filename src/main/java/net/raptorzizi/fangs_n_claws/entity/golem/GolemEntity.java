@@ -6,14 +6,10 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.*;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -32,7 +28,11 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import org.jetbrains.annotations.NotNull;
@@ -160,6 +160,18 @@ public class GolemEntity extends Monster implements GeoEntity {
         setSleeping(true);
         setBodyHealth(BODY_HEALTH_MAX);
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+    public static boolean checkGolemSpawnRules(EntityType<? extends GolemEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            AABB area = new AABB(pos).inflate(48, 16, 48);
+            if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;
+            if (!serverLevel.getEntitiesOfClass(GolemEntity.class, area).isEmpty()) return false;
+        }
+        return true;
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {

@@ -1,19 +1,18 @@
 package net.raptorzizi.fangs_n_claws.entity.goblin;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.*;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -23,6 +22,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
@@ -108,6 +109,21 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     @Override
     protected float getEquipmentDropChance(EquipmentSlot slot) {
         return 0f;
+    }
+
+    public static boolean checkGoblinSpawnRules(EntityType<? extends GoblinEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            int maxGroup = switch (level.getDifficulty()) {
+                case EASY   -> 2;
+                case NORMAL -> 3;
+                default     -> 4;
+            };
+            long nearby = serverLevel.getEntitiesOfClass(GoblinEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
+            if (nearby >= maxGroup) return false;
+        }
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {

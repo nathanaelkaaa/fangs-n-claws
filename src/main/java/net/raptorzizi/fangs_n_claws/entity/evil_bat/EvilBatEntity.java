@@ -2,15 +2,15 @@ package net.raptorzizi.fangs_n_claws.entity.evil_bat;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -20,7 +20,11 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -84,12 +88,32 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
     public boolean isResting()               { return this.entityData.get(IS_RESTING); }
     public void    setResting(boolean value) { this.entityData.set(IS_RESTING, value); }
 
+    public static boolean checkEvilBatSpawnRules(EntityType<? extends EvilBatEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) return false;
+        int brightness = level.getLevel().isThundering()
+                ? level.getMaxLocalRawBrightness(pos, 10)
+                : level.getMaxLocalRawBrightness(pos);
+        if (brightness > random.nextInt(8)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            int maxGroup = switch (level.getDifficulty()) {
+                case EASY   -> 2;
+                case NORMAL -> 3;
+                default     -> 4;
+            };
+            long nearby = serverLevel.getEntitiesOfClass(EvilBatEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
+            if (nearby >= maxGroup) return false;
+        }
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+    }
+
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,                6.0)
                 .add(Attributes.MOVEMENT_SPEED,             0.0)
                 .add(Attributes.ATTACK_DAMAGE,              3.0)
-                .add(Attributes.FOLLOW_RANGE,              16.0)
+                .add(Attributes.FOLLOW_RANGE,              28.0)
                 .add(Attributes.FLYING_SPEED,               0.28)
                 .add(Attributes.ENTITY_INTERACTION_RANGE,   1.5);
     }
@@ -111,6 +135,16 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
     @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.BAT_HURT; }
     @Override protected SoundEvent getDeathSound()                { return SoundEvents.BAT_DEATH; }
     @Override protected float getSoundVolume()                    { return 0.1F; }
+
+    @Override
+    public boolean isInvulnerableTo(DamageSource source) {
+        return source.is(DamageTypes.FLY_INTO_WALL) || super.isInvulnerableTo(source);
+    }
+
+    @Override
+    public boolean causeFallDamage(float fallDistance, float multiplier, DamageSource source) {
+        return false;
+    }
 
     // Combat
 
@@ -193,6 +227,10 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
+            this.igniteForSeconds(8);
+        }
+
         super.tick();
         this.setNoGravity(true);
 

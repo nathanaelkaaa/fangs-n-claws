@@ -8,12 +8,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.minecraft.world.entity.EntityType;
@@ -151,7 +148,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     public void triggerHowl() {
         this.triggerAnim("attack_controller", "owl");
         this.howlDelayTick = 1;
-        this.playSound(SoundsRegistry.WEREWOLF_HOWL.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
+        this.playSound(SoundsRegistry.WEREWOLF_HOWL.get(), 5.0F, 0.9F + this.random.nextFloat() * 0.2F);
     }
 
     @Override
@@ -196,6 +193,10 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
+            this.igniteForSeconds(8);
+        }
+
         prevX = this.getX();
         prevZ = this.getZ();
 

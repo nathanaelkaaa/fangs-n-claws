@@ -187,6 +187,10 @@ public class OgreEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
+            this.igniteForSeconds(8);
+        }
+
         prevX = this.getX();
         prevZ = this.getZ();
 
