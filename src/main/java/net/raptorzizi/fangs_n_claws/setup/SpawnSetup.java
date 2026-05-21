@@ -12,6 +12,7 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
@@ -65,6 +66,12 @@ public class SpawnSetup {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GoblinEntity::checkGoblinSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.WEREVILLAGER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                WerevillagerEntity::checkWerevillagerSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
     }
 }

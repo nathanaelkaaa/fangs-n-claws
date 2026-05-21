@@ -20,6 +20,7 @@ import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 
 public class EntityRegistry {
 
@@ -72,6 +73,13 @@ public class EntityRegistry {
                     .sized(0.6F, 1.4F)
                     .clientTrackingRange(8)
                     .build("goblin"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<WerevillagerEntity>> WEREVILLAGER =
+            ENTITIES.register("werevillager", () -> EntityType.Builder
+                    .<WerevillagerEntity>of((type, level) -> new WerevillagerEntity(type, level), MobCategory.CREATURE)
+                    .sized(0.6F, 1.95F)
+                    .clientTrackingRange(8)
+                    .build("werevillager"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CatchingClawHookEntity>> CATCHING_CLAW_HOOK =
             ENTITIES.register("catching_claw_hook", () -> EntityType.Builder

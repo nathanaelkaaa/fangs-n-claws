@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.MobSpawnType;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.minecraft.world.entity.EntityType;
@@ -30,6 +31,8 @@ import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
+import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
+import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -61,6 +64,9 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     private int          howlDelayTick      = 0;
 
     private double prevX, prevZ;
+
+    private boolean transformingBack = false;
+    private int     bcounter         = 0;
 
     private static final RawAnimation IDLE_ANIM   = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM   = RawAnimation.begin().thenLoop("walk");
@@ -109,7 +115,8 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false,
+                target -> !(target instanceof WerevillagerEntity)));
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -193,16 +200,37 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
-        if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
-            this.igniteForSeconds(8);
-        }
-
         prevX = this.getX();
         prevZ = this.getZ();
 
         super.tick();
 
         if (!this.level().isClientSide) {
+            if (this.level().isDay() && !transformingBack && this.random.nextInt(120) == 0) {
+                transformingBack = true;
+                bcounter = 0;
+            }
+
+            if (transformingBack) {
+                bcounter++;
+
+                double shakeOffset = (bcounter % 2 == 0) ? 0.6 : -0.6;
+                this.setPos(this.getX() + shakeOffset, this.getY(), this.getZ());
+
+                if (bcounter % 2 == 0) {
+                    this.hurt(this.damageSources().magic(), 1.0F);
+                }
+
+                if (bcounter == 15) {
+                    this.playSound(SoundsRegistry.WEREWOLF_HOWL.get(), 2.0F,
+                            0.8F + this.random.nextFloat() * 0.3F);
+                }
+
+                if (bcounter > 30) {
+                    spawnWerevillager();
+                }
+            }
+
             if (attackDelayTick > 0) {
                 attackDelayTick++;
                 if (attackDelayTick == ATTACK_HIT_TICK) {
@@ -240,6 +268,34 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 spawnSprintBlockParticles();
             }
         }
+    }
+
+    private void spawnWerevillager() {
+        if (!(this.level() instanceof ServerLevel serverLevel)) return;
+        if (this.isDeadOrDying()) return;
+
+        for (int i = 0; i < 30; i++) {
+            serverLevel.sendParticles(ParticleTypes.POOF,
+                    this.getX() + (this.random.nextDouble() - 0.5),
+                    this.getY() + this.getBbHeight() * 0.5 + (this.random.nextDouble() - 0.5),
+                    this.getZ() + (this.random.nextDouble() - 0.5),
+                    0,
+                    (this.random.nextDouble() - 0.5) * 0.4,
+                    this.random.nextDouble() * 0.4,
+                    (this.random.nextDouble() - 0.5) * 0.4,
+                    0.15);
+        }
+
+        var werevillager = EntityRegistry.WEREVILLAGER.get().create(serverLevel);
+        if (werevillager != null) {
+            werevillager.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
+            werevillager.finalizeSpawn(serverLevel,
+                    serverLevel.getCurrentDifficultyAt(this.blockPosition()),
+                    MobSpawnType.MOB_SUMMONED, null);
+            serverLevel.addFreshEntity(werevillager);
+        }
+
+        this.discard();
     }
 
     private void spawnSprintBlockParticles() {

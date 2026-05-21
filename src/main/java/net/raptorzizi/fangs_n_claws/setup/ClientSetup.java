@@ -18,6 +18,7 @@ import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonRenderer;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfRenderer;
+import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerRenderer;
 import net.raptorzizi.fangs_n_claws.block.GhostBlockRenderer;
 import net.raptorzizi.fangs_n_claws.particle.BlackFogParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
@@ -44,6 +45,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOBLIN.get(),              GoblinRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.WEREVILLAGER.get(),        WerevillagerRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(),     CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NETHERITE_CLAW_HOOK.get(),   NetheriteClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),      BlockProjectileRenderer::new);
