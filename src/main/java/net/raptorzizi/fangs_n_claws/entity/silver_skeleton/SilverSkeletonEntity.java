@@ -58,6 +58,8 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
         SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemsRegistry.SILVER_SWORD.get()));
         this.setItemSlot(EquipmentSlot.OFFHAND,  new ItemStack(ItemsRegistry.SILVER_SWORD.get()));
+        this.setDropChance(EquipmentSlot.MAINHAND, 0F);
+        this.setDropChance(EquipmentSlot.OFFHAND,  0F);
         return data;
     }
 

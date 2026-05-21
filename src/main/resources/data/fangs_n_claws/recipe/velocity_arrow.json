@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I",
+    "B",
+    "G"
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_nugget" },
+    "B": { "item": "minecraft:bone" },
+    "G": { "item": "fangs_n_claws:giant_feather" }
+  },
+  "result": {
+    "id": "fangs_n_claws:velocity_arrow",
+    "count": 4
+  }
+}

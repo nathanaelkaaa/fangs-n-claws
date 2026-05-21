@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PGP",
+    "PPP"
+  ],
+  "key": {
+    "P": { "item": "fangs_n_claws:phantomatic_essence" },
+    "G": { "item": "minecraft:glass" }
+  },
+  "result": {
+    "id": "fangs_n_claws:ghost_block",
+    "count": 8
+  }
+}

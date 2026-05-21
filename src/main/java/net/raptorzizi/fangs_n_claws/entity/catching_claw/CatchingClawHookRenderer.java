@@ -17,20 +17,27 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-public class CatchingClawHookRenderer extends EntityRenderer<CatchingClawHookEntity> {
+public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends EntityRenderer<T> {
 
-    private static final ResourceLocation TEXTURE =
+    private static final ResourceLocation DEFAULT_TEXTURE =
             FangsClawsMod.id("textures/entity/catching_claw_hook.png");
 
-    private static final float SPRITE_SIZE  = 0.3f;
-    private static final int   LINE_SEGMENTS = 16;
+    protected static final float SPRITE_SIZE  = 0.3f;
+    protected static final int   LINE_SEGMENTS = 16;
+
+    protected final ResourceLocation texture;
 
     public CatchingClawHookRenderer(EntityRendererProvider.Context context) {
+        this(context, DEFAULT_TEXTURE);
+    }
+
+    public CatchingClawHookRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
         super(context);
+        this.texture = texture;
     }
 
     @Override
-    public void render(CatchingClawHookEntity entity, float yaw, float partialTick,
+    public void render(T entity, float yaw, float partialTick,
                        PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
 
         renderSprite(entity, partialTick, poseStack, bufferSource, packedLight);
@@ -43,7 +50,7 @@ public class CatchingClawHookRenderer extends EntityRenderer<CatchingClawHookEnt
         super.render(entity, yaw, partialTick, poseStack, bufferSource, packedLight);
     }
 
-    private void renderSprite(CatchingClawHookEntity entity, float partialTick,
+    private void renderSprite(T entity, float partialTick,
                                PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
 
@@ -53,7 +60,7 @@ public class CatchingClawHookRenderer extends EntityRenderer<CatchingClawHookEnt
 
         Matrix4f mat = poseStack.last().pose();
 
-        VertexConsumer vc = bufferSource.getBuffer(RenderType.entityCutout(TEXTURE));
+        VertexConsumer vc = bufferSource.getBuffer(RenderType.entityCutout(texture));
         float h = 0.5f;
 
         vc.addVertex(mat, -h,  h, 0).setColor(255, 255, 255, 255).setUv(0, 0)
@@ -68,7 +75,7 @@ public class CatchingClawHookRenderer extends EntityRenderer<CatchingClawHookEnt
         poseStack.popPose();
     }
 
-    private void renderLine(CatchingClawHookEntity entity, Player player, float partialTick,
+    private void renderLine(T entity, Player player, float partialTick,
                              PoseStack poseStack, MultiBufferSource bufferSource) {
 
         double hookX = Mth.lerp(partialTick, entity.xOld, entity.getX());
@@ -124,7 +131,7 @@ public class CatchingClawHookRenderer extends EntityRenderer<CatchingClawHookEnt
     }
 
     @Override
-    public ResourceLocation getTextureLocation(CatchingClawHookEntity entity) {
-        return TEXTURE;
+    public ResourceLocation getTextureLocation(T entity) {
+        return texture;
     }
 }

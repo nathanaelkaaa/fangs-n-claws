@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:lantern" },
+    { "item": "fangs_n_claws:vile_fat" }
+  ],
+  "result": {
+    "id": "fangs_n_claws:vile_lantern",
+    "count": 1
+  }
+}

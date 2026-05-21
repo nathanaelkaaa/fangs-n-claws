@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "hanging=false": { "model": "fangs_n_claws:block/vile_lantern" },
+    "hanging=true":  { "model": "fangs_n_claws:block/vile_lantern_hanging" }
+  }
+}

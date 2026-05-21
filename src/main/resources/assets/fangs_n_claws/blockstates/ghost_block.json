@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "has_mimic=false": { "model": "fangs_n_claws:block/ghost_block" },
+    "has_mimic=true":  { "model": "fangs_n_claws:block/ghost_block" }
+  }
+}

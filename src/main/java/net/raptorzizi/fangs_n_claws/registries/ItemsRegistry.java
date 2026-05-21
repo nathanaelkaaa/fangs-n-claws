@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
 import net.neoforged.bus.api.IEventBus;
@@ -9,7 +10,11 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
+import net.raptorzizi.fangs_n_claws.item.NetheriteClawItem;
+import net.raptorzizi.fangs_n_claws.item.NetheriteFangDaggerItem;
 import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
+import net.raptorzizi.fangs_n_claws.item.VelocityArrowItem;
+import net.raptorzizi.fangs_n_claws.item.VileFatItem;
 import java.util.function.Supplier;
 
 public class ItemsRegistry {
@@ -37,10 +42,10 @@ public class ItemsRegistry {
             () -> new DeferredSpawnEggItem(EntityRegistry.EVIL_BAT, 0x43372f, 0xe8d063, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x585858, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x98989d, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> GOBLIN_SPAWN_EGG = ITEMS.register("goblin_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.GOBLIN, 0x418e4e, 0x14422e, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.GOBLIN, 0x5d8745, 0x554035, new Item.Properties().stacksTo(64)));
 
     /**
      * Materials
@@ -51,17 +56,40 @@ public class ItemsRegistry {
     public static final Supplier<Item> LONG_FANG = ITEMS.register("long_fang",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> GIANT_FEATHER = ITEMS.register("giant_feather",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<VileFatItem> VILE_FAT = ITEMS.register("vile_fat", VileFatItem::new);
+
+    public static final Supplier<Item> PHANTOMATIC_ESSENCE = ITEMS.register("phantomatic_essence",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
     /**
      * Weapons
      */
-    public static final Supplier<FangDaggerItem>   FANG_DAGGER   = ITEMS.register("fang_dagger",   FangDaggerItem::new);
-    public static final Supplier<CatchingClawItem> CATCHING_CLAW = ITEMS.register("catching_claw", CatchingClawItem::new);
-    public static final Supplier<SilverSwordItem>  SILVER_SWORD  = ITEMS.register("silver_sword",  SilverSwordItem::new);
+    public static final Supplier<FangDaggerItem>        FANG_DAGGER        = ITEMS.register("fang_dagger",        FangDaggerItem::new);
+    public static final Supplier<NetheriteFangDaggerItem> NETHERITE_DAGGER = ITEMS.register("netherite_dagger",   NetheriteFangDaggerItem::new);
+    public static final Supplier<CatchingClawItem>      CATCHING_CLAW      = ITEMS.register("catching_claw",      CatchingClawItem::new);
+    public static final Supplier<NetheriteClawItem>     CATCHING_CLAW_NETHERITE = ITEMS.register("catching_claw_netherite", NetheriteClawItem::new);
+    public static final Supplier<SilverSwordItem>       SILVER_SWORD       = ITEMS.register("silver_sword",       SilverSwordItem::new);
 
     /**
-     * Throwables
+     * Throwables / Projectiles
      */
-    public static final Supplier<EvilEyeItem> EVIL_EYE = ITEMS.register("evil_eye", EvilEyeItem::new);
+    public static final Supplier<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
+    public static final Supplier<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);
+
+    /**
+     * Blocks
+     */
+    public static final Supplier<BlockItem> GHOST_BLOCK = ITEMS.register("ghost_block",
+            () -> new BlockItem(BlocksRegistry.GHOST_BLOCK.get(), new Item.Properties()));
+
+    public static final Supplier<BlockItem> BEAR_TRAP = ITEMS.register("beartrap",
+            () -> new BlockItem(BlocksRegistry.BEAR_TRAP.get(), new Item.Properties()));
+
+    public static final Supplier<BlockItem> VILE_LANTERN  = ITEMS.register("vile_lantern",
+            () -> new BlockItem(BlocksRegistry.VILE_LANTERN.get(), new Item.Properties()));
 
     public static void register(IEventBus eventBus)  {
         ITEMS.register(eventBus);

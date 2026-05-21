@@ -1,7 +1,11 @@
 package net.raptorzizi.fangs_n_claws;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.CustomData;
@@ -13,9 +17,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.neoforged.neoforge.common.NeoForge;
+import net.raptorzizi.fangs_n_claws.block.GhostBlock;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -29,14 +35,55 @@ import java.util.List;
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID, value = Dist.CLIENT)
 public class FangsClawsModClient {
     public FangsClawsModClient(ModContainer container) {
-
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
+    }
+
+    private static final ResourceLocation BLUR_SHADER =
+            ResourceLocation.withDefaultNamespace("shaders/post/blur.json");
+
+    private static boolean blurActive = false;
+
+    static void onRenderGui(RenderGuiEvent.Pre event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null || mc.level == null) return;
+
+        BlockPos eyePos = BlockPos.containing(mc.player.getEyePosition());
+        boolean inGhostBlock = mc.level.getBlockState(eyePos).getBlock() instanceof GhostBlock;
+
+        if (inGhostBlock && !blurActive) {
+            mc.gameRenderer.loadEffect(BLUR_SHADER);
+            blurActive = true;
+        } else if (!inGhostBlock && blurActive) {
+            mc.gameRenderer.shutdownEffect();
+            blurActive = false;
+        }
+
+        if (inGhostBlock) {
+            int width  = mc.getWindow().getGuiScaledWidth();
+            int height = mc.getWindow().getGuiScaledHeight();
+            event.getGuiGraphics().fill(0, 0, width, height, 0x8CFFFFFF);
+        }
     }
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             ItemProperties.register(ItemsRegistry.FANG_DAGGER.get(),
+                FangsClawsMod.id("backstab"),
+                (stack, level, entity, seed) -> {
+                    if (!(entity instanceof Player player) || level == null) return 0f;
+                    if (player.getCooldowns().isOnCooldown(stack.getItem())) return 0f;
+                    AABB box = player.getBoundingBox().inflate(4.0);
+                    List<LivingEntity> nearby = level.getEntitiesOfClass(
+                            LivingEntity.class, box, e -> e != player && e.isAlive());
+                    for (LivingEntity target : nearby) {
+                        if (FangDaggerItem.isBackstab(player, target)) return 1f;
+                    }
+                    return 0f;
+                });
+
+            ItemProperties.register(ItemsRegistry.NETHERITE_DAGGER.get(),
                 FangsClawsMod.id("backstab"),
                 (stack, level, entity, seed) -> {
                     if (!(entity instanceof Player player) || level == null) return 0f;

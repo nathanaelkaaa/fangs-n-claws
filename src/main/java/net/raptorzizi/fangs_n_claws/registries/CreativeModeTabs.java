@@ -30,10 +30,19 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.HEAVY_CLAW.get());
                         entries.accept(ItemsRegistry.LONG_FANG.get());
+                        entries.accept(ItemsRegistry.GIANT_FEATHER.get());
+                        entries.accept(ItemsRegistry.VILE_FAT.get());
+                        entries.accept(ItemsRegistry.PHANTOMATIC_ESSENCE.get());
                         entries.accept(ItemsRegistry.FANG_DAGGER.get());
+                        entries.accept(ItemsRegistry.NETHERITE_DAGGER.get());
                         entries.accept(ItemsRegistry.CATCHING_CLAW.get());
+                        entries.accept(ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
                         entries.accept(ItemsRegistry.SILVER_SWORD.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());
+                        entries.accept(ItemsRegistry.VELOCITY_ARROW.get());
+                        entries.accept(ItemsRegistry.GHOST_BLOCK.get());
+                        entries.accept(ItemsRegistry.VILE_LANTERN.get());
+                        entries.accept(ItemsRegistry.BEAR_TRAP.get());
                     })
                     .build());
 

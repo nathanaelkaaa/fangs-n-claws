@@ -87,7 +87,7 @@ public class BleedingEffect extends MobEffect {
                 double dist = Math.sqrt(dx * dx + dz * dz);
                 if (dist > MOVEMENT_THRESHOLD) {
                     BLEEDING_DAMAGE_ACTIVE.add(uuid);
-                    entity.hurt(bleedingDamage(serverLevel), MOVEMENT_DAMAGE);
+                    entity.hurt(bleedingDamage(serverLevel), MOVEMENT_DAMAGE * (amplifier + 1));
                     BLEEDING_DAMAGE_ACTIVE.remove(uuid);
                     int dmgTick = damageTicks.getOrDefault(uuid, 0) + 1;
                     damageTicks.put(uuid, dmgTick);

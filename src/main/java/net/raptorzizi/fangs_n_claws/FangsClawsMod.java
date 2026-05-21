@@ -9,8 +9,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.event.entity.living.EffectParticleModificationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
@@ -23,6 +28,8 @@ import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.raptorzizi.fangs_n_claws.config.ClientConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
+import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
 import net.raptorzizi.fangs_n_claws.registries.CreativeModeTabs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
@@ -40,7 +47,6 @@ public class FangsClawsMod {
 
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
-        modEventBus.addListener(this::onRegisterBrewingRecipes);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -50,6 +56,8 @@ public class FangsClawsMod {
         ParticlesRegistry.register(modEventBus);
         MobEffectsRegistry.register(modEventBus);
         PotionsRegistry.register(modEventBus);
+        BlocksRegistry.register(modEventBus);
+        BlockEntityRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfigs.SPEC, String.format("%s-server.toml", FangsClawsMod.MOD_ID));
@@ -59,10 +67,14 @@ public class FangsClawsMod {
     private void commonSetup(FMLCommonSetupEvent event) {
     }
 
-    private void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
+    @SubscribeEvent
+    public void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
         var builder = event.getBuilder();
         builder.addMix(Potions.AWKWARD, ItemsRegistry.EVIL_EYE.get(), PotionsRegistry.BLINDNESS);
         builder.addMix(PotionsRegistry.BLINDNESS, Items.REDSTONE, PotionsRegistry.LONG_BLINDNESS);
+        builder.addMix(Potions.AWKWARD, ItemsRegistry.GIANT_FEATHER.get(), Potions.STRONG_SWIFTNESS);
+        builder.addMix(Potions.AWKWARD, ItemsRegistry.VILE_FAT.get(), PotionsRegistry.NAUSEA);
+        builder.addMix(Potions.AWKWARD, ItemsRegistry.PHANTOMATIC_ESSENCE.get(), Potions.INVISIBILITY);
     }
 
     @SubscribeEvent
@@ -98,8 +110,44 @@ public class FangsClawsMod {
     public void onEntityTickPost(EntityTickEvent.Post event) {
         if (!(event.getEntity() instanceof LivingEntity entity)) return;
         if (entity.level().isClientSide()) return;
+
         if (BleedingEffect.PENDING_REMOVAL.remove(entity.getUUID())) {
             entity.removeEffect(MobEffectsRegistry.BLEEDING);
+        }
+
+        if (entity instanceof Monster monster && monster.tickCount % 15 == 0) {
+            Level level = monster.level();
+            BlockPos mobPos = monster.blockPosition();
+            int radius = 6;
+
+            BlockPos nearestLantern = null;
+            double nearestDistSq = Double.MAX_VALUE;
+
+            for (BlockPos pos : BlockPos.betweenClosed(
+                    mobPos.offset(-radius, -3, -radius),
+                    mobPos.offset( radius,  3,  radius))) {
+                if (level.getBlockState(pos).is(BlocksRegistry.VILE_LANTERN.get())) {
+                    double d = pos.distSqr(mobPos);
+                    if (d < nearestDistSq) {
+                        nearestDistSq = d;
+                        nearestLantern = pos.immutable();
+                    }
+                }
+            }
+
+            if (nearestLantern != null) {
+                Vec3 away = monster.position()
+                        .subtract(Vec3.atCenterOf(nearestLantern))
+                        .normalize()
+                        .scale(0.5);
+                monster.setDeltaMovement(monster.getDeltaMovement().add(away));
+                monster.hasImpulse = true;
+                if (monster instanceof PathfinderMob pathMob) {
+                    Vec3 fleeTarget = monster.position().add(away.scale(12));
+                    pathMob.getNavigation().moveTo(
+                            fleeTarget.x, fleeTarget.y, fleeTarget.z, 1.5);
+                }
+            }
         }
     }
 

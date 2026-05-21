@@ -12,6 +12,9 @@
 
   "item.fangs_n_claws.heavy_claw": "Heavy Claw",
   "item.fangs_n_claws.long_fang": "Long Fang",
+  "item.fangs_n_claws.giant_feather": "Giant Feather",
+  "item.fangs_n_claws.vile_fat": "Vile Fat",
+  "item.fangs_n_claws.phantomatic_essence": "Phantomatic Essence",
   "item.fangs_n_claws.fang_dagger": "Fang Dagger",
   "item.fangs_n_claws.fang_dagger.tooltip1": "§7Attacking from behind inflicts Bleeding",
 
@@ -20,9 +23,19 @@
 
   "item.fangs_n_claws.catching_claw": "Catching Claw",
   "item.fangs_n_claws.catching_claw.tooltip1": "§7Hook a target, then retrieve to launch it toward your aim",
+  "item.fangs_n_claws.catching_claw_netherite": "Netherite Catching Claw",
+
+  "item.fangs_n_claws.netherite_dagger": "Netherite Dagger",
+  "item.fangs_n_claws.netherite_dagger.tooltip1": "§7Attacking from behind inflicts Bleeding II",
 
   "item.fangs_n_claws.evil_eye": "Evil Eye",
+  "item.fangs_n_claws.velocity_arrow": "Velocity Arrow",
   "item.fangs_n_claws.evil_eye.tooltip1": "§7Blinds all nearby enemies on impact, instant kill flying pest",
+
+  "item.minecraft.potion.effect.fangs_n_claws.nausea": "Potion of Nausea",
+  "item.minecraft.splash_potion.effect.fangs_n_claws.nausea": "Splash Potion of Nausea",
+  "item.minecraft.lingering_potion.effect.fangs_n_claws.nausea": "Lingering Potion of Nausea",
+  "item.minecraft.tipped_arrow.effect.fangs_n_claws.nausea": "Arrow of Nausea",
 
   "item.minecraft.potion.effect.fangs_n_claws.blindness": "Potion of Blindness",
   "item.minecraft.splash_potion.effect.fangs_n_claws.blindness": "Splash Potion of Blindness",
@@ -33,6 +46,10 @@
   "item.minecraft.lingering_potion.effect.fangs_n_claws.lingering_potion_of_blindness": "Lingering Potion of Blindness",
   "item.minecraft.tipped_arrow.effect.fangs_n_claws.long_blindness": "Arrow of Blindness",
 
+
+  "block.fangs_n_claws.ghost_block": "Ghost Block",
+  "block.fangs_n_claws.beartrap": "Bear Trap",
+  "block.fangs_n_claws.vile_lantern": "Vile Lantern",
 
   "entity.fangs_n_claws.ghost": "Ghost",
   "entity.fangs_n_claws.evil_bat": "Evil Bat",
@@ -46,5 +63,8 @@
   "effect.fangs_n_claws.bleeding": "Bleeding",
 
   "death.attack.bleeding": "%1$s bled to death",
-  "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s"
+  "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",
+
+  "death.attack.bear_trap": "%1$s was caught in a bear trap",
+  "death.attack.bear_trap.player": "%1$s was caught in a bear trap whilst fighting %2$s"
 }

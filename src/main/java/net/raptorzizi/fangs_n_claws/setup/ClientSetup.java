@@ -11,15 +11,19 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinRenderer;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemRenderer;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
+import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
+import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonRenderer;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfRenderer;
+import net.raptorzizi.fangs_n_claws.block.GhostBlockRenderer;
 import net.raptorzizi.fangs_n_claws.particle.BlackFogParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodParticle;
 import net.raptorzizi.fangs_n_claws.particle.StunStarParticle;
+import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
@@ -40,8 +44,11 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOBLIN.get(),              GoblinRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(),  CatchingClawHookRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),    BlockProjectileRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(),     CatchingClawHookRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.NETHERITE_CLAW_HOOK.get(),   NetheriteClawHookRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),      BlockProjectileRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
 
     @SubscribeEvent

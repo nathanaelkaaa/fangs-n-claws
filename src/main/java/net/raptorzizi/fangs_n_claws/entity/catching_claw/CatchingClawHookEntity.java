@@ -37,7 +37,11 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
     }
 
     public CatchingClawHookEntity(Player owner, Level level) {
-        super(EntityRegistry.CATCHING_CLAW_HOOK.get(), level);
+        this(EntityRegistry.CATCHING_CLAW_HOOK.get(), owner, level);
+    }
+
+    protected CatchingClawHookEntity(EntityType<? extends ThrowableProjectile> type, Player owner, Level level) {
+        super(type, level);
         this.setOwner(owner);
         this.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
     }

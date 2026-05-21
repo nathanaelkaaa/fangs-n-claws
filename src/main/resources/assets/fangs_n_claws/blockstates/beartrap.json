@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "closed=false": { "model": "fangs_n_claws:custom/beartrap" },
+    "closed=true":  { "model": "fangs_n_claws:custom/beartrap_close" }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "fangs_n_claws:item/vile_lantern"
+  }
+}
