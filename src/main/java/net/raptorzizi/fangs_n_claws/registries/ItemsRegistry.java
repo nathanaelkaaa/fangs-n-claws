@@ -64,7 +64,7 @@ public class ItemsRegistry {
 
     public static final Supplier<VileFatItem> VILE_FAT = ITEMS.register("vile_fat", VileFatItem::new);
 
-    public static final Supplier<Item> PHANTOMATIC_ESSENCE = ITEMS.register("phantomatic_essence",
+    public static final Supplier<Item> SPECTRAL_ESSENCE = ITEMS.register("spectral_essence",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
     /**

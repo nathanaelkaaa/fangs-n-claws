@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "fangs_n_claws:phantomatic_essence",
+          "name": "fangs_n_claws:spectral_essence",
           "functions": [
             {
               "function": "minecraft:set_count",

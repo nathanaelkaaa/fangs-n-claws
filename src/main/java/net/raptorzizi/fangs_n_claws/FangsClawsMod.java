@@ -92,7 +92,7 @@ public class FangsClawsMod {
         builder.addMix(PotionsRegistry.BLINDNESS, Items.REDSTONE, PotionsRegistry.LONG_BLINDNESS);
         builder.addMix(Potions.AWKWARD, ItemsRegistry.GIANT_FEATHER.get(), Potions.STRONG_SWIFTNESS);
         builder.addMix(Potions.AWKWARD, ItemsRegistry.VILE_FAT.get(), PotionsRegistry.NAUSEA);
-        builder.addMix(Potions.AWKWARD, ItemsRegistry.PHANTOMATIC_ESSENCE.get(), Potions.INVISIBILITY);
+        builder.addMix(Potions.AWKWARD, ItemsRegistry.SPECTRAL_ESSENCE.get(), Potions.INVISIBILITY);
     }
 
     @SubscribeEvent
