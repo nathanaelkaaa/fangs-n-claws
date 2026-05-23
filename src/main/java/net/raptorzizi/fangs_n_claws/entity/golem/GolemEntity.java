@@ -168,7 +168,6 @@ public class GolemEntity extends Monster implements GeoEntity {
         if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
         if (level instanceof ServerLevel serverLevel) {
             AABB area = new AABB(pos).inflate(48, 16, 48);
-            if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;
             if (!serverLevel.getEntitiesOfClass(GolemEntity.class, area).isEmpty()) return false;
         }
         return true;

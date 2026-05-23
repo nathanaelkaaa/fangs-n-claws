@@ -3,26 +3,42 @@ package net.raptorzizi.fangs_n_claws.entity.silver_skeleton;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class SilverSkeletonRenderer extends GeoEntityRenderer<SilverSkeletonEntity> {
 
-    // Spawn, Animation
+    private static final ResourceLocation EYES =
+            FangsClawsMod.id("textures/entity/glowing_eyes/silver_skeleton_eyes.png");
 
     public SilverSkeletonRenderer(EntityRendererProvider.Context context) {
         super(context, new SilverSkeletonModel());
 
-        this.addRenderLayer(new BlockAndItemGeoLayer<>(this) {
+        this.addRenderLayer(new GeoRenderLayer<>(this) {
+            @Override
+            public void render(PoseStack poseStack, SilverSkeletonEntity animatable, BakedGeoModel bakedModel,
+                               @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                               @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                RenderType eyesType = RenderType.eyes(EYES);
+                getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, eyesType,
+                        bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, -1);
+            }
+        });
 
+        this.addRenderLayer(new BlockAndItemGeoLayer<>(this) {
             @Nullable
             @Override
             protected ItemStack getStackForBone(GeoBone bone, SilverSkeletonEntity animatable) {

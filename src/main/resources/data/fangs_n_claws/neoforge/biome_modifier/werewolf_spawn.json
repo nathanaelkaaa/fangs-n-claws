@@ -3,7 +3,7 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": [
     {
-      "type": "fangs_n_claws:werevillager",
+      "type": "fangs_n_claws:werewolf",
       "weight": 30,
       "minCount": 1,
       "maxCount": 1

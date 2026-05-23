@@ -4,7 +4,7 @@
   "spawners": [
     {
       "type": "fangs_n_claws:goblin",
-      "weight": 35,
+      "weight": 25,
       "minCount": 1,
       "maxCount": 5
     }

@@ -16,7 +16,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.MobSpawnType;
 import net.neoforged.neoforge.event.entity.living.EffectParticleModificationEvent;
+import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraft.world.item.Items;
@@ -26,12 +29,23 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.raptorzizi.fangs_n_claws.config.ClientConfigs;
+import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
+import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
+import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
+import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
 import net.raptorzizi.fangs_n_claws.registries.CreativeModeTabs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
@@ -52,6 +66,7 @@ public class FangsClawsMod {
 
         ItemsRegistry.register(modEventBus);
         EntityRegistry.register(modEventBus);
+        BiomeModifierRegistry.register(modEventBus);
         SoundsRegistry.register(modEventBus);
         ParticlesRegistry.register(modEventBus);
         MobEffectsRegistry.register(modEventBus);
@@ -62,6 +77,9 @@ public class FangsClawsMod {
 
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfigs.SPEC, String.format("%s-server.toml", FangsClawsMod.MOD_ID));
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfigs.SPEC, String.format("%s-client.toml", FangsClawsMod.MOD_ID));
+        modContainer.registerConfig(ModConfig.Type.COMMON, CommonConfigs.SPEC, String.format("%s-common.toml", FangsClawsMod.MOD_ID));
+
+        GameRuleRegistry.init();
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -149,6 +167,27 @@ public class FangsClawsMod {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onFinalizeSpawn(FinalizeSpawnEvent event) {
+        MobSpawnType type = event.getSpawnType();
+        if (type != MobSpawnType.NATURAL && type != MobSpawnType.CHUNK_GENERATION) return;
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+
+        var rules = serverLevel.getGameRules();
+        boolean cancel = false;
+
+        if (event.getEntity() instanceof GoblinEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
+        else if (event.getEntity() instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
+        else if (event.getEntity() instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
+        else if (event.getEntity() instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
+        else if (event.getEntity() instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
+        else if (event.getEntity() instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
+        else if (event.getEntity() instanceof GhostEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))          cancel = true;
+        else if (event.getEntity() instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
+
+        if (cancel) event.setSpawnCancelled(true);
     }
 
     public static ResourceLocation id(@NotNull String path) {

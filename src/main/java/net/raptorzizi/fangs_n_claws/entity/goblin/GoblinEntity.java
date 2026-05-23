@@ -115,6 +115,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
         if (level instanceof ServerLevel serverLevel) {
+            if (serverLevel.isDay()) return false;
             int maxGroup = switch (level.getDifficulty()) {
                 case EASY   -> 2;
                 case NORMAL -> 3;

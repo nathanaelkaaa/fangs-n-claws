@@ -3,25 +3,43 @@ package net.raptorzizi.fangs_n_claws.entity.goblin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
+import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
 public class GoblinRenderer extends GeoEntityRenderer<GoblinEntity> {
+
+    private static final ResourceLocation EYES =
+            FangsClawsMod.id("textures/entity/glowing_eyes/goblin_eyes.png");
 
     public GoblinRenderer(EntityRendererProvider.Context context) {
         super(context, new GoblinModel());
         this.shadowRadius = 0.3f;
 
-        this.addRenderLayer(new BlockAndItemGeoLayer<>(this) {
+        this.addRenderLayer(new GeoRenderLayer<>(this) {
+            @Override
+            public void render(PoseStack poseStack, GoblinEntity animatable, BakedGeoModel bakedModel,
+                               @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                               @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                RenderType eyesType = RenderType.eyes(EYES);
+                getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, eyesType,
+                        bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, -1);
+            }
+        });
 
+        this.addRenderLayer(new BlockAndItemGeoLayer<>(this) {
             @Nullable
             @Override
             protected ItemStack getStackForBone(GeoBone bone, GoblinEntity animatable) {
@@ -43,9 +61,9 @@ public class GoblinRenderer extends GeoEntityRenderer<GoblinEntity> {
 
             @Override
             public void renderForBone(PoseStack poseStack, GoblinEntity animatable, GeoBone bone,
-                                         RenderType renderType, MultiBufferSource bufferSource,
-                                         VertexConsumer buffer, float partialTick,
-                                         int packedLight, int packedOverlay) {
+                                      RenderType renderType, MultiBufferSource bufferSource,
+                                      VertexConsumer buffer, float partialTick,
+                                      int packedLight, int packedOverlay) {
                 poseStack.pushPose();
                 poseStack.translate(0, 0.1, 0.1);
                 poseStack.scale(0.7f, 0.7f, 0.7f);

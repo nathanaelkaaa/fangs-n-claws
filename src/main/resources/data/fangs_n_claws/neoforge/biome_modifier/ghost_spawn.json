@@ -4,9 +4,9 @@
   "spawners": [
     {
       "type": "fangs_n_claws:ghost",
-      "weight": 35,
+      "weight": 25,
       "minCount": 1,
-      "maxCount": 3
+      "maxCount": 2
     }
   ]
 }
