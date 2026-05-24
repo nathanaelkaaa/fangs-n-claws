@@ -64,13 +64,13 @@ public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends 
         float h = 0.5f;
 
         vc.vertex(mat, -h,  h, 0).color(255, 255, 255, 255).uv(0, 0)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(),0, 0, 1).endVertex();
         vc.vertex(mat, -h, -h, 0).color(255, 255, 255, 255).uv(0, 1)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(),0, 0, 1).endVertex();
         vc.vertex(mat,  h, -h, 0).color(255, 255, 255, 255).uv(1, 1)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(),0, 0, 1).endVertex();
         vc.vertex(mat,  h,  h, 0).color(255, 255, 255, 255).uv(1, 0)
-                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last().normal(),0, 0, 1).endVertex();
 
         poseStack.popPose();
     }
@@ -125,8 +125,8 @@ public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends 
             float y1 = (float) (dy * t1 - 0.3 * Math.sin(Math.PI * t1));
             float z1 = (float) (dz * t1);
 
-            vc.vertex(mat, x0, y0, z0).color(0, 0, 0, 255).normal(poseStack.last(), nx, ny, nz).endVertex();
-            vc.vertex(mat, x1, y1, z1).color(0, 0, 0, 255).normal(poseStack.last(), nx, ny, nz).endVertex();
+            vc.vertex(mat, x0, y0, z0).color(0, 0, 0, 255).normal(poseStack.last().normal(),nx, ny, nz).endVertex();
+            vc.vertex(mat, x1, y1, z1).color(0, 0, 0, 255).normal(poseStack.last().normal(),nx, ny, nz).endVertex();
         }
     }
 

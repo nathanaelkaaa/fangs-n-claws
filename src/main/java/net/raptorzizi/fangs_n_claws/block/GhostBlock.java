@@ -1,6 +1,5 @@
 package net.raptorzizi.fangs_n_claws.block;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -33,8 +32,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class GhostBlock extends BaseEntityBlock {
 
-    public static final MapCodec<GhostBlock> CODEC = simpleCodec(properties -> new GhostBlock());
-
     public static final BooleanProperty HAS_MIMIC = BooleanProperty.create("has_mimic");
 
     private static final double SLOWDOWN = 0.4;
@@ -44,16 +41,11 @@ public class GhostBlock extends BaseEntityBlock {
                 .strength(0.3f)
                 .sound(SoundType.GLASS)
                 .noOcclusion()
-                .isValidSpawn(Blocks::never)
+                .isValidSpawn((state, level, pos, type) -> false)
                 .isViewBlocking((s, g, p) -> false)
                 .isRedstoneConductor((s, g, p) -> false)
                 .isSuffocating((s, g, p) -> false));
         this.registerDefaultState(this.stateDefinition.any().setValue(HAS_MIMIC, false));
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override

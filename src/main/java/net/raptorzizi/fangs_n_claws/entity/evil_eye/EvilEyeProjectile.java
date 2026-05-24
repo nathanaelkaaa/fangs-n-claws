@@ -41,7 +41,7 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
 
     @Override
     protected float getGravity() {
-        return 0.04;
+        return 0.04f;
     }
 
     private static final float PROXIMITY_RADIUS = 2.0f;

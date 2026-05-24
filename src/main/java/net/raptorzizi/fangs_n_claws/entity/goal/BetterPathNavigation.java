@@ -133,7 +133,7 @@ public class BetterPathNavigation extends GroundPathNavigation {
                 for (int z = z0; z != z1; z += stepz) {
                     for (int y = y0; y != y1; y += stepy) {
                         BlockState block = this.level.getBlockState(pos.set(x, y, z));
-                        if (!block.isPathfindable(PathComputationType.LAND)) return false;
+                        if (!block.isPathfindable(this.level, pos, PathComputationType.LAND)) return false;
                     }
                 }
             }

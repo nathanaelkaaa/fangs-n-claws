@@ -36,8 +36,7 @@ public class GolemBodyControl extends BodyRotationControl {
         double dz    = delta(histPosZ);
         double distSq = dx * dx + dz * dz;
 
-        boolean inCombat = entity instanceof net.minecraft.world.entity.Mob mob
-                && mob.getTarget() != null;
+        boolean inCombat = entity.getTarget() != null;
 
         if (distSq > 2.5e-7 && !inCombat) {
             double moveAngle = Mth.atan2(dz, dx) * (180.0 / Math.PI) - 90.0;

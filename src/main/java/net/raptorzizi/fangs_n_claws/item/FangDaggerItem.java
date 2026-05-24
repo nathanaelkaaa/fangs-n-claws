@@ -11,8 +11,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.sounds.SoundSource;
-import net.minecraftforge.common.ItemAbilities;
-import net.minecraftforge.common.ItemAbility;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
@@ -39,10 +37,6 @@ public class FangDaggerItem extends SwordItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
         super.appendHoverText(stack, level, lines, flag);
         lines.add(Component.translatable("item.fangs_n_claws.fang_dagger.tooltip1"));
-    }
-
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return itemAbility != ItemAbilities.SWORD_SWEEP && super.canPerformAction(stack, itemAbility);
     }
 
     @Override

@@ -26,7 +26,7 @@ public class StunnedEffect extends MobEffect {
     }
 
     @Override
-    public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (entity.getDeltaMovement().y > 0) {
             entity.setDeltaMovement(entity.getDeltaMovement().multiply(1, 0.1, 1));
         }
@@ -49,11 +49,10 @@ public class StunnedEffect extends MobEffect {
             mob.goalSelector.setControlFlag(Goal.Flag.LOOK, false);
         }
 
-        return true;
     }
 
     @Override
-    public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+    public boolean isDurationEffectTick(int duration, int amplifier) {
         return duration > 0;
     }
 }

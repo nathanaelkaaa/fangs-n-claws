@@ -29,7 +29,7 @@ public class GolemModel extends GeoModel<GolemEntity> {
     @Override
     public void setCustomAnimations(GolemEntity animatable, long instanceId,
                                     AnimationState<GolemEntity> animationState) {
-        GeoBone head = getAnimationProcessor().getBone("Head");
+        var head = getAnimationProcessor().getBone("Head");
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);

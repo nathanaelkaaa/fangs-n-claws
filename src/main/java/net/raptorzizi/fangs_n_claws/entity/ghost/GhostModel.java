@@ -45,7 +45,7 @@ public class GhostModel extends GeoModel<GhostEntity> {
         float amplitude = Mth.clamp(speed * 3.0f, 0.0f, 0.18f);
         float bob       = Mth.sin(animatable.tickCount * 0.14f) * amplitude;
 
-        GeoBone body = getAnimationProcessor().getBone("body");
+        var body = getAnimationProcessor().getBone("body");
         if (body != null) {
             body.setRotX(pitchRad);
             body.setRotZ(0f);

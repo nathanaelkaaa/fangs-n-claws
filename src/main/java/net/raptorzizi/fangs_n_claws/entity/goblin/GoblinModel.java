@@ -38,7 +38,7 @@ public class GoblinModel extends GeoModel<GoblinEntity> {
         float yawRad   = entityData.netHeadYaw()  * Mth.DEG_TO_RAD;
         float pitchRad = entityData.headPitch()    * Mth.DEG_TO_RAD;
 
-        GeoBone head = getAnimationProcessor().getBone("Head");
+        var head = getAnimationProcessor().getBone("Head");
         if (head != null) {
             head.setRotX(pitchRad);
             head.setRotY(yawRad);

@@ -108,7 +108,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
 
     @Override
     protected float getGravity() {
-        return 0.03;
+        return 0.03f;
     }
 
     // Collision

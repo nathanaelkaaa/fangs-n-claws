@@ -28,7 +28,7 @@ public class OwlbearModel extends GeoModel<OwlbearEntity> {
 
     @Override
     public void setCustomAnimations(OwlbearEntity animatable, long instanceId, AnimationState<OwlbearEntity> animationState) {
-        GeoBone head = getAnimationProcessor().getBone("Head");
+        var head = getAnimationProcessor().getBone("Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

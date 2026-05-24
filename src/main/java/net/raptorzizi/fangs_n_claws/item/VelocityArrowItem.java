@@ -15,6 +15,6 @@ public class VelocityArrowItem extends ArrowItem {
 
     @Override
     public AbstractArrow createArrow(Level level, ItemStack stack, LivingEntity shooter) {
-        return new VelocityArrowEntity(level, shooter, stack);
+        return new VelocityArrowEntity(level, shooter);
     }
 }

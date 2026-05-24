@@ -28,7 +28,7 @@ public class OgreModel extends GeoModel<OgreEntity> {
 
     @Override
     public void setCustomAnimations(OgreEntity animatable, long instanceId, AnimationState<OgreEntity> animationState) {
-        GeoBone head = getAnimationProcessor().getBone("Head");
+        var head = getAnimationProcessor().getBone("Head");
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

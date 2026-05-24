@@ -1,6 +1,6 @@
 package net.raptorzizi.fangs_n_claws.biome;
 
-import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -21,8 +21,8 @@ import java.util.Set;
 
 public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
-    public static final MapCodec<SpawnWeightsBiomeModifier> CODEC =
-            MapCodec.unit(new SpawnWeightsBiomeModifier());
+    public static final Codec<SpawnWeightsBiomeModifier> CODEC =
+            Codec.unit(new SpawnWeightsBiomeModifier());
 
     // Biome tags
     private static final TagKey<Biome> IS_OVERWORLD =
@@ -97,7 +97,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
     }
 
     @Override
-    public MapCodec<? extends BiomeModifier> codec() {
+    public Codec<? extends BiomeModifier> codec() {
         return CODEC;
     }
 }

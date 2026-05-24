@@ -34,8 +34,8 @@ public class EvilBatModel extends GeoModel<EvilBatEntity> {
 
     @Override
     public void setCustomAnimations(EvilBatEntity animatable, long instanceId, AnimationState<EvilBatEntity> animationState) {
-        GeoBone body = getAnimationProcessor().getBone("body");
-        GeoBone head = getAnimationProcessor().getBone("Head");
+        var body = getAnimationProcessor().getBone("body");
+        var head = getAnimationProcessor().getBone("Head");
         if (body != null) {body.setRotZ(0f);}
         if (head != null) {head.setRotZ(0f);}
         if (animatable.isResting()) return;

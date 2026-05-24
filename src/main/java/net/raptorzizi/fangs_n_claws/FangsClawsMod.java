@@ -34,7 +34,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
-import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.raptorzizi.fangs_n_claws.config.ClientConfigs;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
@@ -153,9 +153,8 @@ public class FangsClawsMod {
     // }
 
     @SubscribeEvent
-    public void onEntityTickPost(TickEvent.EntityTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        if (!(event.entity instanceof LivingEntity entity)) return;
+    public void onLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
         if (entity.level().isClientSide()) return;
 
         if (BleedingEffect.PENDING_REMOVAL.remove(entity.getUUID())) {
@@ -203,7 +202,7 @@ public class FangsClawsMod {
         if (type != MobSpawnType.NATURAL && type != MobSpawnType.CHUNK_GENERATION) return;
         // MobSpawnEvent.FinalizeSpawn.getLevel() returns ServerLevelAccessor; get the actual ServerLevel
         ServerLevelAccessor accessor = event.getLevel();
-        if (!(accessor.getLevel() instanceof ServerLevel serverLevel)) return;
+        ServerLevel serverLevel = accessor.getLevel();
 
         var rules = serverLevel.getGameRules();
         boolean cancel = false;

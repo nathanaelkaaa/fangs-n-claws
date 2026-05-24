@@ -31,7 +31,7 @@ public class SilverSkeletonModel extends GeoModel<SilverSkeletonEntity> {
     public void setCustomAnimations(SilverSkeletonEntity entity, long instanceId, AnimationState<SilverSkeletonEntity> animationState) {
         if (animationState == null) return;
 
-        GeoBone head = getAnimationProcessor().getBone("head");
+        var head = getAnimationProcessor().getBone("head");
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
             head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
