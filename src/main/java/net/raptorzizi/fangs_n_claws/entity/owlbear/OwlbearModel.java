@@ -3,7 +3,7 @@ package net.raptorzizi.fangs_n_claws.entity.owlbear;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
@@ -13,17 +13,17 @@ public class OwlbearModel extends GeoModel<OwlbearEntity> {
 
     @Override
     public ResourceLocation getModelResource(OwlbearEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/owlbear.geo.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "geo/owlbear.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(OwlbearEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/owlbear.png");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/owlbear.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(OwlbearEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/owlbear.animation.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "animations/owlbear.animation.json");
     }
 
     @Override

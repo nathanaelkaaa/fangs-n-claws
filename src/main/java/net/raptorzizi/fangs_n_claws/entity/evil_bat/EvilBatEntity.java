@@ -28,8 +28,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class EvilBatEntity extends PathfinderMob implements GeoEntity {
@@ -80,9 +80,9 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(IS_RESTING, true);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_RESTING, true);
     }
 
     public boolean isResting()               { return this.entityData.get(IS_RESTING); }
@@ -114,8 +114,7 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED,             0.0)
                 .add(Attributes.ATTACK_DAMAGE,              3.0)
                 .add(Attributes.FOLLOW_RANGE,              28.0)
-                .add(Attributes.FLYING_SPEED,               0.28)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,   1.5);
+                .add(Attributes.FLYING_SPEED,               0.28);
     }
 
     // AI
@@ -187,7 +186,7 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
             steerToward(rushTarget, RUSH_SPEED, 0.35);
 
             if (rushTick == ATTACK_HIT_TICK) {
-                if (target.isAlive() && this.distanceTo(target) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) + 1.0) {
+                if (target.isAlive() && this.distanceTo(target) <= 2.0 + 1.0) {
                     super.doHurtTarget(target);
                 }
                 Vec3 away = this.position().subtract(target.position());
@@ -228,7 +227,7 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
     @Override
     public void tick() {
         if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
-            this.igniteForSeconds(8);
+            this.setSecondsOnFire(8);
         }
 
         super.tick();
@@ -301,7 +300,7 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
                     target.getZ());
 
             faceToward(flyTarget);
-            if (this.distanceTo(target) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) && attackCooldown == 0) {
+            if (this.distanceTo(target) <= 2.0 && attackCooldown == 0) {
                 doHurtTarget(target);
             } else if (this.hurtTime == 0) {
                 steerToward(flyTarget, CHASE_SPEED, 0.15);

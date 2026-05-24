@@ -20,8 +20,9 @@ import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -53,8 +54,9 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty,
-                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData) {
-        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData);
+                                        MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData,
+                                        @Nullable net.minecraft.nbt.CompoundTag pDataTag) {
+        SpawnGroupData data = super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemsRegistry.SILVER_SWORD.get()));
         this.setItemSlot(EquipmentSlot.OFFHAND,  new ItemStack(ItemsRegistry.SILVER_SWORD.get()));
         this.setDropChance(EquipmentSlot.MAINHAND, 0F);
@@ -68,7 +70,6 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED,            0.30)
                 .add(Attributes.ATTACK_DAMAGE,             5.0)
                 .add(Attributes.FOLLOW_RANGE,              24.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  2.5)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.1);
     }
 
@@ -115,7 +116,7 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
-            this.igniteForSeconds(8);
+            this.setSecondsOnFire(8);
         }
 
         super.tick();

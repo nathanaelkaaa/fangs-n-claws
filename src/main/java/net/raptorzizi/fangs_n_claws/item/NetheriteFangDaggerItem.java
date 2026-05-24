@@ -8,11 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import net.minecraft.sounds.SoundSource;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
+import net.minecraftforge.common.ItemAbilities;
+import net.minecraftforge.common.ItemAbility;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
@@ -21,14 +23,12 @@ public class NetheriteFangDaggerItem extends SwordItem {
     private static final int    BACKSTAB_COOLDOWN_TICKS = 120;
 
     public NetheriteFangDaggerItem() {
-        super(Tiers.NETHERITE, new Properties()
-                .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 0, -0.8f))
-                .fireResistant());
+        super(Tiers.NETHERITE, 0, -0.8f, new Properties().fireResistant());
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
-        super.appendHoverText(stack, context, lines, flag);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
+        super.appendHoverText(stack, level, lines, flag);
         lines.add(Component.translatable("item.fangs_n_claws.fang_dagger.tooltip1"));
     }
 
@@ -42,7 +42,7 @@ public class NetheriteFangDaggerItem extends SwordItem {
         if (!attacker.level().isClientSide() && attacker instanceof Player player) {
             if (FangDaggerItem.isBackstab(player, target)) {
                 target.addEffect(new MobEffectInstance(
-                        MobEffectsRegistry.BLEEDING,
+                        MobEffectsRegistry.BLEEDING.get(),
                         200, 1));
                 player.getCooldowns().addCooldown(stack.getItem(), BACKSTAB_COOLDOWN_TICKS);
                 target.level().playSound(null,

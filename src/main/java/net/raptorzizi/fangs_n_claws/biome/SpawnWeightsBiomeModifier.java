@@ -10,9 +10,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.neoforged.neoforge.common.world.BiomeModifier;
-import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
-import net.neoforged.neoforge.common.world.MobSpawnSettingsBuilder;
+import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.ModifiableBiomeInfo;
+import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
@@ -26,13 +26,13 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
     // Biome tags
     private static final TagKey<Biome> IS_OVERWORLD =
-            TagKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("is_overworld"));
+            TagKey.create(Registries.BIOME, new ResourceLocation("is_overworld"));
     private static final TagKey<Biome> IS_FOREST =
-            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_forest"));
+            TagKey.create(Registries.BIOME, new ResourceLocation("c", "is_forest"));
     private static final TagKey<Biome> IS_PLAINS =
-            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_plains"));
+            TagKey.create(Registries.BIOME, new ResourceLocation("c", "is_plains"));
     private static final ResourceKey<Biome> SOUL_SAND_VALLEY =
-            ResourceKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("soul_sand_valley"));
+            ResourceKey.create(Registries.BIOME, new ResourceLocation("soul_sand_valley"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {

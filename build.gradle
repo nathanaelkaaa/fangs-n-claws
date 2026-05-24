@@ -1,7 +1,9 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.140'
+    // NOTE: For 1.20.1, NeoForge uses the legacyforge plugin (net.minecraftforge.* namespace).
+    // net.neoforged:neoforge with net.neoforged.* namespace starts from 1.20.2 (20.2.x).
+    id 'net.neoforged.moddev.legacyforge' version '2.0.140'
     id 'idea'
 }
 
@@ -18,19 +20,23 @@ version = mod_version
 group = mod_group_id
 
 repositories {
-    // Add here additional repositories if required by some of the dependencies below.
+    maven { url = "https://maven.neoforged.net/releases/" }
+    maven { url = "https://maven.minecraftforge.net/" }
 }
 
 base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 21 to end users in 1.21, so mods should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+// Mojang ships Java 17 to end users in 1.20.1, so mods should target Java 17.
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-neoForge {
-    // Specify the version of NeoForge to use.
-    version = project.neo_version
+legacyForge {
+    // Specify the version of NeoForge/Forge to use.
+    // For 1.20.1: net.neoforged:forge:1.20.1-47.x.x uses net.minecraftforge.* namespace.
+    // TODO: All net.neoforged.* imports in Java sources need to be replaced with
+    //       net.minecraftforge.* equivalents for this to compile.
+    version = project.minecraft_version + '-' + project.forge_version
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -110,6 +116,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
+obfuscation {
+    createRemappingConfiguration(configurations.localRuntime)
+}
 
 repositories {
     flatDir {
@@ -131,15 +140,17 @@ repositories {
 
 dependencies {
 
-    implementation "net.neoforged:neoforge:${neo_version}"
+    // NeoForge 1.20.1 is provided by legacyForge { version = ... } above
 
     // GECKOLIB ***************************************************************************************************
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    // geckolib-neoforge-1.20.1 is the NeoForge/Forge 1.20.1 variant (uses net.minecraftforge.* internally)
+    // Use modImplementation with legacyForge so it gets properly deobfuscated
+    modImplementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
 
     // JEI ********************************************************************************************************
     compileOnly "mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-${jei_mc_version}-neoforge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}"
+    compileOnly "mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"
+    modLocalRuntime "mezz.jei:jei-${jei_mc_version}-forge:${jei_version}"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
@@ -170,7 +181,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
     var replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
-            neo_version            : neo_version,
+            forge_version          : forge_version,
             loader_version_range   : loader_version_range,
             geckolib_version       : geckolib_version,
             mod_id                 : mod_id,
@@ -187,7 +198,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
 // this works with both building through Gradle and the IDE.
 sourceSets.main.resources.srcDir generateModMetadata
 // To avoid having to run "generateModMetadata" manually, make it run on every project reload
-neoForge.ideSyncTask generateModMetadata
+legacyForge.ideSyncTask generateModMetadata
 
 // Example configuration to allow publishing using the maven-publish plugin
 publishing {

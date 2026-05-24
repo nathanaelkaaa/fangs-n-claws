@@ -1,21 +1,21 @@
 package net.raptorzizi.fangs_n_claws.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class CommonConfigs {
 
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-    public static final ModConfigSpec SPEC;
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec SPEC;
 
     // Spawn toggles
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GOBLIN;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_OGRE;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GOLEM;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_OWLBEAR;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SILVER_SKELETON;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_EVIL_BAT;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GHOST;
-    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WEREWOLF;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GOBLIN;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_OGRE;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GOLEM;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_OWLBEAR;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_SILVER_SKELETON;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_EVIL_BAT;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GHOST;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_WEREWOLF;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");

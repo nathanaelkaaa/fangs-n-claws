@@ -1,50 +1,39 @@
 package net.raptorzizi.fangs_n_claws;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.raptorzizi.fangs_n_claws.block.GhostBlock;
-import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
-import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
-import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
 import java.util.List;
 
 
-@Mod(value = FangsClawsMod.MOD_ID, dist = Dist.CLIENT)
-@EventBusSubscriber(modid = FangsClawsMod.MOD_ID, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = FangsClawsMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FangsClawsModClient {
-    public FangsClawsModClient(ModContainer container) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-        NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
-    }
 
     private static final ResourceLocation BLUR_SHADER =
-            ResourceLocation.withDefaultNamespace("shaders/post/blur.json");
+            new ResourceLocation("shaders/post/blur.json");
 
     private static boolean blurActive = false;
 
-    static void onRenderGui(RenderGuiEvent.Pre event) {
+    public static void init() {
+        MinecraftForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
+    }
+
+    static void onRenderGui(net.minecraftforge.client.event.RenderGuiOverlayEvent.Pre event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null) return;
 
@@ -68,6 +57,7 @@ public class FangsClawsModClient {
 
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
+        FangsClawsModClient.init();
         event.enqueueWork(() -> {
             ItemProperties.register(ItemsRegistry.FANG_DAGGER.get(),
                 FangsClawsMod.id("backstab"),
@@ -100,17 +90,13 @@ public class FangsClawsModClient {
             ItemProperties.register(ItemsRegistry.CATCHING_CLAW.get(),
                 FangsClawsMod.id("catching_claw_cast"),
                 (stack, level, entity, seed) -> {
-                    CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-                    if (data == null) return 0f;
-                    return data.copyTag().contains("HookUUID") ? 1f : 0f;
+                    // 1.20.1: DataComponents don't exist — use NBT directly
+                    CompoundTag tag = stack.getTag();
+                    if (tag == null) return 0f;
+                    return tag.contains("HookUUID") ? 1f : 0f;
                 });
         });
     }
 
-    @SubscribeEvent
-    static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(EntityRegistry.OGRE.get(), OgreRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
-    }
 }
+

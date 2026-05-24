@@ -91,10 +91,10 @@ public class BlockProjectile extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(BLOCK_STATE,      Blocks.DIRT.defaultBlockState());
-        builder.define(REGEN_MODE,       false);
-        builder.define(PARENT_GOLEM_ID, -1);
+    protected void defineSynchedData() {
+        this.entityData.define(BLOCK_STATE,      Blocks.DIRT.defaultBlockState());
+        this.entityData.define(REGEN_MODE,       false);
+        this.entityData.define(PARENT_GOLEM_ID, -1);
     }
 
     public BlockState getBlockState()             { return this.entityData.get(BLOCK_STATE);     }
@@ -270,7 +270,7 @@ public class BlockProjectile extends ThrowableProjectile {
                 SoundsRegistry.ROCK_IMPACT.get(), SoundSource.NEUTRAL,
                 1.2F, 0.85F + this.random.nextFloat() * 0.3F);
 
-        target.hurt(this.damageSources().thrown(this, this.getOwner()), this.damage);
+        target.hurt(this.level().damageSources().thrown(this, this.getOwner()), this.damage);
         target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 2));
     }
 

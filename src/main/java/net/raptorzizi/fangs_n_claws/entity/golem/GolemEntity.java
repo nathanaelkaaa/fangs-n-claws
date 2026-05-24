@@ -38,8 +38,9 @@ import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
@@ -127,12 +128,12 @@ public class GolemEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(IS_SLEEPING,  false);
-        builder.define(GOLEM_STATE,  STATE_NORMAL);
-        builder.define(BODY_HEALTH,  BODY_HEALTH_MAX);
-        builder.define(HAND_SCALE, 1.0f);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_SLEEPING,  false);
+        this.entityData.define(GOLEM_STATE,  STATE_NORMAL);
+        this.entityData.define(BODY_HEALTH,  BODY_HEALTH_MAX);
+        this.entityData.define(HAND_SCALE, 1.0f);
     }
 
     public boolean isSleeping()               { return this.entityData.get(IS_SLEEPING);    }
@@ -156,10 +157,11 @@ public class GolemEntity extends Monster implements GeoEntity {
     public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
                                                   @NotNull DifficultyInstance difficulty,
                                                   @NotNull MobSpawnType spawnType,
-                                                  @Nullable SpawnGroupData spawnGroupData) {
+                                                  @Nullable SpawnGroupData spawnGroupData,
+                                                  @Nullable net.minecraft.nbt.CompoundTag dataTag) {
         setSleeping(true);
         setBodyHealth(BODY_HEALTH_MAX);
-        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, dataTag);
     }
 
     public static boolean checkGolemSpawnRules(EntityType<? extends GolemEntity> type,
@@ -179,7 +181,6 @@ public class GolemEntity extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED,            0.18)
                 .add(Attributes.ATTACK_DAMAGE,             7.0)
                 .add(Attributes.FOLLOW_RANGE,             24.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.6);
     }
 

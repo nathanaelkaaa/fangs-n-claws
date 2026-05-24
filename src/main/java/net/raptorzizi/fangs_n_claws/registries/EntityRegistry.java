@@ -3,9 +3,9 @@ package net.raptorzizi.fangs_n_claws.registries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
@@ -31,57 +31,57 @@ public class EntityRegistry {
         ENTITIES.register(eventBus);
     }
 
-    public static final DeferredHolder<EntityType<?>, EntityType<GolemEntity>> GOLEM =
+    public static final RegistryObject<EntityType<GolemEntity>> GOLEM =
             ENTITIES.register("golem", () -> EntityType.Builder.of(GolemEntity::new, MobCategory.MONSTER)
                     .sized(2F, 2.6F)
                     .build("golem"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<OgreEntity>> OGRE =
+    public static final RegistryObject<EntityType<OgreEntity>> OGRE =
             ENTITIES.register("ogre", () -> EntityType.Builder.of(OgreEntity::new, MobCategory.MONSTER)
                     .sized(2F, 2.8F)
                     .build("ogre"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<WerewolfEntity>> WEREWOLF =
+    public static final RegistryObject<EntityType<WerewolfEntity>> WEREWOLF =
             ENTITIES.register("werewolf", () -> EntityType.Builder.of(WerewolfEntity::new, MobCategory.MONSTER)
                     .sized(1.0F, 2.0F)
                     .build("werewolf"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<OwlbearEntity>> OWLBEAR =
+    public static final RegistryObject<EntityType<OwlbearEntity>> OWLBEAR =
             ENTITIES.register("owlbear", () -> EntityType.Builder.of(OwlbearEntity::new, MobCategory.MONSTER)
                     .sized(2.0F, 2.0F)
                     .build("owlbear"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<SilverSkeletonEntity>> SILVER_SKELETON =
+    public static final RegistryObject<EntityType<SilverSkeletonEntity>> SILVER_SKELETON =
             ENTITIES.register("silver_skeleton", () -> EntityType.Builder.of(SilverSkeletonEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 2.4F)
                     .build("silver_skeleton"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<EvilBatEntity>> EVIL_BAT =
+    public static final RegistryObject<EntityType<EvilBatEntity>> EVIL_BAT =
             ENTITIES.register("evil_bat", () -> EntityType.Builder.of(EvilBatEntity::new, MobCategory.AMBIENT)
                     .sized(0.5F, 0.9F)
                     .clientTrackingRange(5)
                     .build("evil_bat"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<GhostEntity>> GHOST =
+    public static final RegistryObject<EntityType<GhostEntity>> GHOST =
             ENTITIES.register("ghost", () -> EntityType.Builder.of(GhostEntity::new, MobCategory.MONSTER)
                     .sized(0.8F, 1.6F)
                     .clientTrackingRange(8)
                     .build("ghost"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<GoblinEntity>> GOBLIN =
+    public static final RegistryObject<EntityType<GoblinEntity>> GOBLIN =
             ENTITIES.register("goblin", () -> EntityType.Builder.of(GoblinEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 1.4F)
                     .clientTrackingRange(8)
                     .build("goblin"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<WerevillagerEntity>> WEREVILLAGER =
+    public static final RegistryObject<EntityType<WerevillagerEntity>> WEREVILLAGER =
             ENTITIES.register("werevillager", () -> EntityType.Builder
                     .<WerevillagerEntity>of((type, level) -> new WerevillagerEntity(type, level), MobCategory.CREATURE)
                     .sized(0.6F, 1.95F)
                     .clientTrackingRange(8)
                     .build("werevillager"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<CatchingClawHookEntity>> CATCHING_CLAW_HOOK =
+    public static final RegistryObject<EntityType<CatchingClawHookEntity>> CATCHING_CLAW_HOOK =
             ENTITIES.register("catching_claw_hook", () -> EntityType.Builder
                     .<CatchingClawHookEntity>of(CatchingClawHookEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
@@ -89,7 +89,7 @@ public class EntityRegistry {
                     .updateInterval(5)
                     .build("catching_claw_hook"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<NetheriteClawHookEntity>> NETHERITE_CLAW_HOOK =
+    public static final RegistryObject<EntityType<NetheriteClawHookEntity>> NETHERITE_CLAW_HOOK =
             ENTITIES.register("netherite_claw_hook", () -> EntityType.Builder
                     .<NetheriteClawHookEntity>of(NetheriteClawHookEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
@@ -97,14 +97,14 @@ public class EntityRegistry {
                     .updateInterval(5)
                     .build("netherite_claw_hook"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<EvilEyeProjectile>> EVIL_EYE_PROJECTILE =
+    public static final RegistryObject<EntityType<EvilEyeProjectile>> EVIL_EYE_PROJECTILE =
             ENTITIES.register("evil_eye_projectile", () -> EntityType.Builder
                     .<EvilEyeProjectile>of(EvilEyeProjectile::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
                     .build("evil_eye_projectile"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<VelocityArrowEntity>> VELOCITY_ARROW_ENTITY =
+    public static final RegistryObject<EntityType<VelocityArrowEntity>> VELOCITY_ARROW_ENTITY =
             ENTITIES.register("velocity_arrow", () -> EntityType.Builder
                     .<VelocityArrowEntity>of(VelocityArrowEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
@@ -112,7 +112,7 @@ public class EntityRegistry {
                     .updateInterval(20)
                     .build("velocity_arrow"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<BlockProjectile>> BLOCK_PROJECTILE =
+    public static final RegistryObject<EntityType<BlockProjectile>> BLOCK_PROJECTILE =
             ENTITIES.register("block_projectile", () -> EntityType.Builder
                     .<BlockProjectile>of(BlockProjectile::new, MobCategory.MISC)
                     .sized(1.5F, 1.5F)

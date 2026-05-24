@@ -3,7 +3,7 @@ package net.raptorzizi.fangs_n_claws.entity.golem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
@@ -13,17 +13,17 @@ public class GolemModel extends GeoModel<GolemEntity> {
 
     @Override
     public ResourceLocation getModelResource(GolemEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/golem.geo.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "geo/golem.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(GolemEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/golem.png");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/golem.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(GolemEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/golem.animation.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "animations/golem.animation.json");
     }
 
     @Override

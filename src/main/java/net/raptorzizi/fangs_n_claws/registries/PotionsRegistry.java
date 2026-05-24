@@ -5,9 +5,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
 public class PotionsRegistry {
@@ -15,16 +15,16 @@ public class PotionsRegistry {
     private static final DeferredRegister<Potion> POTIONS =
             DeferredRegister.create(Registries.POTION, FangsClawsMod.MOD_ID);
 
-    public static final DeferredHolder<Potion, Potion> BLINDNESS =
+    public static final RegistryObject<Potion> BLINDNESS =
             POTIONS.register("blindness",
                     () -> new Potion(new MobEffectInstance(MobEffects.BLINDNESS, 3600, 0)));
 
-    public static final DeferredHolder<Potion, Potion> LONG_BLINDNESS =
+    public static final RegistryObject<Potion> LONG_BLINDNESS =
             POTIONS.register("long_blindness",
                     () -> new Potion("blindness",
                             new MobEffectInstance(MobEffects.BLINDNESS, 9600, 0)));
 
-    public static final DeferredHolder<Potion, Potion> NAUSEA =
+    public static final RegistryObject<Potion> NAUSEA =
             POTIONS.register("nausea",
                     () -> new Potion(new MobEffectInstance(MobEffects.CONFUSION, 600, 0)));
 

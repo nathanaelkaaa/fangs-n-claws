@@ -31,8 +31,9 @@ import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class OwlbearEntity extends Monster implements GeoEntity {
@@ -96,13 +97,13 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
-        super.defineSynchedData(pBuilder);
-        pBuilder.define(IS_RUNNING,  false);
-        pBuilder.define(IS_SLEEPING, false);
-        pBuilder.define(IS_FLYING,   false);
-        pBuilder.define(IS_FLAPPING, false);
-        pBuilder.define(DIVE_STATE,  DIVE_NONE);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_RUNNING,  false);
+        this.entityData.define(IS_SLEEPING, false);
+        this.entityData.define(IS_FLYING,   false);
+        this.entityData.define(IS_FLAPPING, false);
+        this.entityData.define(DIVE_STATE,  DIVE_NONE);
     }
 
     public boolean isRunning()                   { return this.entityData.get(IS_RUNNING); }
@@ -177,7 +178,6 @@ public class OwlbearEntity extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED,            0.2)
                 .add(Attributes.ATTACK_DAMAGE,             6.0)
                 .add(Attributes.FOLLOW_RANGE,             24.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.5);
     }
 
@@ -257,7 +257,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
                             && this.hasLineOfSight(pendingAttackTarget)) {
                         if (currentIsAttack1 && pendingAttackTarget instanceof LivingEntity livingTarget) {
                             this.playSound(SoundsRegistry.OWLBEAR_SLASH.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
-                            livingTarget.hurt(this.damageSources().mobAttack(this), 8.0f);
+                            livingTarget.hurt(this.level().damageSources().mobAttack(this), 8.0f);
                             double dx = livingTarget.getX() - this.getX();
                             double dz = livingTarget.getZ() - this.getZ();
                             double len = Math.sqrt(dx * dx + dz * dz);

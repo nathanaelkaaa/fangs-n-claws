@@ -34,7 +34,7 @@ public class SilverSkeletonRenderer extends GeoEntityRenderer<SilverSkeletonEnti
                                @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
                 RenderType eyesType = RenderType.eyes(EYES);
                 getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, eyesType,
-                        bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, -1);
+                        bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
             }
         });
 

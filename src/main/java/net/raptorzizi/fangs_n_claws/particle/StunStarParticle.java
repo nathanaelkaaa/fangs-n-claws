@@ -16,8 +16,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import org.joml.Matrix4f;
@@ -27,9 +27,9 @@ import org.joml.Vector3f;
 public class StunStarParticle extends Particle {
 
     private static final ResourceLocation CENTER_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/particle/stun_star.png");
+            new ResourceLocation(FangsClawsMod.MOD_ID, "textures/particle/stun_star.png");
     private static final ResourceLocation TRAIL_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/particle/teletor_trail.png");
+            new ResourceLocation(FangsClawsMod.MOD_ID, "textures/particle/teletor_trail.png");
 
     private static final int   TRAIL_LENGTH  = 64;
     private static final int   SAMPLE_COUNT  = 10;
@@ -113,7 +113,7 @@ public class StunStarParticle extends Particle {
             this.setPos(orbit.x, orbit.y, orbit.z);
 
             Entity entity = this.level.getEntity(entityId);
-            if (entity instanceof LivingEntity living && !living.hasEffect(MobEffectsRegistry.STUNNED)) {
+            if (entity instanceof LivingEntity living && !living.hasEffect(MobEffectsRegistry.STUNNED.get())) {
                 this.remove();
             }
         }
@@ -158,14 +158,15 @@ public class StunStarParticle extends Particle {
         int alpha = Math.min(255, (int)(this.alpha * 255f));
         int lm    = getLightColor(partialTick);
 
+        // 1.20.1 vertex API: use vertex().color().uv().overlayCoords().uv2().normal().endVertex()
         PoseStack ps = new PoseStack();
         PoseStack.Pose pose = ps.last();
 
         VertexConsumer starVc = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(CENTER_TEXTURE));
-        starVc.addVertex(corners[0].x(), corners[0].y(), corners[0].z()).setColor(red, green, blue, alpha).setUv(1f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setUv2(lm & 0xffff, lm >> 16).setNormal(pose, -1f, 0f, 0f);
-        starVc.addVertex(corners[1].x(), corners[1].y(), corners[1].z()).setColor(red, green, blue, alpha).setUv(1f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setUv2(lm & 0xffff, lm >> 16).setNormal(pose, -1f, 0f, 0f);
-        starVc.addVertex(corners[2].x(), corners[2].y(), corners[2].z()).setColor(red, green, blue, alpha).setUv(0f, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setUv2(lm & 0xffff, lm >> 16).setNormal(pose, -1f, 0f, 0f);
-        starVc.addVertex(corners[3].x(), corners[3].y(), corners[3].z()).setColor(red, green, blue, alpha).setUv(0f, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setUv2(lm & 0xffff, lm >> 16).setNormal(pose, -1f, 0f, 0f);
+        starVc.vertex(pose.pose(), corners[0].x(), corners[0].y(), corners[0].z()).color(red, green, blue, alpha).uv(1f, 1f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(pose.normal(), -1f, 0f, 0f).endVertex();
+        starVc.vertex(pose.pose(), corners[1].x(), corners[1].y(), corners[1].z()).color(red, green, blue, alpha).uv(1f, 0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(pose.normal(), -1f, 0f, 0f).endVertex();
+        starVc.vertex(pose.pose(), corners[2].x(), corners[2].y(), corners[2].z()).color(red, green, blue, alpha).uv(0f, 0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(pose.normal(), -1f, 0f, 0f).endVertex();
+        starVc.vertex(pose.pose(), corners[3].x(), corners[3].y(), corners[3].z()).color(red, green, blue, alpha).uv(0f, 1f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(pose.normal(), -1f, 0f, 0f).endVertex();
 
         bufferSource.endBatch();
 
@@ -192,12 +193,11 @@ public class StunStarParticle extends Particle {
                 float u2 = u1 + 1f / sampleMax;
 
                 PoseStack.Pose trailPose = trailPs.last();
-                Matrix4f mat4 = trailPose.pose();
 
-                trailVc.addVertex(mat4, (float)drawFrom.x + (float)botAngleVec.x, (float)drawFrom.y + (float)botAngleVec.y, (float)drawFrom.z + (float)botAngleVec.z).setColor(trailR, trailG, trailB, trailA).setUv(u1, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lm).setNormal(trailPose, 0f, 1f, 0f);
-                trailVc.addVertex(mat4, (float)sample.x  + (float)botAngleVec.x, (float)sample.y  + (float)botAngleVec.y, (float)sample.z  + (float)botAngleVec.z).setColor(trailR, trailG, trailB, trailA).setUv(u2, 1f).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lm).setNormal(trailPose, 0f, 1f, 0f);
-                trailVc.addVertex(mat4, (float)sample.x  + (float)topAngleVec.x, (float)sample.y  + (float)topAngleVec.y, (float)sample.z  + (float)topAngleVec.z).setColor(trailR, trailG, trailB, trailA).setUv(u2, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lm).setNormal(trailPose, 0f, 1f, 0f);
-                trailVc.addVertex(mat4, (float)drawFrom.x + (float)topAngleVec.x, (float)drawFrom.y + (float)topAngleVec.y, (float)drawFrom.z + (float)topAngleVec.z).setColor(trailR, trailG, trailB, trailA).setUv(u1, 0f).setOverlay(OverlayTexture.NO_OVERLAY).setLight(lm).setNormal(trailPose, 0f, 1f, 0f);
+                trailVc.vertex(trailPose.pose(), (float)drawFrom.x + (float)botAngleVec.x, (float)drawFrom.y + (float)botAngleVec.y, (float)drawFrom.z + (float)botAngleVec.z).color(trailR, trailG, trailB, trailA).uv(u1, 1f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(trailPose.normal(), 0f, 1f, 0f).endVertex();
+                trailVc.vertex(trailPose.pose(), (float)sample.x  + (float)botAngleVec.x, (float)sample.y  + (float)botAngleVec.y, (float)sample.z  + (float)botAngleVec.z).color(trailR, trailG, trailB, trailA).uv(u2, 1f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(trailPose.normal(), 0f, 1f, 0f).endVertex();
+                trailVc.vertex(trailPose.pose(), (float)sample.x  + (float)topAngleVec.x, (float)sample.y  + (float)topAngleVec.y, (float)sample.z  + (float)topAngleVec.z).color(trailR, trailG, trailB, trailA).uv(u2, 0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(trailPose.normal(), 0f, 1f, 0f).endVertex();
+                trailVc.vertex(trailPose.pose(), (float)drawFrom.x + (float)topAngleVec.x, (float)drawFrom.y + (float)topAngleVec.y, (float)drawFrom.z + (float)topAngleVec.z).color(trailR, trailG, trailB, trailA).uv(u1, 0f).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(lm).normal(trailPose.normal(), 0f, 1f, 0f).endVertex();
 
                 drawFrom = sample;
             }

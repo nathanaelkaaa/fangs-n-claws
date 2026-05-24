@@ -3,7 +3,7 @@ package net.raptorzizi.fangs_n_claws.entity.silver_skeleton;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
@@ -14,17 +14,17 @@ public class SilverSkeletonModel extends GeoModel<SilverSkeletonEntity> {
 
     @Override
     public ResourceLocation getModelResource(SilverSkeletonEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/silver_skeleton.geo.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "geo/silver_skeleton.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(SilverSkeletonEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/silver_skeleton.png");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/silver_skeleton.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(SilverSkeletonEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/silver_skeleton.animation.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "animations/silver_skeleton.animation.json");
     }
 
     @Override

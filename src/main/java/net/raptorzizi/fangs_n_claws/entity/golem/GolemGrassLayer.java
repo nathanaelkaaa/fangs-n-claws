@@ -14,7 +14,7 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 public class GolemGrassLayer extends GeoRenderLayer<GolemEntity> {
 
     private static final ResourceLocation GRASS_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/golem_grass.png");
+            new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/golem_grass.png");
 
     public GolemGrassLayer(GeoRenderer<GolemEntity> renderer) {
         super(renderer);
@@ -26,13 +26,16 @@ public class GolemGrassLayer extends GeoRenderLayer<GolemEntity> {
                        VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
 
         int grassColor = BiomeColors.getAverageGrassColor(animatable.level(), animatable.blockPosition());
-        int packedColor = 0xFF000000 | (grassColor & 0x00FFFFFF);
+
+        float r = ((grassColor >> 16) & 0xFF) / 255.0f;
+        float g = ((grassColor >> 8)  & 0xFF) / 255.0f;
+        float b = ( grassColor        & 0xFF) / 255.0f;
 
         RenderType     grassType   = RenderType.entityCutoutNoCull(GRASS_TEXTURE);
         VertexConsumer grassBuffer = bufferSource.getBuffer(grassType);
 
         getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable,
                 grassType, grassBuffer, partialTick, packedLight, packedOverlay,
-                packedColor);
+                r, g, b, 1.0f);
     }
 }

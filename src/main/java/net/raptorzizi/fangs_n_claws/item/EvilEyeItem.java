@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import javax.annotation.Nullable;
 import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
 
 import java.util.List;
@@ -43,8 +44,8 @@ public class EvilEyeItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
-        super.appendHoverText(stack, context, lines, flag);
+    public void appendHoverText(ItemStack stack, Level level, List<Component> lines, TooltipFlag flag) {
+        super.appendHoverText(stack, level, lines, flag);
         lines.add(Component.translatable("item.fangs_n_claws.evil_eye.tooltip1"));
     }
 }

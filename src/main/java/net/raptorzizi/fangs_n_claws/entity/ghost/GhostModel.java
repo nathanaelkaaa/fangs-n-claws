@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
@@ -13,9 +13,9 @@ import software.bernie.geckolib.model.data.EntityModelData;
 public class GhostModel extends GeoModel<GhostEntity> {
 
     private static final ResourceLocation NORMAL_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/ghost.png");
+            new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/ghost.png");
     private static final ResourceLocation ANGRY_TEXTURE  =
-            ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/angry_ghost.png");
+            new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/angry_ghost.png");
 
     @Override
     public RenderType getRenderType(GhostEntity animatable, ResourceLocation texture) {
@@ -24,7 +24,7 @@ public class GhostModel extends GeoModel<GhostEntity> {
 
     @Override
     public ResourceLocation getModelResource(GhostEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/ghost.geo.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "geo/ghost.geo.json");
     }
 
     @Override
@@ -34,7 +34,7 @@ public class GhostModel extends GeoModel<GhostEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(GhostEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/ghost.animation.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "animations/ghost.animation.json");
     }
 
     @Override

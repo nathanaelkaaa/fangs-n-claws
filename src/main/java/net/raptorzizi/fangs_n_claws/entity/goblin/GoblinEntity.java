@@ -28,8 +28,9 @@ import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GoblinEntity extends PathfinderMob implements GeoEntity {
@@ -93,9 +94,9 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(IS_AGGRESSIVE, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_AGGRESSIVE, false);
     }
 
     public boolean isAggressive()               { return this.entityData.get(IS_AGGRESSIVE); }
@@ -132,8 +133,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
                 .add(Attributes.MAX_HEALTH,               10.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.28)
                 .add(Attributes.ATTACK_DAMAGE,             3.0)
-                .add(Attributes.FOLLOW_RANGE,             20.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  1.6);
+                .add(Attributes.FOLLOW_RANGE,             20.0);
     }
 
     // AI
@@ -234,7 +234,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
                 attackTick++;
                 if (attackTick == ATTACK_HIT_TICK) {
                     if (pendingTarget != null && pendingTarget.isAlive()
-                            && this.distanceTo(pendingTarget) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) + 0.5) {
+                            && this.distanceTo(pendingTarget) <= 2.0 + 0.5) {
                         super.doHurtTarget(pendingTarget);
                     }
                     pendingTarget = null;
@@ -246,7 +246,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
                 stealTick++;
                 if (stealTick == STEAL_HIT_TICK) {
                     if (pendingTarget instanceof LivingEntity lt && lt.isAlive()
-                            && this.distanceTo(lt) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE) + 0.8) {
+                            && this.distanceTo(lt) <= 2.0 + 0.8) {
                         performSteal(lt);
                     }
                     pendingTarget = null;
@@ -305,7 +305,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
         Vec3 chaseTarget = new Vec3(target.getX(), target.getY(), target.getZ());
         faceToward(chaseTarget);
 
-        if (this.distanceTo(target) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE)
+        if (this.distanceTo(target) <= 2.0
                 && attackCooldown == 0) {
             triggerAttack(target);
             fleeTick       = FLEE_TICKS;
@@ -336,7 +336,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
             Vec3 rushTarget = new Vec3(target.getX(), target.getY(), target.getZ());
             faceToward(rushTarget);
 
-            if (dist <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE)) {
+            if (dist <= 2.0) {
                 triggerAttack(target);
                 attackCooldown = ATTACK_COOLDOWN_MAX;
             } else {

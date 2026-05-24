@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -75,13 +74,14 @@ public class GhostBlock extends BaseEntityBlock {
         return state.getValue(HAS_MIMIC) ? RenderShape.ENTITYBLOCK_ANIMATED : RenderShape.MODEL;
     }
 
-    // Apply texture
+    // Interaction (1.20.1 unified use method)
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level,
-                                              BlockPos pos, Player player, InteractionHand hand,
-                                              BlockHitResult hit) {
-        if (stack.getItem() instanceof BlockItem blockItem) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos,
+                                 Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack stack = player.getItemInHand(hand);
+
+        if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem) {
             BlockState candidate = blockItem.getBlock().defaultBlockState();
             if (candidate.isSolid() && !(blockItem.getBlock() instanceof GhostBlock)) {
                 if (!level.isClientSide) {
@@ -96,18 +96,12 @@ public class GhostBlock extends BaseEntityBlock {
                     level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM,
                             SoundSource.BLOCKS, 1.0f, 1.0f);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
-        return super.useItemOn(stack, state, level, pos, player, hand, hit);
-    }
 
-    // Remove texture
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
-                                               Player player, BlockHitResult hit) {
-        if (state.getValue(HAS_MIMIC)) {
+        // Remove texture when right-clicking with empty hand
+        if (stack.isEmpty() && state.getValue(HAS_MIMIC)) {
             if (!level.isClientSide) {
                 if (level.getBlockEntity(pos) instanceof GhostBlockEntity be) {
                     be.setMimickedState(null);
@@ -117,15 +111,16 @@ public class GhostBlock extends BaseEntityBlock {
                 level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM,
                         SoundSource.BLOCKS, 1.0f, 1.0f);
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        return super.useWithoutItem(state, level, pos, player, hit);
+
+        return InteractionResult.PASS;
     }
 
     // Physics
 
     @Override
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity) {
             entity.makeStuckInBlock(state, new Vec3(SLOWDOWN, SLOWDOWN, SLOWDOWN));
         }
@@ -142,22 +137,22 @@ public class GhostBlock extends BaseEntityBlock {
     // Rendering helpers
 
     @Override
-    protected boolean skipRendering(BlockState state, BlockState adjacentState, Direction direction) {
+    public boolean skipRendering(BlockState state, BlockState adjacentState, Direction direction) {
         return adjacentState.is(this) || super.skipRendering(state, adjacentState, direction);
     }
 
     @Override
-    protected VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+    public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return Shapes.empty();
     }
 
     @Override
-    protected float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
         return 1.0F;
     }
 
     @Override
-    protected boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
+    public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
         return true;
     }
 }

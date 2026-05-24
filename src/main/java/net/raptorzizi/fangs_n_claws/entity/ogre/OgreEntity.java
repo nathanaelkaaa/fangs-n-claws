@@ -31,8 +31,9 @@ import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class OgreEntity extends Monster implements GeoEntity {
@@ -81,9 +82,9 @@ public class OgreEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
-        super.defineSynchedData(pBuilder);
-        pBuilder.define(IS_RUNNING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_RUNNING, false);
     }
 
     public boolean isRunning()                   { return this.entityData.get(IS_RUNNING); }
@@ -108,7 +109,6 @@ public class OgreEntity extends Monster implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED,            0.15)
                 .add(Attributes.ATTACK_DAMAGE,             4.0)
                 .add(Attributes.FOLLOW_RANGE,             20.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,  3.5)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.8);
     }
 
@@ -164,7 +164,7 @@ public class OgreEntity extends Monster implements GeoEntity {
         AABB box = new AABB(slamImpactPos, slamImpactPos).inflate(SLAM_RADIUS);
         for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, box)) {
             if (entity != this) {
-                entity.hurt(this.damageSources().mobAttack(this), (float) SLAM_DAMAGE);
+                entity.hurt(this.level().damageSources().mobAttack(this), (float) SLAM_DAMAGE);
             }
         }
 
@@ -188,7 +188,7 @@ public class OgreEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
-            this.igniteForSeconds(8);
+            this.setSecondsOnFire(8);
         }
 
         prevX = this.getX();

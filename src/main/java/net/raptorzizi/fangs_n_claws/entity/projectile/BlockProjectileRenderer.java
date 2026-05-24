@@ -48,6 +48,6 @@ public class BlockProjectileRenderer extends EntityRenderer<BlockProjectile> {
 
     @Override
     public ResourceLocation getTextureLocation(BlockProjectile entity) {
-        return ResourceLocation.withDefaultNamespace("textures/block/dirt.png");
+        return new ResourceLocation("textures/block/dirt.png");
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -61,8 +62,8 @@ public class BearTrapBlock extends Block {
     // Shape
 
     @Override
-    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
-                                  CollisionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos,
+                               CollisionContext context) {
         return SHAPE;
     }
 
@@ -83,7 +84,7 @@ public class BearTrapBlock extends Block {
     }
 
     @Override
-    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (state.getValue(CLOSED)) return;
 
         AABB area = new AABB(
@@ -99,7 +100,7 @@ public class BearTrapBlock extends Block {
             DamageSource source = new DamageSource(
                     level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BEAR_TRAP_DAMAGE));
             victim.hurt(source, 8.0f);
-            victim.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING.getDelegate(), 200, 1)); // Bleeding 2, 10s
+            victim.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING.get(), 200, 1)); // Bleeding 2, 10s
             victim.setDeltaMovement(victim.getDeltaMovement().multiply(0.1, 1.0, 0.1));
             level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_CLOSE,
                     SoundSource.BLOCKS, 1.0f, 0.5f);
@@ -108,11 +109,11 @@ public class BearTrapBlock extends Block {
         }
     }
 
-    // Reset
+    // Reset (1.20.1: unified use method)
 
     @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
-                                               Player player, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level level, BlockPos pos,
+                                 Player player, InteractionHand hand, BlockHitResult hit) {
         if (state.getValue(CLOSED)) {
             if (!level.isClientSide) {
                 level.setBlock(pos, state.setValue(CLOSED, false), 3);
@@ -120,8 +121,8 @@ public class BearTrapBlock extends Block {
                         SoundSource.BLOCKS, 1.0f, 1.2f);
                 level.scheduleTick(pos, this, TICK_INTERVAL);
             }
-            return InteractionResult.SUCCESS;
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        return super.useWithoutItem(state, level, pos, player, hit);
+        return super.use(state, level, pos, player, hand, hit);
     }
 }

@@ -9,19 +9,19 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
-import org.jetbrains.annotations.Nullable;
 
 public class VelocityArrowEntity extends AbstractArrow {
 
     private static final double LAUNCH_FORCE = 3.0;
 
+    // Deserialization constructor (EntityType, Level) — used by Forge internals
     public VelocityArrowEntity(EntityType<? extends AbstractArrow> type, Level level) {
         super(type, level);
     }
 
-    public VelocityArrowEntity(Level level, LivingEntity shooter,
-                               ItemStack pickupStack, @Nullable ItemStack weapon) {
-        super(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), shooter, level, pickupStack, weapon);
+    // Spawn-from-shooter constructor — no ItemStack param in Forge 1.20.1 AbstractArrow
+    public VelocityArrowEntity(Level level, LivingEntity shooter) {
+        super(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), shooter, level);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class VelocityArrowEntity extends AbstractArrow {
     }
 
     @Override
-    protected ItemStack getDefaultPickupItem() {
+    protected ItemStack getPickupItem() {
         return new ItemStack(ItemsRegistry.VELOCITY_ARROW.get());
     }
 }

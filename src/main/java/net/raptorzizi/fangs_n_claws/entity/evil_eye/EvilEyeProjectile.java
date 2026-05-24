@@ -40,7 +40,7 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    protected float getGravity() {
         return 0.04;
     }
 
@@ -86,7 +86,7 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
 
     private void explode() {
         AABB area = this.getBoundingBox().inflate(EFFECT_RADIUS);
-        DamageSource source = this.damageSources().thrown(this, this.getOwner());
+        DamageSource source = this.level().damageSources().thrown(this, this.getOwner());
         this.level().getEntitiesOfClass(LivingEntity.class, area,
                 e -> e.distanceTo(this) <= EFFECT_RADIUS && e != this.getOwner())
             .forEach(e -> {

@@ -47,9 +47,9 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        builder.define(HOOKED_ENTITY_ID, 0);
-        builder.define(IN_GROUND, false);
+    protected void defineSynchedData() {
+        this.entityData.define(HOOKED_ENTITY_ID, 0);
+        this.entityData.define(IN_GROUND, false);
     }
 
     public Entity getHookedEntity() {
@@ -107,7 +107,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
     }
 
     @Override
-    protected double getDefaultGravity() {
+    protected float getGravity() {
         return 0.03;
     }
 
@@ -121,7 +121,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
         if (target == owner || isHooked()) return;
 
         if (target instanceof LivingEntity living) {
-            living.hurt(this.damageSources().thrown(this, owner), getHookDamage());
+            living.hurt(this.level().damageSources().thrown(this, owner), getHookDamage());
             setHookedEntity(target);
             this.setDeltaMovement(Vec3.ZERO);
         }
@@ -150,7 +150,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
             double force = PULL_FORCE_BASE + Math.sqrt(dist) * PULL_FORCE_DIST;
             living.setDeltaMovement(impulse.scale(force));
             living.invulnerableTime = 0;
-            living.hurt(this.damageSources().thrown(this, player), getHookDamage());
+            living.hurt(this.level().damageSources().thrown(this, player), getHookDamage());
         }
 
         this.discard();

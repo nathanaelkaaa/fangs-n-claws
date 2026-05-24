@@ -221,7 +221,7 @@ public class OwlbearFlyingAttackGoal extends Goal {
         serverLevel.getEntitiesOfClass(LivingEntity.class, aoe, e -> e != owlbear)
                 .forEach(e -> {
                     e.hurt(owlbear.damageSources().mobAttack(owlbear), DIVE_DAMAGE);
-                    e.addEffect(new MobEffectInstance(MobEffectsRegistry.STUNNED, 60, 0));
+                    e.addEffect(new MobEffectInstance(MobEffectsRegistry.STUNNED.get(), 60, 0));
                 });
 
         for (int i = 0; i < SMOKE_COUNT; i++) {

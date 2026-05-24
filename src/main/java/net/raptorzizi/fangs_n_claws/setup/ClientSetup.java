@@ -1,11 +1,12 @@
 package net.raptorzizi.fangs_n_claws.setup;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinRenderer;
@@ -30,7 +31,7 @@ import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
 @EventBusSubscriber(
         modid = FangsClawsMod.MOD_ID,
-        //bus = EventBusSubscriber.Bus.MOD,
+        bus = net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public class ClientSetup {
@@ -50,6 +51,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.NETHERITE_CLAW_HOOK.get(),   NetheriteClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),      BlockProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
 

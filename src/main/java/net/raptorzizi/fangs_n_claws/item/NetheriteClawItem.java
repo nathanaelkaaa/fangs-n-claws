@@ -1,6 +1,7 @@
 package net.raptorzizi.fangs_n_claws.item;
 
-import net.minecraft.core.component.DataComponents;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -9,15 +10,14 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 
@@ -29,30 +29,28 @@ public class NetheriteClawItem extends Item {
     private static final float THROW_VELOCITY   = 1.8f;
     private static final float THROW_INACCURACY = 0.8f;
 
-    private static ItemAttributeModifiers buildAttributes() {
-        return ItemAttributeModifiers.builder()
-                .add(Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(
-                                Item.BASE_ATTACK_DAMAGE_ID,
-                                4.0,
-                                AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND)
-                .add(Attributes.ATTACK_SPEED,
-                        new AttributeModifier(
-                                Item.BASE_ATTACK_SPEED_ID,
-                                -2.8,
-                                AttributeModifier.Operation.ADD_VALUE),
-                        EquipmentSlotGroup.MAINHAND)
-                .build();
-    }
+    // Fixed UUIDs for attribute modifiers
+    private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("6DEF7A8B-C9D0-1E2F-3456-789ABCDEF012");
+    private static final UUID ATTACK_SPEED_UUID  = UUID.fromString("B0C1D2E3-F4A5-6789-BCDE-F01234567891");
 
     public NetheriteClawItem() {
-        super(new Properties().stacksTo(1).durability(256).fireResistant().attributes(buildAttributes()));
+        super(new Properties().stacksTo(1).durability(256).fireResistant());
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
-        super.appendHoverText(stack, context, lines, flag);
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        if (slot == EquipmentSlot.MAINHAND) {
+            ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_UUID, "Weapon modifier", 4.0, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED,  new AttributeModifier(ATTACK_SPEED_UUID,  "Weapon modifier", -2.8, AttributeModifier.Operation.ADDITION));
+            return builder.build();
+        }
+        return super.getAttributeModifiers(slot, stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level level, List<Component> lines, TooltipFlag flag) {
+        super.appendHoverText(stack, level, lines, flag);
         lines.add(Component.translatable("item.fangs_n_claws.catching_claw.tooltip1"));
     }
 
@@ -89,16 +87,15 @@ public class NetheriteClawItem extends Item {
     }
 
     private static UUID getHookUUID(ItemStack stack) {
-        CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-        if (data == null) return null;
-        CompoundTag tag = data.copyTag();
+        CompoundTag tag = stack.getTag();
+        if (tag == null) return null;
         return tag.hasUUID("HookUUID") ? tag.getUUID("HookUUID") : null;
     }
 
     private static void setHookUUID(ItemStack stack, UUID uuid) {
-        CompoundTag tag = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
+        CompoundTag tag = stack.getOrCreateTag();
         if (uuid != null) tag.putUUID("HookUUID", uuid);
         else              tag.remove("HookUUID");
-        stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+        stack.setTag(tag);
     }
 }

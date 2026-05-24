@@ -29,8 +29,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class GhostEntity extends PathfinderMob implements GeoEntity {
@@ -74,9 +74,9 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(IS_ANGRY, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_ANGRY, false);
     }
 
     public boolean isAngry()               { return this.entityData.get(IS_ANGRY); }
@@ -99,8 +99,7 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED,             0.0)
                 .add(Attributes.ATTACK_DAMAGE,              2.0)
                 .add(Attributes.FOLLOW_RANGE,              20.0)
-                .add(Attributes.FLYING_SPEED,               FLY_SPEED)
-                .add(Attributes.ENTITY_INTERACTION_RANGE,   1.8);
+                .add(Attributes.FLYING_SPEED,               FLY_SPEED);
     }
 
     // AI
@@ -134,7 +133,7 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
     @Override
     public void tick() {
         if (!this.level().isClientSide && this.isAlive() && this.isSunBurnTick()) {
-            this.igniteForSeconds(8);
+            this.setSecondsOnFire(8);
         }
 
         super.tick();
@@ -170,7 +169,7 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
             flyTarget = new Vec3(target.getX(), targetY, target.getZ());
             faceToward(flyTarget);
 
-            if (this.distanceTo(target) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE)) {
+            if (this.distanceTo(target) <= 2.0) {
                 doHurtTarget(target);
             } else if (this.hurtTime == 0) {
                 steerToward(flyTarget, CHASE_SPEED, 0.18);

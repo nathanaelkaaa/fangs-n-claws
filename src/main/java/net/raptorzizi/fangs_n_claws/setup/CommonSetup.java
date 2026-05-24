@@ -1,9 +1,10 @@
 package net.raptorzizi.fangs_n_claws.setup;
 
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
@@ -18,28 +19,32 @@ import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 
-@EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
-// bus = EventBusSubscriber.Bus.MOD)
+// Mod bus events (attribute registration)
+@Mod.EventBusSubscriber(modid = FangsClawsMod.MOD_ID, bus = Bus.MOD)
 public class CommonSetup {
 
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event) {
-        event.put(EntityRegistry.EVIL_BAT.get(),        EvilBatEntity.prepareAttributes().build());
-        event.put(EntityRegistry.OGRE.get(),           OgreEntity.prepareAttributes().build());
-        event.put(EntityRegistry.WEREWOLF.get(),       WerewolfEntity.prepareAttributes().build());
-        event.put(EntityRegistry.OWLBEAR.get(),        OwlbearEntity.prepareAttributes().build());
-        event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
-        event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
-        event.put(EntityRegistry.GHOST.get(),           GhostEntity.prepareAttributes().build());
-        event.put(EntityRegistry.GOBLIN.get(),          GoblinEntity.prepareAttributes().build());
-        event.put(EntityRegistry.WEREVILLAGER.get(),    WerevillagerEntity.prepareAttributes().build());
+        event.put(EntityRegistry.EVIL_BAT.get(),         EvilBatEntity.prepareAttributes().build());
+        event.put(EntityRegistry.OGRE.get(),             OgreEntity.prepareAttributes().build());
+        event.put(EntityRegistry.WEREWOLF.get(),         WerewolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.OWLBEAR.get(),          OwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.SILVER_SKELETON.get(),  SilverSkeletonEntity.prepareAttributes().build());
+        event.put(EntityRegistry.GOLEM.get(),            GolemEntity.prepareAttributes().build());
+        event.put(EntityRegistry.GHOST.get(),            GhostEntity.prepareAttributes().build());
+        event.put(EntityRegistry.GOBLIN.get(),           GoblinEntity.prepareAttributes().build());
+        event.put(EntityRegistry.WEREVILLAGER.get(),     WerevillagerEntity.prepareAttributes().build());
     }
 
-    @SubscribeEvent
-    public static void onLivingDamage(LivingDamageEvent.Post event) {
-        LivingEntity entity = event.getEntity();
-        if (!entity.level().isClientSide() && entity.hasEffect(MobEffectsRegistry.STUNNED)) {
-            entity.removeEffect(MobEffectsRegistry.STUNNED);
+    // Forge bus events (game events)
+    @Mod.EventBusSubscriber(modid = FangsClawsMod.MOD_ID, bus = Bus.FORGE)
+    public static class ForgeEvents {
+        @SubscribeEvent
+        public static void onLivingDamage(LivingDamageEvent event) {
+            LivingEntity entity = event.getEntity();
+            if (!entity.level().isClientSide() && entity.hasEffect(MobEffectsRegistry.STUNNED.get())) {
+                entity.removeEffect(MobEffectsRegistry.STUNNED.get());
+            }
         }
     }
 }

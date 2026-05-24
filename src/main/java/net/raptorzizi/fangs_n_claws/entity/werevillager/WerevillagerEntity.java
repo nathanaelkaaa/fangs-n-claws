@@ -45,9 +45,9 @@ public class WerevillagerEntity extends AbstractVillager {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(BIOME_FOLDER, "plains");
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(BIOME_FOLDER, "plains");
     }
 
     public String getBiomeFolder() {
@@ -56,8 +56,9 @@ public class WerevillagerEntity extends AbstractVillager {
 
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
-                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnData) {
-        SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+                                        MobSpawnType spawnType, @Nullable SpawnGroupData spawnData,
+                                        @Nullable CompoundTag dataTag) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnData, dataTag);
         this.entityData.set(BIOME_FOLDER, BiomeUtils.resolveBiomeFolder(level, this.blockPosition()));
         return data;
     }
@@ -139,7 +140,7 @@ public class WerevillagerEntity extends AbstractVillager {
             this.setPos(this.getX() + shakeOffset, this.getY(), this.getZ());
 
             if (tcounter % 2 == 0) {
-                this.hurt(this.damageSources().magic(), 1.0F);
+                this.hurt(this.level().damageSources().magic(), 1.0F);
             }
 
             if (tcounter == 15) {
@@ -174,7 +175,7 @@ public class WerevillagerEntity extends AbstractVillager {
             werewolf.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
             werewolf.finalizeSpawn(serverLevel,
                     serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                    MobSpawnType.MOB_SUMMONED, null);
+                    MobSpawnType.MOB_SUMMONED, null, null);
             serverLevel.addFreshEntity(werewolf);
         }
 

@@ -19,9 +19,9 @@ public class StunnedEffect extends MobEffect {
         super(MobEffectCategory.HARMFUL, 0xFFFBC5);
         this.addAttributeModifier(
                 Attributes.MOVEMENT_SPEED,
-                ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "stunned_speed"),
+                FangsClawsMod.MOD_ID + ":stunned_speed",
                 -1.0,
-                AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                AttributeModifier.Operation.MULTIPLY_BASE
         );
     }
 

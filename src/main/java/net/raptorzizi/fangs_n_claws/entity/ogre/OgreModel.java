@@ -3,7 +3,7 @@ package net.raptorzizi.fangs_n_claws.entity.ogre;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
@@ -13,17 +13,17 @@ public class OgreModel extends GeoModel<OgreEntity> {
 
     @Override
     public ResourceLocation getModelResource(OgreEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/ogre.geo.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "geo/ogre.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(OgreEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/ogre.png");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/ogre.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(OgreEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/ogre.animation.json");
+        return new ResourceLocation(FangsClawsMod.MOD_ID, "animations/ogre.animation.json");
     }
 
     @Override

@@ -63,14 +63,14 @@ public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends 
         VertexConsumer vc = bufferSource.getBuffer(RenderType.entityCutout(texture));
         float h = 0.5f;
 
-        vc.addVertex(mat, -h,  h, 0).setColor(255, 255, 255, 255).setUv(0, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
-        vc.addVertex(mat, -h, -h, 0).setColor(255, 255, 255, 255).setUv(0, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
-        vc.addVertex(mat,  h, -h, 0).setColor(255, 255, 255, 255).setUv(1, 1)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
-        vc.addVertex(mat,  h,  h, 0).setColor(255, 255, 255, 255).setUv(1, 0)
-                .setOverlay(OverlayTexture.NO_OVERLAY).setLight(packedLight).setNormal(poseStack.last(), 0, 0, 1);
+        vc.vertex(mat, -h,  h, 0).color(255, 255, 255, 255).uv(0, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+        vc.vertex(mat, -h, -h, 0).color(255, 255, 255, 255).uv(0, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+        vc.vertex(mat,  h, -h, 0).color(255, 255, 255, 255).uv(1, 1)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
+        vc.vertex(mat,  h,  h, 0).color(255, 255, 255, 255).uv(1, 0)
+                .overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(poseStack.last(), 0, 0, 1).endVertex();
 
         poseStack.popPose();
     }
@@ -125,8 +125,8 @@ public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends 
             float y1 = (float) (dy * t1 - 0.3 * Math.sin(Math.PI * t1));
             float z1 = (float) (dz * t1);
 
-            vc.addVertex(mat, x0, y0, z0).setColor(0, 0, 0, 255).setNormal(poseStack.last(), nx, ny, nz);
-            vc.addVertex(mat, x1, y1, z1).setColor(0, 0, 0, 255).setNormal(poseStack.last(), nx, ny, nz);
+            vc.vertex(mat, x0, y0, z0).color(0, 0, 0, 255).normal(poseStack.last(), nx, ny, nz).endVertex();
+            vc.vertex(mat, x1, y1, z1).color(0, 0, 0, 255).normal(poseStack.last(), nx, ny, nz).endVertex();
         }
     }
 

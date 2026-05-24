@@ -8,13 +8,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.sounds.SoundSource;
-import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.common.ItemAbility;
+import net.minecraftforge.common.ItemAbilities;
+import net.minecraftforge.common.ItemAbility;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class FangDaggerItem extends SwordItem {
@@ -23,8 +25,7 @@ public class FangDaggerItem extends SwordItem {
     private static final int    BACKSTAB_COOLDOWN_TICKS = 120;
 
     public FangDaggerItem() {
-        super(Tiers.STONE, new Properties()
-                .attributes(SwordItem.createAttributes(Tiers.STONE, 2, -0.8f)));
+        super(Tiers.STONE, 2, -0.8f, new Properties());
     }
 
     public static boolean isBackstab(LivingEntity attacker, LivingEntity target) {
@@ -35,8 +36,8 @@ public class FangDaggerItem extends SwordItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
-        super.appendHoverText(stack, context, lines, flag);
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> lines, TooltipFlag flag) {
+        super.appendHoverText(stack, level, lines, flag);
         lines.add(Component.translatable("item.fangs_n_claws.fang_dagger.tooltip1"));
     }
 
@@ -50,7 +51,7 @@ public class FangDaggerItem extends SwordItem {
         if (!attacker.level().isClientSide() && attacker instanceof Player player) {
             if (isBackstab(player, target)) {
                 target.addEffect(new MobEffectInstance(
-                        MobEffectsRegistry.BLEEDING,
+                        MobEffectsRegistry.BLEEDING.get(),
                         200, 0));
                 player.getCooldowns().addCooldown(stack.getItem(), BACKSTAB_COOLDOWN_TICKS);
                 target.level().playSound(null,

@@ -1,21 +1,21 @@
 package net.raptorzizi.fangs_n_claws.config;
 
-import net.neoforged.neoforge.common.ModConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec;
 
 public class ServerConfigs {
 
-    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
-    public static final ModConfigSpec SPEC;
+    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    public static final ForgeConfigSpec SPEC;
 
-    public static final ModConfigSpec.IntValue GOBLIN_WEIGHT;
-    public static final ModConfigSpec.IntValue OGRE_WEIGHT;
-    public static final ModConfigSpec.IntValue GOLEM_WEIGHT;
-    public static final ModConfigSpec.IntValue OWLBEAR_WEIGHT;
-    public static final ModConfigSpec.IntValue SILVER_SKELETON_WEIGHT;
-    public static final ModConfigSpec.IntValue EVIL_BAT_WEIGHT;
-    public static final ModConfigSpec.IntValue GHOST_WEIGHT;
-    public static final ModConfigSpec.IntValue GHOST_NETHER_WEIGHT;
-    public static final ModConfigSpec.IntValue WEREWOLF_WEIGHT;
+    public static final ForgeConfigSpec.IntValue GOBLIN_WEIGHT;
+    public static final ForgeConfigSpec.IntValue OGRE_WEIGHT;
+    public static final ForgeConfigSpec.IntValue GOLEM_WEIGHT;
+    public static final ForgeConfigSpec.IntValue OWLBEAR_WEIGHT;
+    public static final ForgeConfigSpec.IntValue SILVER_SKELETON_WEIGHT;
+    public static final ForgeConfigSpec.IntValue EVIL_BAT_WEIGHT;
+    public static final ForgeConfigSpec.IntValue GHOST_WEIGHT;
+    public static final ForgeConfigSpec.IntValue GHOST_NETHER_WEIGHT;
+    public static final ForgeConfigSpec.IntValue WEREWOLF_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");

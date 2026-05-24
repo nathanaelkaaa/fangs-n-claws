@@ -31,7 +31,8 @@ public class WerevillagerRenderer extends MobRenderer<WerevillagerEntity, Villag
                         poseStack,
                         buffer.getBuffer(RenderType.entityCutoutNoCull(texture)),
                         packedLight,
-                        OverlayTexture.NO_OVERLAY);
+                        OverlayTexture.NO_OVERLAY,
+                        1.0f, 1.0f, 1.0f, 1.0f);
             }
         });
     }

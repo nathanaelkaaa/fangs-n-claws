@@ -44,9 +44,9 @@ public class BleedingEffect extends MobEffect {
         super(MobEffectCategory.HARMFUL, 0x8B0000);
         this.addAttributeModifier(
                 Attributes.MOVEMENT_SPEED,
-                ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "bleeding_slowness"),
+                FangsClawsMod.MOD_ID + ":bleeding_slowness",
                 SLOWNESS_AMOUNT,
-                AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL
+                AttributeModifier.Operation.MULTIPLY_TOTAL
         );
     }
 

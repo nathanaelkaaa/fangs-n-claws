@@ -36,8 +36,9 @@ import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class WerewolfEntity extends Monster implements GeoEntity {
@@ -88,9 +89,9 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
-        super.defineSynchedData(pBuilder);
-        pBuilder.define(IS_RUNNING, false);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_RUNNING, false);
     }
 
     public boolean isRunning()                  { return this.entityData.get(IS_RUNNING); }
@@ -124,8 +125,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 .add(Attributes.MAX_HEALTH,        30.0)
                 .add(Attributes.MOVEMENT_SPEED,     0.2)
                 .add(Attributes.ATTACK_DAMAGE,      4.0)
-                .add(Attributes.FOLLOW_RANGE,       28.0)
-                .add(Attributes.ENTITY_INTERACTION_RANGE, 3.0);
+                .add(Attributes.FOLLOW_RANGE,       28.0);
     }
 
     // Sound
@@ -177,10 +177,10 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         if (this.distanceTo(biteTarget) > WerewolfAttackGoal.MAX_ATTACK_RANGE + 1.5) return;
 
         this.playSound(SoundsRegistry.WEREWOLF_BITE.get(), 1.2F, 0.7F + this.random.nextFloat() * 0.2F);
-        boolean hit = biteTarget.hurt(this.damageSources().mobAttack(this), (float) BITE_DAMAGE);
+        boolean hit = biteTarget.hurt(this.level().damageSources().mobAttack(this), (float) BITE_DAMAGE);
 
         if (hit) {
-            biteTarget.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING, 120, 0));
+            biteTarget.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING.get(), 120, 0));
 
             ServerLevel serverLevel = (ServerLevel) this.level();
             double tx = biteTarget.getX();
@@ -218,7 +218,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 this.setPos(this.getX() + shakeOffset, this.getY(), this.getZ());
 
                 if (bcounter % 2 == 0) {
-                    this.hurt(this.damageSources().magic(), 1.0F);
+                    this.hurt(this.level().damageSources().magic(), 1.0F);
                 }
 
                 if (bcounter == 15) {
@@ -291,7 +291,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
             werevillager.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
             werevillager.finalizeSpawn(serverLevel,
                     serverLevel.getCurrentDifficultyAt(this.blockPosition()),
-                    MobSpawnType.MOB_SUMMONED, null);
+                    MobSpawnType.MOB_SUMMONED, null, null);
             serverLevel.addFreshEntity(werevillager);
         }
 
