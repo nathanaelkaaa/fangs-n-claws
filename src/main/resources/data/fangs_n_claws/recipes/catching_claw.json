@@ -9,7 +9,7 @@
     "F": { "item": "minecraft:fishing_rod" }
   },
   "result": {
-    "id": "fangs_n_claws:catching_claw",
+    "item": "fangs_n_claws:catching_claw",
     "count": 1
   }
 }

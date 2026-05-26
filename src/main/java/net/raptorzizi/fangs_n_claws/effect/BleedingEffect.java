@@ -40,11 +40,14 @@ public class BleedingEffect extends MobEffect {
     private final Map<UUID, Integer> sneakTicks  = new HashMap<>();
     private final Map<UUID, Integer> damageTicks = new HashMap<>();
 
+    private static final UUID BLEEDING_SLOWNESS_UUID =
+            UUID.nameUUIDFromBytes("fangs_n_claws:bleeding_slowness".getBytes(java.nio.charset.StandardCharsets.UTF_8));
+
     public BleedingEffect() {
         super(MobEffectCategory.HARMFUL, 0x8B0000);
         this.addAttributeModifier(
                 Attributes.MOVEMENT_SPEED,
-                FangsClawsMod.MOD_ID + ":bleeding_slowness",
+                BLEEDING_SLOWNESS_UUID.toString(),
                 SLOWNESS_AMOUNT,
                 AttributeModifier.Operation.MULTIPLY_TOTAL
         );

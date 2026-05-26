@@ -10,11 +10,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0,
-                "max": 1
-              }
+              "count": { "type": "minecraft:uniform", "min": 0, "max": 1 }
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": { "min": 0, "max": 1 }
             }
           ]
         }
@@ -29,11 +29,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0,
-                "max": 3
-              }
+              "count": { "type": "minecraft:uniform", "min": 0, "max": 3 }
+            },
+            {
+              "function": "minecraft:looting_enchant",
+              "count": { "min": 0, "max": 1 }
             }
           ]
         }

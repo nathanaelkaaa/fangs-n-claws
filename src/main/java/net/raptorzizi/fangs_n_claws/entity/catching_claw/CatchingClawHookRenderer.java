@@ -22,7 +22,7 @@ public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends 
     private static final ResourceLocation DEFAULT_TEXTURE =
             FangsClawsMod.id("textures/entity/catching_claw_hook.png");
 
-    protected static final float SPRITE_SIZE  = 0.3f;
+    protected static final float SPRITE_SIZE  = 0.5f;
     protected static final int   LINE_SEGMENTS = 16;
 
     protected final ResourceLocation texture;
@@ -60,7 +60,7 @@ public class CatchingClawHookRenderer<T extends CatchingClawHookEntity> extends 
 
         Matrix4f mat = poseStack.last().pose();
 
-        VertexConsumer vc = bufferSource.getBuffer(RenderType.entityCutout(texture));
+        VertexConsumer vc = bufferSource.getBuffer(RenderType.entityTranslucent(texture));
         float h = 0.5f;
 
         vc.vertex(mat, -h,  h, 0).color(255, 255, 255, 255).uv(0, 0)

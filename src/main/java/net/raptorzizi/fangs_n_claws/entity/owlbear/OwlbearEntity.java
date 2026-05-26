@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -165,6 +166,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
         if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (pos.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) - 1) return false;
         if (level instanceof ServerLevel serverLevel) {
             AABB area = new AABB(pos).inflate(48, 16, 48);
             if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;

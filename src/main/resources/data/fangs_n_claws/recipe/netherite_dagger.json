@@ -1,7 +1,0 @@
-{
-  "type": "minecraft:smithing_transform",
-  "template": {"item": "minecraft:netherite_upgrade_smithing_template"},
-  "base": {"item": "fangs_n_claws:fang_dagger"},
-  "addition": {"item": "minecraft:netherite_ingot"},
-  "result": {"id": "fangs_n_claws:netherite_dagger"}
-}

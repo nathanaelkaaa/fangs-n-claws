@@ -4,17 +4,20 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.raptorzizi.fangs_n_claws.block.GhostBlock;
+import net.raptorzizi.fangs_n_claws.client.FangsConfigScreen;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
@@ -24,29 +27,18 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = FangsClawsMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FangsClawsModClient {
 
-    private static final ResourceLocation BLUR_SHADER =
-            new ResourceLocation("shaders/post/blur.json");
-
-    private static boolean blurActive = false;
-
     public static void init() {
         MinecraftForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
     }
 
-    static void onRenderGui(net.minecraftforge.client.event.RenderGuiOverlayEvent.Pre event) {
+    static void onRenderGui(RenderGuiOverlayEvent.Pre event) {
+        if (event.getOverlay() != VanillaGuiOverlay.CROSSHAIR.type()) return;
+
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null) return;
 
         BlockPos eyePos = BlockPos.containing(mc.player.getEyePosition());
         boolean inGhostBlock = mc.level.getBlockState(eyePos).getBlock() instanceof GhostBlock;
-
-        if (inGhostBlock && !blurActive) {
-            mc.gameRenderer.loadEffect(BLUR_SHADER);
-            blurActive = true;
-        } else if (!inGhostBlock && blurActive) {
-            mc.gameRenderer.shutdownEffect();
-            blurActive = false;
-        }
 
         if (inGhostBlock) {
             int width  = mc.getWindow().getGuiScaledWidth();
@@ -58,6 +50,14 @@ public class FangsClawsModClient {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         FangsClawsModClient.init();
+
+        ModLoadingContext.get().registerExtensionPoint(
+            ConfigScreenHandler.ConfigScreenFactory.class,
+            () -> new ConfigScreenHandler.ConfigScreenFactory(
+                (mc, parent) -> new FangsConfigScreen(parent)
+            )
+        );
+
         event.enqueueWork(() -> {
             ItemProperties.register(ItemsRegistry.FANG_DAGGER.get(),
                 FangsClawsMod.id("backstab"),

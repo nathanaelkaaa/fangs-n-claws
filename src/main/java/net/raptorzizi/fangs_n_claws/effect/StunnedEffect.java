@@ -1,6 +1,5 @@
 package net.raptorzizi.fangs_n_claws.effect;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
@@ -8,18 +7,23 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 public class StunnedEffect extends MobEffect {
 
     // ---- Inspired by Alex's Caves https://github.com/AlexModGuy/AlexsCaves/blob/main/src/main/java/com/github/alexmodguy/alexscaves/server/potion/StunnedEffect.java ----
 
+    private static final UUID STUNNED_SPEED_UUID =
+            UUID.nameUUIDFromBytes("fangs_n_claws:stunned_speed".getBytes(StandardCharsets.UTF_8));
+
     public StunnedEffect() {
         super(MobEffectCategory.HARMFUL, 0xFFFBC5);
         this.addAttributeModifier(
                 Attributes.MOVEMENT_SPEED,
-                FangsClawsMod.MOD_ID + ":stunned_speed",
+                STUNNED_SPEED_UUID.toString(),
                 -1.0,
                 AttributeModifier.Operation.MULTIPLY_BASE
         );

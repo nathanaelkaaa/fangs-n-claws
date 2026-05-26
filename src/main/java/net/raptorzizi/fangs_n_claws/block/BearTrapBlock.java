@@ -100,7 +100,7 @@ public class BearTrapBlock extends Block {
             DamageSource source = new DamageSource(
                     level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(BEAR_TRAP_DAMAGE));
             victim.hurt(source, 8.0f);
-            victim.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING.get(), 200, 1)); // Bleeding 2, 10s
+            victim.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING.get(), 200, 1, false, false)); // Bleeding 2, 10s
             victim.setDeltaMovement(victim.getDeltaMovement().multiply(0.1, 1.0, 0.1));
             level.playSound(null, pos, SoundEvents.IRON_TRAPDOOR_CLOSE,
                     SoundSource.BLOCKS, 1.0f, 0.5f);

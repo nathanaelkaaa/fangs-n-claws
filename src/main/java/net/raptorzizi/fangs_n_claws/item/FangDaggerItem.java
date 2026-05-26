@@ -2,6 +2,7 @@ package net.raptorzizi.fangs_n_claws.item;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,7 +10,10 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 import net.minecraft.sounds.SoundSource;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -40,13 +44,25 @@ public class FangDaggerItem extends SwordItem {
     }
 
     @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return toolAction != ToolActions.SWORD_SWEEP && super.canPerformAction(stack, toolAction);
+    }
+
+    @Override
+    public AABB getSweepHitBox(ItemStack stack, Player player, Entity target) {
+        return new AABB(0, 0, 0, 0, 0, 0);
+    }
+
+    @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
         boolean result = super.hurtEnemy(stack, target, attacker);
         if (!attacker.level().isClientSide() && attacker instanceof Player player) {
             if (isBackstab(player, target)) {
+                // ambient=false, visible=false → suppresses vanilla coloured-orb particles;
+                // our BleedingEffect spawns its own blood particles instead.
                 target.addEffect(new MobEffectInstance(
                         MobEffectsRegistry.BLEEDING.get(),
-                        200, 0));
+                        200, 0, false, false));
                 player.getCooldowns().addCooldown(stack.getItem(), BACKSTAB_COOLDOWN_TICKS);
                 target.level().playSound(null,
                         target.getX(), target.getY(), target.getZ(),

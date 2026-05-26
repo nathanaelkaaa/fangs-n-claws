@@ -28,9 +28,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
     private static final TagKey<Biome> IS_OVERWORLD =
             TagKey.create(Registries.BIOME, new ResourceLocation("is_overworld"));
     private static final TagKey<Biome> IS_FOREST =
-            TagKey.create(Registries.BIOME, new ResourceLocation("c", "is_forest"));
+            TagKey.create(Registries.BIOME, new ResourceLocation("minecraft", "is_forest"));
     private static final TagKey<Biome> IS_PLAINS =
-            TagKey.create(Registries.BIOME, new ResourceLocation("c", "is_plains"));
+            TagKey.create(Registries.BIOME, new ResourceLocation("fangs_n_claws", "is_plains"));
     private static final ResourceKey<Biome> SOUL_SAND_VALLEY =
             ResourceKey.create(Registries.BIOME, new ResourceLocation("soul_sand_valley"));
 

@@ -86,7 +86,7 @@ public class EntityRegistry {
                     .<CatchingClawHookEntity>of(CatchingClawHookEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
-                    .updateInterval(5)
+                    .updateInterval(1)
                     .build("catching_claw_hook"));
 
     public static final RegistryObject<EntityType<NetheriteClawHookEntity>> NETHERITE_CLAW_HOOK =
@@ -94,7 +94,7 @@ public class EntityRegistry {
                     .<NetheriteClawHookEntity>of(NetheriteClawHookEntity::new, MobCategory.MISC)
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
-                    .updateInterval(5)
+                    .updateInterval(1)
                     .build("netherite_claw_hook"));
 
     public static final RegistryObject<EntityType<EvilEyeProjectile>> EVIL_EYE_PROJECTILE =

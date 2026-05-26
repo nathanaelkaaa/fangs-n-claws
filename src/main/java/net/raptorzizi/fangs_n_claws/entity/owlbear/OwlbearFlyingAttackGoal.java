@@ -211,7 +211,7 @@ public class OwlbearFlyingAttackGoal extends Goal {
         ServerLevel serverLevel = (ServerLevel) owlbear.level();
 
         owlbear.playSound(
-                SoundEvents.PLAYER_ATTACK_SWEEP,
+                SoundEvents.GENERIC_EXPLODE,
                 1.5F, 0.9F + owlbear.getRandom().nextFloat() * 0.2F);
 
         AABB aoe = new AABB(

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.*;
@@ -168,6 +169,7 @@ public class GolemEntity extends Monster implements GeoEntity {
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
         if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (pos.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) - 1) return false;
         if (level instanceof ServerLevel serverLevel) {
             AABB area = new AABB(pos).inflate(48, 16, 48);
             if (!serverLevel.getEntitiesOfClass(GolemEntity.class, area).isEmpty()) return false;

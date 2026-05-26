@@ -18,6 +18,8 @@ public class OwlbearAttackGoal extends Goal {
 
     private static final int HOWL_COOLDOWN = 600;
 
+    private static final int INITIAL_HOWL_DELAY = 80;
+
     private int attackCooldown = 0;
     private int stuckTick      = 0;
 
@@ -26,6 +28,13 @@ public class OwlbearAttackGoal extends Goal {
     public OwlbearAttackGoal(OwlbearEntity owlbear) {
         this.owlbear = owlbear;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+    }
+
+    @Override
+    public void start() {
+        attackCooldown = 0;
+        stuckTick      = 0;
+        owlbear.howlCooldown = INITIAL_HOWL_DELAY;
     }
 
     @Override
@@ -56,7 +65,7 @@ public class OwlbearAttackGoal extends Goal {
         if (attackCooldown > 0) attackCooldown--;
         if (owlbear.howlCooldown > 0) owlbear.howlCooldown--;
 
-        if (owlbear.isAttacking() || owlbear.isHowling()) {
+        if (owlbear.isAttacking()) {
             owlbear.setRunning(false);
             owlbear.getNavigation().stop();
             if (target != null) owlbear.getLookControl().setLookAt(target, 30.0F, 30.0F);

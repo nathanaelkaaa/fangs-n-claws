@@ -11,7 +11,7 @@
     "G": { "item": "fangs_n_claws:giant_feather" }
   },
   "result": {
-    "id": "fangs_n_claws:velocity_arrow",
+    "item": "fangs_n_claws:velocity_arrow",
     "count": 4
   }
 }

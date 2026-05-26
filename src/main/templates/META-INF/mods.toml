@@ -64,12 +64,8 @@ Example mod description.
 [[dependencies.${mod_id}]] #optional
     # the modid of the dependency
     modId="forge" #mandatory
-    # The type of the dependency. Can be one of "required", "optional", "incompatible" or "discouraged" (case insensitive).
-    # 'required' requires the mod to exist, 'optional' does not
-    # 'incompatible' will prevent the game from loading when the mod exists, and 'discouraged' will show a warning
-    type="required" #mandatory
-    # Optional field describing why the dependency is required or why it is incompatible
-    # reason="..."
+    # Whether this dependency is mandatory (true) or optional (false)
+    mandatory=true #mandatory
     # The version range of the dependency
     versionRange="[${forge_version},)" #mandatory
     # An ordering relationship for the dependency.
@@ -82,7 +78,7 @@ Example mod description.
 # Here's another dependency
 [[dependencies.${mod_id}]]
     modId="minecraft"
-    type="required"
+    mandatory=true
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="${minecraft_version_range}"
     ordering="NONE"

@@ -3,6 +3,18 @@
   "textures": {
     "layer0": "fangs_n_claws:item/catching_claw"
   },
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [0, -90, 0],
+      "translation": [1.13, 3.2, 1.13],
+      "scale": [0.68, 0.68, 0.68]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, 0],
+      "translation": [1.13, 3.2, 1.13],
+      "scale": [0.68, 0.68, 0.68]
+    }
+  },
   "overrides": [
     { "predicate": { "fangs_n_claws:catching_claw_cast": 1.0 }, "model": "fangs_n_claws:item/catching_claw_cast" }
   ]

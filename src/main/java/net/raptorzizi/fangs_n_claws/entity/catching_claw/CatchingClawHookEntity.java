@@ -34,6 +34,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
 
     public CatchingClawHookEntity(EntityType<? extends ThrowableProjectile> type, Level level) {
         super(type, level);
+        this.noCulling = true;
     }
 
     public CatchingClawHookEntity(Player owner, Level level) {
@@ -42,6 +43,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
 
     protected CatchingClawHookEntity(EntityType<? extends ThrowableProjectile> type, Player owner, Level level) {
         super(type, level);
+        this.noCulling = true;
         this.setOwner(owner);
         this.setPos(owner.getX(), owner.getEyeY() - 0.1, owner.getZ());
     }
@@ -166,6 +168,11 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         setInGround(tag.getBoolean("InGround"));
+    }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double pDistance) {
+        return pDistance < 4096.0;
     }
 
     @Override
