@@ -42,7 +42,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     private static final int    ATTACK1_HIT_TICK  = 15;
     private static final int    ATTACK2_HIT_TICK  = 18;
     private static final int    ATTACK_TOTAL_TICKS = 25;
-    private static final int    HOWL_TOTAL_TICKS   = 60;
+    private static final int    HOWL_TOTAL_TICKS   = 30;
     private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
     private static final double SLEEP_DETECTION_RANGE           = 6.0;
 
@@ -65,7 +65,8 @@ public class OwlbearEntity extends Monster implements GeoEntity {
     private boolean currentIsAttack1     = false;
     private int     howlDelayTick        = 0;
 
-    int howlCooldown = 0;
+    int     howlCooldown  = 0;
+    boolean forcedFlyMode = false;
 
     private double prevX, prevZ;
     private int    flapSoundTick = 0;
@@ -175,7 +176,7 @@ public class OwlbearEntity extends Monster implements GeoEntity {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,               70.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.2)
-                .add(Attributes.ATTACK_DAMAGE,             6.0)
+                .add(Attributes.ATTACK_DAMAGE,             10.0)
                 .add(Attributes.FOLLOW_RANGE,             24.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.5);

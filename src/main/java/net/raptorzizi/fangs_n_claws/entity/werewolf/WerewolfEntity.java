@@ -8,10 +8,14 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.minecraft.world.entity.EntityType;
@@ -117,6 +121,20 @@ public class WerewolfEntity extends Monster implements GeoEntity {
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false,
                 target -> !(target instanceof WerevillagerEntity)));
+    }
+
+    public static boolean checkWerewolfSpawnRules(EntityType<? extends WerewolfEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            int chunkX = pos.getX() >> 4;
+            int chunkZ = pos.getZ() >> 4;
+            AABB chunkBounds = new AABB(
+                    chunkX << 4, level.getMinBuildHeight(), chunkZ << 4,
+                    (chunkX << 4) + 16, level.getMaxBuildHeight(), (chunkZ << 4) + 16);
+            if (serverLevel.getEntitiesOfClass(WerewolfEntity.class, chunkBounds).size() >= 2) return false;
+        }
+        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {

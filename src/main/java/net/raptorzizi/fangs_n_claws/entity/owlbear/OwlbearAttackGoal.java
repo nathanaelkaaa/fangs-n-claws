@@ -16,10 +16,12 @@ public class OwlbearAttackGoal extends Goal {
     private static final double CHASE_SPEED     = 1.3;
     private static final int    ATTACK_INTERVAL = 15;
 
-    private static final int HOWL_COOLDOWN = 600;
+    private static final int HOWL_COOLDOWN         = 600;
+    private static final int NO_PATH_FLY_THRESHOLD = 50;
 
     private int attackCooldown = 0;
     private int stuckTick      = 0;
+    private int noPathTick     = 0;
 
     // AI
 
@@ -46,7 +48,8 @@ public class OwlbearAttackGoal extends Goal {
     public void stop() {
         owlbear.setRunning(false);
         owlbear.getNavigation().stop();
-        stuckTick = 0;
+        stuckTick  = 0;
+        noPathTick = 0;
     }
 
     @Override
@@ -58,7 +61,6 @@ public class OwlbearAttackGoal extends Goal {
 
         if (owlbear.isAttacking() || owlbear.isHowling()) {
             owlbear.setRunning(false);
-            owlbear.getNavigation().stop();
             if (target != null) owlbear.getLookControl().setLookAt(target, 30.0F, 30.0F);
             return;
         }
@@ -83,13 +85,24 @@ public class OwlbearAttackGoal extends Goal {
 
             owlbear.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
-            double distance = owlbear.distanceTo(target);
-            if (distance > MIN_ATTACK_RANGE) {
+            double  distance = owlbear.distanceTo(target);
+            boolean hasLos   = owlbear.hasLineOfSight(target);
+
+            if (distance > MIN_ATTACK_RANGE || !hasLos) {
                 owlbear.setRunning(true);
                 owlbear.getNavigation().moveTo(target, CHASE_SPEED);
+                if (!owlbear.getNavigation().isInProgress() || owlbear.getNavigation().isStuck()) {
+                    if (++noPathTick >= NO_PATH_FLY_THRESHOLD) {
+                        owlbear.forcedFlyMode = true;
+                        noPathTick = 0;
+                    }
+                } else {
+                    noPathTick = 0;
+                }
             } else {
                 owlbear.setRunning(false);
                 owlbear.getNavigation().stop();
+                noPathTick = 0;
                 if (attackCooldown <= 0) {
                     attackCooldown = ATTACK_INTERVAL;
                     owlbear.doHurtTarget(target);

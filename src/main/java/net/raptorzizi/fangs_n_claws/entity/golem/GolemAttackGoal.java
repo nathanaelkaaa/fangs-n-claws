@@ -65,7 +65,6 @@ public class GolemAttackGoal extends Goal {
         if (throwCooldown  > 0) throwCooldown--;
 
         if (golem.isAttacking()) {
-            golem.getNavigation().stop();
             if (target != null) golem.getLookControl().setLookAt(target, 30.0F, 30.0F);
             return;
         }
@@ -85,18 +84,24 @@ public class GolemAttackGoal extends Goal {
 
             golem.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
-            double dist = golem.distanceTo(target);
+            double  dist   = golem.distanceTo(target);
+            boolean hasLos = golem.hasLineOfSight(target);
+
             if (dist > MAX_ATTACK_RANGE) {
                 golem.getNavigation().moveTo(target, WALK_SPEED);
-                if (dist <= THROW_MAX_RANGE && throwCooldown <= 0 && !golem.isMissingHand()) {
+                if (hasLos && dist <= THROW_MAX_RANGE && throwCooldown <= 0 && !golem.isMissingHand()) {
                     throwCooldown = THROW_COOLDOWN;
                     golem.doThrowAttack(target);
                 }
             } else if (dist >= MIN_ATTACK_RANGE) {
-                golem.getNavigation().stop();
-                if (attackCooldown <= 0) {
-                    attackCooldown = ATTACK_INTERVAL;
-                    golem.doHurtTarget(target);
+                if (hasLos) {
+                    golem.getNavigation().moveTo(target, WALK_SPEED * 0.5);
+                    if (attackCooldown <= 0) {
+                        attackCooldown = ATTACK_INTERVAL;
+                        golem.doHurtTarget(target);
+                    }
+                } else {
+                    golem.getNavigation().moveTo(target, WALK_SPEED);
                 }
             } else {
                 golem.getNavigation().stop();

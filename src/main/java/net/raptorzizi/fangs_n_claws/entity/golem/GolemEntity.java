@@ -66,7 +66,7 @@ public class GolemEntity extends Monster implements GeoEntity {
 
     private static final int    THROW_HIT_TICK      = 21;
     private static final int    THROW_TOTAL_TICKS   = 30;
-    private static final float  THROW_DAMAGE        = 8.0f;
+    private static final float  THROW_DAMAGE        = 10.0f;
     private static final float  THROW_SPEED         = 1.4f;
 
     private static final int    REGEN_INTERVAL      = 20;
@@ -177,7 +177,7 @@ public class GolemEntity extends Monster implements GeoEntity {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,               80.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.18)
-                .add(Attributes.ATTACK_DAMAGE,             7.0)
+                .add(Attributes.ATTACK_DAMAGE,             12.0)
                 .add(Attributes.FOLLOW_RANGE,             24.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE,  3.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.6);

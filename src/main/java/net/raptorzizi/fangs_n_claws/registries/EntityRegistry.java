@@ -33,27 +33,27 @@ public class EntityRegistry {
 
     public static final DeferredHolder<EntityType<?>, EntityType<GolemEntity>> GOLEM =
             ENTITIES.register("golem", () -> EntityType.Builder.of(GolemEntity::new, MobCategory.MONSTER)
-                    .sized(2F, 2.6F)
+                    .sized(1.95F, 2.6F)
                     .build("golem"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<OgreEntity>> OGRE =
             ENTITIES.register("ogre", () -> EntityType.Builder.of(OgreEntity::new, MobCategory.MONSTER)
-                    .sized(2F, 2.8F)
+                    .sized(1.95F, 2.95F)
                     .build("ogre"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<WerewolfEntity>> WEREWOLF =
             ENTITIES.register("werewolf", () -> EntityType.Builder.of(WerewolfEntity::new, MobCategory.MONSTER)
-                    .sized(1.0F, 2.0F)
+                    .sized(1.0F, 1.95F)
                     .build("werewolf"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<OwlbearEntity>> OWLBEAR =
             ENTITIES.register("owlbear", () -> EntityType.Builder.of(OwlbearEntity::new, MobCategory.MONSTER)
-                    .sized(2.0F, 2.0F)
+                    .sized(1.95F, 1.95F)
                     .build("owlbear"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SilverSkeletonEntity>> SILVER_SKELETON =
             ENTITIES.register("silver_skeleton", () -> EntityType.Builder.of(SilverSkeletonEntity::new, MobCategory.MONSTER)
-                    .sized(0.6F, 2.4F)
+                    .sized(0.6F, 1.95F)
                     .build("silver_skeleton"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<EvilBatEntity>> EVIL_BAT =

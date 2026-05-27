@@ -13,7 +13,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -97,13 +97,12 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
                 : level.getMaxLocalRawBrightness(pos);
         if (brightness > random.nextInt(8)) return false;
         if (level instanceof ServerLevel serverLevel) {
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(EvilBatEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
+            int chunkX = pos.getX() >> 4;
+            int chunkZ = pos.getZ() >> 4;
+            AABB chunkBounds = new AABB(
+                    chunkX << 4, level.getMinBuildHeight(), chunkZ << 4,
+                    (chunkX << 4) + 16, level.getMaxBuildHeight(), (chunkZ << 4) + 16);
+            if (serverLevel.getEntitiesOfClass(EvilBatEntity.class, chunkBounds).size() >= 3) return false;
         }
         return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
@@ -123,7 +122,6 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 8.0F));
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -316,6 +314,7 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
                 targetCooldown = TARGET_MAX_COOLDOWN;
             }
 
+            if (flyTarget != null) faceToward(flyTarget);
             steerToward(flyTarget, this.getAttributeValue(Attributes.FLYING_SPEED), 0.12);
 
             if (this.onGround()) {

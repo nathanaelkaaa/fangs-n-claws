@@ -52,7 +52,10 @@ public class OwlbearFlyingAttackGoal extends Goal {
     public boolean canUse() {
         LivingEntity target = owlbear.getTarget();
         if (target == null || !target.isAlive()) return false;
-        return owlbear.distanceTo(target) > 15.0;
+        if (owlbear.forcedFlyMode) return true;
+        double dx = owlbear.getX() - target.getX();
+        double dz = owlbear.getZ() - target.getZ();
+        return Math.sqrt(dx * dx + dz * dz) > 15.0;
     }
 
     @Override
@@ -65,6 +68,7 @@ public class OwlbearFlyingAttackGoal extends Goal {
         owlbear.setFlying(true);
         owlbear.setFlapping(true);
         owlbear.setRunning(false);
+        owlbear.forcedFlyMode = false;
         owlbear.getNavigation().stop();
         flapHysteresisTicks = 0;
         prevDiveVelY = 0.0;

@@ -49,14 +49,14 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     private static final double LOOK_AWAY_THRESHOLD  = 0.3;
     private static final int    ORBIT_DIR_CHANGE_MIN = 80;
     private static final int    ORBIT_DIR_CHANGE_MAX = 200;
-    private static final int    FLEE_TICKS           = 60;
+    private static final int    FLEE_TICKS           = 30;
     private static final int    ATTACK_COOLDOWN_MAX  = 80;
     private static final int    ATTACK_HIT_TICK      = 8;
     private static final int    ATTACK_TOTAL_TICKS   = 18;
     private static final double STEAL_FLEE_SPEED     = 0.78;
     private static final int    STEAL_HIT_TICK       = 12;
     private static final int    STEAL_TOTAL_TICKS    = 24;
-    private static final int    STEAL_FLEE_TICKS     = 130;
+    private static final int    STEAL_FLEE_TICKS     = 65;
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -170,6 +170,11 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     }
 
     // Combat
+
+    @Override
+    public boolean isCurrentlyGlowing() {
+        return !this.getItemBySlot(EquipmentSlot.OFFHAND).isEmpty() || super.isCurrentlyGlowing();
+    }
 
     public boolean isAttacking() { return attackTick > 0; }
     public boolean isStealing()  { return stealTick  > 0; }
@@ -295,7 +300,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
             double fleeSpeed = stealFleeMode ? STEAL_FLEE_SPEED : FLEE_SPEED;
             Vec3 fleeDir    = this.position().subtract(target.position());
             Vec3 fleeTarget = this.position().add(
-                    fleeDir.length() > 0.01 ? fleeDir.normalize().scale(3.0) : new Vec3(1, 0, 0));
+                    fleeDir.length() > 0.01 ? fleeDir.normalize().scale(1.5) : new Vec3(1, 0, 0));
             faceToward(fleeTarget);
             steerToward(fleeTarget, fleeSpeed, 0.22);
             if (fleeTick == 0) stealFleeMode = false;
@@ -322,7 +327,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
             fleeTick--;
             Vec3 fleeDir    = this.position().subtract(target.position());
             Vec3 fleeTarget = this.position().add(
-                    fleeDir.length() > 0.01 ? fleeDir.normalize().scale(3.0) : new Vec3(1, 0, 0));
+                    fleeDir.length() > 0.01 ? fleeDir.normalize().scale(1.5) : new Vec3(1, 0, 0));
             faceToward(fleeTarget);
             steerToward(fleeTarget, STEAL_FLEE_SPEED, 0.25);
             if (fleeTick == 0) stealFleeMode = false;
@@ -359,6 +364,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     }
 
     private void steerToward(Vec3 target, double speed, double lerpFactor) {
+        if (this.isInWater()) speed *= 0.4;
         double dx    = target.x - this.getX();
         double dz    = target.z - this.getZ();
         double hDist = Math.sqrt(dx * dx + dz * dz);

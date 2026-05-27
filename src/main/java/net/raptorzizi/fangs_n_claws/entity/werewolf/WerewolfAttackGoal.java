@@ -66,7 +66,6 @@ public class WerewolfAttackGoal extends Goal {
 
         if (werewolf.isAttacking() || werewolf.isBiting() || werewolf.isHowling()) {
             werewolf.setRunning(false);
-            werewolf.getNavigation().stop();
             if (target != null) werewolf.getLookControl().setLookAt(target, 30.0F, 30.0F);
             return;
         }
@@ -100,8 +99,10 @@ public class WerewolfAttackGoal extends Goal {
 
             werewolf.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
-            double distance = werewolf.distanceTo(target);
-            if (distance > MIN_ATTACK_RANGE) {
+            double  distance = werewolf.distanceTo(target);
+            boolean hasLos   = werewolf.hasLineOfSight(target);
+
+            if (distance > MIN_ATTACK_RANGE || !hasLos) {
                 werewolf.setRunning(true);
                 werewolf.getNavigation().moveTo(target, CHASE_SPEED);
             } else {

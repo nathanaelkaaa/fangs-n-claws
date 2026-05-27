@@ -4,7 +4,7 @@
   "spawners": [
     {
       "type": "fangs_n_claws:werewolf",
-      "weight": 30,
+      "weight": 25,
       "minCount": 1,
       "maxCount": 1
     }
