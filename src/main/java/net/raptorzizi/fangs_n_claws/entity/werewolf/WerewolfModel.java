@@ -18,7 +18,12 @@ public class WerewolfModel extends GeoModel<WerewolfEntity> {
 
     @Override
     public ResourceLocation getTextureResource(WerewolfEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/werewolf.png");
+        String tex = switch (entity.getVariant()) {
+            case 1  -> "textures/entity/werewolf_brown.png";
+            case 2  -> "textures/entity/werewolf_white.png";
+            default -> "textures/entity/werewolf.png";
+        };
+        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, tex);
     }
 
     @Override

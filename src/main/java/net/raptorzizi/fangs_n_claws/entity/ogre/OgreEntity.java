@@ -6,10 +6,12 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -20,6 +22,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -50,6 +54,8 @@ public class OgreEntity extends Monster implements GeoEntity {
     private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
 
     private static final EntityDataAccessor<Boolean> IS_RUNNING =
+            SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_SIAMESE =
             SynchedEntityData.defineId(OgreEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
@@ -84,10 +90,14 @@ public class OgreEntity extends Monster implements GeoEntity {
     protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
         super.defineSynchedData(pBuilder);
         pBuilder.define(IS_RUNNING, false);
+        pBuilder.define(IS_SIAMESE, false);
     }
 
     public boolean isRunning()                   { return this.entityData.get(IS_RUNNING); }
     public void    setRunning(boolean running)   { this.entityData.set(IS_RUNNING, running); }
+
+    public boolean isSiamese()                   { return this.entityData.get(IS_SIAMESE); }
+    public void    setSiamese(boolean siamese)   { this.entityData.set(IS_SIAMESE, siamese); }
 
     // AI
 
@@ -110,6 +120,32 @@ public class OgreEntity extends Monster implements GeoEntity {
                 .add(Attributes.FOLLOW_RANGE,             20.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE,  3.5)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.8);
+    }
+
+    public static boolean checkOgreSpawnRules(EntityType<? extends OgreEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (pos.getY() < 0) return false;
+        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
+            @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData) {
+        setSiamese(this.random.nextFloat() < 0.30F);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("IsSiamese", isSiamese());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        setSiamese(tag.getBoolean("IsSiamese"));
     }
 
     // Sound

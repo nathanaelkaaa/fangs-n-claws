@@ -9,6 +9,7 @@ public class ServerConfigs {
 
     public static final ModConfigSpec.IntValue GOBLIN_WEIGHT;
     public static final ModConfigSpec.IntValue OGRE_WEIGHT;
+    public static final ModConfigSpec.IntValue CAVE_OGRE_WEIGHT;
     public static final ModConfigSpec.IntValue GOLEM_WEIGHT;
     public static final ModConfigSpec.IntValue OWLBEAR_WEIGHT;
     public static final ModConfigSpec.IntValue SILVER_SKELETON_WEIGHT;
@@ -27,6 +28,9 @@ public class ServerConfigs {
         OGRE_WEIGHT            = BUILDER.comment("Ogre (overworld, any biome) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ogre")
                                         .defineInRange("ogre",            15, 0, 500);
+        CAVE_OGRE_WEIGHT       = BUILDER.comment("Cave Ogre (caves only) — default: 15")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.cave_ogre")
+                                        .defineInRange("cave_ogre",       15, 0, 500);
         GOLEM_WEIGHT           = BUILDER.comment("Big Golem (plains only) — default: 5")
                                         .translation("fangs_n_claws.configuration.spawn_weights.golem")
                                         .defineInRange("golem",            5, 0, 500);

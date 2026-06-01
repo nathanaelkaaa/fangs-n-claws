@@ -1,6 +1,10 @@
 package net.raptorzizi.fangs_n_claws.entity.werewolf;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.SpawnGroupData;
+import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -58,6 +62,8 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> IS_RUNNING =
             SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> VARIANT =
+            SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -95,10 +101,14 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
         super.defineSynchedData(pBuilder);
         pBuilder.define(IS_RUNNING, false);
+        pBuilder.define(VARIANT, 0);
     }
 
     public boolean isRunning()                  { return this.entityData.get(IS_RUNNING); }
     public void    setRunning(boolean running)  { this.entityData.set(IS_RUNNING, running); }
+
+    public int  getVariant()              { return this.entityData.get(VARIANT); }
+    public void setVariant(int variant)   { this.entityData.set(VARIANT, variant); }
 
     private boolean fleeing = false;
     public boolean isFleeing()                  { return fleeing; }
@@ -144,6 +154,28 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE,      4.0)
                 .add(Attributes.FOLLOW_RANGE,       28.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE, 3.0);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
+            @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData) {
+        float r = this.random.nextFloat();
+        if      (r < 0.50f) setVariant(0);
+        else if (r < 0.85f) setVariant(1);
+        else                setVariant(2);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData);
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("WerewolfVariant", getVariant());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        setVariant(tag.getInt("WerewolfVariant"));
     }
 
     // Sound

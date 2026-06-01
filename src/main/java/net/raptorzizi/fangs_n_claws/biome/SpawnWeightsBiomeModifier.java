@@ -63,6 +63,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.GOBLIN.get(),         ServerConfigs.GOBLIN_WEIGHT.get(),          1, 5);
                 if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.OGRE.get(),            ServerConfigs.OGRE_WEIGHT.get(),            1, 2);
+                if (CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.CAVE_OGRE.get(),       ServerConfigs.CAVE_OGRE_WEIGHT.get(),       1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 2);
                 if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())

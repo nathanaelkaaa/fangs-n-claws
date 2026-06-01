@@ -10,6 +10,7 @@ public class CommonConfigs {
     // Spawn toggles
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GOBLIN;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_OGRE;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_CAVE_OGRE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GOLEM;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_OWLBEAR;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SILVER_SKELETON;
@@ -30,6 +31,11 @@ public class CommonConfigs {
                 .comment("Allow Ogres to spawn naturally (overworld)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.ogre")
                 .define("allow_ogre", true);
+
+        ALLOW_SPAWN_CAVE_OGRE = BUILDER
+                .comment("Allow Cave Ogres to spawn naturally (caves)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.cave_ogre")
+                .define("allow_cave_ogre", true);
 
         ALLOW_SPAWN_GOLEM = BUILDER
                 .comment("Allow Big Golems to spawn naturally (plains)")
