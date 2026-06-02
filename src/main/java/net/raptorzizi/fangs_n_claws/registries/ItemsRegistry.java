@@ -2,11 +2,11 @@ package net.raptorzizi.fangs_n_claws.registries;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -53,6 +53,9 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> WEREVILLAGER_SPAWN_EGG = ITEMS.register("werevillager_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.WEREVILLAGER, 0x9e6e42, 0xe42e2e, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> DART_GOBLIN_SPAWN_EGG = ITEMS.register("dart_goblin_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.DART_GOBLIN, 0x4a7a35, 0xe8c840, new Item.Properties().stacksTo(64)));
+
     /**
      * Materials
      */
@@ -73,6 +76,7 @@ public class ItemsRegistry {
     /**
      * Weapons
      */
+    public static final Supplier<BlowgunItem>           BLOWGUN            = ITEMS.register("blowgun",            BlowgunItem::new);
     public static final Supplier<FangDaggerItem>        FANG_DAGGER        = ITEMS.register("fang_dagger",        FangDaggerItem::new);
     public static final Supplier<NetheriteFangDaggerItem> NETHERITE_DAGGER = ITEMS.register("netherite_dagger",   NetheriteFangDaggerItem::new);
     public static final Supplier<CatchingClawItem>      CATCHING_CLAW      = ITEMS.register("catching_claw",      CatchingClawItem::new);
@@ -84,7 +88,7 @@ public class ItemsRegistry {
      */
     public static final Supplier<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final Supplier<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);
-
+    public static final Supplier<Item>              POISONOUS_DART = ITEMS.register("poisonous_dart", () -> new Item(new Item.Properties().stacksTo(64)));
     /**
      * Blocks
      */

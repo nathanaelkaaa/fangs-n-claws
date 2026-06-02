@@ -1,4 +1,16 @@
 {
+  "dart.hit": {
+    "subtitle": "subtitles.item.dart.hit",
+    "sounds": [
+      { "name": "fangs_n_claws:dart_hit" }
+    ]
+  },
+  "blowgun.shoot": {
+    "subtitle": "subtitles.item.blowgun.shoot",
+    "sounds": [
+      { "name": "fangs_n_claws:blowgun_shoot" }
+    ]
+  },
   "ogre.ambient": {
     "subtitle": "subtitles.entity.ogre.ambient",
     "sounds": [

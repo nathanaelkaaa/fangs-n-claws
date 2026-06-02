@@ -31,5 +31,8 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_WEREWOLF =
             GameRules.register("allowSpawnWerewolf",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_DART_GOBLIN =
+            GameRules.register("allowSpawnDartGoblin",      GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }
