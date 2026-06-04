@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -96,6 +97,7 @@ public class BlowgunItem extends Item {
             if (dartStack.isEmpty() && !player.getAbilities().instabuild) return;
 
             boolean multishot  = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MULTISHOT, stack) > 0;
+            int     piercing   = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
             float   velocity   = chargePercent * MAX_VELOCITY;
             int     count      = multishot ? 3 : 1;
             float[] yawOffsets = multishot ? new float[]{0.0F, -10.0F, 10.0F} : new float[]{0.0F};
@@ -105,6 +107,7 @@ public class BlowgunItem extends Item {
                 dart.setOwner(player);
                 dart.setPos(player.getX(), player.getEyeY() - 0.1, player.getZ());
                 if (i > 0) dart.pickup = net.minecraft.world.entity.projectile.AbstractArrow.Pickup.CREATIVE_ONLY;
+                if (piercing > 0) dart.setPierceLevel((byte) piercing);
                 dart.shootFromRotation(player, player.getXRot(), player.getYRot() + yawOffsets[i],
                         0.0F, velocity, 1.0F);
                 level.addFreshEntity(dart);
@@ -145,6 +148,16 @@ public class BlowgunItem extends Item {
     @Override
     public int getEnchantmentValue() {
         return 1;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return enchantment == Enchantments.QUICK_CHARGE
+            || enchantment == Enchantments.MULTISHOT
+            || enchantment == Enchantments.PIERCING
+            || enchantment == Enchantments.UNBREAKING
+            || enchantment == Enchantments.MENDING
+            || enchantment == Enchantments.VANISHING_CURSE;
     }
 
     private boolean hasDarts(Player player) {

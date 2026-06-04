@@ -53,6 +53,7 @@ import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
+import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
 import net.raptorzizi.fangs_n_claws.registries.CreativeModeTabs;
@@ -79,6 +80,7 @@ public class FangsClawsMod {
 
         ItemsRegistry.register(modEventBus);
         EntityRegistry.register(modEventBus);
+        EnchantmentsRegistry.register(modEventBus);
         BiomeModifierRegistry.register(modEventBus);
         SoundsRegistry.register(modEventBus);
         ParticlesRegistry.register(modEventBus);

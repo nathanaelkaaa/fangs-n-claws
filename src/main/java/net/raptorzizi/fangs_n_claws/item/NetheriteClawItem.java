@@ -29,6 +29,9 @@ public class NetheriteClawItem extends Item {
     private static final float THROW_VELOCITY   = 1.8f;
     private static final float THROW_INACCURACY = 0.8f;
 
+    private static final double BASE_ATTACK_DAMAGE = 3.0;
+    private static final double BASE_ATTACK_SPEED  = -2.8;
+
     // Fixed UUIDs for attribute modifiers
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("6DEF7A8B-C9D0-1E2F-3456-789ABCDEF012");
     private static final UUID ATTACK_SPEED_UUID  = UUID.fromString("B0C1D2E3-F4A5-6789-BCDE-F01234567891");
@@ -40,9 +43,10 @@ public class NetheriteClawItem extends Item {
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot == EquipmentSlot.MAINHAND) {
+            int scratch = CatchingClawItem.getScratchLevel(stack);
             ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_UUID, "Weapon modifier", 4.0, AttributeModifier.Operation.ADDITION));
-            builder.put(Attributes.ATTACK_SPEED,  new AttributeModifier(ATTACK_SPEED_UUID,  "Weapon modifier", -2.8, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_UUID, "Weapon modifier", BASE_ATTACK_DAMAGE + scratch * 0.25, AttributeModifier.Operation.ADDITION));
+            builder.put(Attributes.ATTACK_SPEED,  new AttributeModifier(ATTACK_SPEED_UUID,  "Weapon modifier", BASE_ATTACK_SPEED, AttributeModifier.Operation.ADDITION));
             return builder.build();
         }
         return super.getAttributeModifiers(slot, stack);

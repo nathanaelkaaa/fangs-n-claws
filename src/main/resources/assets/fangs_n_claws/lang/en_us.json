@@ -73,6 +73,11 @@
   "item.fangs_n_claws.imp_spawn_egg": "Imp Spawn Egg",
   "item.fangs_n_claws.decrepit_pitchfork": "Decrepit Pitchfork",
 
+  "enchantment.fangs_n_claws.critical_backstab": "Critical Backstab",
+  "enchantment.fangs_n_claws.quick_killer": "Quick Killer",
+  "enchantment.fangs_n_claws.item_catcher": "Item Catcher",
+  "enchantment.fangs_n_claws.scratch": "Scratch",
+
   "effect.fangs_n_claws.bleeding": "Bleeding",
   "effect.fangs_n_claws.venom": "Venom",
   "effect.fangs_n_claws.flamebrand": "Flamebrand",
