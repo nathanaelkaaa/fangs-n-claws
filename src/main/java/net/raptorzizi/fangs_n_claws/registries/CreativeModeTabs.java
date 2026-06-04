@@ -21,6 +21,7 @@ public class CreativeModeTabs {
                     .icon(() -> new ItemStack(ItemsRegistry.SILVER_SWORD.get()))
                     .displayItems((enabledFeatures, entries) -> {
                         entries.accept(ItemsRegistry.OGRE_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.CAVE_OGRE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREWOLF_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.OWLBEAR_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.SILVER_SKELETON_SPAWN_EGG.get());

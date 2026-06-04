@@ -27,6 +27,9 @@ public class ItemsRegistry {
     public static final RegistryObject<ForgeSpawnEggItem> OGRE_SPAWN_EGG = ITEMS.register("ogre_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.OGRE, 0x418e4e, 0x14422e, new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> CAVE_OGRE_SPAWN_EGG = ITEMS.register("cave_ogre_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.CAVE_OGRE, 0x3a3230, 0x1a90c8, new Item.Properties().stacksTo(64)));
+
     public static final RegistryObject<ForgeSpawnEggItem> WEREWOLF_SPAWN_EGG = ITEMS.register("werewolf_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.WEREWOLF, 0x39363c, 0xe42e2e, new Item.Properties().stacksTo(64)));
 

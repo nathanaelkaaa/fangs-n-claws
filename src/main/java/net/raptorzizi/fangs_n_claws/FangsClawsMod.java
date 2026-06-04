@@ -14,12 +14,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
@@ -40,11 +42,13 @@ import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
+import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
@@ -195,6 +199,13 @@ public class FangsClawsMod {
     }
 
     @SubscribeEvent
+    public void onLivingChangeTarget(LivingChangeTargetEvent event) {
+        if (event.getEntity() instanceof Zombie && event.getNewTarget() instanceof WerevillagerEntity) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
         MobSpawnType type = event.getSpawnType();
         if (type != MobSpawnType.NATURAL && type != MobSpawnType.CHUNK_GENERATION) return;
@@ -207,6 +218,7 @@ public class FangsClawsMod {
         Entity entity = event.getEntity();
 
         if (entity instanceof GoblinEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
+        else if (entity instanceof CaveOgreEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
         else if (entity instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
         else if (entity instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
         else if (entity instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;

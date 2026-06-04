@@ -14,6 +14,7 @@ import net.raptorzizi.fangs_n_claws.entity.golem.GolemRenderer;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
+import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
@@ -40,6 +41,7 @@ public class ClientSetup {
     public static void rendererRegister(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.EVIL_BAT.get(),         EvilBatRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OGRE.get(),            OgreRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.CAVE_OGRE.get(),       CaveOgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WEREWOLF.get(),        WerewolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OWLBEAR.get(),         OwlbearRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonRenderer::new);

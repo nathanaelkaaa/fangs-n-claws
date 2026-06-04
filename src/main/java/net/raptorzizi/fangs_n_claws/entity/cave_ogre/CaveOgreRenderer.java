@@ -1,4 +1,4 @@
-package net.raptorzizi.fangs_n_claws.entity.ogre;
+package net.raptorzizi.fangs_n_claws.entity.cave_ogre;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,19 +13,19 @@ import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 
-public class OgreRenderer extends GeoEntityRenderer<OgreEntity> {
+public class CaveOgreRenderer extends GeoEntityRenderer<CaveOgreEntity> {
 
     private static final float            SCALE        = 1.1F;
     private static final ResourceLocation EYES         =
-            FangsClawsMod.id("textures/entity/glowing_eyes/ogre_eyes.png");
+            FangsClawsMod.id("textures/entity/glowing_eyes/cave_ogre_eyes.png");
     private static final ResourceLocation EYES_SIAMESE =
-            FangsClawsMod.id("textures/entity/glowing_eyes/ogre_siamese_eyes.png");
+            FangsClawsMod.id("textures/entity/glowing_eyes/cave_ogre_siamese_eyes.png");
 
-    public OgreRenderer(EntityRendererProvider.Context context) {
-        super(context, new OgreModel());
+    public CaveOgreRenderer(EntityRendererProvider.Context context) {
+        super(context, new CaveOgreModel());
         this.addRenderLayer(new GeoRenderLayer<>(this) {
             @Override
-            public void render(PoseStack poseStack, OgreEntity animatable, BakedGeoModel bakedModel,
+            public void render(PoseStack poseStack, CaveOgreEntity animatable, BakedGeoModel bakedModel,
                                @Nullable RenderType renderType, MultiBufferSource bufferSource,
                                @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
                 ResourceLocation eyesTex = animatable.isSiamese() ? EYES_SIAMESE : EYES;
@@ -38,7 +38,7 @@ public class OgreRenderer extends GeoEntityRenderer<OgreEntity> {
 
     @Override
     public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack,
-                                    OgreEntity animatable, BakedGeoModel model,
+                                    CaveOgreEntity animatable, BakedGeoModel model,
                                     boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
         super.scaleModelForRender(widthScale * SCALE, heightScale * SCALE, poseStack, animatable, model,
                 isReRender, partialTick, packedLight, packedOverlay);

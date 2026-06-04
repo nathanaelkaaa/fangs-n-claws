@@ -7,10 +7,12 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraft.world.entity.monster.Monster;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
+import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -24,7 +26,13 @@ public class SpawnSetup {
         event.register(EntityRegistry.OGRE.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                OgreEntity::checkOgreSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.OR);
+
+        event.register(EntityRegistry.CAVE_OGRE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                CaveOgreEntity::checkCaveOgreSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.OR);
 
         event.register(EntityRegistry.WEREWOLF.get(),

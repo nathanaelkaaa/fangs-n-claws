@@ -8,14 +8,18 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.minecraft.world.entity.EntityType;
@@ -59,6 +63,8 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> IS_RUNNING =
             SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> VARIANT =
+            SynchedEntityData.defineId(WerewolfEntity.class, EntityDataSerializers.INT);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -96,10 +102,14 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(IS_RUNNING, false);
+        this.entityData.define(VARIANT, 0);
     }
 
     public boolean isRunning()                  { return this.entityData.get(IS_RUNNING); }
     public void    setRunning(boolean running)  { this.entityData.set(IS_RUNNING, running); }
+
+    public int  getVariant()              { return this.entityData.get(VARIANT); }
+    public void setVariant(int variant)   { this.entityData.set(VARIANT, variant); }
 
     private boolean fleeing = false;
     public boolean isFleeing()                  { return fleeing; }
@@ -136,6 +146,28 @@ public class WerewolfEntity extends Monster implements GeoEntity {
             if (serverLevel.getEntitiesOfClass(WerewolfEntity.class, chunkBounds).size() >= 2) return false;
         }
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
+            @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+        float r = this.random.nextFloat();
+        if      (r < 0.50f) setVariant(0);
+        else if (r < 0.85f) setVariant(1);
+        else                setVariant(2);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnData, dataTag);
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putInt("WerewolfVariant", getVariant());
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        setVariant(tag.getInt("WerewolfVariant"));
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
