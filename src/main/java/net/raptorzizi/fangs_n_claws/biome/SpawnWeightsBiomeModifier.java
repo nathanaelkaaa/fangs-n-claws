@@ -31,6 +31,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             TagKey.create(Registries.BIOME, new ResourceLocation("minecraft", "is_forest"));
     private static final TagKey<Biome> IS_PLAINS =
             TagKey.create(Registries.BIOME, new ResourceLocation("fangs_n_claws", "is_plains"));
+    private static final ResourceKey<Biome> CRIMSON_FOREST =
+            ResourceKey.create(Registries.BIOME, new ResourceLocation("minecraft", "crimson_forest"));
+    private static final ResourceKey<Biome> NETHER_WASTES =
+            ResourceKey.create(Registries.BIOME, new ResourceLocation("minecraft", "nether_wastes"));
     private static final ResourceKey<Biome> SOUL_SAND_VALLEY =
             ResourceKey.create(Registries.BIOME, new ResourceLocation("soul_sand_valley"));
 
@@ -41,6 +45,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             Set<EntityType<?>> ourMobs = Set.of(
                     EntityRegistry.GOBLIN.get(),
                     EntityRegistry.DART_GOBLIN.get(),
+                    EntityRegistry.IMP.get(),
                     EntityRegistry.OGRE.get(),
                     EntityRegistry.CAVE_OGRE.get(),
                     EntityRegistry.GOLEM.get(),
@@ -87,6 +92,11 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             if (biome.is(IS_FOREST)) {
                 if (CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
+            }
+
+            if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {
+                if (CommonConfigs.ALLOW_SPAWN_IMP.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(), ServerConfigs.IMP_WEIGHT.get(), 1, 5);
             }
 
             if (biome.is(SOUL_SAND_VALLEY)) {

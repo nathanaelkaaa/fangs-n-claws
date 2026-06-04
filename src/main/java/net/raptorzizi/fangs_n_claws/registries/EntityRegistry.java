@@ -16,6 +16,8 @@ import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
+import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkEntity;
+import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -81,6 +83,20 @@ public class EntityRegistry {
                     .sized(0.6F, 1.4F)
                     .clientTrackingRange(8)
                     .build("goblin"));
+
+    public static final RegistryObject<EntityType<DecrepitPitchforkEntity>> DECREPIT_PITCHFORK_ENTITY =
+            ENTITIES.register("decrepit_pitchfork", () -> EntityType.Builder
+                    .<DecrepitPitchforkEntity>of(DecrepitPitchforkEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .updateInterval(20)
+                    .build("decrepit_pitchfork"));
+
+    public static final RegistryObject<EntityType<ImpEntity>> IMP =
+            ENTITIES.register("imp", () -> EntityType.Builder.of(ImpEntity::new, MobCategory.MONSTER)
+                    .sized(0.5F, 1.2F)
+                    .clientTrackingRange(8)
+                    .build("imp"));
 
     public static final RegistryObject<EntityType<DartGoblinEntity>> DART_GOBLIN =
             ENTITIES.register("dart_goblin", () -> EntityType.Builder.of(DartGoblinEntity::new, MobCategory.MONSTER)

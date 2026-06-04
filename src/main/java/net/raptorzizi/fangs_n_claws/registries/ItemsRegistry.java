@@ -10,6 +10,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
+import net.raptorzizi.fangs_n_claws.item.DecrepitPitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -58,6 +59,9 @@ public class ItemsRegistry {
     public static final RegistryObject<ForgeSpawnEggItem> DART_GOBLIN_SPAWN_EGG = ITEMS.register("dart_goblin_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.DART_GOBLIN, 0x4a7a35, 0xe8c840, new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> IMP_SPAWN_EGG = ITEMS.register("imp_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.IMP, 0x8b1a1a, 0xff6600, new Item.Properties().stacksTo(64)));
+
     /**
      * Materials
      */
@@ -87,7 +91,8 @@ public class ItemsRegistry {
     /**
      * Throwables / Projectiles
      */
-    public static final RegistryObject<BlowgunItem>        BLOWGUN        = ITEMS.register("blowgun",        BlowgunItem::new);
+    public static final RegistryObject<BlowgunItem>         BLOWGUN            = ITEMS.register("blowgun",            BlowgunItem::new);
+    public static final RegistryObject<DecrepitPitchforkItem> DECREPIT_PITCHFORK = ITEMS.register("decrepit_pitchfork", DecrepitPitchforkItem::new);
     public static final RegistryObject<Item>               POISONOUS_DART = ITEMS.register("poisonous_dart", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final RegistryObject<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);

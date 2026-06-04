@@ -69,9 +69,13 @@
   "entity.fangs_n_claws.goblin": "Goblin",
   "entity.fangs_n_claws.dart_goblin": "Dart Goblin",
   "item.fangs_n_claws.poisonous_dart": "Poisonous Dart",
+  "entity.fangs_n_claws.imp": "Imp",
+  "item.fangs_n_claws.imp_spawn_egg": "Imp Spawn Egg",
+  "item.fangs_n_claws.decrepit_pitchfork": "Decrepit Pitchfork",
 
   "effect.fangs_n_claws.bleeding": "Bleeding",
   "effect.fangs_n_claws.venom": "Venom",
+  "effect.fangs_n_claws.flamebrand": "Flamebrand",
 
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",
@@ -98,6 +102,8 @@
   "fangs_n_claws.configuration.spawn_toggles.werewolf.tooltip": "If false, Werewolves will never spawn naturally. Also controllable per-world via /gamerule allowSpawnWerewolf.",
   "fangs_n_claws.configuration.spawn_toggles.dart_goblin": "Allow Dart Goblin Spawning",
   "fangs_n_claws.configuration.spawn_toggles.dart_goblin.tooltip": "If false, Dart Goblins will never spawn naturally. Also controllable per-world via /gamerule allowSpawnDartGoblin.",
+  "fangs_n_claws.configuration.spawn_toggles.imp": "Allow Imp Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.imp.tooltip": "If false, Imps will never spawn naturally. Also controllable per-world via /gamerule allowSpawnImp.",
 
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
@@ -119,5 +125,7 @@
   "fangs_n_claws.configuration.spawn_weights.werewolf": "Werewolf",
   "fangs_n_claws.configuration.spawn_weights.werewolf.tooltip": "Spawn weight for Werewolves (overworld). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.dart_goblin": "Dart Goblin",
-  "fangs_n_claws.configuration.spawn_weights.dart_goblin.tooltip": "Spawn weight for Dart Goblins (overworld, night only). 0 = disabled."
+  "fangs_n_claws.configuration.spawn_weights.dart_goblin.tooltip": "Spawn weight for Dart Goblins (overworld, night only). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.imp": "Imp",
+  "fangs_n_claws.configuration.spawn_weights.imp.tooltip": "Spawn weight for Imps (Crimson Forest + Nether Wastes). 0 = disabled."
 }

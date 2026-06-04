@@ -43,6 +43,7 @@ import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
+import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
@@ -247,6 +248,7 @@ public class FangsClawsMod {
         else if (entity instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
         else if (entity instanceof GhostEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))          cancel = true;
         else if (entity instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
+        else if (entity instanceof ImpEntity       && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))            cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 

@@ -30,6 +30,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.GHOST_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.DART_GOBLIN_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.IMP_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREVILLAGER_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.POISONOUS_DART.get());
                         entries.accept(ItemsRegistry.HEAVY_CLAW.get());
@@ -43,6 +44,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.CATCHING_CLAW.get());
                         entries.accept(ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
                         entries.accept(ItemsRegistry.SILVER_SWORD.get());
+                        entries.accept(ItemsRegistry.DECREPIT_PITCHFORK.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());
                         entries.accept(ItemsRegistry.VELOCITY_ARROW.get());
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());
