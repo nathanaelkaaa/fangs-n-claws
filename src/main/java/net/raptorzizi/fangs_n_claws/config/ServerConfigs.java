@@ -17,6 +17,7 @@ public class ServerConfigs {
     public static final ForgeConfigSpec.IntValue GHOST_WEIGHT;
     public static final ForgeConfigSpec.IntValue GHOST_NETHER_WEIGHT;
     public static final ForgeConfigSpec.IntValue WEREWOLF_WEIGHT;
+    public static final ForgeConfigSpec.IntValue DART_GOBLIN_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -52,6 +53,10 @@ public class ServerConfigs {
         WEREWOLF_WEIGHT        = BUILDER.comment("Werewolf (overworld) — default: 30")
                                         .translation("fangs_n_claws.configuration.spawn_weights.werewolf")
                                         .defineInRange("werewolf",        25, 0, 500);
+
+        DART_GOBLIN_WEIGHT     = BUILDER.comment("Dart Goblin (overworld, any biome) — default: 10")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.dart_goblin")
+                                        .defineInRange("dart_goblin",     10, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

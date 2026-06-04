@@ -13,6 +13,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +42,7 @@ import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
@@ -163,6 +165,19 @@ public class FangsClawsMod {
             entity.removeEffect(MobEffectsRegistry.BLEEDING.get());
         }
 
+        if (entity instanceof PathfinderMob mob && mob.hasEffect(MobEffectsRegistry.VENOM.get())) {
+            if (mob.getTarget() != null) mob.setTarget(null);
+            if (mob.tickCount % 10 == 0) {
+                double angle = mob.getRandom().nextDouble() * Math.PI * 2.0;
+                double dist  = 4.0 + mob.getRandom().nextDouble() * 4.0;
+                Vec3 randomTarget = mob.position().add(
+                        Math.sin(angle) * dist,
+                        0.0,
+                        Math.cos(angle) * dist);
+                mob.getNavigation().moveTo(randomTarget.x, randomTarget.y, randomTarget.z, 1.4);
+            }
+        }
+
         if (entity instanceof Monster monster && monster.tickCount % 15 == 0) {
             Level level = monster.level();
             BlockPos mobPos = monster.blockPosition();
@@ -203,6 +218,11 @@ public class FangsClawsMod {
         if (event.getEntity() instanceof Zombie && event.getNewTarget() instanceof WerevillagerEntity) {
             event.setCanceled(true);
         }
+        if (event.getNewTarget() != null
+                && event.getEntity() instanceof PathfinderMob mob
+                && mob.hasEffect(MobEffectsRegistry.VENOM.get())) {
+            event.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
@@ -217,8 +237,9 @@ public class FangsClawsMod {
         boolean cancel = false;
         Entity entity = event.getEntity();
 
-        if (entity instanceof GoblinEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
-        else if (entity instanceof CaveOgreEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
+        if (entity instanceof GoblinEntity           && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
+        else if (entity instanceof DartGoblinEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)) cancel = true;
+        else if (entity instanceof CaveOgreEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
         else if (entity instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
         else if (entity instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
         else if (entity instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
@@ -228,6 +249,26 @@ public class FangsClawsMod {
         else if (entity instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
+
+        if (entity instanceof GoblinEntity
+                && !event.isSpawnCancelled()
+                && rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)
+                && serverLevel.random.nextInt(7) == 0) {
+
+            DartGoblinEntity dartGoblin = EntityRegistry.DART_GOBLIN.get().create(serverLevel);
+            if (dartGoblin != null) {
+                double offsetX = (serverLevel.random.nextDouble() - 0.5) * 6.0;
+                double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 6.0;
+                dartGoblin.moveTo(
+                        entity.getX() + offsetX,
+                        entity.getY(),
+                        entity.getZ() + offsetZ,
+                        serverLevel.random.nextFloat() * 360f, 0f);
+                dartGoblin.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(dartGoblin.blockPosition()),
+                        MobSpawnType.MOB_SUMMONED, null, null);
+                serverLevel.addFreshEntity(dartGoblin);
+            }
+        }
     }
 
     public static ResourceLocation id(@NotNull String path) {

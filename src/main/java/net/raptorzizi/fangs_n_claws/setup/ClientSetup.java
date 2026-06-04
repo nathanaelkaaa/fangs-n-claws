@@ -9,6 +9,8 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinRenderer;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartRenderer;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinRenderer;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemRenderer;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
@@ -48,6 +50,8 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOBLIN.get(),              GoblinRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.DART_GOBLIN.get(),         DartGoblinRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.POISONOUS_DART.get(),      PoisonousDartRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WEREVILLAGER.get(),        WerevillagerRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(),     CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NETHERITE_CLAW_HOOK.get(),   NetheriteClawHookRenderer::new);

@@ -40,6 +40,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         if (phase == Phase.REMOVE) {
             Set<EntityType<?>> ourMobs = Set.of(
                     EntityRegistry.GOBLIN.get(),
+                    EntityRegistry.DART_GOBLIN.get(),
                     EntityRegistry.OGRE.get(),
                     EntityRegistry.CAVE_OGRE.get(),
                     EntityRegistry.GOLEM.get(),
@@ -61,7 +62,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
             if (biome.is(IS_OVERWORLD)) {
                 if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
-                    add(spawns, MobCategory.MONSTER,  EntityRegistry.GOBLIN.get(),         ServerConfigs.GOBLIN_WEIGHT.get(),          1, 5);
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.GOBLIN.get(),          ServerConfigs.GOBLIN_WEIGHT.get(),          1, 5);
+                if (CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.DART_GOBLIN.get(),     ServerConfigs.DART_GOBLIN_WEIGHT.get(),     1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.OGRE.get(),            ServerConfigs.OGRE_WEIGHT.get(),            1, 2);
                 if (CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get())

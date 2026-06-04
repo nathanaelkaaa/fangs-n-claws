@@ -8,6 +8,7 @@ import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraft.world.entity.monster.Monster;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
@@ -75,6 +76,12 @@ public class SpawnSetup {
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 GoblinEntity::checkGoblinSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.OR);
+
+        event.register(EntityRegistry.DART_GOBLIN.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                DartGoblinEntity::checkDartGoblinSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.OR);
 
         event.register(EntityRegistry.WEREVILLAGER.get(),

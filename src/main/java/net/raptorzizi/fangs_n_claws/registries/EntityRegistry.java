@@ -14,6 +14,8 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -79,6 +81,20 @@ public class EntityRegistry {
                     .sized(0.6F, 1.4F)
                     .clientTrackingRange(8)
                     .build("goblin"));
+
+    public static final RegistryObject<EntityType<DartGoblinEntity>> DART_GOBLIN =
+            ENTITIES.register("dart_goblin", () -> EntityType.Builder.of(DartGoblinEntity::new, MobCategory.MONSTER)
+                    .sized(0.6F, 1.4F)
+                    .clientTrackingRange(8)
+                    .build("dart_goblin"));
+
+    public static final RegistryObject<EntityType<PoisonousDartEntity>> POISONOUS_DART =
+            ENTITIES.register("poisonous_dart", () -> EntityType.Builder
+                    .<PoisonousDartEntity>of(PoisonousDartEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .updateInterval(20)
+                    .build("poisonous_dart"));
 
     public static final RegistryObject<EntityType<WerevillagerEntity>> WEREVILLAGER =
             ENTITIES.register("werevillager", () -> EntityType.Builder

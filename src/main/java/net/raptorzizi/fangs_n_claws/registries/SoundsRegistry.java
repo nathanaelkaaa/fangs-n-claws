@@ -39,6 +39,11 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> OWLBEAR_SLASH =
             register("owlbear.slash");
 
+    public static final Supplier<SoundEvent> BLOWGUN_SHOOT =
+            register("blowgun.shoot");
+    public static final Supplier<SoundEvent> DART_HIT =
+            register("dart.hit");
+
     public static final Supplier<SoundEvent> GOBLIN_AMBIENT =
             register("goblin.ambient");
     public static final Supplier<SoundEvent> GOBLIN_HURT =

@@ -8,6 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.effect.StunnedEffect;
+import net.raptorzizi.fangs_n_claws.effect.VenomEffect;
 
 public class MobEffectsRegistry {
 
@@ -19,6 +20,9 @@ public class MobEffectsRegistry {
 
     public static final RegistryObject<StunnedEffect> STUNNED =
             MOB_EFFECTS.register("stunned", StunnedEffect::new);
+
+    public static final RegistryObject<VenomEffect> VENOM =
+            MOB_EFFECTS.register("venom", VenomEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

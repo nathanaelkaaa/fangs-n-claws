@@ -10,6 +10,7 @@
   "item.fangs_n_claws.silver_skeleton_spawn_egg": "Silver Skeleton Spawn Egg",
   "item.fangs_n_claws.golem_spawn_egg": "Big Golem Spawn Egg",
   "item.fangs_n_claws.goblin_spawn_egg": "Goblin Spawn Egg",
+  "item.fangs_n_claws.dart_goblin_spawn_egg": "Dart Goblin Spawn Egg",
   "item.fangs_n_claws.werevillager_spawn_egg": "Werevillager Spawn Egg",
   "entity.fangs_n_claws.werevillager": "Werevillager",
 
@@ -20,6 +21,9 @@
   "item.fangs_n_claws.spectral_essence": "Spectral Essence",
   "item.fangs_n_claws.fang_dagger": "Fang Dagger",
   "item.fangs_n_claws.fang_dagger.tooltip1": "§7Attacking from behind inflicts Bleeding",
+
+  "item.fangs_n_claws.blowgun": "Blowgun",
+  "item.fangs_n_claws.blowgun.tooltip1": "§7Fires Poisonous Darts. Hold to charge, release to shoot",
 
   "item.fangs_n_claws.silver_sword": "Silver Sword",
   "item.fangs_n_claws.silver_sword.tooltip1": "§7The only weapon that can effectively kill a Werewolf",
@@ -63,8 +67,11 @@
   "entity.fangs_n_claws.silver_skeleton": "Silver Skeleton",
   "entity.fangs_n_claws.golem": "Big Golem",
   "entity.fangs_n_claws.goblin": "Goblin",
+  "entity.fangs_n_claws.dart_goblin": "Dart Goblin",
+  "item.fangs_n_claws.poisonous_dart": "Poisonous Dart",
 
   "effect.fangs_n_claws.bleeding": "Bleeding",
+  "effect.fangs_n_claws.venom": "Venom",
 
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",
@@ -89,6 +96,8 @@
   "fangs_n_claws.configuration.spawn_toggles.ghost.tooltip": "If false, Ghosts will never spawn naturally. Also controllable per-world via /gamerule allowSpawnGhost.",
   "fangs_n_claws.configuration.spawn_toggles.werewolf": "Allow Werewolf Spawning",
   "fangs_n_claws.configuration.spawn_toggles.werewolf.tooltip": "If false, Werewolves will never spawn naturally. Also controllable per-world via /gamerule allowSpawnWerewolf.",
+  "fangs_n_claws.configuration.spawn_toggles.dart_goblin": "Allow Dart Goblin Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.dart_goblin.tooltip": "If false, Dart Goblins will never spawn naturally. Also controllable per-world via /gamerule allowSpawnDartGoblin.",
 
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
@@ -108,5 +117,7 @@
   "fangs_n_claws.configuration.spawn_weights.ghost_nether": "Ghost (Nether)",
   "fangs_n_claws.configuration.spawn_weights.ghost_nether.tooltip": "Spawn weight for Ghosts in the Soul Sand Valley. 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.werewolf": "Werewolf",
-  "fangs_n_claws.configuration.spawn_weights.werewolf.tooltip": "Spawn weight for Werewolves (overworld). 0 = disabled."
+  "fangs_n_claws.configuration.spawn_weights.werewolf.tooltip": "Spawn weight for Werewolves (overworld). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.dart_goblin": "Dart Goblin",
+  "fangs_n_claws.configuration.spawn_weights.dart_goblin.tooltip": "Spawn weight for Dart Goblins (overworld, night only). 0 = disabled."
 }

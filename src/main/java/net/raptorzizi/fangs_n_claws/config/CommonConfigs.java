@@ -17,6 +17,7 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_EVIL_BAT;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GHOST;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_WEREWOLF;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_DART_GOBLIN;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -66,6 +67,11 @@ public class CommonConfigs {
                 .comment("Allow Werewolves to spawn naturally (overworld)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.werewolf")
                 .define("allow_werewolf", true);
+
+        ALLOW_SPAWN_DART_GOBLIN = BUILDER
+                .comment("Allow Dart Goblins to spawn naturally (overworld, night only)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.dart_goblin")
+                .define("allow_dart_goblin", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
