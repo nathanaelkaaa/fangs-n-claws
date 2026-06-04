@@ -12,6 +12,7 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 
@@ -29,7 +30,7 @@ public class SpawnSetup {
         event.register(EntityRegistry.WEREWOLF.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                WerewolfEntity::checkWerewolfSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.OR);
 
         event.register(EntityRegistry.SILVER_SKELETON.get(),

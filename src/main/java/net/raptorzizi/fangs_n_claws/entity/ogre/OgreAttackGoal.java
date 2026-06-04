@@ -13,7 +13,7 @@ public class OgreAttackGoal extends Goal {
 
     public static final double MIN_ATTACK_RANGE = 3;
     public static final double MAX_ATTACK_RANGE = 5;
-    private static final double CHASE_SPEED     = 1.4;
+    private static final double CHASE_SPEED           = 1.4;
     private static final int    ATTACK_INTERVAL       = 35;
     private static final double SLAM_RANGE            = 6.0;
     private static final int    STUCK_TICK_THRESHOLD  = 40;
@@ -59,7 +59,6 @@ public class OgreAttackGoal extends Goal {
 
         if (ogre.isAttacking() || ogre.isSlamming()) {
             ogre.setRunning(false);
-            ogre.getNavigation().stop();
             if (target != null) ogre.getLookControl().setLookAt(target, 30.0F, 30.0F);
             return;
         }
@@ -98,21 +97,18 @@ public class OgreAttackGoal extends Goal {
 
             ogre.getLookControl().setLookAt(target, 30.0F, 30.0F);
 
-            double distance = ogre.distanceTo(target);
-            if (distance > MAX_ATTACK_RANGE) {
+            double  distance = ogre.distanceTo(target);
+            boolean hasLos   = ogre.hasLineOfSight(target);
+
+            if (distance > MAX_ATTACK_RANGE || !hasLos) {
                 ogre.setRunning(true);
                 ogre.getNavigation().moveTo(target, CHASE_SPEED);
             } else if (distance >= MIN_ATTACK_RANGE) {
+                ogre.setRunning(false);
+                ogre.getNavigation().moveTo(target, CHASE_SPEED * 0.5);
                 if (attackCooldown <= 0) {
-                    ogre.setRunning(false);
-                    ogre.getNavigation().stop();
                     attackCooldown = ATTACK_INTERVAL;
                     ogre.doHurtTarget(target);
-                } else {
-                    ogre.setRunning(false);
-                    if (ogre.getNavigation().isDone()) {
-                        ogre.getNavigation().moveTo(target, CHASE_SPEED * 0.5);
-                    }
                 }
             } else {
                 ogre.setRunning(false);

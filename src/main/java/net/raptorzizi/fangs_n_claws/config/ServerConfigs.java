@@ -23,7 +23,7 @@ public class ServerConfigs {
 
         GOBLIN_WEIGHT          = BUILDER.comment("Goblin (overworld, any biome) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.goblin")
-                                        .defineInRange("goblin",          25, 0, 500);
+                                        .defineInRange("goblin",          20, 0, 500);
         OGRE_WEIGHT            = BUILDER.comment("Ogre (overworld, any biome) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ogre")
                                         .defineInRange("ogre",            15, 0, 500);
@@ -38,7 +38,7 @@ public class ServerConfigs {
                                         .defineInRange("silver_skeleton", 30, 0, 500);
         EVIL_BAT_WEIGHT        = BUILDER.comment("Evil Bat (overworld) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.evil_bat")
-                                        .defineInRange("evil_bat",        20, 0, 500);
+                                        .defineInRange("evil_bat",        15, 0, 500);
         GHOST_WEIGHT           = BUILDER.comment("Ghost (overworld) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ghost")
                                         .defineInRange("ghost",           25, 0, 500);
@@ -47,7 +47,7 @@ public class ServerConfigs {
                                         .defineInRange("ghost_nether",    15, 0, 500);
         WEREWOLF_WEIGHT        = BUILDER.comment("Werewolf (overworld) — default: 30")
                                         .translation("fangs_n_claws.configuration.spawn_weights.werewolf")
-                                        .defineInRange("werewolf",        30, 0, 500);
+                                        .defineInRange("werewolf",        25, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
