@@ -29,25 +29,28 @@ public class NetheriteClawItem extends Item {
     private static final float THROW_VELOCITY   = 1.8f;
     private static final float THROW_INACCURACY = 0.8f;
 
-    private static ItemAttributeModifiers buildAttributes() {
+    private static final double BASE_ATTACK_DAMAGE = 3.0;
+    private static final double BASE_ATTACK_SPEED  = -2.8;
+
+    public NetheriteClawItem() {
+        super(new Properties().stacksTo(1).durability(256).fireResistant());
+    }
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        int scratch = CatchingClawItem.getScratchLevel(stack);
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(
-                                Item.BASE_ATTACK_DAMAGE_ID,
-                                4.0,
+                        new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
+                                BASE_ATTACK_DAMAGE + scratch * 0.25,
                                 AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED,
-                        new AttributeModifier(
-                                Item.BASE_ATTACK_SPEED_ID,
-                                -2.8,
+                        new AttributeModifier(BASE_ATTACK_SPEED_ID,
+                                BASE_ATTACK_SPEED,
                                 AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .build();
-    }
-
-    public NetheriteClawItem() {
-        super(new Properties().stacksTo(1).durability(256).fireResistant().attributes(buildAttributes()));
     }
 
     @Override

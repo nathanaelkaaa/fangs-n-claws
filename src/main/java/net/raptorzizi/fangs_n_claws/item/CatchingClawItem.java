@@ -19,7 +19,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
+import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,25 +31,38 @@ public class CatchingClawItem extends Item {
     private static final float THROW_VELOCITY  = 1.5f;
     private static final float THROW_INACCURACY = 1.0f;
 
-    private static ItemAttributeModifiers buildAttributes() {
+    private static final double BASE_ATTACK_DAMAGE = 2.0;
+    private static final double BASE_ATTACK_SPEED  = -3.0;
+
+    public CatchingClawItem() {
+        super(new Properties().stacksTo(1).durability(128));
+    }
+
+    static int getScratchLevel(ItemStack stack) {
+        ItemEnchantments enchants = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+        for (var holder : enchants.keySet()) {
+            if (holder.is(EnchantmentsRegistry.SCRATCH)) {
+                return enchants.getLevel(holder);
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack stack) {
+        int scratch = getScratchLevel(stack);
         return ItemAttributeModifiers.builder()
                 .add(Attributes.ATTACK_DAMAGE,
-                        new AttributeModifier(
-                                Item.BASE_ATTACK_DAMAGE_ID,
-                                2.0,
+                        new AttributeModifier(BASE_ATTACK_DAMAGE_ID,
+                                BASE_ATTACK_DAMAGE + scratch * 0.25,
                                 AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .add(Attributes.ATTACK_SPEED,
-                        new AttributeModifier(
-                                Item.BASE_ATTACK_SPEED_ID,
-                                -3.0,
+                        new AttributeModifier(BASE_ATTACK_SPEED_ID,
+                                BASE_ATTACK_SPEED,
                                 AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .build();
-    }
-
-    public CatchingClawItem() {
-        super(new Properties().stacksTo(1).durability(128).attributes(buildAttributes()));
     }
 
     @Override
