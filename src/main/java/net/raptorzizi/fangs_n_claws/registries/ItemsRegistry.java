@@ -7,6 +7,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
+import net.raptorzizi.fangs_n_claws.item.DecrepitPitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -50,6 +51,9 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> GOBLIN_SPAWN_EGG = ITEMS.register("goblin_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GOBLIN, 0x5d8745, 0x554035, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> IMP_SPAWN_EGG = ITEMS.register("imp_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.IMP, 0x8b1a1a, 0xff6600, new Item.Properties().stacksTo(64)));
+
     public static final Supplier<DeferredSpawnEggItem> WEREVILLAGER_SPAWN_EGG = ITEMS.register("werevillager_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.WEREVILLAGER, 0x9e6e42, 0xe42e2e, new Item.Properties().stacksTo(64)));
 
@@ -82,6 +86,7 @@ public class ItemsRegistry {
     public static final Supplier<CatchingClawItem>      CATCHING_CLAW      = ITEMS.register("catching_claw",      CatchingClawItem::new);
     public static final Supplier<NetheriteClawItem>     CATCHING_CLAW_NETHERITE = ITEMS.register("catching_claw_netherite", NetheriteClawItem::new);
     public static final Supplier<SilverSwordItem>       SILVER_SWORD       = ITEMS.register("silver_sword",       SilverSwordItem::new);
+    public static final Supplier<DecrepitPitchforkItem> DECREPIT_PITCHFORK = ITEMS.register("decrepit_pitchfork", DecrepitPitchforkItem::new);
 
     /**
      * Throwables / Projectiles

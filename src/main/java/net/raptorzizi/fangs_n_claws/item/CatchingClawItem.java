@@ -101,4 +101,9 @@ public class CatchingClawItem extends Item {
         else              tag.remove("HookUUID");
         stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
     }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 1;
+    }
 }

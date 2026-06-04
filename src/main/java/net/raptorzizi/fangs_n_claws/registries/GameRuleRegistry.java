@@ -34,5 +34,8 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_DART_GOBLIN =
             GameRules.register("allowSpawnDartGoblin",      GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_IMP =
+            GameRules.register("allowSpawnImp",             GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }

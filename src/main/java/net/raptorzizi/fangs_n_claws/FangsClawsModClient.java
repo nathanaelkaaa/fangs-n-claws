@@ -5,6 +5,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
@@ -24,11 +25,15 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.raptorzizi.fangs_n_claws.block.GhostBlock;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
+import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkItemRenderer;
+import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkRenderer;
+import net.raptorzizi.fangs_n_claws.entity.imp.ImpRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -172,15 +177,38 @@ public class FangsClawsModClient {
                 ResourceLocation.fromNamespaceAndPath("minecraft", "pull"),
                 (stack, level, entity, seed) -> {
                     if (entity == null || entity.getUseItem() != stack) return 0.0f;
+                    int chargeDuration = level != null
+                            ? BlowgunItem.getChargeDuration(stack, level)
+                            : BlowgunItem.CHARGE_TICKS;
                     int charged = stack.getUseDuration(entity) - entity.getUseItemRemainingTicks();
-                    return Math.min(charged / (float) BlowgunItem.CHARGE_TICKS, 1.0f);
+                    return Math.min(charged / (float) chargeDuration, 1.0f);
                 });
         });
     }
 
     @SubscribeEvent
+    static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerItem(new IClientItemExtensions() {
+            private DecrepitPitchforkItemRenderer renderer;
+
+            @Override
+            public DecrepitPitchforkItemRenderer getCustomRenderer() {
+                if (this.renderer == null) {
+                    Minecraft mc = Minecraft.getInstance();
+                    this.renderer = new DecrepitPitchforkItemRenderer(
+                            mc.getBlockEntityRenderDispatcher(),
+                            mc.getEntityModels());
+                }
+                return this.renderer;
+            }
+        }, ItemsRegistry.DECREPIT_PITCHFORK.get());
+    }
+
+    @SubscribeEvent
     static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.OGRE.get(), OgreRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.IMP.get(), ImpRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.DECREPIT_PITCHFORK_ENTITY.get(), DecrepitPitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
     }

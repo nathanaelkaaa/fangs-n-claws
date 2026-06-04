@@ -18,6 +18,7 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GHOST;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WEREWOLF;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_DART_GOBLIN;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_IMP;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -72,6 +73,11 @@ public class CommonConfigs {
                 .comment("Allow Dart Goblins to spawn naturally (overworld, night only)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.dart_goblin")
                 .define("allow_dart_goblin", true);
+
+        ALLOW_SPAWN_IMP = BUILDER
+                .comment("Allow Imps to spawn naturally (nether, any biome)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.imp")
+                .define("allow_imp", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

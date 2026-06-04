@@ -141,6 +141,8 @@ dependencies {
     compileOnly "mezz.jei:jei-${jei_mc_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}"
 
+    implementation "curse.maven:mmmmmmmmmmmm-225738:7206981"
+    implementation "curse.maven:selene-499980:7695522"
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -207,14 +209,6 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
-
-tasks.register('copyAnimations', Copy) {
-    from layout.projectDirectory.file("src/main/resources/assets/${mod_id}/player_animations/casting_animations.json")
-    into layout.projectDirectory.dir("src/main/resources/assets/${mod_id}/animations")
-}
-
-tasks.classes.dependsOn(tasks.copyAnimations)
-tasks.processResources.dependsOn(tasks.copyAnimations)
 
 // IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
