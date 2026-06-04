@@ -30,6 +30,9 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> CAVE_OGRE_SPAWN_EGG = ITEMS.register("cave_ogre_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.CAVE_OGRE, 0x3a3230, 0x1a90c8, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> HELL_OGRE_SPAWN_EGG = ITEMS.register("hell_ogre_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.HELL_OGRE, 0x7a1e00, 0xff6600, new Item.Properties().stacksTo(64)));
+
     public static final Supplier<DeferredSpawnEggItem> WEREWOLF_SPAWN_EGG =  ITEMS.register("werewolf_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.WEREWOLF, 0x39363c, 0xe42e2e, new Item.Properties().stacksTo(64)));
 

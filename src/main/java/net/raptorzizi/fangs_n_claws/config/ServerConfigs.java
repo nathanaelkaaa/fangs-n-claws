@@ -19,6 +19,7 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue WEREWOLF_WEIGHT;
     public static final ModConfigSpec.IntValue DART_GOBLIN_WEIGHT;
     public static final ModConfigSpec.IntValue IMP_WEIGHT;
+    public static final ModConfigSpec.IntValue HELL_OGRE_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -60,6 +61,10 @@ public class ServerConfigs {
         IMP_WEIGHT             = BUILDER.comment("Imp (Crimson Forest + Nether Wastes) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.imp")
                                         .defineInRange("imp",             20, 0, 500);
+
+        HELL_OGRE_WEIGHT       = BUILDER.comment("Hell Ogre (nether, all biomes) — default: 10")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.hell_ogre")
+                                        .defineInRange("hell_ogre",       10, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

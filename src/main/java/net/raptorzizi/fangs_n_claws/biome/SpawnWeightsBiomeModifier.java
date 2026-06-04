@@ -16,6 +16,7 @@ import net.neoforged.neoforge.common.world.MobSpawnSettingsBuilder;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 
 import java.util.Set;
 
@@ -37,6 +38,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             ResourceKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("nether_wastes"));
     private static final ResourceKey<Biome> SOUL_SAND_VALLEY =
             ResourceKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("soul_sand_valley"));
+    private static final TagKey<Biome> IS_NETHER =
+            TagKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("is_nether"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -52,7 +55,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.SILVER_SKELETON.get(),
                     EntityRegistry.EVIL_BAT.get(),
                     EntityRegistry.GHOST.get(),
-                    EntityRegistry.WEREWOLF.get()
+                    EntityRegistry.WEREWOLF.get(),
+                    EntityRegistry.HELL_OGRE.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -96,6 +100,11 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {
                 if (CommonConfigs.ALLOW_SPAWN_IMP.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(), ServerConfigs.IMP_WEIGHT.get(), 1, 5);
+            }
+
+            if (biome.is(IS_NETHER)) {
+                if (CommonConfigs.ALLOW_SPAWN_HELL_OGRE.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.HELL_OGRE.get(), ServerConfigs.HELL_OGRE_WEIGHT.get(), 1, 1);
             }
 
             if (biome.is(SOUL_SAND_VALLEY)) {

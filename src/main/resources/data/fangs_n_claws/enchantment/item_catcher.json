@@ -1,0 +1,19 @@
+{
+  "description": {
+    "translate": "enchantment.fangs_n_claws.item_catcher"
+  },
+  "max_level": 1,
+  "slots": ["mainhand"],
+  "supported_items": "#fangs_n_claws:enchantable/catching_claw",
+  "weight": 3,
+  "anvil_cost": 3,
+  "min_cost": {
+    "base": 10,
+    "per_level_above_first": 0
+  },
+  "max_cost": {
+    "base": 40,
+    "per_level_above_first": 0
+  },
+  "effects": {}
+}

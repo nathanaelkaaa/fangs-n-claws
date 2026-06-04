@@ -1,0 +1,20 @@
+{
+  "description": {
+    "translate": "enchantment.fangs_n_claws.quick_killer"
+  },
+  "max_level": 2,
+  "slots": ["mainhand"],
+  "supported_items": "#fangs_n_claws:enchantable/dagger",
+  "weight": 5,
+  "anvil_cost": 2,
+  "min_cost": {
+    "base": 5,
+    "per_level_above_first": 8
+  },
+  "max_cost": {
+    "base": 25,
+    "per_level_above_first": 8
+  },
+  "exclusive_set": "#fangs_n_claws:exclusive/dagger_special",
+  "effects": {}
+}

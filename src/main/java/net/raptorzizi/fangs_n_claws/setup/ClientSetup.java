@@ -27,6 +27,7 @@ import net.raptorzizi.fangs_n_claws.particle.BlackFogParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodParticle;
 import net.raptorzizi.fangs_n_claws.particle.FireExplosionParticle;
+import net.raptorzizi.fangs_n_claws.particle.FireParticle;
 import net.raptorzizi.fangs_n_claws.particle.OrangeSmokeParticle;
 import net.raptorzizi.fangs_n_claws.particle.StunStarParticle;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
@@ -68,6 +69,7 @@ public class ClientSetup {
         event.registerSpriteSet(ParticlesRegistry.STUN_STAR.get(),      StunStarParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.BLACK_FOG.get(),        BlackFogParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.FIRE_EXPLOSION.get(),  FireExplosionParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.FIRE.get(),            FireParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ORANGE_SMOKE.get(),    OrangeSmokeParticle.Provider::new);
     }
 }

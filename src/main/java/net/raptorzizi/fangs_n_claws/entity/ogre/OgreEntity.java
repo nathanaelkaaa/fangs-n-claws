@@ -49,8 +49,7 @@ public class OgreEntity extends Monster implements GeoEntity {
     private static final int    SLAM_HIT_TICK    = 20;
     private static final int    SLAM_TOTAL_TICKS = 32;
     private static final double SLAM_RADIUS      = 2.5;
-    private static final double SLAM_DAMAGE      = 6.0;
-
+    private static final double SLAM_DAMAGE      = 8.0;
     private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
 
     private static final EntityDataAccessor<Boolean> IS_RUNNING =
@@ -114,12 +113,16 @@ public class OgreEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,               50.0)
+                .add(Attributes.MAX_HEALTH,               60.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.15)
-                .add(Attributes.ATTACK_DAMAGE,             4.0)
+                .add(Attributes.ATTACK_DAMAGE,             5.0)
                 .add(Attributes.FOLLOW_RANGE,             20.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE,  3.5)
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.8);
+    }
+
+    protected double getSlamDamage() {
+        return SLAM_DAMAGE;
     }
 
     public static boolean checkOgreSpawnRules(EntityType<? extends OgreEntity> type,
@@ -200,7 +203,7 @@ public class OgreEntity extends Monster implements GeoEntity {
         AABB box = new AABB(slamImpactPos, slamImpactPos).inflate(SLAM_RADIUS);
         for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, box)) {
             if (entity != this) {
-                entity.hurt(this.damageSources().mobAttack(this), (float) SLAM_DAMAGE);
+                entity.hurt(this.damageSources().mobAttack(this), (float) getSlamDamage());
             }
         }
 

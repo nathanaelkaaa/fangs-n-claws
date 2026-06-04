@@ -20,6 +20,7 @@ import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkE
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
@@ -50,6 +51,12 @@ public class EntityRegistry {
             ENTITIES.register("cave_ogre", () -> EntityType.Builder.of(CaveOgreEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 2.95F)
                     .build("cave_ogre"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<HellOgreEntity>> HELL_OGRE =
+            ENTITIES.register("hell_ogre", () -> EntityType.Builder.of(HellOgreEntity::new, MobCategory.MONSTER)
+                    .sized(1.95F, 2.95F)
+                    .fireImmune()
+                    .build("hell_ogre"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<WerewolfEntity>> WEREWOLF =
             ENTITIES.register("werewolf", () -> EntityType.Builder.of(WerewolfEntity::new, MobCategory.MONSTER)

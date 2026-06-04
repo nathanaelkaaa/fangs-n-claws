@@ -13,6 +13,9 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_CAVE_OGRE =
             GameRules.register("allowSpawnCaveOgre",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_HELL_OGRE =
+            GameRules.register("allowSpawnHellOgre",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_GOLEM =
             GameRules.register("allowSpawnGolem",           GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 

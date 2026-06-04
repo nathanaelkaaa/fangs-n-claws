@@ -34,6 +34,7 @@ import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRendere
 import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkItemRenderer;
 import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkRenderer;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpRenderer;
+import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -207,6 +208,7 @@ public class FangsClawsModClient {
     @SubscribeEvent
     static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.OGRE.get(), OgreRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.HELL_OGRE.get(), HellOgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.IMP.get(), ImpRenderer::new);
         event.registerEntityRenderer(EntityRegistry.DECREPIT_PITCHFORK_ENTITY.get(), DecrepitPitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);

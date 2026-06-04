@@ -11,6 +11,7 @@ import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
@@ -95,6 +96,12 @@ public class SpawnSetup {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 WerevillagerEntity::checkWerevillagerSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.HELL_OGRE.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                HellOgreEntity::checkHellOgreSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
     }
 }
