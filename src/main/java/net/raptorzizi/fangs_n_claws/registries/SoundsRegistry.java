@@ -20,6 +20,12 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> BACKSTAB_IMPACT =
             register("generic.backstab_impact");
 
+    public static final Supplier<SoundEvent> HELL_OGRE_FIRE_BREATH =
+            register("hell_ogre.fire_breath");
+
+    public static final Supplier<SoundEvent> OGRE_ROAR =
+            register("ogre.roar");
+
     //TODO Create ogre sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> OGRE_AMBIENT =
             register("ogre.ambient");

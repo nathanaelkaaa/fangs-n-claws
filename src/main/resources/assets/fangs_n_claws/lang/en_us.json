@@ -27,7 +27,8 @@
   "item.fangs_n_claws.blowgun": "Blowgun",
   "item.fangs_n_claws.blowgun.tooltip1": "§7Fires Poisonous Darts. Hold to charge, release to shoot",
 
-  "item.fangs_n_claws.decrepit_pitchfork": "Decrepit Pitchfork",
+  "item.fangs_n_claws.fire_pitchfork": "Fire Pitchfork",
+  "item.fangs_n_claws.hellfire_pitchfork": "Hellfire Pitchfork",
   "item.fangs_n_claws.silver_sword": "Silver Sword",
   "item.fangs_n_claws.silver_sword.tooltip1": "§7The only weapon that can effectively kill a Werewolf",
 

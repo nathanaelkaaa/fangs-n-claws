@@ -1,4 +1,4 @@
-package net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork;
+package net.raptorzizi.fangs_n_claws.entity.fire_pitchfork;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,17 +13,17 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class DecrepitPitchforkRenderer extends EntityRenderer<DecrepitPitchforkEntity> {
+public class FirePitchforkRenderer extends EntityRenderer<FirePitchforkEntity> {
 
     private final TridentModel model;
 
-    public DecrepitPitchforkRenderer(EntityRendererProvider.Context context) {
+    public FirePitchforkRenderer(EntityRendererProvider.Context context) {
         super(context);
         this.model = new TridentModel(context.bakeLayer(ModelLayers.TRIDENT));
     }
 
     @Override
-    public void render(DecrepitPitchforkEntity entity, float entityYaw, float partialTick,
+    public void render(FirePitchforkEntity entity, float entityYaw, float partialTick,
                        PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
 
@@ -32,10 +32,10 @@ public class DecrepitPitchforkRenderer extends EntityRenderer<DecrepitPitchforkE
         poseStack.mulPose(Axis.ZP.rotationDegrees(
                 Mth.lerp(partialTick, entity.xRotO, entity.getXRot()) + 90.0F));
 
-        VertexConsumer base = bufferSource.getBuffer(this.model.renderType(DecrepitPitchforkItemRenderer.baseTexture()));
+        VertexConsumer base = bufferSource.getBuffer(this.model.renderType(FirePitchforkItemRenderer.baseTexture()));
         this.model.renderToBuffer(poseStack, base, packedLight, OverlayTexture.NO_OVERLAY);
 
-        VertexConsumer fire = bufferSource.getBuffer(RenderType.eyes(DecrepitPitchforkItemRenderer.currentFireTexture()));
+        VertexConsumer fire = bufferSource.getBuffer(RenderType.entityTranslucentEmissive(FirePitchforkItemRenderer.currentFireTexture()));
         this.model.renderToBuffer(poseStack, fire, packedLight, OverlayTexture.NO_OVERLAY);
 
         poseStack.popPose();
@@ -43,7 +43,7 @@ public class DecrepitPitchforkRenderer extends EntityRenderer<DecrepitPitchforkE
     }
 
     @Override
-    public ResourceLocation getTextureLocation(DecrepitPitchforkEntity entity) {
-        return DecrepitPitchforkItemRenderer.baseTexture();
+    public ResourceLocation getTextureLocation(FirePitchforkEntity entity) {
+        return FirePitchforkItemRenderer.baseTexture();
     }
 }

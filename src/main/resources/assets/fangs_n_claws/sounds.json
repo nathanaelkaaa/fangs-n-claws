@@ -11,6 +11,18 @@
       { "name": "fangs_n_claws:blowgun_shoot" }
     ]
   },
+  "hell_ogre.fire_breath": {
+    "subtitle": "subtitles.entity.hell_ogre.fire_breath",
+    "sounds": [
+      { "name": "fangs_n_claws:fire_breath_loop" }
+    ]
+  },
+  "ogre.roar": {
+    "subtitle": "subtitles.entity.ogre.roar",
+    "sounds": [
+      { "name": "fangs_n_claws:ogre/ogre_roar" }
+    ]
+  },
   "ogre.ambient": {
     "subtitle": "subtitles.entity.ogre.ambient",
     "sounds": [

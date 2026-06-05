@@ -2,7 +2,7 @@
     "parent": "builtin/entity",
     "gui_light": "front",
     "textures": {
-        "particle": "fangs_n_claws:entitydecrepit_pitchfork/decrepit_pitchfork"
+        "particle": "fangs_n_claws:entity/fire_pitchfork/hellfire_pitchfork"
     },
     "display": {
         "thirdperson_righthand": {

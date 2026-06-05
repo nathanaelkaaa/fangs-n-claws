@@ -1,4 +1,4 @@
-package net.raptorzizi.fangs_n_claws.entity.imp;
+﻿package net.raptorzizi.fangs_n_claws.entity.imp;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -73,7 +73,7 @@ public class ImpEntity extends PathfinderMob implements GeoEntity {
 
     public ImpEntity(EntityType<? extends ImpEntity> type, Level level) {
         super(type, level);
-        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemsRegistry.DECREPIT_PITCHFORK.get()));
+        this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ItemsRegistry.FIRE_PITCHFORK.get()));
         this.orbitAngle         = (float)(this.random.nextDouble() * Math.PI * 2.0);
         this.orbitDirection     = this.random.nextBoolean() ? 1 : -1;
         this.orbitDirChangeTick = ORBIT_DIR_CHANGE_MIN

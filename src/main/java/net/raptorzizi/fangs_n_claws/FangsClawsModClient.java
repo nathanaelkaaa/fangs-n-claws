@@ -31,8 +31,10 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
 import net.raptorzizi.fangs_n_claws.block.GhostBlock;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
-import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkItemRenderer;
-import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkRenderer;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkItemRenderer;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkRenderer;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkItemRenderer;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkRenderer;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpRenderer;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
@@ -190,19 +192,34 @@ public class FangsClawsModClient {
     @SubscribeEvent
     static void registerClientExtensions(RegisterClientExtensionsEvent event) {
         event.registerItem(new IClientItemExtensions() {
-            private DecrepitPitchforkItemRenderer renderer;
+            private FirePitchforkItemRenderer renderer;
 
             @Override
-            public DecrepitPitchforkItemRenderer getCustomRenderer() {
+            public FirePitchforkItemRenderer getCustomRenderer() {
                 if (this.renderer == null) {
                     Minecraft mc = Minecraft.getInstance();
-                    this.renderer = new DecrepitPitchforkItemRenderer(
+                    this.renderer = new FirePitchforkItemRenderer(
                             mc.getBlockEntityRenderDispatcher(),
                             mc.getEntityModels());
                 }
                 return this.renderer;
             }
-        }, ItemsRegistry.DECREPIT_PITCHFORK.get());
+        }, ItemsRegistry.FIRE_PITCHFORK.get());
+
+        event.registerItem(new IClientItemExtensions() {
+            private HellFirePitchforkItemRenderer renderer;
+
+            @Override
+            public HellFirePitchforkItemRenderer getCustomRenderer() {
+                if (this.renderer == null) {
+                    Minecraft mc = Minecraft.getInstance();
+                    this.renderer = new HellFirePitchforkItemRenderer(
+                            mc.getBlockEntityRenderDispatcher(),
+                            mc.getEntityModels());
+                }
+                return this.renderer;
+            }
+        }, ItemsRegistry.HELLFIRE_PITCHFORK.get());
     }
 
     @SubscribeEvent
@@ -210,7 +227,8 @@ public class FangsClawsModClient {
         event.registerEntityRenderer(EntityRegistry.OGRE.get(), OgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.HELL_OGRE.get(), HellOgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.IMP.get(), ImpRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.DECREPIT_PITCHFORK_ENTITY.get(), DecrepitPitchforkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.fire_pitchfork_ENTITY.get(), FirePitchforkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.HELLFIRE_PITCHFORK_ENTITY.get(), HellFirePitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
     }

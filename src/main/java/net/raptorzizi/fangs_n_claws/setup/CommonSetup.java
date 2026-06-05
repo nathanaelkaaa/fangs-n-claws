@@ -4,6 +4,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -43,6 +44,14 @@ public class CommonSetup {
         event.put(EntityRegistry.WEREVILLAGER.get(),    WerevillagerEntity.prepareAttributes().build());
         event.put(EntityRegistry.IMP.get(),             ImpEntity.prepareAttributes().build());
         event.put(EntityRegistry.HELL_OGRE.get(),       HellOgreEntity.prepareAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void onPitchforkThrown(LivingDamageEvent.Pre event) {
+        if (event.getSource().getDirectEntity() instanceof FirePitchforkEntity pitchfork) {
+            float diff = pitchfork.getBaseThrownDamage() - 8.0f;
+            if (diff != 0) event.setNewDamage(event.getNewDamage() + diff);
+        }
     }
 
     @SubscribeEvent

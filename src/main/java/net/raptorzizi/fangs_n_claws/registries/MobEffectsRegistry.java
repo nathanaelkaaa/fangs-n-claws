@@ -9,6 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.effect.FlamebrandEffect;
+import net.raptorzizi.fangs_n_claws.effect.HellFlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.effect.StunnedEffect;
 import net.raptorzizi.fangs_n_claws.effect.VenomEffect;
 
@@ -28,6 +29,9 @@ public class MobEffectsRegistry {
 
     public static final DeferredHolder<MobEffect, FlamebrandEffect> FLAMEBRAND =
             MOB_EFFECTS.register("flamebrand", () -> new FlamebrandEffect(MobEffectCategory.HARMFUL, 0xFF4500));
+
+    public static final DeferredHolder<MobEffect, HellFlamebrandEffect> HELLFIRE_FLAMEBRAND =
+            MOB_EFFECTS.register("hellfire_flamebrand", HellFlamebrandEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

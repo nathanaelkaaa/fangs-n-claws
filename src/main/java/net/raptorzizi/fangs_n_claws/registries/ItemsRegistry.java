@@ -7,7 +7,8 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
-import net.raptorzizi.fangs_n_claws.item.DecrepitPitchforkItem;
+import net.raptorzizi.fangs_n_claws.item.FirePitchforkItem;
+import net.raptorzizi.fangs_n_claws.item.HellFirePitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -89,7 +90,8 @@ public class ItemsRegistry {
     public static final Supplier<CatchingClawItem>      CATCHING_CLAW      = ITEMS.register("catching_claw",      CatchingClawItem::new);
     public static final Supplier<NetheriteClawItem>     CATCHING_CLAW_NETHERITE = ITEMS.register("catching_claw_netherite", NetheriteClawItem::new);
     public static final Supplier<SilverSwordItem>       SILVER_SWORD       = ITEMS.register("silver_sword",       SilverSwordItem::new);
-    public static final Supplier<DecrepitPitchforkItem> DECREPIT_PITCHFORK = ITEMS.register("decrepit_pitchfork", DecrepitPitchforkItem::new);
+    public static final Supplier<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",    FirePitchforkItem::new);
+    public static final Supplier<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
 
     /**
      * Throwables / Projectiles

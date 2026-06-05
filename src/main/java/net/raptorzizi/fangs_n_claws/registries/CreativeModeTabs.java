@@ -4,7 +4,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -45,7 +44,8 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.CATCHING_CLAW.get());
                         entries.accept(ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
                         entries.accept(ItemsRegistry.SILVER_SWORD.get());
-                        entries.accept(ItemsRegistry.DECREPIT_PITCHFORK.get());
+                        entries.accept(ItemsRegistry.FIRE_PITCHFORK.get());
+                        entries.accept(ItemsRegistry.HELLFIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());
                         entries.accept(ItemsRegistry.VELOCITY_ARROW.get());
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());

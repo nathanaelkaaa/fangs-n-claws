@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.effect;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -21,6 +22,10 @@ public class FlamebrandEffect extends MobEffect {
         super(category, color);
     }
 
+    protected Holder<MobEffect> getSelfHolder() {
+        return MobEffectsRegistry.FLAMEBRAND;
+    }
+
     public static void addFlamebrandStack(LivingEntity entity) {
         MobEffectInstance previous = entity.getEffect(MobEffectsRegistry.FLAMEBRAND);
         int newAmplifier = previous != null ? previous.getAmplifier() + 1 : 0;
@@ -36,7 +41,7 @@ public class FlamebrandEffect extends MobEffect {
 
         if (amplifier >= STACKS_REQUIRED_AMPLIFIER) {
             triggerExplosion(entity, level);
-            entity.removeEffect(MobEffectsRegistry.FLAMEBRAND);
+            entity.removeEffect(getSelfHolder());
             return true;
         }
 
@@ -52,26 +57,22 @@ public class FlamebrandEffect extends MobEffect {
                 count, 0.3, 0.4, 0.3, 0.01);
     }
 
-    private void triggerExplosion(LivingEntity entity, ServerLevel level) {
-        float radius = 5.0f;
+    protected void triggerExplosion(LivingEntity entity, ServerLevel level) {
+        float radius = 3.5f;
         float radiusSqr = radius * radius;
         float baseDamage = 8.0f;
 
-        entity.hurt(level.damageSources().magic(), baseDamage);
-        entity.setRemainingFireTicks(100);
-
         AABB box = entity.getBoundingBox().inflate(radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box)) {
-            if (target == entity) continue;
-            double distSqr = target.distanceToSqr(entity.position());
-            if (distSqr >= radiusSqr) continue;
+            if (target.distanceToSqr(entity.position()) >= radiusSqr) continue;
+            target.invulnerableTime = 0;
             target.hurt(level.damageSources().magic(), baseDamage);
             target.setRemainingFireTicks(100);
         }
 
         var center = entity.getBoundingBox().getCenter();
         level.sendParticles(ParticlesRegistry.FIRE_EXPLOSION.get(),
-                center.x, center.y, center.z, 35, 1.0, 1.0, 1.0, 0.06);
+                center.x, center.y, center.z, 20, 1.0, 1.0, 1.0, 0.05);
 
         level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                 SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS,

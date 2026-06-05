@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreMoveControl;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import org.jetbrains.annotations.NotNull;
@@ -37,9 +38,10 @@ public class HellOgreEntity extends OgreEntity {
 
     // Variables
 
-    private static final int   FIRE_BREATH_TOTAL_TICKS = 80;
-    private static final int   FIRE_BREATH_START_TICK  = 10;
-    private static final int   FIRE_BREATH_END_TICK    = 70;
+    private static final int   FIRE_BREATH_TOTAL_TICKS  = 80;
+    private static final int   FIRE_BREATH_START_TICK   = 10;
+    private static final int   FIRE_BREATH_END_TICK     = 70;
+    private static final int   FIRE_BREATH_SOUND_INTERVAL = 20;
     private static final float FIRE_BREATH_DAMAGE      = 3.0f;
     private static final float FIRE_BREATH_RANGE       = 10.0f;
     private static final float FIRE_BREATH_CONE_COS    = Mth.cos(40.0f * Mth.DEG_TO_RAD);
@@ -187,7 +189,14 @@ public class HellOgreEntity extends OgreEntity {
                                     && fireBreathTick <= FIRE_BREATH_END_TICK;
                 setFireBreathing(activeWindow);
                 if (activeWindow) {
+                    if (fireBreathTick == FIRE_BREATH_START_TICK) {
+                        this.playSound(SoundsRegistry.OGRE_ROAR.get(), 1.5f, 1.0f);
+                    }
                     applyFireBreathDamage();
+                    int elapsed = fireBreathTick - FIRE_BREATH_START_TICK;
+                    if (elapsed % FIRE_BREATH_SOUND_INTERVAL == 0) {
+                        this.playSound(SoundsRegistry.HELL_OGRE_FIRE_BREATH.get(), 3.0f, 1.0f);
+                    }
                 }
                 if (fireBreathTick >= FIRE_BREATH_TOTAL_TICKS) {
                     fireBreathTick = 0;
