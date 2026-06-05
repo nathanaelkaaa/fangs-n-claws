@@ -22,6 +22,7 @@ public class CreativeModeTabs {
                     .displayItems((enabledFeatures, entries) -> {
                         entries.accept(ItemsRegistry.OGRE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.CAVE_OGRE_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.HELL_OGRE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREWOLF_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.OWLBEAR_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.SILVER_SKELETON_SPAWN_EGG.get());

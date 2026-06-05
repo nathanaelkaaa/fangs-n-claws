@@ -25,11 +25,13 @@ import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfRenderer;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerRenderer;
 import net.raptorzizi.fangs_n_claws.block.GhostBlockRenderer;
 import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkRenderer;
+import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpRenderer;
 import net.raptorzizi.fangs_n_claws.particle.BlackFogParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodParticle;
 import net.raptorzizi.fangs_n_claws.particle.FireExplosionParticle;
+import net.raptorzizi.fangs_n_claws.particle.FireParticle;
 import net.raptorzizi.fangs_n_claws.particle.OrangeSmokeParticle;
 import net.raptorzizi.fangs_n_claws.particle.StunStarParticle;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
@@ -48,6 +50,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.EVIL_BAT.get(),         EvilBatRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OGRE.get(),            OgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CAVE_OGRE.get(),       CaveOgreRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.HELL_OGRE.get(),       HellOgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WEREWOLF.get(),        WerewolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OWLBEAR.get(),         OwlbearRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonRenderer::new);
@@ -74,6 +77,7 @@ public class ClientSetup {
         event.registerSpriteSet(ParticlesRegistry.STUN_STAR.get(),      StunStarParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.BLACK_FOG.get(),          BlackFogParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.FIRE_EXPLOSION.get(),   FireExplosionParticle.Provider::new);
-        event.registerSpriteSet(ParticlesRegistry.ORANGE_SMOKE.get(),     OrangeSmokeParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.FIRE.get(),            FireParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.ORANGE_SMOKE.get(),    OrangeSmokeParticle.Provider::new);
     }
 }

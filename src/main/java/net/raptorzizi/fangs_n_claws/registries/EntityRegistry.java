@@ -14,6 +14,7 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
 import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkEntity;
@@ -50,6 +51,12 @@ public class EntityRegistry {
             ENTITIES.register("cave_ogre", () -> EntityType.Builder.of(CaveOgreEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 2.95F)
                     .build("cave_ogre"));
+
+    public static final RegistryObject<EntityType<HellOgreEntity>> HELL_OGRE =
+            ENTITIES.register("hell_ogre", () -> EntityType.Builder.of(HellOgreEntity::new, MobCategory.MONSTER)
+                    .sized(1.95F, 2.95F)
+                    .fireImmune()
+                    .build("hell_ogre"));
 
     public static final RegistryObject<EntityType<WerewolfEntity>> WEREWOLF =
             ENTITIES.register("werewolf", () -> EntityType.Builder.of(WerewolfEntity::new, MobCategory.MONSTER)

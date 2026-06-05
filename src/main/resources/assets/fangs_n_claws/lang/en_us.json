@@ -5,6 +5,7 @@
   "item.fangs_n_claws.evil_bat_spawn_egg": "Evil Bat Spawn Egg",
   "item.fangs_n_claws.ogre_spawn_egg": "Ogre Spawn Egg",
   "item.fangs_n_claws.cave_ogre_spawn_egg": "Cave Ogre Spawn Egg",
+  "item.fangs_n_claws.hell_ogre_spawn_egg": "Hell Ogre Spawn Egg",
   "item.fangs_n_claws.werewolf_spawn_egg": "Werewolf Spawn Egg",
   "item.fangs_n_claws.owlbear_spawn_egg": "Owlbear Spawn Egg",
   "item.fangs_n_claws.silver_skeleton_spawn_egg": "Silver Skeleton Spawn Egg",
@@ -62,6 +63,7 @@
   "entity.fangs_n_claws.evil_bat": "Evil Bat",
   "entity.fangs_n_claws.ogre": "Ogre",
   "entity.fangs_n_claws.cave_ogre": "Cave Ogre",
+  "entity.fangs_n_claws.hell_ogre": "Hell Ogre",
   "entity.fangs_n_claws.werewolf": "Werewolf",
   "entity.fangs_n_claws.owlbear": "Owlbear",
   "entity.fangs_n_claws.silver_skeleton": "Silver Skeleton",
@@ -109,6 +111,8 @@
   "fangs_n_claws.configuration.spawn_toggles.dart_goblin.tooltip": "If false, Dart Goblins will never spawn naturally. Also controllable per-world via /gamerule allowSpawnDartGoblin.",
   "fangs_n_claws.configuration.spawn_toggles.imp": "Allow Imp Spawning",
   "fangs_n_claws.configuration.spawn_toggles.imp.tooltip": "If false, Imps will never spawn naturally. Also controllable per-world via /gamerule allowSpawnImp.",
+  "fangs_n_claws.configuration.spawn_toggles.hell_ogre": "Allow Hell Ogre Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.hell_ogre.tooltip": "If false, Hell Ogres will never spawn naturally. Also controllable per-world via /gamerule allowSpawnHellOgre.",
 
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
@@ -132,5 +136,7 @@
   "fangs_n_claws.configuration.spawn_weights.dart_goblin": "Dart Goblin",
   "fangs_n_claws.configuration.spawn_weights.dart_goblin.tooltip": "Spawn weight for Dart Goblins (overworld, night only). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.imp": "Imp",
-  "fangs_n_claws.configuration.spawn_weights.imp.tooltip": "Spawn weight for Imps (Crimson Forest + Nether Wastes). 0 = disabled."
+  "fangs_n_claws.configuration.spawn_weights.imp.tooltip": "Spawn weight for Imps (Crimson Forest + Nether Wastes). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.hell_ogre": "Hell Ogre",
+  "fangs_n_claws.configuration.spawn_weights.hell_ogre.tooltip": "Spawn weight for Hell Ogres (nether, all biomes). 0 = disabled."
 }

@@ -62,6 +62,9 @@ public class ItemsRegistry {
     public static final RegistryObject<ForgeSpawnEggItem> IMP_SPAWN_EGG = ITEMS.register("imp_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.IMP, 0x8b1a1a, 0xff6600, new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> HELL_OGRE_SPAWN_EGG = ITEMS.register("hell_ogre_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.HELL_OGRE, 0x7a1e00, 0xff6600, new Item.Properties().stacksTo(64)));
+
     /**
      * Materials
      */

@@ -24,9 +24,9 @@ public class EnchantmentsRegistry {
     public static final RegistryObject<Enchantment> CRITICAL_BACKSTAB = ENCHANTMENTS.register("critical_backstab",
             () -> new Enchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON,
                     new EquipmentSlot[]{EquipmentSlot.MAINHAND}) {
-                @Override public int getMaxLevel()       { return 1; }
-                @Override public int getMinCost(int lvl) { return 15; }
-                @Override public int getMaxCost(int lvl) { return 50; }
+                @Override public int getMaxLevel()       { return 3; }
+                @Override public int getMinCost(int lvl) { return 10 + (lvl - 1) * 10; }
+                @Override public int getMaxCost(int lvl) { return getMinCost(lvl) + 30; }
                 @Override public boolean canEnchant(ItemStack stack) {
                     return stack.getItem() instanceof FangDaggerItem
                         || stack.getItem() instanceof NetheriteFangDaggerItem;

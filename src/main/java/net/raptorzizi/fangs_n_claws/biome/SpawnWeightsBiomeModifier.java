@@ -37,6 +37,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             ResourceKey.create(Registries.BIOME, new ResourceLocation("minecraft", "nether_wastes"));
     private static final ResourceKey<Biome> SOUL_SAND_VALLEY =
             ResourceKey.create(Registries.BIOME, new ResourceLocation("soul_sand_valley"));
+    private static final TagKey<Biome> IS_NETHER =
+            TagKey.create(Registries.BIOME, new ResourceLocation("is_nether"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -48,6 +50,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.IMP.get(),
                     EntityRegistry.OGRE.get(),
                     EntityRegistry.CAVE_OGRE.get(),
+                    EntityRegistry.HELL_OGRE.get(),
                     EntityRegistry.GOLEM.get(),
                     EntityRegistry.OWLBEAR.get(),
                     EntityRegistry.SILVER_SKELETON.get(),
@@ -102,6 +105,11 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             if (biome.is(SOUL_SAND_VALLEY)) {
                 if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_NETHER_WEIGHT.get(), 1, 3);
+            }
+
+            if (biome.is(IS_NETHER)) {
+                if (CommonConfigs.ALLOW_SPAWN_HELL_OGRE.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.HELL_OGRE.get(), ServerConfigs.HELL_OGRE_WEIGHT.get(), 1, 2);
             }
         }
     }

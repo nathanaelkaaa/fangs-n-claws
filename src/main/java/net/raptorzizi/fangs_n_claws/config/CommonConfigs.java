@@ -19,6 +19,7 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_WEREWOLF;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_DART_GOBLIN;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_IMP;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HELL_OGRE;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -78,6 +79,11 @@ public class CommonConfigs {
                 .comment("Allow Imps to spawn naturally (nether, any biome)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.imp")
                 .define("allow_imp", true);
+
+        ALLOW_SPAWN_HELL_OGRE = BUILDER
+                .comment("Allow Hell Ogres to spawn naturally (nether)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.hell_ogre")
+                .define("allow_hell_ogre", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -31,6 +31,9 @@ public class ParticlesRegistry {
     public static final RegistryObject<SimpleParticleType> ORANGE_SMOKE =
             PARTICLES.register("orange_smoke", () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> FIRE =
+            PARTICLES.register("fire", () -> new SimpleParticleType(false));
+
     public static void register(IEventBus eventBus) {
         PARTICLES.register(eventBus);
     }

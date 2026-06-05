@@ -50,7 +50,7 @@ public class OgreEntity extends Monster implements GeoEntity {
     private static final int    SLAM_HIT_TICK    = 20;
     private static final int    SLAM_TOTAL_TICKS = 32;
     private static final double SLAM_RADIUS      = 2.5;
-    private static final double SLAM_DAMAGE      = 6.0;
+    private static final double SLAM_DAMAGE      = 8.0;
 
     private static final double SPRINT_PARTICLE_SPEED_THRESHOLD = 0.05;
 
@@ -111,6 +111,10 @@ public class OgreEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false));
+    }
+
+    protected double getSlamDamage() {
+        return SLAM_DAMAGE;
     }
 
     public static boolean checkOgreSpawnRules(EntityType<? extends OgreEntity> type,
@@ -200,7 +204,7 @@ public class OgreEntity extends Monster implements GeoEntity {
         AABB box = new AABB(slamImpactPos, slamImpactPos).inflate(SLAM_RADIUS);
         for (LivingEntity entity : serverLevel.getEntitiesOfClass(LivingEntity.class, box)) {
             if (entity != this) {
-                entity.hurt(this.level().damageSources().mobAttack(this), (float) SLAM_DAMAGE);
+                entity.hurt(this.level().damageSources().mobAttack(this), (float) getSlamDamage());
             }
         }
 
