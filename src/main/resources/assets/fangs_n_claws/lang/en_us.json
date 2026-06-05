@@ -75,14 +75,23 @@
   "item.fangs_n_claws.imp_spawn_egg": "Imp Spawn Egg",
   "item.fangs_n_claws.decrepit_pitchfork": "Decrepit Pitchfork",
 
+  "item.fangs_n_claws.fire_pitchfork": "Fire Pitchfork",
+  "item.fangs_n_claws.fire_pitchfork.tooltip1": "§7Inflicts Flamebrand on hit",
+  "item.fangs_n_claws.hellfire_pitchfork": "Hellfire Pitchfork",
+  "item.fangs_n_claws.hellfire_pitchfork.tooltip1": "§7Inflicts Hellfire Flamebrand on hit",
+
+  "item.fangs_n_claws.black_horn": "Black Horn",
+
   "enchantment.fangs_n_claws.critical_backstab": "Critical Backstab",
   "enchantment.fangs_n_claws.quick_killer": "Quick Killer",
   "enchantment.fangs_n_claws.item_catcher": "Item Catcher",
   "enchantment.fangs_n_claws.scratch": "Scratch",
+  "enchantment.fangs_n_claws.blazing": "Blazing",
 
   "effect.fangs_n_claws.bleeding": "Bleeding",
   "effect.fangs_n_claws.venom": "Venom",
   "effect.fangs_n_claws.flamebrand": "Flamebrand",
+  "effect.fangs_n_claws.hellfire_flamebrand": "Hellfire Flamebrand",
 
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",

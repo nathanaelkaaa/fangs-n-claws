@@ -112,6 +112,6 @@ public class CatchingClawItem extends Item {
 
     @Override
     public int getEnchantmentValue() {
-        return 1;
+        return 14;
     }
 }

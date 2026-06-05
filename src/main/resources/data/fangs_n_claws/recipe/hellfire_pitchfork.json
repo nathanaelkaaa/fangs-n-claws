@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    " F ",
+    " C "
+  ],
+  "key": {
+    "B": { "item": "fangs_n_claws:black_horn" },
+    "F": { "item": "fangs_n_claws:fire_pitchfork" },
+    "C": { "item": "minecraft:coal_block" }
+  },
+  "result": {
+    "id": "fangs_n_claws:hellfire_pitchfork",
+    "count": 1
+  }
+}

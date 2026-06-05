@@ -18,6 +18,8 @@ import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
 import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkEntity;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
+import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
@@ -98,6 +100,22 @@ public class EntityRegistry {
                     .clientTrackingRange(64)
                     .updateInterval(20)
                     .build("decrepit_pitchfork"));
+
+    public static final RegistryObject<EntityType<FirePitchforkEntity>> FIRE_PITCHFORK_ENTITY =
+            ENTITIES.register("fire_pitchfork", () -> EntityType.Builder
+                    .<FirePitchforkEntity>of(FirePitchforkEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .updateInterval(20)
+                    .build("fire_pitchfork"));
+
+    public static final RegistryObject<EntityType<HellFirePitchforkEntity>> HELLFIRE_PITCHFORK_ENTITY =
+            ENTITIES.register("hellfire_pitchfork", () -> EntityType.Builder
+                    .<HellFirePitchforkEntity>of(HellFirePitchforkEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .updateInterval(20)
+                    .build("hellfire_pitchfork"));
 
     public static final RegistryObject<EntityType<ImpEntity>> IMP =
             ENTITIES.register("imp", () -> EntityType.Builder.of(ImpEntity::new, MobCategory.MONSTER)

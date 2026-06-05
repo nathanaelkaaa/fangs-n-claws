@@ -11,6 +11,8 @@ import net.minecraftforge.registries.RegistryObject;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.DecrepitPitchforkItem;
+import net.raptorzizi.fangs_n_claws.item.FirePitchforkItem;
+import net.raptorzizi.fangs_n_claws.item.HellFirePitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -82,6 +84,9 @@ public class ItemsRegistry {
     public static final RegistryObject<Item> SPECTRAL_ESSENCE = ITEMS.register("spectral_essence",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<Item> BLACK_HORN = ITEMS.register("black_horn",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
     /**
      * Weapons
      */
@@ -94,8 +99,10 @@ public class ItemsRegistry {
     /**
      * Throwables / Projectiles
      */
-    public static final RegistryObject<BlowgunItem>         BLOWGUN            = ITEMS.register("blowgun",            BlowgunItem::new);
+    public static final RegistryObject<BlowgunItem>           BLOWGUN            = ITEMS.register("blowgun",            BlowgunItem::new);
     public static final RegistryObject<DecrepitPitchforkItem> DECREPIT_PITCHFORK = ITEMS.register("decrepit_pitchfork", DecrepitPitchforkItem::new);
+    public static final RegistryObject<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",     FirePitchforkItem::new);
+    public static final RegistryObject<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
     public static final RegistryObject<Item>               POISONOUS_DART = ITEMS.register("poisonous_dart", () -> new Item(new Item.Properties().stacksTo(64)));
     public static final RegistryObject<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final RegistryObject<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);

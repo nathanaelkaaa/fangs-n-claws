@@ -19,14 +19,16 @@ public class SoundsRegistry {
             register("generic.rock_impact");
     public static final Supplier<SoundEvent> BACKSTAB_IMPACT =
             register("generic.backstab_impact");
-
-    //TODO Create ogre sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> OGRE_AMBIENT =
             register("ogre.ambient");
     public static final Supplier<SoundEvent> OGRE_HURT =
             register("ogre.hurt");
     public static final Supplier<SoundEvent> OGRE_DEATH =
             register("ogre.death");
+    public static final Supplier<SoundEvent> OGRE_ROAR =
+            register("ogre.roar");
+    public static final Supplier<SoundEvent> HELL_OGRE_FIRE_BREATH =
+            register("hell_ogre.fire_breath");
 
     public static final Supplier<SoundEvent> OWLBEAR_HOWL =
             register("owlbear.howl");
@@ -59,8 +61,6 @@ public class SoundsRegistry {
             register("golem.hurt");
     public static final Supplier<SoundEvent> GOLEM_DEATH =
             register("golem.death");
-
-    //TODO Create werewolf sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> WEREWOLF_AMBIENT =
             register("werewolf.ambient");
     public static final Supplier<SoundEvent> WEREWOLF_HOWL =

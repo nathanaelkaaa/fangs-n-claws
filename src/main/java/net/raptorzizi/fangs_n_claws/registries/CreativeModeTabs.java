@@ -45,7 +45,9 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.CATCHING_CLAW.get());
                         entries.accept(ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
                         entries.accept(ItemsRegistry.SILVER_SWORD.get());
-                        entries.accept(ItemsRegistry.DECREPIT_PITCHFORK.get());
+                        entries.accept(ItemsRegistry.FIRE_PITCHFORK.get());
+                        entries.accept(ItemsRegistry.HELLFIRE_PITCHFORK.get());
+                        entries.accept(ItemsRegistry.BLACK_HORN.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());
                         entries.accept(ItemsRegistry.VELOCITY_ARROW.get());
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());

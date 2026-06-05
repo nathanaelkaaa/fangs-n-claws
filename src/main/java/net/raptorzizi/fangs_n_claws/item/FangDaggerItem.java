@@ -114,4 +114,9 @@ public class FangDaggerItem extends SwordItem {
         }
         return result;
     }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 14;
+    }
 }

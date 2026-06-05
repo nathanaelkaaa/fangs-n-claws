@@ -105,4 +105,9 @@ public class NetheriteFangDaggerItem extends SwordItem {
         }
         return result;
     }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 15;
+    }
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -28,6 +29,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreMoveControl;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -39,9 +41,10 @@ public class HellOgreEntity extends OgreEntity {
 
     // Variables
 
-    private static final int   FIRE_BREATH_TOTAL_TICKS = 80;
-    private static final int   FIRE_BREATH_START_TICK  = 10;
-    private static final int   FIRE_BREATH_END_TICK    = 70;
+    private static final int   FIRE_BREATH_TOTAL_TICKS  = 80;
+    private static final int   FIRE_BREATH_START_TICK   = 10;
+    private static final int   FIRE_BREATH_END_TICK     = 70;
+    private static final int   FIRE_BREATH_SOUND_INTERVAL = 20;
     private static final float FIRE_BREATH_DAMAGE      = 3.0f;
     private static final float FIRE_BREATH_RANGE       = 10.0f;
     private static final float FIRE_BREATH_CONE_COS    = Mth.cos(40.0f * Mth.DEG_TO_RAD);
@@ -186,12 +189,21 @@ public class HellOgreEntity extends OgreEntity {
 
         if (!this.level().isClientSide) {
             if (fireBreathTick > 0) {
+                if (fireBreathTick == 1) {
+                    this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                            SoundsRegistry.OGRE_ROAR.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
+                }
+
                 fireBreathTick++;
                 boolean activeWindow = fireBreathTick >= FIRE_BREATH_START_TICK
                                     && fireBreathTick <= FIRE_BREATH_END_TICK;
                 setFireBreathing(activeWindow);
                 if (activeWindow) {
                     applyFireBreathDamage();
+                    if ((fireBreathTick - FIRE_BREATH_START_TICK) % FIRE_BREATH_SOUND_INTERVAL == 0) {
+                        this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
+                                SoundsRegistry.HELL_OGRE_FIRE_BREATH.get(), SoundSource.HOSTILE, 1.5F, 1.0F);
+                    }
                 }
                 if (fireBreathTick >= FIRE_BREATH_TOTAL_TICKS) {
                     fireBreathTick = 0;

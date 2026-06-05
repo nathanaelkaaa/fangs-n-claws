@@ -9,6 +9,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.registries.RegistryObject;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
@@ -19,6 +20,10 @@ public class FlamebrandEffect extends MobEffect {
 
     public FlamebrandEffect(MobEffectCategory category, int color) {
         super(category, color);
+    }
+
+    protected RegistryObject<? extends MobEffect> getSelfEffect() {
+        return MobEffectsRegistry.FLAMEBRAND;
     }
 
     public static void addFlamebrandStack(LivingEntity entity) {
@@ -36,7 +41,7 @@ public class FlamebrandEffect extends MobEffect {
 
         if (amplifier >= STACKS_REQUIRED_AMPLIFIER) {
             triggerExplosion(entity, level);
-            entity.removeEffect(MobEffectsRegistry.FLAMEBRAND.get());
+            entity.removeEffect(getSelfEffect().get());
             return;
         }
 
@@ -51,26 +56,22 @@ public class FlamebrandEffect extends MobEffect {
                 count, 0.3, 0.4, 0.3, 0.01);
     }
 
-    private void triggerExplosion(LivingEntity entity, ServerLevel level) {
-        float radius    = 5.0f;
+    protected void triggerExplosion(LivingEntity entity, ServerLevel level) {
+        float radius    = 3.5f;
         float radiusSqr = radius * radius;
         float baseDamage = 8.0f;
 
-        entity.hurt(level.damageSources().magic(), baseDamage);
-        entity.setRemainingFireTicks(100);
-
         AABB box = entity.getBoundingBox().inflate(radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box)) {
-            if (target == entity) continue;
-            double distSqr = target.distanceToSqr(entity.position());
-            if (distSqr >= radiusSqr) continue;
+            if (target.distanceToSqr(entity.position()) >= radiusSqr) continue;
+            target.invulnerableTime = 0;
             target.hurt(level.damageSources().magic(), baseDamage);
             target.setRemainingFireTicks(100);
         }
 
         var center = entity.getBoundingBox().getCenter();
         level.sendParticles(ParticlesRegistry.FIRE_EXPLOSION.get(),
-                center.x, center.y, center.z, 35, 1.0, 1.0, 1.0, 0.06);
+                center.x, center.y, center.z, 20, 1.0, 1.0, 1.0, 0.05);
 
         level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                 SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS,
