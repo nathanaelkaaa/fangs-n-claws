@@ -38,6 +38,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.GIANT_FEATHER.get());
                         entries.accept(ItemsRegistry.VILE_FAT.get());
                         entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
+                        entries.accept(ItemsRegistry.BLACK_HORN.get());
                         entries.accept(ItemsRegistry.BLOWGUN.get());
                         entries.accept(ItemsRegistry.FANG_DAGGER.get());
                         entries.accept(ItemsRegistry.NETHERITE_DAGGER.get());

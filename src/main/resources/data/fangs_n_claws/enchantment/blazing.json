@@ -1,0 +1,41 @@
+{
+  "description": {
+    "translate": "enchantment.fangs_n_claws.blazing"
+  },
+  "max_level": 5,
+  "slots": ["mainhand"],
+  "supported_items": "#fangs_n_claws:enchantable/blazing",
+  "weight": 10,
+  "anvil_cost": 2,
+  "min_cost": {
+    "base": 1,
+    "per_level_above_first": 8
+  },
+  "max_cost": {
+    "base": 25,
+    "per_level_above_first": 8
+  },
+  "effects": {
+    "minecraft:damage": [
+      {
+        "effect": {
+          "type": "minecraft:add",
+          "value": {
+            "type": "minecraft:linear",
+            "base": 0.5,
+            "per_level_above_first": 0.5
+          }
+        },
+        "requirements": {
+          "condition": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "flags": {
+              "is_on_fire": true
+            }
+          }
+        }
+      }
+    ]
+  }
+}

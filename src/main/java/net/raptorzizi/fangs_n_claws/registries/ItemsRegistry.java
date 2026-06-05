@@ -81,6 +81,9 @@ public class ItemsRegistry {
     public static final Supplier<Item> SPECTRAL_ESSENCE = ITEMS.register("spectral_essence",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> BLACK_HORN = ITEMS.register("black_horn",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
     /**
      * Weapons
      */

@@ -86,7 +86,7 @@ public class EntityRegistry {
                     .clientTrackingRange(8)
                     .build("ghost"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<FirePitchforkEntity>> fire_pitchfork_ENTITY =
+    public static final DeferredHolder<EntityType<?>, EntityType<FirePitchforkEntity>> FIRE_PITCHFORk_ENTITY =
             ENTITIES.register("fire_pitchfork", () -> EntityType.Builder
                     .<FirePitchforkEntity>of(FirePitchforkEntity::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)

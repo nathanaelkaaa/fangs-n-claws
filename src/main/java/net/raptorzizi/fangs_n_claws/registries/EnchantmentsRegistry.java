@@ -14,8 +14,7 @@ public class EnchantmentsRegistry {
     public static final ResourceKey<Enchantment> QUICK_KILLER = key("quick_killer");
     public static final ResourceKey<Enchantment> ITEM_CATCHER = key("item_catcher");
     public static final ResourceKey<Enchantment> SCRATCH = key("scratch");
-
-    // Helper
+    public static final ResourceKey<Enchantment> BLAZING = key("blazing");
 
     public static int getLevel(ItemStack stack, Level level, ResourceKey<Enchantment> key) {
         return level.registryAccess()
@@ -24,8 +23,6 @@ public class EnchantmentsRegistry {
                 .map(h -> stack.getEnchantmentLevel(h))
                 .orElse(0);
     }
-
-    // Private
 
     private static ResourceKey<Enchantment> key(String name) {
         return ResourceKey.create(Registries.ENCHANTMENT,

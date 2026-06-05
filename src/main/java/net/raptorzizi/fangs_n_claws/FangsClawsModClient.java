@@ -227,7 +227,7 @@ public class FangsClawsModClient {
         event.registerEntityRenderer(EntityRegistry.OGRE.get(), OgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.HELL_OGRE.get(), HellOgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.IMP.get(), ImpRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.fire_pitchfork_ENTITY.get(), FirePitchforkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.FIRE_PITCHFORk_ENTITY.get(), FirePitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.HELLFIRE_PITCHFORK_ENTITY.get(), HellFirePitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);

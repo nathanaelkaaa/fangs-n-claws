@@ -12,8 +12,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+
+import java.util.List;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -38,6 +42,11 @@ public class HellFirePitchforkItem extends FirePitchforkItem {
                         new AttributeModifier(BASE_ATTACK_SPEED_ID, -2.9, AttributeModifier.Operation.ADD_VALUE),
                         EquipmentSlotGroup.MAINHAND)
                 .build();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
+        lines.add(Component.translatable("item.fangs_n_claws.hellfire_pitchfork.tooltip1"));
     }
 
     @Override
@@ -85,5 +94,10 @@ public class HellFirePitchforkItem extends FirePitchforkItem {
                 level, pos.x(), pos.y(), pos.z(), stack.copyWithCount(1));
         thrown.pickup = AbstractArrow.Pickup.ALLOWED;
         return thrown;
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 15;
     }
 }

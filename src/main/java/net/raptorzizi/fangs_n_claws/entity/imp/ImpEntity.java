@@ -1,4 +1,4 @@
-﻿package net.raptorzizi.fangs_n_claws.entity.imp;
+package net.raptorzizi.fangs_n_claws.entity.imp;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

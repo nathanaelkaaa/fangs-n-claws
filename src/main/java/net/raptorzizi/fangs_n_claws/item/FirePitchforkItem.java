@@ -14,9 +14,13 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+
+import java.util.List;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -39,16 +43,23 @@ public class FirePitchforkItem extends TridentItem {
     }
 
     public static ItemAttributeModifiers createAttributes() {
-        return ItemAttributeModifiers.builder().add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, (double)5.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, (double)-2.9F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build();
+        return ItemAttributeModifiers.builder().add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, (double)4.0F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, (double)-2.9F, AttributeModifier.Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND).build();
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> lines, TooltipFlag flag) {
+        super.appendHoverText(stack, context, lines, flag);
+        lines.add(Component.translatable("item.fangs_n_claws.fire_pitchfork.tooltip1"));
     }
 
     @Override
     public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        return enchantment.is(Enchantments.LOYALTY)
-            || enchantment.is(Enchantments.FIRE_ASPECT)
-            || enchantment.is(Enchantments.MENDING)
-            || enchantment.is(Enchantments.UNBREAKING)
-            || enchantment.is(Enchantments.VANISHING_CURSE);
+        if (enchantment.is(Enchantments.IMPALING)
+                || enchantment.is(Enchantments.RIPTIDE)
+                || enchantment.is(Enchantments.CHANNELING)) {
+            return false;
+        }
+        return enchantment.value().isSupportedItem(stack);
     }
 
     @Override
@@ -64,7 +75,7 @@ public class FirePitchforkItem extends TridentItem {
             stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
 
             FirePitchforkEntity thrown = new FirePitchforkEntity(
-                    EntityRegistry.fire_pitchfork_ENTITY.get(), level, player, stack);
+                    EntityRegistry.FIRE_PITCHFORk_ENTITY.get(), level, player, stack);
             thrown.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 2.5F, 1.0F);
 
             if (player.hasInfiniteMaterials()) {
@@ -98,9 +109,19 @@ public class FirePitchforkItem extends TridentItem {
     @Override
     public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
         FirePitchforkEntity thrown = new FirePitchforkEntity(
-                EntityRegistry.fire_pitchfork_ENTITY.get(),
+                EntityRegistry.FIRE_PITCHFORk_ENTITY.get(),
                 level, pos.x(), pos.y(), pos.z(), stack.copyWithCount(1));
         thrown.pickup = AbstractArrow.Pickup.ALLOWED;
         return thrown;
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 14;
+    }
+
+    @Override
+    public boolean isPrimaryItemFor(ItemStack stack, Holder<Enchantment> enchantment) {
+        return this.supportsEnchantment(stack, enchantment);
     }
 }

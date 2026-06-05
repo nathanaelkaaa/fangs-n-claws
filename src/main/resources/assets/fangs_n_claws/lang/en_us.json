@@ -80,6 +80,10 @@
   "enchantment.fangs_n_claws.quick_killer": "Quick Killer",
   "enchantment.fangs_n_claws.item_catcher": "Item Catcher",
   "enchantment.fangs_n_claws.scratch": "Scratch",
+  "enchantment.fangs_n_claws.blazing": "Blazing",
+  "item.fangs_n_claws.black_horn": "Black Horn",
+  "item.fangs_n_claws.fire_pitchfork.tooltip1": "§7Inflicts Flamebrand on hit — explodes in flames on the 3rd effect",
+  "item.fangs_n_claws.hellfire_pitchfork.tooltip1": "§7Inflicts Hellfire Flamebrand on hit — explodes in flames on the 3rd effect",
 
   "effect.fangs_n_claws.bleeding": "Bleeding",
   "effect.fangs_n_claws.venom": "Venom",
