@@ -44,6 +44,7 @@ import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
@@ -220,6 +221,7 @@ public class FangsClawsMod {
         else if (event.getEntity() instanceof GhostEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))          cancel = true;
         else if (event.getEntity() instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
         else if (event.getEntity() instanceof ImpEntity       && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))            cancel = true;
+        else if (event.getEntity() instanceof ScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))        cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 

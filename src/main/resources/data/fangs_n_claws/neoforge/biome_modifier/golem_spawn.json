@@ -1,12 +1,5 @@
 {
   "type": "neoforge:add_spawns",
   "biomes": "#c:is_plains",
-  "spawners": [
-    {
-      "type": "fangs_n_claws:golem",
-      "weight": 5,
-      "minCount": 1,
-      "maxCount": 1
-    }
-  ]
+  "spawners": []
 }

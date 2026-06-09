@@ -32,10 +32,12 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.DART_GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.IMP_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREVILLAGER_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.SCORPION_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.POISONOUS_DART.get());
                         entries.accept(ItemsRegistry.HEAVY_CLAW.get());
                         entries.accept(ItemsRegistry.LONG_FANG.get());
                         entries.accept(ItemsRegistry.GIANT_FEATHER.get());
+                        entries.accept(ItemsRegistry.SCORPION_STING.get());
                         entries.accept(ItemsRegistry.VILE_FAT.get());
                         entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
                         entries.accept(ItemsRegistry.BLACK_HORN.get());

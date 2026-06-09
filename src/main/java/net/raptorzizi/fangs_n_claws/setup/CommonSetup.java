@@ -21,6 +21,7 @@ import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -44,6 +45,7 @@ public class CommonSetup {
         event.put(EntityRegistry.WEREVILLAGER.get(),    WerevillagerEntity.prepareAttributes().build());
         event.put(EntityRegistry.IMP.get(),             ImpEntity.prepareAttributes().build());
         event.put(EntityRegistry.HELL_OGRE.get(),       HellOgreEntity.prepareAttributes().build());
+        event.put(EntityRegistry.SCORPION.get(),         ScorpionEntity.prepareAttributes().build());
     }
 
     @SubscribeEvent

@@ -40,5 +40,8 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_IMP =
             GameRules.register("allowSpawnImp",             GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_SCORPION =
+            GameRules.register("allowSpawnScorpion",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }

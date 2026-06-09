@@ -103,7 +103,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-        // Sword is set in constructor — don't randomize
     }
 
     @Override
@@ -154,7 +153,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.GOBLIN_AMBIENT.get(); }
     @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.GOBLIN_HURT.get(); }
     @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.GOBLIN_DEATH.get(); }
-    @Override protected float getSoundVolume()                    { return 0.8F; }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
@@ -291,7 +289,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
             tickSoloBehavior(target);
         }
     }
-
     private void tickSoloBehavior(LivingEntity target) {
         if (isActing()) return;
 

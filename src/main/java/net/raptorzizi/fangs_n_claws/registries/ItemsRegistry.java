@@ -64,6 +64,9 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> DART_GOBLIN_SPAWN_EGG = ITEMS.register("dart_goblin_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.DART_GOBLIN, 0x4a7a35, 0xe8c840, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> SCORPION_SPAWN_EGG = ITEMS.register("scorpion_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.SCORPION, 0x2a2e32, 0x2f3338, new Item.Properties().stacksTo(64)));
+
     /**
      * Materials
      */
@@ -74,6 +77,9 @@ public class ItemsRegistry {
             () -> new Item(new Item.Properties().stacksTo(64)));
 
     public static final Supplier<Item> GIANT_FEATHER = ITEMS.register("giant_feather",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<Item> SCORPION_STING = ITEMS.register("scorpion_sting",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
     public static final Supplier<VileFatItem> VILE_FAT = ITEMS.register("vile_fat", VileFatItem::new);

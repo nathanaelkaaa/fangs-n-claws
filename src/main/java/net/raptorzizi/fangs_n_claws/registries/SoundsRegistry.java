@@ -50,6 +50,17 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> DART_HIT =
             register("dart.hit");
 
+    public static final Supplier<SoundEvent> SCORPION_DEATH =
+            register("scorpion.death");
+    public static final Supplier<SoundEvent> SCORPION_HURT =
+            register("scorpion.hurt");
+    public static final Supplier<SoundEvent> SCORPION_STINGER =
+            register("scorpion.stinger");
+    public static final Supplier<SoundEvent> SCORPION_CLAW1 =
+            register("scorpion.claw1");
+    public static final Supplier<SoundEvent> SCORPION_CLAW2 =
+            register("scorpion.claw2");
+
     public static final Supplier<SoundEvent> GOBLIN_AMBIENT =
             register("goblin.ambient");
     public static final Supplier<SoundEvent> GOBLIN_HURT =

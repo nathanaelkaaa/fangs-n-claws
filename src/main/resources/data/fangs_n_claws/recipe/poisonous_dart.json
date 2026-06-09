@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    " S ",
+    " G "
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_nugget" },
+    "S": { "item": "fangs_n_claws:scorpion_sting" },
+    "G": { "item": "fangs_n_claws:giant_feather" }
+  },
+  "result": {
+    "id": "fangs_n_claws:poisonous_dart",
+    "count": 4
+  }
+}

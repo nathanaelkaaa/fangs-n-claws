@@ -15,10 +15,13 @@
   "item.fangs_n_claws.imp_spawn_egg": "Imp Spawn Egg",
   "item.fangs_n_claws.werevillager_spawn_egg": "Werevillager Spawn Egg",
   "entity.fangs_n_claws.werevillager": "Werevillager",
+  "item.fangs_n_claws.scorpion_spawn_egg": "Scorpion Spawn Egg",
+  "entity.fangs_n_claws.scorpion": "Scorpion",
 
   "item.fangs_n_claws.heavy_claw": "Heavy Claw",
   "item.fangs_n_claws.long_fang": "Long Fang",
   "item.fangs_n_claws.giant_feather": "Giant Feather",
+  "item.fangs_n_claws.scorpion_sting": "Scorpion Sting",
   "item.fangs_n_claws.vile_fat": "Vile Fat",
   "item.fangs_n_claws.spectral_essence": "Spectral Essence",
   "item.fangs_n_claws.fang_dagger": "Fang Dagger",
@@ -120,6 +123,8 @@
   "fangs_n_claws.configuration.spawn_toggles.dart_goblin.tooltip": "If false, Dart Goblins will never spawn naturally. Also controllable per-world via /gamerule allowSpawnDartGoblin.",
   "fangs_n_claws.configuration.spawn_toggles.imp": "Allow Imp Spawning",
   "fangs_n_claws.configuration.spawn_toggles.imp.tooltip": "If false, Imps will never spawn naturally. Also controllable per-world via /gamerule allowSpawnImp.",
+  "fangs_n_claws.configuration.spawn_toggles.scorpion": "Allow Scorpion Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.scorpion.tooltip": "If false, Scorpions will never spawn naturally. Also controllable per-world via /gamerule allowSpawnScorpion.",
 
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
@@ -147,5 +152,7 @@
   "fangs_n_claws.configuration.spawn_weights.dart_goblin": "Dart Goblin",
   "fangs_n_claws.configuration.spawn_weights.dart_goblin.tooltip": "Spawn weight for Dart Goblins (overworld, night only). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.imp": "Imp",
-  "fangs_n_claws.configuration.spawn_weights.imp.tooltip": "Spawn weight for Imps (nether, all biomes). 0 = disabled."
+  "fangs_n_claws.configuration.spawn_weights.imp.tooltip": "Spawn weight for Imps (nether, all biomes). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.scorpion": "Scorpion",
+  "fangs_n_claws.configuration.spawn_weights.scorpion.tooltip": "Spawn weight for Scorpions (overworld, any biome). 0 = disabled."
 }

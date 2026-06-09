@@ -56,7 +56,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.EVIL_BAT.get(),
                     EntityRegistry.GHOST.get(),
                     EntityRegistry.WEREWOLF.get(),
-                    EntityRegistry.HELL_OGRE.get()
+                    EntityRegistry.HELL_OGRE.get(),
+                    EntityRegistry.SCORPION.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -70,21 +71,23 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
             if (biome.is(IS_OVERWORLD)) {
                 if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
-                    add(spawns, MobCategory.MONSTER,  EntityRegistry.GOBLIN.get(),          ServerConfigs.GOBLIN_WEIGHT.get(),          1, 5);
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.GOBLIN.get(),          ServerConfigs.GOBLIN_WEIGHT.get(),          1, 4);
                 if (CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.DART_GOBLIN.get(),     ServerConfigs.DART_GOBLIN_WEIGHT.get(),     1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
-                    add(spawns, MobCategory.MONSTER,  EntityRegistry.OGRE.get(),            ServerConfigs.OGRE_WEIGHT.get(),            1, 2);
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.OGRE.get(),            ServerConfigs.OGRE_WEIGHT.get(),            1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.CAVE_OGRE.get(),       ServerConfigs.CAVE_OGRE_WEIGHT.get(),       1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
-                    add(spawns, MobCategory.MONSTER,  EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 2);
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
-                    add(spawns, MobCategory.AMBIENT,  EntityRegistry.EVIL_BAT.get(),        ServerConfigs.EVIL_BAT_WEIGHT.get(),        1, 5);
+                    add(spawns, MobCategory.AMBIENT,  EntityRegistry.EVIL_BAT.get(),        ServerConfigs.EVIL_BAT_WEIGHT.get(),        1, 3);
                 if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
-                    add(spawns, MobCategory.MONSTER,  EntityRegistry.GHOST.get(),           ServerConfigs.GHOST_WEIGHT.get(),           1, 3);
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.GHOST.get(),           ServerConfigs.GHOST_WEIGHT.get(),           1, 2);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
+                if (CommonConfigs.ALLOW_SPAWN_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.SCORPION.get(),        ServerConfigs.SCORPION_WEIGHT.get(),        1, 2);
             }
 
             if (biome.is(IS_PLAINS)) {
@@ -99,7 +102,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
             if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {
                 if (CommonConfigs.ALLOW_SPAWN_IMP.get())
-                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(), ServerConfigs.IMP_WEIGHT.get(), 1, 5);
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(), ServerConfigs.IMP_WEIGHT.get(), 1, 3);
             }
 
             if (biome.is(IS_NETHER)) {

@@ -25,6 +25,7 @@ import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -172,4 +173,11 @@ public class EntityRegistry {
                     .sized(1.5F, 1.5F)
                     .clientTrackingRange(64)
                     .build("block_projectile"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ScorpionEntity>> SCORPION =
+            ENTITIES.register("scorpion", () -> EntityType.Builder
+                    .<ScorpionEntity>of((type, level) -> new ScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("scorpion"));
 }

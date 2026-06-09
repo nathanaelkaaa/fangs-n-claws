@@ -7,9 +7,9 @@
   "spawners": [
     {
       "type": "fangs_n_claws:imp",
-      "weight": 20,
+      "weight": 12,
       "minCount": 1,
-      "maxCount": 5
+      "maxCount": 3
     }
   ]
 }
