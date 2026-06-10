@@ -38,6 +38,11 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.LONG_FANG.get());
                         entries.accept(ItemsRegistry.GIANT_FEATHER.get());
                         entries.accept(ItemsRegistry.SCORPION_STING.get());
+                        entries.accept(ItemsRegistry.CHITIN.get());
+                        entries.accept(ItemsRegistry.SCORPION_HELMET.get());
+                        entries.accept(ItemsRegistry.SCORPION_CHESTPLATE.get());
+                        entries.accept(ItemsRegistry.SCORPION_LEGGINGS.get());
+                        entries.accept(ItemsRegistry.SCORPION_BOOTS.get());
                         entries.accept(ItemsRegistry.VILE_FAT.get());
                         entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
                         entries.accept(ItemsRegistry.BLACK_HORN.get());

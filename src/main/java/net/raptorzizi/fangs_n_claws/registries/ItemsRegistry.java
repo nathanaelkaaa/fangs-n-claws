@@ -17,6 +17,8 @@ import net.raptorzizi.fangs_n_claws.item.NetheriteFangDaggerItem;
 import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
 import net.raptorzizi.fangs_n_claws.item.VelocityArrowItem;
 import net.raptorzizi.fangs_n_claws.item.VileFatItem;
+import net.minecraft.world.item.ArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import java.util.function.Supplier;
 
 public class ItemsRegistry {
@@ -82,6 +84,9 @@ public class ItemsRegistry {
     public static final Supplier<Item> SCORPION_STING = ITEMS.register("scorpion_sting",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> CHITIN = ITEMS.register("chitin",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
     public static final Supplier<VileFatItem> VILE_FAT = ITEMS.register("vile_fat", VileFatItem::new);
 
     public static final Supplier<Item> SPECTRAL_ESSENCE = ITEMS.register("spectral_essence",
@@ -101,6 +106,18 @@ public class ItemsRegistry {
     public static final Supplier<SilverSwordItem>       SILVER_SWORD       = ITEMS.register("silver_sword",       SilverSwordItem::new);
     public static final Supplier<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",    FirePitchforkItem::new);
     public static final Supplier<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
+
+    /**
+     * Armor
+     */
+    public static final Supplier<ScorpionArmorItem> SCORPION_HELMET     = ITEMS.register("scorpion_helmet",
+            () -> new ScorpionArmorItem(ArmorItem.Type.HELMET,     150));
+    public static final Supplier<ScorpionArmorItem> SCORPION_CHESTPLATE = ITEMS.register("scorpion_chestplate",
+            () -> new ScorpionArmorItem(ArmorItem.Type.CHESTPLATE, 220));
+    public static final Supplier<ScorpionArmorItem> SCORPION_LEGGINGS   = ITEMS.register("scorpion_leggings",
+            () -> new ScorpionArmorItem(ArmorItem.Type.LEGGINGS,   200));
+    public static final Supplier<ScorpionArmorItem> SCORPION_BOOTS      = ITEMS.register("scorpion_boots",
+            () -> new ScorpionArmorItem(ArmorItem.Type.BOOTS,      175));
 
     /**
      * Throwables / Projectiles

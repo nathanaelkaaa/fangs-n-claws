@@ -24,6 +24,11 @@ import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -153,6 +158,21 @@ public class FangsClawsMod {
             }
         }
 
+        if (entity instanceof Player player && player.tickCount % 20 == 0) {
+            boolean fullSet = player.getItemBySlot(EquipmentSlot.HEAD).getItem()  instanceof ScorpionArmorItem
+                           && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScorpionArmorItem
+                           && player.getItemBySlot(EquipmentSlot.LEGS).getItem()  instanceof ScorpionArmorItem
+                           && player.getItemBySlot(EquipmentSlot.FEET).getItem()  instanceof ScorpionArmorItem;
+            if (fullSet) {
+                player.addEffect(new MobEffectInstance(MobEffectsRegistry.MITHRIDATIC, 40, 0, false, false, true));
+                player.removeEffect(MobEffects.POISON);
+                player.removeEffect(MobEffects.CONFUSION);
+                player.removeEffect(MobEffects.BLINDNESS);
+                player.removeEffect(MobEffects.HUNGER);
+                player.removeEffect(MobEffectsRegistry.VENOM);
+            }
+        }
+
         if (entity instanceof Monster monster && monster.tickCount % 15 == 0) {
             Level level = monster.level();
             BlockPos mobPos = monster.blockPosition();
@@ -186,6 +206,20 @@ public class FangsClawsMod {
                             fleeTarget.x, fleeTarget.y, fleeTarget.z, 1.5);
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onMobEffectApplicable(MobEffectEvent.Applicable event) {
+        if (!event.getEntity().hasEffect(MobEffectsRegistry.MITHRIDATIC)) return;
+
+        var effect = event.getEffectInstance().getEffect();
+        if (effect.is(MobEffects.POISON)
+                || effect.is(MobEffects.CONFUSION)
+                || effect.is(MobEffects.BLINDNESS)
+                || effect.is(MobEffects.HUNGER)
+                || effect.is(MobEffectsRegistry.VENOM)) {
+            event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
     }
 
