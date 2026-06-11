@@ -61,14 +61,16 @@ public class SpawnUtils {
                 ? level.getMaxLocalRawBrightness(pos, 10)
                 : level.getMaxLocalRawBrightness(pos);
         if (brightness > random.nextInt(8)) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            int chunkX = pos.getX() >> 4;
-            int chunkZ = pos.getZ() >> 4;
-            AABB chunkBounds = new AABB(
-                    chunkX << 4, level.getMinBuildHeight(), chunkZ << 4,
-                    (chunkX << 4) + 16, level.getMaxBuildHeight(), (chunkZ << 4) + 16);
-            if (serverLevel.getEntitiesOfClass(EvilBatEntity.class, chunkBounds).size() >= 3) return false;
-        }
+        /*if (level instanceof ServerLevel serverLevel) {
+            if (serverLevel.isDay()) return false;
+            int maxGroup = switch (level.getDifficulty()) {
+                case EASY   -> 3;
+                case NORMAL -> 4;
+                default     -> 5;
+            };
+            long nearby = serverLevel.getEntitiesOfClass(EvilBatEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
+            if (nearby >= maxGroup) return false;
+        }*/
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
@@ -107,7 +109,7 @@ public class SpawnUtils {
 
     public static boolean checkGoblinSpawnRules(EntityType<? extends GoblinEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level instanceof ServerLevel serverLevel) {
+        /*if (level instanceof ServerLevel serverLevel) {
             if (serverLevel.isDay()) return false;
             int maxGroup = switch (level.getDifficulty()) {
                 case EASY   -> 2;
@@ -116,7 +118,7 @@ public class SpawnUtils {
             };
             long nearby = serverLevel.getEntitiesOfClass(GoblinEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
             if (nearby >= maxGroup) return false;
-        }
+        }*/
         return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>)(EntityType<?>) type, level, spawnType, pos, random);
     }
 

@@ -271,7 +271,7 @@ public class FangsClawsMod {
         if (event.getEntity() instanceof GoblinEntity
                 && !event.isSpawnCancelled()
                 && rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)
-                && serverLevel.random.nextInt(7) == 0) {
+                && serverLevel.random.nextInt(25) == 0) {
 
             DartGoblinEntity dartGoblin = EntityRegistry.DART_GOBLIN.get().create(serverLevel);
             if (dartGoblin != null) {

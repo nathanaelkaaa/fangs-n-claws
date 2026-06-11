@@ -99,7 +99,7 @@ public class ImpEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,               10.0)
+                .add(Attributes.MAX_HEALTH,               8.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.30)
                 .add(Attributes.ATTACK_DAMAGE,             4.0)
                 .add(Attributes.FOLLOW_RANGE,             24.0)
