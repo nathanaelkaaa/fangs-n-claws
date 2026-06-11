@@ -5,21 +5,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.monster.Monster;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
-import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
-import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
-import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
-import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
-import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
-import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
-import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
-import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
-import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
-import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
-import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
-import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
 
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
 public class SpawnSetup {
@@ -29,79 +17,85 @@ public class SpawnSetup {
         event.register(EntityRegistry.OGRE.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                OgreEntity::checkOgreSpawnRules,
+                SpawnUtils::checkOgreSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.CAVE_OGRE.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                CaveOgreEntity::checkCaveOgreSpawnRules,
+                SpawnUtils::checkCaveOgreSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.WEREWOLF.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                WerewolfEntity::checkWerewolfSpawnRules,
+                SpawnUtils::checkWerewolfSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.SILVER_SKELETON.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                SpawnUtils::checkSilverSkeletonSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.SCORPION.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkScorpionSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.EVIL_BAT.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                EvilBatEntity::checkEvilBatSpawnRules,
+                SpawnUtils::checkEvilBatSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.GHOST.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                GhostEntity::checkGhostSpawnRules,
+                SpawnUtils::checkGhostSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.GOLEM.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                GolemEntity::checkGolemSpawnRules,
+                SpawnUtils::checkGolemSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.OWLBEAR.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                OwlbearEntity::checkOwlbearSpawnRules,
+                SpawnUtils::checkOwlbearSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.GOBLIN.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                GoblinEntity::checkGoblinSpawnRules,
+                SpawnUtils::checkGoblinSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.DART_GOBLIN.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                DartGoblinEntity::checkDartGoblinSpawnRules,
+                SpawnUtils::checkDartGoblinSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.IMP.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                ImpEntity::checkImpSpawnRules,
+                SpawnUtils::checkImpSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
-        event.register(EntityRegistry.WEREVILLAGER.get(),
+        /*event.register(EntityRegistry.WEREVILLAGER.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                WerevillagerEntity::checkWerevillagerSpawnRules,
-                RegisterSpawnPlacementsEvent.Operation.OR);
+                SpawnUtils::checkWerevillagerSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);*/
 
         event.register(EntityRegistry.HELL_OGRE.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                HellOgreEntity::checkHellOgreSpawnRules,
+                SpawnUtils::checkHellOgreSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
     }
 }

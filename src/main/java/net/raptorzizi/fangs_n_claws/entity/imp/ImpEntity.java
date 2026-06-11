@@ -7,11 +7,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -19,9 +19,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.raptorzizi.fangs_n_claws.effect.FlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
@@ -31,7 +28,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ImpEntity extends PathfinderMob implements GeoEntity {
+public class ImpEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> IS_FLYING =
             SynchedEntityData.defineId(ImpEntity.class, EntityDataSerializers.BOOLEAN);
@@ -99,24 +96,6 @@ public class ImpEntity extends PathfinderMob implements GeoEntity {
 
     public boolean isFlying()               { return this.entityData.get(IS_FLYING); }
     public void    setFlying(boolean value) { this.entityData.set(IS_FLYING, value); }
-
-    // Spawn
-
-    public static boolean checkImpSpawnRules(EntityType<? extends ImpEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(
-                    ImpEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()

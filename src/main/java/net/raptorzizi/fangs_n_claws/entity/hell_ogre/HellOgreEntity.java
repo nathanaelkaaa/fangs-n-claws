@@ -1,12 +1,10 @@
 package net.raptorzizi.fangs_n_claws.entity.hell_ogre;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +15,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -80,12 +77,6 @@ public class HellOgreEntity extends OgreEntity {
         return OgreEntity.prepareAttributes()
                 .add(Attributes.MAX_HEALTH,    70.0)
                 .add(Attributes.ATTACK_DAMAGE,  6.0);
-    }
-
-    public static boolean checkHellOgreSpawnRules(EntityType<? extends HellOgreEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
     // AI

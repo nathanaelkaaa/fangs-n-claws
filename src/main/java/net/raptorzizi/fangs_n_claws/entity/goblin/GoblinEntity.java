@@ -1,16 +1,14 @@
 package net.raptorzizi.fangs_n_claws.entity.goblin;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -22,8 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GoblinEntity extends PathfinderMob implements GeoEntity {
+public class GoblinEntity extends Monster implements GeoEntity {
 
     // Variables
 
@@ -84,7 +80,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
 
     // Spawn
 
-    public GoblinEntity(EntityType<? extends PathfinderMob> type, Level level) {
+    public GoblinEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WOODEN_SWORD));
         this.orbitAngle       = (float)(this.random.nextDouble() * Math.PI * 2.0);
@@ -108,22 +104,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     @Override
     protected float getEquipmentDropChance(EquipmentSlot slot) {
         return 0f;
-    }
-
-    public static boolean checkGoblinSpawnRules(EntityType<? extends GoblinEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            if (serverLevel.isDay()) return false;
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(GoblinEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {

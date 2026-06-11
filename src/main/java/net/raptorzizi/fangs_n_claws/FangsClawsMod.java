@@ -7,6 +7,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.minecraft.core.BlockPos;
@@ -95,15 +97,22 @@ public class FangsClawsMod {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(() ->
+            DispenserBlock.registerBehavior(ItemsRegistry.POISONOUS_DART.get(),
+                    new ProjectileDispenseBehavior(ItemsRegistry.POISONOUS_DART.get()))
+        );
     }
 
     @SubscribeEvent
     public void onRegisterBrewingRecipes(RegisterBrewingRecipesEvent event) {
         var builder = event.getBuilder();
+        builder.addMix(Potions.AWKWARD, ItemsRegistry.SCORPION_STING.get(), PotionsRegistry.VENOM);
+        builder.addMix(PotionsRegistry.VENOM, Items.REDSTONE, PotionsRegistry.LONG_VENOM);
         builder.addMix(Potions.AWKWARD, ItemsRegistry.EVIL_EYE.get(), PotionsRegistry.BLINDNESS);
         builder.addMix(PotionsRegistry.BLINDNESS, Items.REDSTONE, PotionsRegistry.LONG_BLINDNESS);
         builder.addMix(Potions.AWKWARD, ItemsRegistry.GIANT_FEATHER.get(), Potions.STRONG_SWIFTNESS);
         builder.addMix(Potions.AWKWARD, ItemsRegistry.VILE_FAT.get(), PotionsRegistry.NAUSEA);
+        builder.addMix(PotionsRegistry.NAUSEA, Items.REDSTONE, PotionsRegistry.LONG_NAUSEA);
         builder.addMix(Potions.AWKWARD, ItemsRegistry.SPECTRAL_ESSENCE.get(), Potions.INVISIBILITY);
     }
 

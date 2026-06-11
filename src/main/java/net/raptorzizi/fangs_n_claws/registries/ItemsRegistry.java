@@ -15,6 +15,7 @@ import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
 import net.raptorzizi.fangs_n_claws.item.NetheriteClawItem;
 import net.raptorzizi.fangs_n_claws.item.NetheriteFangDaggerItem;
 import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
+import net.raptorzizi.fangs_n_claws.item.PoisonousDartItem;
 import net.raptorzizi.fangs_n_claws.item.VelocityArrowItem;
 import net.raptorzizi.fangs_n_claws.item.VileFatItem;
 import net.minecraft.world.item.ArmorItem;
@@ -124,7 +125,7 @@ public class ItemsRegistry {
      */
     public static final Supplier<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final Supplier<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);
-    public static final Supplier<Item>              POISONOUS_DART = ITEMS.register("poisonous_dart", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final Supplier<PoisonousDartItem> POISONOUS_DART = ITEMS.register("poisonous_dart", PoisonousDartItem::new);
     /**
      * Blocks
      */

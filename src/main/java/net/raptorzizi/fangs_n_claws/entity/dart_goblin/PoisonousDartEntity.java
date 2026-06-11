@@ -44,6 +44,13 @@ public class PoisonousDartEntity extends AbstractArrow {
         }
     }
 
+    public PoisonousDartEntity(Level level, LivingEntity shooter,
+            ItemStack pickupItem, @Nullable ItemStack firedFromWeapon) {
+        super(net.raptorzizi.fangs_n_claws.registries.EntityRegistry.POISONOUS_DART.get(),
+                shooter, level, pickupItem, firedFromWeapon);
+        this.pickup = Pickup.ALLOWED;
+    }
+
     public void setCreativeOnlyPickup() {
         this.pickup = Pickup.CREATIVE_ONLY;
     }

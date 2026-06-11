@@ -1,6 +1,5 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -27,6 +26,20 @@ public class PotionsRegistry {
     public static final DeferredHolder<Potion, Potion> NAUSEA =
             POTIONS.register("nausea",
                     () -> new Potion(new MobEffectInstance(MobEffects.CONFUSION, 600, 0)));
+
+    public static final DeferredHolder<Potion, Potion> LONG_NAUSEA =
+            POTIONS.register("long_nausea",
+                    () -> new Potion("nausea",
+                            new MobEffectInstance(MobEffects.CONFUSION, 1800, 0)));
+
+    public static final DeferredHolder<Potion, Potion> VENOM =
+            POTIONS.register("venom",
+                    () -> new Potion(new MobEffectInstance(MobEffectsRegistry.VENOM, 600, 0)));
+
+    public static final DeferredHolder<Potion, Potion> LONG_VENOM =
+            POTIONS.register("long_venom",
+                    () -> new Potion("venom",
+                            new MobEffectInstance(MobEffectsRegistry.VENOM, 1800, 0)));
 
     public static void register(IEventBus eventBus) {
         POTIONS.register(eventBus);

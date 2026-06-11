@@ -11,7 +11,7 @@
     "C": { "item": "minecraft:coal_block" }
   },
   "result": {
-    "item": "fangs_n_claws:hellfire_pitchfork",
+    "id": "fangs_n_claws:hellfire_pitchfork",
     "count": 1
   }
 }

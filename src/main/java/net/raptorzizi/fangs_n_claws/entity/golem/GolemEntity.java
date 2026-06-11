@@ -28,11 +28,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.Difficulty;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import org.jetbrains.annotations.NotNull;
@@ -160,17 +156,6 @@ public class GolemEntity extends Monster implements GeoEntity {
         setSleeping(true);
         setBodyHealth(BODY_HEALTH_MAX);
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-    }
-
-    public static boolean checkGolemSpawnRules(EntityType<? extends GolemEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            AABB area = new AABB(pos).inflate(48, 16, 48);
-            if (!serverLevel.getEntitiesOfClass(GolemEntity.class, area).isEmpty()) return false;
-        }
-        return true;
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {

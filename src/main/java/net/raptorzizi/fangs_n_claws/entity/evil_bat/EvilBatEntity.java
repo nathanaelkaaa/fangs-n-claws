@@ -2,12 +2,10 @@ package net.raptorzizi.fangs_n_claws.entity.evil_bat;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
@@ -18,13 +16,10 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -32,7 +27,7 @@ import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class EvilBatEntity extends PathfinderMob implements GeoEntity {
+public class EvilBatEntity extends Monster implements GeoEntity {
 
     // Variables
 
@@ -66,7 +61,7 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
 
     // Spawn
 
-    public EvilBatEntity(EntityType<? extends PathfinderMob> type, Level level) {
+    public EvilBatEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.setNoGravity(true);
     }
@@ -87,25 +82,6 @@ public class EvilBatEntity extends PathfinderMob implements GeoEntity {
 
     public boolean isResting()               { return this.entityData.get(IS_RESTING); }
     public void    setResting(boolean value) { this.entityData.set(IS_RESTING, value); }
-
-    public static boolean checkEvilBatSpawnRules(EntityType<? extends EvilBatEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) return false;
-        int brightness = level.getLevel().isThundering()
-                ? level.getMaxLocalRawBrightness(pos, 10)
-                : level.getMaxLocalRawBrightness(pos);
-        if (brightness > random.nextInt(8)) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            int chunkX = pos.getX() >> 4;
-            int chunkZ = pos.getZ() >> 4;
-            AABB chunkBounds = new AABB(
-                    chunkX << 4, level.getMinBuildHeight(), chunkZ << 4,
-                    (chunkX << 4) + 16, level.getMaxBuildHeight(), (chunkZ << 4) + 16);
-            if (serverLevel.getEntitiesOfClass(EvilBatEntity.class, chunkBounds).size() >= 3) return false;
-        }
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
