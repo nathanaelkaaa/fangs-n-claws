@@ -63,15 +63,6 @@ public class WerevillagerEntity extends AbstractVillager {
         return data;
     }
 
-    public static boolean checkWerevillagerSpawnRules(EntityType<WerevillagerEntity> type,
-                                                      ServerLevelAccessor level,
-                                                      MobSpawnType spawnType,
-                                                      BlockPos pos,
-                                                      RandomSource random) {
-        if (level instanceof ServerLevel serverLevel && !serverLevel.isDay()) return false;
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
-
     public static AttributeSupplier.Builder prepareAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,     20.0)

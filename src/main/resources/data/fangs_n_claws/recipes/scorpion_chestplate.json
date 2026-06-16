@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": { "item": "fangs_n_claws:chitin" }
+  },
+  "result": {
+    "item": "fangs_n_claws:scorpion_chestplate",
+    "count": 1
+  }
+}

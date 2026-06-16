@@ -16,8 +16,9 @@ public class FangsConfigScreen extends Screen {
     private boolean[] toggles;
 
     private static final String[] TOGGLE_NAMES = {
-        "Goblin", "Ogre", "Golem", "Owlbear",
-        "Silver Skeleton", "Evil Bat", "Ghost", "Werewolf"
+        "Goblin", "Ogre", "Cave Ogre", "Golem", "Owlbear",
+        "Silver Skeleton", "Evil Bat", "Ghost", "Werewolf",
+        "Dart Goblin", "Imp", "Hell Ogre", "Scorpion"
     };
 
     // Refs kept so we can flip the label on click
@@ -27,8 +28,9 @@ public class FangsConfigScreen extends Screen {
     private EditBox[] weightBoxes;
 
     private static final String[] WEIGHT_LABELS = {
-        "Goblin", "Ogre", "Golem", "Owlbear",
-        "Silver Skeleton", "Evil Bat", "Ghost", "Ghost (Nether)", "Werewolf"
+        "Goblin", "Ogre", "Cave Ogre", "Golem", "Owlbear",
+        "Silver Skeleton", "Evil Bat", "Ghost", "Ghost (Nether)", "Werewolf",
+        "Dart Goblin", "Imp", "Hell Ogre", "Scorpion"
     };
 
     private boolean serverConfigAvailable = true;
@@ -55,12 +57,17 @@ public class FangsConfigScreen extends Screen {
         toggles = new boolean[] {
             CommonConfigs.ALLOW_SPAWN_GOBLIN.get(),
             CommonConfigs.ALLOW_SPAWN_OGRE.get(),
+            CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get(),
             CommonConfigs.ALLOW_SPAWN_GOLEM.get(),
             CommonConfigs.ALLOW_SPAWN_OWLBEAR.get(),
             CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get(),
             CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get(),
             CommonConfigs.ALLOW_SPAWN_GHOST.get(),
-            CommonConfigs.ALLOW_SPAWN_WEREWOLF.get()
+            CommonConfigs.ALLOW_SPAWN_WEREWOLF.get(),
+            CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get(),
+            CommonConfigs.ALLOW_SPAWN_IMP.get(),
+            CommonConfigs.ALLOW_SPAWN_HELL_OGRE.get(),
+            CommonConfigs.ALLOW_SPAWN_SCORPION.get()
         };
 
         int leftX = this.width / 2 - (COLS * COL_W) / 2;
@@ -82,7 +89,7 @@ public class FangsConfigScreen extends Screen {
             this.addRenderableWidget(toggleButtons[i]);
         }
 
-        // rows used by toggles (8 items, 3 cols → ceil(8/3)=3 rows)
+        // rows used by toggles (13 items, 3 cols → ceil(13/3)=5 rows)
         int toggleRows   = (int) Math.ceil((double) TOGGLE_NAMES.length / COLS);
         int weightStartY = y + toggleRows * ROW_H + 18; // 18 px gap + section header
 
@@ -95,17 +102,22 @@ public class FangsConfigScreen extends Screen {
             weightValues = new int[] {
                 ServerConfigs.GOBLIN_WEIGHT.get(),
                 ServerConfigs.OGRE_WEIGHT.get(),
+                ServerConfigs.CAVE_OGRE_WEIGHT.get(),
                 ServerConfigs.GOLEM_WEIGHT.get(),
                 ServerConfigs.OWLBEAR_WEIGHT.get(),
                 ServerConfigs.SILVER_SKELETON_WEIGHT.get(),
                 ServerConfigs.EVIL_BAT_WEIGHT.get(),
                 ServerConfigs.GHOST_WEIGHT.get(),
                 ServerConfigs.GHOST_NETHER_WEIGHT.get(),
-                ServerConfigs.WEREWOLF_WEIGHT.get()
+                ServerConfigs.WEREWOLF_WEIGHT.get(),
+                ServerConfigs.DART_GOBLIN_WEIGHT.get(),
+                ServerConfigs.IMP_WEIGHT.get(),
+                ServerConfigs.HELL_OGRE_WEIGHT.get(),
+                ServerConfigs.SCORPION_WEIGHT.get()
             };
             serverConfigAvailable = true;
         } catch (Exception e) {
-            weightValues = new int[] { 25, 15, 5, 8, 30, 20, 25, 15, 30 };
+            weightValues = new int[] { 20, 15, 15, 5, 8, 20, 35, 25, 15, 25, 5, 10, 10, 25 };
             serverConfigAvailable = false;
         }
 
@@ -187,26 +199,36 @@ public class FangsConfigScreen extends Screen {
 
     private void saveConfig() {
         // Save spawn toggles
-        CommonConfigs.ALLOW_SPAWN_GOBLIN.set(toggles[0]);
-        CommonConfigs.ALLOW_SPAWN_OGRE.set(toggles[1]);
-        CommonConfigs.ALLOW_SPAWN_GOLEM.set(toggles[2]);
-        CommonConfigs.ALLOW_SPAWN_OWLBEAR.set(toggles[3]);
-        CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.set(toggles[4]);
-        CommonConfigs.ALLOW_SPAWN_EVIL_BAT.set(toggles[5]);
-        CommonConfigs.ALLOW_SPAWN_GHOST.set(toggles[6]);
-        CommonConfigs.ALLOW_SPAWN_WEREWOLF.set(toggles[7]);
+        CommonConfigs.ALLOW_SPAWN_GOBLIN.set(         toggles[0]);
+        CommonConfigs.ALLOW_SPAWN_OGRE.set(           toggles[1]);
+        CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.set(      toggles[2]);
+        CommonConfigs.ALLOW_SPAWN_GOLEM.set(          toggles[3]);
+        CommonConfigs.ALLOW_SPAWN_OWLBEAR.set(        toggles[4]);
+        CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.set(toggles[5]);
+        CommonConfigs.ALLOW_SPAWN_EVIL_BAT.set(       toggles[6]);
+        CommonConfigs.ALLOW_SPAWN_GHOST.set(          toggles[7]);
+        CommonConfigs.ALLOW_SPAWN_WEREWOLF.set(       toggles[8]);
+        CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.set(    toggles[9]);
+        CommonConfigs.ALLOW_SPAWN_IMP.set(            toggles[10]);
+        CommonConfigs.ALLOW_SPAWN_HELL_OGRE.set(      toggles[11]);
+        CommonConfigs.ALLOW_SPAWN_SCORPION.set(       toggles[12]);
 
         // Save spawn weights (only if server config is loaded)
         if (serverConfigAvailable) {
-            ServerConfigs.GOBLIN_WEIGHT.set(          parseWeight(weightBoxes[0], ServerConfigs.GOBLIN_WEIGHT.get()));
-            ServerConfigs.OGRE_WEIGHT.set(            parseWeight(weightBoxes[1], ServerConfigs.OGRE_WEIGHT.get()));
-            ServerConfigs.GOLEM_WEIGHT.set(           parseWeight(weightBoxes[2], ServerConfigs.GOLEM_WEIGHT.get()));
-            ServerConfigs.OWLBEAR_WEIGHT.set(         parseWeight(weightBoxes[3], ServerConfigs.OWLBEAR_WEIGHT.get()));
-            ServerConfigs.SILVER_SKELETON_WEIGHT.set( parseWeight(weightBoxes[4], ServerConfigs.SILVER_SKELETON_WEIGHT.get()));
-            ServerConfigs.EVIL_BAT_WEIGHT.set(        parseWeight(weightBoxes[5], ServerConfigs.EVIL_BAT_WEIGHT.get()));
-            ServerConfigs.GHOST_WEIGHT.set(           parseWeight(weightBoxes[6], ServerConfigs.GHOST_WEIGHT.get()));
-            ServerConfigs.GHOST_NETHER_WEIGHT.set(    parseWeight(weightBoxes[7], ServerConfigs.GHOST_NETHER_WEIGHT.get()));
-            ServerConfigs.WEREWOLF_WEIGHT.set(        parseWeight(weightBoxes[8], ServerConfigs.WEREWOLF_WEIGHT.get()));
+            ServerConfigs.GOBLIN_WEIGHT.set(          parseWeight(weightBoxes[0],  ServerConfigs.GOBLIN_WEIGHT.get()));
+            ServerConfigs.OGRE_WEIGHT.set(            parseWeight(weightBoxes[1],  ServerConfigs.OGRE_WEIGHT.get()));
+            ServerConfigs.CAVE_OGRE_WEIGHT.set(       parseWeight(weightBoxes[2],  ServerConfigs.CAVE_OGRE_WEIGHT.get()));
+            ServerConfigs.GOLEM_WEIGHT.set(           parseWeight(weightBoxes[3],  ServerConfigs.GOLEM_WEIGHT.get()));
+            ServerConfigs.OWLBEAR_WEIGHT.set(         parseWeight(weightBoxes[4],  ServerConfigs.OWLBEAR_WEIGHT.get()));
+            ServerConfigs.SILVER_SKELETON_WEIGHT.set( parseWeight(weightBoxes[5],  ServerConfigs.SILVER_SKELETON_WEIGHT.get()));
+            ServerConfigs.EVIL_BAT_WEIGHT.set(        parseWeight(weightBoxes[6],  ServerConfigs.EVIL_BAT_WEIGHT.get()));
+            ServerConfigs.GHOST_WEIGHT.set(           parseWeight(weightBoxes[7],  ServerConfigs.GHOST_WEIGHT.get()));
+            ServerConfigs.GHOST_NETHER_WEIGHT.set(    parseWeight(weightBoxes[8],  ServerConfigs.GHOST_NETHER_WEIGHT.get()));
+            ServerConfigs.WEREWOLF_WEIGHT.set(        parseWeight(weightBoxes[9],  ServerConfigs.WEREWOLF_WEIGHT.get()));
+            ServerConfigs.DART_GOBLIN_WEIGHT.set(     parseWeight(weightBoxes[10], ServerConfigs.DART_GOBLIN_WEIGHT.get()));
+            ServerConfigs.IMP_WEIGHT.set(             parseWeight(weightBoxes[11], ServerConfigs.IMP_WEIGHT.get()));
+            ServerConfigs.HELL_OGRE_WEIGHT.set(       parseWeight(weightBoxes[12], ServerConfigs.HELL_OGRE_WEIGHT.get()));
+            ServerConfigs.SCORPION_WEIGHT.set(        parseWeight(weightBoxes[13], ServerConfigs.SCORPION_WEIGHT.get()));
         }
     }
 

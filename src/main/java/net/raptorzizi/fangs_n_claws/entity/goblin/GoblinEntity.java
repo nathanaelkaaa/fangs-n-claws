@@ -6,6 +6,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -33,7 +34,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GoblinEntity extends PathfinderMob implements GeoEntity {
+public class GoblinEntity extends Monster implements GeoEntity {
 
     // Variables
 
@@ -85,7 +86,7 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
 
     // Spawn
 
-    public GoblinEntity(EntityType<? extends PathfinderMob> type, Level level) {
+    public GoblinEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.WOODEN_SWORD));
         this.orbitAngle       = (float)(this.random.nextDouble() * Math.PI * 2.0);
@@ -104,28 +105,11 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
-        // Sword is set in constructor — don't randomize
     }
 
     @Override
     protected float getEquipmentDropChance(EquipmentSlot slot) {
         return 0f;
-    }
-
-    public static boolean checkGoblinSpawnRules(EntityType<? extends GoblinEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            if (serverLevel.isDay()) return false;
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(GoblinEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -154,7 +138,6 @@ public class GoblinEntity extends PathfinderMob implements GeoEntity {
     @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.GOBLIN_AMBIENT.get(); }
     @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.GOBLIN_HURT.get(); }
     @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.GOBLIN_DEATH.get(); }
-    @Override protected float getSoundVolume()                    { return 0.8F; }
 
     @Override
     public boolean hurt(DamageSource source, float amount) {

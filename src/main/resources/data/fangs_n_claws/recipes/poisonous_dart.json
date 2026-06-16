@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "BSB",
+    " G "
+  ],
+  "key": {
+    "I": { "item": "minecraft:iron_nugget" },
+    "S": { "item": "fangs_n_claws:scorpion_sting" },
+    "B": { "item": "minecraft:bamboo" },
+    "G": { "item": "fangs_n_claws:giant_feather" }
+  },
+  "result": {
+    "item": "fangs_n_claws:poisonous_dart",
+    "count": 8
+  }
+}

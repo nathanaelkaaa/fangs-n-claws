@@ -165,18 +165,6 @@ public class GolemEntity extends Monster implements GeoEntity {
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, dataTag);
     }
 
-    public static boolean checkGolemSpawnRules(EntityType<? extends GolemEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (!Mob.checkMobSpawnRules(type, level, spawnType, pos, random)) return false;
-        if (pos.getY() < level.getHeight(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos.getX(), pos.getZ()) - 1) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            AABB area = new AABB(pos).inflate(48, 16, 48);
-            if (!serverLevel.getEntitiesOfClass(GolemEntity.class, area).isEmpty()) return false;
-        }
-        return true;
-    }
-
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,               80.0)

@@ -11,7 +11,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.level.block.DispenserBlock;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Monster;
@@ -23,6 +32,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
@@ -35,6 +45,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
+import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.raptorzizi.fangs_n_claws.config.ClientConfigs;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
@@ -51,6 +62,7 @@ import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
@@ -107,8 +119,26 @@ public class FangsClawsMod {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            DispenserBlock.registerBehavior(ItemsRegistry.POISONOUS_DART.get(),
+                    new AbstractProjectileDispenseBehavior() {
+                        @Override
+                        protected AbstractArrow getProjectile(Level level, Position pos, ItemStack stack) {
+                            PoisonousDartEntity dart = new PoisonousDartEntity(EntityRegistry.POISONOUS_DART.get(), level);
+                            dart.setPos(pos.x(), pos.y(), pos.z());
+                            return dart;
+                        }
+                    });
+
             // Brewing recipes: BrewingRecipeRegistry.addRecipe(inputPotionIngredient, catalystIngredient, outputPotionStack)
             // Forge 1.20.1 uses addRecipe(Ingredient, Ingredient, ItemStack) — no addMix.
+            BrewingRecipeRegistry.addRecipe(
+                    potionIngredient(Potions.AWKWARD),
+                    Ingredient.of(ItemsRegistry.SCORPION_STING.get()),
+                    potionStack(PotionsRegistry.VENOM.get()));
+            BrewingRecipeRegistry.addRecipe(
+                    potionIngredient(PotionsRegistry.VENOM.get()),
+                    Ingredient.of(Items.REDSTONE),
+                    potionStack(PotionsRegistry.LONG_VENOM.get()));
             BrewingRecipeRegistry.addRecipe(
                     potionIngredient(Potions.AWKWARD),
                     Ingredient.of(ItemsRegistry.EVIL_EYE.get()),
@@ -125,6 +155,10 @@ public class FangsClawsMod {
                     potionIngredient(Potions.AWKWARD),
                     Ingredient.of(ItemsRegistry.VILE_FAT.get()),
                     potionStack(PotionsRegistry.NAUSEA.get()));
+            BrewingRecipeRegistry.addRecipe(
+                    potionIngredient(PotionsRegistry.NAUSEA.get()),
+                    Ingredient.of(Items.REDSTONE),
+                    potionStack(PotionsRegistry.LONG_NAUSEA.get()));
             BrewingRecipeRegistry.addRecipe(
                     potionIngredient(Potions.AWKWARD),
                     Ingredient.of(ItemsRegistry.SPECTRAL_ESSENCE.get()),
@@ -181,6 +215,21 @@ public class FangsClawsMod {
             }
         }
 
+        if (entity instanceof Player player && player.tickCount % 20 == 0) {
+            boolean fullSet = player.getItemBySlot(EquipmentSlot.HEAD).getItem()  instanceof ScorpionArmorItem
+                           && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScorpionArmorItem
+                           && player.getItemBySlot(EquipmentSlot.LEGS).getItem()  instanceof ScorpionArmorItem
+                           && player.getItemBySlot(EquipmentSlot.FEET).getItem()  instanceof ScorpionArmorItem;
+            if (fullSet) {
+                player.addEffect(new MobEffectInstance(MobEffectsRegistry.MITHRIDATIC.get(), 40, 0, false, false, true));
+                player.removeEffect(MobEffects.POISON);
+                player.removeEffect(MobEffects.CONFUSION);
+                player.removeEffect(MobEffects.BLINDNESS);
+                player.removeEffect(MobEffects.HUNGER);
+                player.removeEffect(MobEffectsRegistry.VENOM.get());
+            }
+        }
+
         if (entity instanceof Monster monster && monster.tickCount % 15 == 0) {
             Level level = monster.level();
             BlockPos mobPos = monster.blockPosition();
@@ -213,6 +262,19 @@ public class FangsClawsMod {
                 monster.getNavigation().moveTo(
                         fleeTarget.x, fleeTarget.y, fleeTarget.z, 1.5);
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onMobEffectApplicable(MobEffectEvent.Applicable event) {
+        if (!event.getEntity().hasEffect(MobEffectsRegistry.MITHRIDATIC.get())) return;
+        MobEffect effect = event.getEffectInstance().getEffect();
+        if (effect == MobEffects.POISON
+                || effect == MobEffects.CONFUSION
+                || effect == MobEffects.BLINDNESS
+                || effect == MobEffects.HUNGER
+                || effect == MobEffectsRegistry.VENOM.get()) {
+            event.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
         }
     }
 
@@ -251,13 +313,14 @@ public class FangsClawsMod {
         else if (entity instanceof GhostEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))          cancel = true;
         else if (entity instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
         else if (entity instanceof ImpEntity       && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))            cancel = true;
+        else if (entity instanceof ScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))       cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 
         if (entity instanceof GoblinEntity
                 && !event.isSpawnCancelled()
                 && rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)
-                && serverLevel.random.nextInt(7) == 0) {
+                && serverLevel.random.nextInt(25) == 0) {
 
             DartGoblinEntity dartGoblin = EntityRegistry.DART_GOBLIN.get().create(serverLevel);
             if (dartGoblin != null) {

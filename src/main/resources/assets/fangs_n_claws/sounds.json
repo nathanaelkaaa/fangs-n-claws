@@ -186,5 +186,35 @@
       { "name": "fangs_n_claws:werewolf/werewolf_death1", "weight": 1 },
       { "name": "fangs_n_claws:werewolf/werewolf_death2", "weight": 1 }
     ]
+  },
+  "scorpion.hurt": {
+    "subtitle": "subtitles.entity.scorpion.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_hurt" }
+    ]
+  },
+  "scorpion.death": {
+    "subtitle": "subtitles.entity.scorpion.death",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_death" }
+    ]
+  },
+  "scorpion.stinger": {
+    "subtitle": "subtitles.entity.scorpion.stinger",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_stinger" }
+    ]
+  },
+  "scorpion.claw1": {
+    "subtitle": "subtitles.entity.scorpion.attack",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_claw1" }
+    ]
+  },
+  "scorpion.claw2": {
+    "subtitle": "subtitles.entity.scorpion.attack",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_claw2" }
+    ]
   }
 }

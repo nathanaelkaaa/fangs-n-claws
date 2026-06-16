@@ -28,6 +28,7 @@ import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 
 public class EntityRegistry {
@@ -116,6 +117,13 @@ public class EntityRegistry {
                     .clientTrackingRange(64)
                     .updateInterval(20)
                     .build("hellfire_pitchfork"));
+
+    public static final RegistryObject<EntityType<ScorpionEntity>> SCORPION =
+            ENTITIES.register("scorpion", () -> EntityType.Builder
+                    .<ScorpionEntity>of((type, level) -> new ScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("scorpion"));
 
     public static final RegistryObject<EntityType<ImpEntity>> IMP =
             ENTITIES.register("imp", () -> EntityType.Builder.of(ImpEntity::new, MobCategory.MONSTER)

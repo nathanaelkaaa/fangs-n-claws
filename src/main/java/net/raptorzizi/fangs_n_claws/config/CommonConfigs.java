@@ -20,6 +20,7 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_DART_GOBLIN;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_IMP;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HELL_OGRE;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_SCORPION;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -84,6 +85,11 @@ public class CommonConfigs {
                 .comment("Allow Hell Ogres to spawn naturally (nether)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.hell_ogre")
                 .define("allow_hell_ogre", true);
+
+        ALLOW_SPAWN_SCORPION = BUILDER
+                .comment("Allow Scorpions to spawn naturally (overworld)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.scorpion")
+                .define("allow_scorpion", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

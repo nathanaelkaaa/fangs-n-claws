@@ -117,13 +117,6 @@ public class OgreEntity extends Monster implements GeoEntity {
         return SLAM_DAMAGE;
     }
 
-    public static boolean checkOgreSpawnRules(EntityType<? extends OgreEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (pos.getY() < 0) return false;
-        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
-    }
-
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {

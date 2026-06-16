@@ -20,12 +20,13 @@ public class ServerConfigs {
     public static final ForgeConfigSpec.IntValue DART_GOBLIN_WEIGHT;
     public static final ForgeConfigSpec.IntValue IMP_WEIGHT;
     public static final ForgeConfigSpec.IntValue HELL_OGRE_WEIGHT;
+    public static final ForgeConfigSpec.IntValue SCORPION_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
         BUILDER.comment("Spawn weight for each mob. Set to 0 to disable natural spawning.");
 
-        GOBLIN_WEIGHT          = BUILDER.comment("Goblin (overworld, any biome) — default: 25")
+        GOBLIN_WEIGHT          = BUILDER.comment("Goblin (overworld, any biome) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.goblin")
                                         .defineInRange("goblin",          20, 0, 500);
         OGRE_WEIGHT            = BUILDER.comment("Ogre (overworld, any biome) — default: 15")
@@ -40,31 +41,34 @@ public class ServerConfigs {
         OWLBEAR_WEIGHT         = BUILDER.comment("Owlbear (forest only) — default: 8")
                                         .translation("fangs_n_claws.configuration.spawn_weights.owlbear")
                                         .defineInRange("owlbear",          8, 0, 500);
-        SILVER_SKELETON_WEIGHT = BUILDER.comment("Silver Skeleton (overworld) — default: 30")
+        SILVER_SKELETON_WEIGHT = BUILDER.comment("Silver Skeleton (overworld) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.silver_skeleton")
-                                        .defineInRange("silver_skeleton", 30, 0, 500);
-        EVIL_BAT_WEIGHT        = BUILDER.comment("Evil Bat (overworld) — default: 20")
+                                        .defineInRange("silver_skeleton", 20, 0, 500);
+        EVIL_BAT_WEIGHT        = BUILDER.comment("Evil Bat (overworld) — default: 35")
                                         .translation("fangs_n_claws.configuration.spawn_weights.evil_bat")
-                                        .defineInRange("evil_bat",        15, 0, 500);
+                                        .defineInRange("evil_bat",        35, 0, 500);
         GHOST_WEIGHT           = BUILDER.comment("Ghost (overworld) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ghost")
                                         .defineInRange("ghost",           25, 0, 500);
         GHOST_NETHER_WEIGHT    = BUILDER.comment("Ghost (Soul Sand Valley) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ghost_nether")
                                         .defineInRange("ghost_nether",    15, 0, 500);
-        WEREWOLF_WEIGHT        = BUILDER.comment("Werewolf (overworld) — default: 30")
+        WEREWOLF_WEIGHT        = BUILDER.comment("Werewolf (overworld) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.werewolf")
                                         .defineInRange("werewolf",        25, 0, 500);
 
-        DART_GOBLIN_WEIGHT     = BUILDER.comment("Dart Goblin (overworld, any biome) — default: 10")
+        DART_GOBLIN_WEIGHT     = BUILDER.comment("Dart Goblin (overworld, any biome) — default: 5")
                                         .translation("fangs_n_claws.configuration.spawn_weights.dart_goblin")
-                                        .defineInRange("dart_goblin",     10, 0, 500);
-        IMP_WEIGHT             = BUILDER.comment("Imp (Crimson Forest + Nether Wastes) — default: 20")
+                                        .defineInRange("dart_goblin",      5, 0, 500);
+        IMP_WEIGHT             = BUILDER.comment("Imp (Crimson Forest + Nether Wastes) — default: 10")
                                         .translation("fangs_n_claws.configuration.spawn_weights.imp")
-                                        .defineInRange("imp",             20, 0, 500);
+                                        .defineInRange("imp",             10, 0, 500);
         HELL_OGRE_WEIGHT       = BUILDER.comment("Hell Ogre (nether, all biomes) — default: 10")
                                         .translation("fangs_n_claws.configuration.spawn_weights.hell_ogre")
                                         .defineInRange("hell_ogre",       10, 0, 500);
+        SCORPION_WEIGHT        = BUILDER.comment("Scorpion (overworld, any biome) — default: 25")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.scorpion")
+                                        .defineInRange("scorpion",        25, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

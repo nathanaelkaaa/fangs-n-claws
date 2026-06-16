@@ -87,12 +87,6 @@ public class HellOgreEntity extends OgreEntity {
                 .add(Attributes.ATTACK_DAMAGE, 6.0);
     }
 
-    public static boolean checkHellOgreSpawnRules(EntityType<? extends HellOgreEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
-    }
-
     // AI
 
     @Override

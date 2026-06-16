@@ -48,6 +48,13 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.FIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.HELLFIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.BLACK_HORN.get());
+                        entries.accept(ItemsRegistry.SCORPION_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.SCORPION_STING.get());
+                        entries.accept(ItemsRegistry.CHITIN.get());
+                        entries.accept(ItemsRegistry.SCORPION_HELMET.get());
+                        entries.accept(ItemsRegistry.SCORPION_CHESTPLATE.get());
+                        entries.accept(ItemsRegistry.SCORPION_LEGGINGS.get());
+                        entries.accept(ItemsRegistry.SCORPION_BOOTS.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());
                         entries.accept(ItemsRegistry.VELOCITY_ARROW.get());
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());

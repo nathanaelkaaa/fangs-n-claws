@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
@@ -9,7 +10,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
+import net.raptorzizi.fangs_n_claws.item.PoisonousDartItem;
 import net.raptorzizi.fangs_n_claws.item.DecrepitPitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.FirePitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.HellFirePitchforkItem;
@@ -67,6 +70,9 @@ public class ItemsRegistry {
     public static final RegistryObject<ForgeSpawnEggItem> HELL_OGRE_SPAWN_EGG = ITEMS.register("hell_ogre_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.HELL_OGRE, 0x7a1e00, 0xff6600, new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> SCORPION_SPAWN_EGG = ITEMS.register("scorpion_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.SCORPION, 0x2a2e32, 0x2f3338, new Item.Properties().stacksTo(64)));
+
     /**
      * Materials
      */
@@ -87,6 +93,24 @@ public class ItemsRegistry {
     public static final RegistryObject<Item> BLACK_HORN = ITEMS.register("black_horn",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<Item> SCORPION_STING = ITEMS.register("scorpion_sting",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<Item> CHITIN = ITEMS.register("chitin",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    /**
+     * Armor
+     */
+    public static final RegistryObject<ScorpionArmorItem> SCORPION_HELMET     = ITEMS.register("scorpion_helmet",
+            () -> new ScorpionArmorItem(ArmorItem.Type.HELMET,     150));
+    public static final RegistryObject<ScorpionArmorItem> SCORPION_CHESTPLATE = ITEMS.register("scorpion_chestplate",
+            () -> new ScorpionArmorItem(ArmorItem.Type.CHESTPLATE, 220));
+    public static final RegistryObject<ScorpionArmorItem> SCORPION_LEGGINGS   = ITEMS.register("scorpion_leggings",
+            () -> new ScorpionArmorItem(ArmorItem.Type.LEGGINGS,   200));
+    public static final RegistryObject<ScorpionArmorItem> SCORPION_BOOTS      = ITEMS.register("scorpion_boots",
+            () -> new ScorpionArmorItem(ArmorItem.Type.BOOTS,      175));
+
     /**
      * Weapons
      */
@@ -103,7 +127,7 @@ public class ItemsRegistry {
     public static final RegistryObject<DecrepitPitchforkItem> DECREPIT_PITCHFORK = ITEMS.register("decrepit_pitchfork", DecrepitPitchforkItem::new);
     public static final RegistryObject<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",     FirePitchforkItem::new);
     public static final RegistryObject<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
-    public static final RegistryObject<Item>               POISONOUS_DART = ITEMS.register("poisonous_dart", () -> new Item(new Item.Properties().stacksTo(64)));
+    public static final RegistryObject<PoisonousDartItem>  POISONOUS_DART = ITEMS.register("poisonous_dart", PoisonousDartItem::new);
     public static final RegistryObject<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final RegistryObject<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);
 

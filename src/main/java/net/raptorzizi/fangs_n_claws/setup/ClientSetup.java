@@ -28,6 +28,7 @@ import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkR
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkRenderer;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkRenderer;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreRenderer;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpRenderer;
 import net.raptorzizi.fangs_n_claws.particle.BlackFogParticle;
 import net.raptorzizi.fangs_n_claws.particle.BloodGroundParticle;
@@ -65,6 +66,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.DECREPIT_PITCHFORK_ENTITY.get(), DecrepitPitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FIRE_PITCHFORK_ENTITY.get(),     FirePitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.HELLFIRE_PITCHFORK_ENTITY.get(), HellFirePitchforkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.SCORPION.get(),             ScorpionRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WEREVILLAGER.get(),        WerevillagerRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(),     CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NETHERITE_CLAW_HOOK.get(),   NetheriteClawHookRenderer::new);

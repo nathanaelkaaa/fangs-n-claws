@@ -134,20 +134,6 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 target -> !(target instanceof WerevillagerEntity)));
     }
 
-    public static boolean checkWerewolfSpawnRules(EntityType<? extends WerewolfEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            int chunkX = pos.getX() >> 4;
-            int chunkZ = pos.getZ() >> 4;
-            AABB chunkBounds = new AABB(
-                    chunkX << 4, level.getMinBuildHeight(), chunkZ << 4,
-                    (chunkX << 4) + 16, level.getMaxBuildHeight(), (chunkZ << 4) + 16);
-            if (serverLevel.getEntitiesOfClass(WerewolfEntity.class, chunkBounds).size() >= 2) return false;
-        }
-        return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
-    }
-
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {

@@ -7,6 +7,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -25,7 +26,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class DartGoblinEntity extends PathfinderMob implements GeoEntity {
+public class DartGoblinEntity extends Monster implements GeoEntity {
 
     private static final double ATTACK_RANGE        = 14.0;
     private static final double CHASE_SPEED         = 0.38;
@@ -53,25 +54,6 @@ public class DartGoblinEntity extends PathfinderMob implements GeoEntity {
 
     public DartGoblinEntity(EntityType<? extends DartGoblinEntity> type, Level level) {
         super(type, level);
-    }
-
-    // Spawn rules
-
-    public static boolean checkDartGoblinSpawnRules(EntityType<? extends DartGoblinEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level instanceof net.minecraft.server.level.ServerLevel serverLevel) {
-            if (serverLevel.isDay()) return false;
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(DartGoblinEntity.class,
-                    new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     // Attributes

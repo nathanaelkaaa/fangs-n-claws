@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:blaze_rod",
+          "name": "fangs_n_claws:black_horn",
           "functions": [
             {
               "function": "minecraft:set_count",

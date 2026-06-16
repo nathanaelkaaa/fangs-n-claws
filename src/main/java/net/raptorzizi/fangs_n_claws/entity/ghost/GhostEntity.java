@@ -10,6 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -33,7 +34,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class GhostEntity extends PathfinderMob implements GeoEntity {
+public class GhostEntity extends Monster implements GeoEntity {
 
     // Variables
 
@@ -60,7 +61,7 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
 
     // Spawn
 
-    public GhostEntity(EntityType<? extends PathfinderMob> type, Level level) {
+    public GhostEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
         this.setNoGravity(true);
     }
@@ -81,17 +82,6 @@ public class GhostEntity extends PathfinderMob implements GeoEntity {
 
     public boolean isAngry()               { return this.entityData.get(IS_ANGRY); }
     public void    setAngry(boolean value) { this.entityData.set(IS_ANGRY, value); }
-
-    public static boolean checkGhostSpawnRules(EntityType<? extends GhostEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level.getBrightness(LightLayer.SKY, pos) > random.nextInt(32)) return false;
-        int brightness = level.getLevel().isThundering()
-                ? level.getMaxLocalRawBrightness(pos, 10)
-                : level.getMaxLocalRawBrightness(pos);
-        if (brightness > random.nextInt(8)) return false;
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()

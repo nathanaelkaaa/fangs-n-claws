@@ -12,6 +12,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
 public class PoisonousDartEntity extends AbstractArrow {
@@ -23,6 +24,12 @@ public class PoisonousDartEntity extends AbstractArrow {
     public PoisonousDartEntity(EntityType<? extends PoisonousDartEntity> type, Level level) {
         super(type, level);
         this.pickup = AbstractArrow.Pickup.ALLOWED;
+    }
+
+    public PoisonousDartEntity(Level level, LivingEntity shooter, ItemStack pickupItem) {
+        super(EntityRegistry.POISONOUS_DART.get(), level);
+        this.setOwner(shooter);
+        this.pickup = Pickup.ALLOWED;
     }
 
     @Override

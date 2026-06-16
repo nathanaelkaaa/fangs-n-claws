@@ -11,6 +11,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -32,7 +33,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ImpEntity extends PathfinderMob implements GeoEntity {
+public class ImpEntity extends Monster implements GeoEntity {
 
     private static final EntityDataAccessor<Boolean> IS_FLYING =
             SynchedEntityData.defineId(ImpEntity.class, EntityDataSerializers.BOOLEAN);
@@ -101,27 +102,9 @@ public class ImpEntity extends PathfinderMob implements GeoEntity {
     public boolean isFlying()               { return this.entityData.get(IS_FLYING); }
     public void    setFlying(boolean value) { this.entityData.set(IS_FLYING, value); }
 
-    // Spawn
-
-    public static boolean checkImpSpawnRules(EntityType<? extends ImpEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (level instanceof ServerLevel serverLevel) {
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(
-                    ImpEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
-
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,      10.0)
+                .add(Attributes.MAX_HEALTH,       8.0)
                 .add(Attributes.MOVEMENT_SPEED,   0.30)
                 .add(Attributes.ATTACK_DAMAGE,    4.0)
                 .add(Attributes.FOLLOW_RANGE,    24.0);

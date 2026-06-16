@@ -1,7 +1,6 @@
 package net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrownTrident;
@@ -13,33 +12,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.raptorzizi.fangs_n_claws.effect.FlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
-import java.lang.reflect.Field;
-
 public class DecrepitPitchforkEntity extends ThrownTrident {
-
-    /**
-     * Reflect the private static entity-data accessors from ThrownTrident so we can
-     * set ID_LOYALTY and ID_FOIL correctly without calling the vanilla 3-arg constructor
-     * (which hard-codes EntityType.TRIDENT).
-     */
-    private static final EntityDataAccessor<Byte>    ACCESSOR_LOYALTY;
-    private static final EntityDataAccessor<Boolean> ACCESSOR_FOIL;
-
-    static {
-        ACCESSOR_LOYALTY = reflectStaticField("ID_LOYALTY");
-        ACCESSOR_FOIL    = reflectStaticField("ID_FOIL");
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> EntityDataAccessor<T> reflectStaticField(String name) {
-        try {
-            Field f = ThrownTrident.class.getDeclaredField(name);
-            f.setAccessible(true);
-            return (EntityDataAccessor<T>) f.get(null);
-        } catch (Exception e) {
-            throw new RuntimeException("DecrepitPitchforkEntity: cannot reflect ThrownTrident." + name, e);
-        }
-    }
 
     // ── Instance ─────────────────────────────────────────────────────────────
 
@@ -73,12 +46,9 @@ public class DecrepitPitchforkEntity extends ThrownTrident {
     }
 
     private void initFromStack(ItemStack stack) {
-        // 1.20.1: no setPickupItemStack — getPickupItem() override handles pickup
-        this.entityData.set(ACCESSOR_FOIL, stack.hasFoil());
-
-        // In 1.20.1: use getItemEnchantmentLevel
+        this.entityData.set(ThrownTrident.ID_FOIL, stack.hasFoil());
         byte loyalty = (byte) Math.min(EnchantmentHelper.getItemEnchantmentLevel(Enchantments.LOYALTY, stack), 127);
-        this.entityData.set(ACCESSOR_LOYALTY, loyalty);
+        this.entityData.set(ThrownTrident.ID_LOYALTY, loyalty);
     }
 
     // ── Hit ──────────────────────────────────────────────────────────────────
