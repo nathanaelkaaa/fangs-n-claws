@@ -10,6 +10,8 @@
   "item.fangs_n_claws.owlbear_spawn_egg": "Owlbear Spawn Egg",
   "item.fangs_n_claws.silver_skeleton_spawn_egg": "Silver Skeleton Spawn Egg",
   "item.fangs_n_claws.golem_spawn_egg": "Big Golem Spawn Egg",
+  "item.fangs_n_claws.ice_golem_spawn_egg": "Ice Golem Spawn Egg",
+  "entity.fangs_n_claws.ice_golem": "Ice Golem",
   "item.fangs_n_claws.goblin_spawn_egg": "Goblin Spawn Egg",
   "item.fangs_n_claws.dart_goblin_spawn_egg": "Dart Goblin Spawn Egg",
   "item.fangs_n_claws.imp_spawn_egg": "Imp Spawn Egg",
@@ -149,6 +151,8 @@
   "fangs_n_claws.configuration.spawn_toggles.imp.tooltip": "If false, Imps will never spawn naturally. Also controllable per-world via /gamerule allowSpawnImp.",
   "fangs_n_claws.configuration.spawn_toggles.scorpion": "Allow Scorpion Spawning",
   "fangs_n_claws.configuration.spawn_toggles.scorpion.tooltip": "If false, Scorpions will never spawn naturally. Also controllable per-world via /gamerule allowSpawnScorpion.",
+  "fangs_n_claws.configuration.spawn_toggles.ice_golem": "Allow Ice Golem Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.ice_golem.tooltip": "If false, Ice Golems will never spawn naturally. Also controllable per-world via /gamerule allowSpawnIceGolem.",
 
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
@@ -178,5 +182,7 @@
   "fangs_n_claws.configuration.spawn_weights.imp": "Imp",
   "fangs_n_claws.configuration.spawn_weights.imp.tooltip": "Spawn weight for Imps (nether, all biomes). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.scorpion": "Scorpion",
-  "fangs_n_claws.configuration.spawn_weights.scorpion.tooltip": "Spawn weight for Scorpions (overworld, any biome). 0 = disabled."
+  "fangs_n_claws.configuration.spawn_weights.scorpion.tooltip": "Spawn weight for Scorpions (overworld, any biome). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.ice_golem": "Ice Golem",
+  "fangs_n_claws.configuration.spawn_weights.ice_golem.tooltip": "Spawn weight for Ice Golems (snowy biomes). 0 = disabled."
 }

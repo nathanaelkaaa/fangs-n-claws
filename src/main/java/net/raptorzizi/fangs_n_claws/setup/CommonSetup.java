@@ -39,6 +39,7 @@ public class CommonSetup {
         event.put(EntityRegistry.OWLBEAR.get(),        OwlbearEntity.prepareAttributes().build());
         event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
+        event.put(EntityRegistry.ICE_GOLEM.get(),       GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.GHOST.get(),           GhostEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOBLIN.get(),          GoblinEntity.prepareAttributes().build());
         event.put(EntityRegistry.DART_GOBLIN.get(),     DartGoblinEntity.prepareAttributes().build());

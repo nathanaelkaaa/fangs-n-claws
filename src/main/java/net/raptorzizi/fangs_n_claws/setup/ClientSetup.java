@@ -12,6 +12,7 @@ import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinRenderer;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartRenderer;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinRenderer;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemRenderer;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemRenderer;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
@@ -52,6 +53,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SCORPION.get(),         ScorpionRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.ICE_GOLEM.get(),           IceGolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOBLIN.get(),              GoblinRenderer::new);
         event.registerEntityRenderer(EntityRegistry.DART_GOBLIN.get(),         DartGoblinRenderer::new);

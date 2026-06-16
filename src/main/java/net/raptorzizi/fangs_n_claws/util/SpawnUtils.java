@@ -5,13 +5,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
@@ -21,7 +21,6 @@ import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
-import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
@@ -167,6 +166,17 @@ public class SpawnUtils {
     public static boolean checkScorpionSpawnRules(EntityType<? extends ScorpionEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkIceGolemSpawnRules(EntityType<? extends IceGolemEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            AABB area = new AABB(pos).inflate(48, 16, 48);
+            if (!serverLevel.getEntitiesOfClass(IceGolemEntity.class, area).isEmpty()) return false;
+        }
+        return true;
     }
 
     public static boolean checkSilverSkeletonSpawnRules(EntityType<? extends SilverSkeletonEntity> type,

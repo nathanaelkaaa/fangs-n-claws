@@ -76,6 +76,9 @@ public class GolemEntity extends Monster implements GeoEntity {
             Blocks.PODZOL, Blocks.MYCELIUM
     );
 
+    protected Set<Block> getRegenBlocks() { return REGEN_BLOCKS; }
+    protected BlockState getBodyBlockState() { return Blocks.PACKED_MUD.defaultBlockState(); }
+
     private static final EntityDataAccessor<Boolean> IS_SLEEPING = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GOLEM_STATE = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float>   BODY_HEALTH = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.FLOAT);
@@ -83,8 +86,8 @@ public class GolemEntity extends Monster implements GeoEntity {
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    private Entity pendingAttackTarget  = null;
-    private int    attackDelayTick      = 0;
+    protected Entity pendingAttackTarget  = null;
+    protected int    attackDelayTick      = 0;
     private Entity pendingThrowTarget   = null;
     private int    throwDelayTick       = 0;
     private int    wakeUpTick           = 0;
@@ -98,7 +101,8 @@ public class GolemEntity extends Monster implements GeoEntity {
     private static final RawAnimation WALK_ANIM         = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation SLEEP_ANIM        = RawAnimation.begin().thenLoop("sleep");
     private static final RawAnimation VULNERABLE_ANIM   = RawAnimation.begin().thenLoop("vulnerable");
-    private static final RawAnimation ATTACK_ANIM       = RawAnimation.begin().then("attack",       Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK_ANIM           = RawAnimation.begin().then("attack",           Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation ATTACK_UPPERCUT_ANIM  = RawAnimation.begin().then("attack_uppercut",  Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation ATTACK_THROW_ANIM = RawAnimation.begin().then("attack_throw", Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation WAKE_UP_ANIM      = RawAnimation.begin().then("wake_up",      Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation FALL_ANIM         = RawAnimation.begin().then("fall",         Animation.LoopType.HOLD_ON_LAST_FRAME);
@@ -197,11 +201,11 @@ public class GolemEntity extends Monster implements GeoEntity {
         super.die(cause);
         this.triggerAnim("events_controller", "death");
         if (!this.level().isClientSide) {
-            spawnMudPile();
+            spawnBlockPile();
         }
     }
 
-    private void spawnMudPile() {
+    protected void spawnBlockPile() {
         ServerLevel serverLevel = (ServerLevel) this.level();
         BlockPos center = this.blockPosition();
 
@@ -243,7 +247,7 @@ public class GolemEntity extends Monster implements GeoEntity {
             double py = this.getY() + this.getBbHeight() * 0.55;
             double pz = attacker != null ? (this.getZ() + attacker.getZ()) * 0.5 : this.getZ();
             ((ServerLevel) level()).sendParticles(
-                    new BlockParticleOption(ParticleTypes.BLOCK, Blocks.PACKED_MUD.defaultBlockState()),
+                    new BlockParticleOption(ParticleTypes.BLOCK, getBodyBlockState()),
                     px, py, pz, 14, 0.25, 0.25, 0.25, 0.08);
 
             if (getTarget() == null && attacker instanceof LivingEntity le
@@ -273,6 +277,8 @@ public class GolemEntity extends Monster implements GeoEntity {
         this.throwDelayTick     = 1;
     }
 
+    protected void onAttackLanded(Entity target) {}
+
     private void spawnHandProjectile() {
         if (pendingThrowTarget == null || !pendingThrowTarget.isAlive()) return;
 
@@ -284,7 +290,7 @@ public class GolemEntity extends Monster implements GeoEntity {
 
         BlockProjectile proj = BlockProjectile.create(
                 serverLevel, this,
-                Blocks.PACKED_MUD.defaultBlockState(),
+                getBodyBlockState(),
                 THROW_SPEED, THROW_DAMAGE, targetCenter);
 
         serverLevel.addFreshEntity(proj);
@@ -301,7 +307,7 @@ public class GolemEntity extends Monster implements GeoEntity {
                 center.offset(-r, -1, -r),
                 center.offset(r,   2,  r))) {
             if (pos.equals(center)) continue;
-            if (REGEN_BLOCKS.contains(serverLevel.getBlockState(pos).getBlock())) {
+            if (getRegenBlocks().contains(serverLevel.getBlockState(pos).getBlock())) {
                 candidates.add(pos.immutable());
             }
         }
@@ -380,11 +386,12 @@ public class GolemEntity extends Monster implements GeoEntity {
                         ServerLevel sl = (ServerLevel) level();
                         sl.sendParticles(
                                 new BlockParticleOption(ParticleTypes.BLOCK,
-                                        Blocks.PACKED_MUD.defaultBlockState()),
+                                        getBodyBlockState()),
                                 pendingAttackTarget.getX(),
                                 pendingAttackTarget.getY() + pendingAttackTarget.getBbHeight() * 0.5,
                                 pendingAttackTarget.getZ(),
                                 24, 0.3, 0.35, 0.3, 0.18);
+                        onAttackLanded(pendingAttackTarget);
                     }
                 }
                 pendingAttackTarget = null;
@@ -446,7 +453,7 @@ public class GolemEntity extends Monster implements GeoEntity {
                     double vy = 0.12 + random.nextDouble() * 0.28 * (0.5 + progress);
                     sl.sendParticles(
                             new BlockParticleOption(ParticleTypes.BLOCK,
-                                    Blocks.PACKED_MUD.defaultBlockState()),
+                                    getBodyBlockState()),
                             getX() + Math.cos(angle) * r,
                             getY() + 0.1 + progress * 0.6,
                             getZ() + Math.sin(angle) * r,
@@ -456,7 +463,7 @@ public class GolemEntity extends Monster implements GeoEntity {
                 }
 
                 if (progress > 0.3f) {
-                    sl.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.PACKED_MUD.defaultBlockState()),
+                    sl.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, getBodyBlockState()),
                             getX(), getY() + 0.2, getZ(),
                             (int) (progress * 4), radius * 0.5, 0.1, radius * 0.5, 0.02);
                 }
@@ -521,9 +528,10 @@ public class GolemEntity extends Monster implements GeoEntity {
         }));
 
         registrar.add(new AnimationController<>(this, "events_controller", 0, state -> PlayState.STOP)
-                .triggerableAnim("wake_up",      WAKE_UP_ANIM)
-                .triggerableAnim("attack",       ATTACK_ANIM)
-                .triggerableAnim("attack_throw", ATTACK_THROW_ANIM)
+                .triggerableAnim("wake_up",         WAKE_UP_ANIM)
+                .triggerableAnim("attack",          ATTACK_ANIM)
+                .triggerableAnim("attack_uppercut", ATTACK_UPPERCUT_ANIM)
+                .triggerableAnim("attack_throw",    ATTACK_THROW_ANIM)
                 .triggerableAnim("fall",         FALL_ANIM)
                 .triggerableAnim("get_up",       GET_UP_ANIM)
                 .triggerableAnim("death",        DEATH_ANIM));

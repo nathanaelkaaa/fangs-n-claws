@@ -21,6 +21,7 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_IMP;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HELL_OGRE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SCORPION;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_ICE_GOLEM;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -90,6 +91,11 @@ public class CommonConfigs {
                 .comment("Allow Scorpions to spawn naturally (overworld)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.scorpion")
                 .define("allow_scorpion", true);
+
+        ALLOW_SPAWN_ICE_GOLEM = BUILDER
+                .comment("Allow Ice Golems to spawn naturally (snowy biomes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.ice_golem")
+                .define("allow_ice_golem", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

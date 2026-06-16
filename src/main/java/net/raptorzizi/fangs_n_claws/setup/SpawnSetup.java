@@ -97,5 +97,11 @@ public class SpawnSetup {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SpawnUtils::checkHellOgreSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.ICE_GOLEM.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkIceGolemSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
     }
 }

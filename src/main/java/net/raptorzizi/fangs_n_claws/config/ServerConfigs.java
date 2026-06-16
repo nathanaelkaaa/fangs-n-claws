@@ -21,6 +21,7 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue IMP_WEIGHT;
     public static final ModConfigSpec.IntValue HELL_OGRE_WEIGHT;
     public static final ModConfigSpec.IntValue SCORPION_WEIGHT;
+    public static final ModConfigSpec.IntValue ICE_GOLEM_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -68,6 +69,9 @@ public class ServerConfigs {
         SCORPION_WEIGHT        = BUILDER.comment("Scorpion (overworld, any biome) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.scorpion")
                                         .defineInRange("scorpion",        25, 0, 500);
+        ICE_GOLEM_WEIGHT       = BUILDER.comment("Ice Golem (snowy biomes) — default: 5")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.ice_golem")
+                                        .defineInRange("ice_golem",        5, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

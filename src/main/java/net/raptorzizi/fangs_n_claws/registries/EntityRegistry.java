@@ -20,6 +20,7 @@ import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -43,6 +44,11 @@ public class EntityRegistry {
             ENTITIES.register("golem", () -> EntityType.Builder.of(GolemEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 2.6F)
                     .build("golem"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<IceGolemEntity>> ICE_GOLEM =
+            ENTITIES.register("ice_golem", () -> EntityType.Builder.of(IceGolemEntity::new, MobCategory.MONSTER)
+                    .sized(1.95F, 2.6F)
+                    .build("ice_golem"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<OgreEntity>> OGRE =
             ENTITIES.register("ogre", () -> EntityType.Builder.of(OgreEntity::new, MobCategory.MONSTER)

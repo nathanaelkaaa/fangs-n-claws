@@ -48,6 +48,7 @@ import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
@@ -257,6 +258,7 @@ public class FangsClawsMod {
         else if (event.getEntity() instanceof DartGoblinEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)) cancel = true;
         else if (event.getEntity() instanceof CaveOgreEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
         else if (event.getEntity() instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
+        else if (event.getEntity() instanceof IceGolemEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ICE_GOLEM))      cancel = true;
         else if (event.getEntity() instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
         else if (event.getEntity() instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
         else if (event.getEntity() instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
