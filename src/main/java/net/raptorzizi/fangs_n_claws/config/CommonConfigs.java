@@ -23,6 +23,9 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SCORPION;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_ICE_GOLEM;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FIRE_GHOST;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_DESERT_SCORPION;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FROST_SCORPION;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_NETHER_SCORPION;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -102,6 +105,21 @@ public class CommonConfigs {
                 .comment("Allow Fire Ghosts to spawn naturally (overworld + Crimson Forest + Nether Wastes)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.fire_ghost")
                 .define("allow_fire_ghost", true);
+
+        ALLOW_SPAWN_DESERT_SCORPION = BUILDER
+                .comment("Allow Desert Scorpions to spawn naturally (desert, daytime)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.desert_scorpion")
+                .define("allow_desert_scorpion", true);
+
+        ALLOW_SPAWN_FROST_SCORPION = BUILDER
+                .comment("Allow Frost Scorpions to spawn naturally (snowy biomes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.frost_scorpion")
+                .define("allow_frost_scorpion", true);
+
+        ALLOW_SPAWN_NETHER_SCORPION = BUILDER
+                .comment("Allow Nether Scorpions to spawn naturally (Crimson Forest + Nether Wastes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.nether_scorpion")
+                .define("allow_nether_scorpion", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -152,12 +152,6 @@ public class SpawnUtils {
         return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>)(EntityType<?>) type, level, spawnType, pos, random);
     }
 
-    /*public static boolean checkWerevillagerSpawnRules(EntityType<WerevillagerEntity> type,
-            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level instanceof ServerLevel serverLevel && !serverLevel.isDay()) return false;
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
-    }*/
-
     public static boolean checkHellOgreSpawnRules(EntityType<? extends HellOgreEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
@@ -183,4 +177,10 @@ public class SpawnUtils {
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
+
+    /*public static boolean checkWerevillagerSpawnRules(EntityType<WerevillagerEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level instanceof ServerLevel serverLevel && !serverLevel.isDay()) return false;
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+    }*/
 }

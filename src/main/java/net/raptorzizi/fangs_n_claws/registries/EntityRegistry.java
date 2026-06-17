@@ -12,6 +12,9 @@ import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
@@ -195,6 +198,28 @@ public class EntityRegistry {
                     .sized(1.4F, 0.9F)
                     .clientTrackingRange(8)
                     .build("scorpion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<DesertScorpionEntity>> DESERT_SCORPION =
+            ENTITIES.register("desert_scorpion", () -> EntityType.Builder
+                    .<DesertScorpionEntity>of((type, level) -> new DesertScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("desert_scorpion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<FrostScorpionEntity>> FROST_SCORPION =
+            ENTITIES.register("frost_scorpion", () -> EntityType.Builder
+                    .<FrostScorpionEntity>of((type, level) -> new FrostScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("frost_scorpion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<NetherScorpionEntity>> NETHER_SCORPION =
+            ENTITIES.register("nether_scorpion", () -> EntityType.Builder
+                    .<NetherScorpionEntity>of((type, level) -> new NetherScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .fireImmune()
+                    .build("nether_scorpion"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FrozenBoxEntity>> FROZEN_BOX =
             ENTITIES.register("frozen_box", () -> EntityType.Builder

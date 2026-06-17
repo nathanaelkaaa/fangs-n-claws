@@ -59,7 +59,7 @@ public class ItemsRegistry {
             () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x98989d, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> FIRE_GHOST_SPAWN_EGG = ITEMS.register("fire_ghost_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.FIRE_GHOST, 0xff4500, 0xffe066, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.FIRE_GHOST, 0x9a3231, 0x641e1e, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> GOBLIN_SPAWN_EGG = ITEMS.register("goblin_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GOBLIN, 0x5d8745, 0x554035, new Item.Properties().stacksTo(64)));
@@ -75,6 +75,15 @@ public class ItemsRegistry {
 
     public static final Supplier<DeferredSpawnEggItem> SCORPION_SPAWN_EGG = ITEMS.register("scorpion_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.SCORPION, 0x2a2e32, 0x2f3338, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> DESERT_SCORPION_SPAWN_EGG = ITEMS.register("desert_scorpion_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.DESERT_SCORPION, 0xc0a35a, 0x443a23, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> FROST_SCORPION_SPAWN_EGG = ITEMS.register("frost_scorpion_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.FROST_SCORPION, 0x245066, 0xffffff, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> NETHER_SCORPION_SPAWN_EGG = ITEMS.register("nether_scorpion_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.NETHER_SCORPION, 0x240f10, 0xff5d1d, new Item.Properties().stacksTo(64)));
 
     /**
      * Materials

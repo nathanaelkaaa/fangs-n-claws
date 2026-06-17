@@ -55,6 +55,13 @@ import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
+import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
@@ -110,6 +117,21 @@ public class FangsClawsMod {
         modContainer.registerConfig(ModConfig.Type.COMMON, CommonConfigs.SPEC, String.format("%s-common.toml", FangsClawsMod.MOD_ID));
 
         GameRuleRegistry.init();
+
+        modEventBus.addListener((RegisterSpawnPlacementsEvent event) -> {
+            event.register(EntityRegistry.DESERT_SCORPION.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    ScorpionEntity::checkScorpionSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register(EntityRegistry.FROST_SCORPION.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    ScorpionEntity::checkScorpionSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register(EntityRegistry.NETHER_SCORPION.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    ScorpionEntity::checkScorpionSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        });
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -278,10 +300,14 @@ public class FangsClawsMod {
         else if (event.getEntity() instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
         else if (event.getEntity() instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
         else if (event.getEntity() instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
-        else if (event.getEntity() instanceof GhostEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))          cancel = true;
-        else if (event.getEntity() instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
-        else if (event.getEntity() instanceof ImpEntity       && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))            cancel = true;
-        else if (event.getEntity() instanceof ScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))        cancel = true;
+        else if (event.getEntity() instanceof FireGhostEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FIRE_GHOST))    cancel = true;
+        else if (event.getEntity() instanceof GhostEntity      && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))         cancel = true;
+        else if (event.getEntity() instanceof WerewolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))      cancel = true;
+        else if (event.getEntity() instanceof ImpEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))           cancel = true;
+        else if (event.getEntity() instanceof DesertScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DESERT_SCORPION)) cancel = true;
+        else if (event.getEntity() instanceof FrostScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FROST_SCORPION))  cancel = true;
+        else if (event.getEntity() instanceof NetherScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NETHER_SCORPION)) cancel = true;
+        else if (event.getEntity() instanceof ScorpionEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))      cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 

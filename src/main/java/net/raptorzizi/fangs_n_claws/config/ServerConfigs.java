@@ -24,6 +24,9 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue ICE_GOLEM_WEIGHT;
     public static final ModConfigSpec.IntValue FIRE_GHOST_WEIGHT;
     public static final ModConfigSpec.IntValue FIRE_GHOST_NETHER_WEIGHT;
+    public static final ModConfigSpec.IntValue DESERT_SCORPION_WEIGHT;
+    public static final ModConfigSpec.IntValue FROST_SCORPION_WEIGHT;
+    public static final ModConfigSpec.IntValue NETHER_SCORPION_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -77,9 +80,18 @@ public class ServerConfigs {
         FIRE_GHOST_WEIGHT      = BUILDER.comment("Fire Ghost (overworld, rare) — default: 10")
                                         .translation("fangs_n_claws.configuration.spawn_weights.fire_ghost")
                                         .defineInRange("fire_ghost",        10, 0, 500);
-        FIRE_GHOST_NETHER_WEIGHT = BUILDER.comment("Fire Ghost (Crimson Forest + Nether Wastes) — default: 15")
+        FIRE_GHOST_NETHER_WEIGHT = BUILDER.comment("Fire Ghost (Crimson Forest + Nether Wastes) — default: 12")
                                         .translation("fangs_n_claws.configuration.spawn_weights.fire_ghost_nether")
-                                        .defineInRange("fire_ghost_nether", 15, 0, 500);
+                                        .defineInRange("fire_ghost_nether", 12, 0, 500);
+        DESERT_SCORPION_WEIGHT   = BUILDER.comment("Desert Scorpion (desert, daytime) — default: 20")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.desert_scorpion")
+                                        .defineInRange("desert_scorpion",   20, 0, 500);
+        FROST_SCORPION_WEIGHT    = BUILDER.comment("Frost Scorpion (snowy biomes) — default: 15")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.frost_scorpion")
+                                        .defineInRange("frost_scorpion",    15, 0, 500);
+        NETHER_SCORPION_WEIGHT   = BUILDER.comment("Nether Scorpion (Crimson Forest + Nether Wastes) — default: 15")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.nether_scorpion")
+                                        .defineInRange("nether_scorpion",   15, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

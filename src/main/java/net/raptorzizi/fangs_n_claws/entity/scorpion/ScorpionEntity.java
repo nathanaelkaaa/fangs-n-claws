@@ -8,10 +8,14 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -26,7 +30,6 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -61,6 +64,10 @@ public class ScorpionEntity extends Spider implements GeoEntity {
 
     public ScorpionEntity(EntityType<?> entityType, Level level) {
         super((EntityType<? extends Spider>) entityType, level);
+    }
+
+    public static boolean checkScorpionSpawnRules(EntityType<? extends ScorpionEntity> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -152,8 +159,8 @@ public class ScorpionEntity extends Spider implements GeoEntity {
 
                         super.doHurtTarget(pendingAttackTarget);
 
-                        if (isStingerAttack && pendingAttackTarget instanceof LivingEntity living) {
-                            living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, false, true, true));
+                        if (pendingAttackTarget instanceof LivingEntity living) {
+                            applyHitEffect(living, isStingerAttack);
                         }
                     }
                     pendingAttackTarget = null;
@@ -163,6 +170,12 @@ public class ScorpionEntity extends Spider implements GeoEntity {
                     attackDelayTick = 0;
                 }
             }
+        }
+    }
+
+    protected void applyHitEffect(LivingEntity living, boolean isStingerAttack) {
+        if (isStingerAttack) {
+            living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, false, true, true));
         }
     }
 

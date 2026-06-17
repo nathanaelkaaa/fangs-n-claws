@@ -35,6 +35,9 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.IMP_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREVILLAGER_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.SCORPION_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.DESERT_SCORPION_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.FROST_SCORPION_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.NETHER_SCORPION_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.POISONOUS_DART.get());
                         entries.accept(ItemsRegistry.HEAVY_CLAW.get());
                         entries.accept(ItemsRegistry.LONG_FANG.get());

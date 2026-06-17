@@ -75,7 +75,10 @@ public class CommonSetup {
         event.put(EntityRegistry.WEREVILLAGER.get(),    WerevillagerEntity.prepareAttributes().build());
         event.put(EntityRegistry.IMP.get(),             ImpEntity.prepareAttributes().build());
         event.put(EntityRegistry.HELL_OGRE.get(),       HellOgreEntity.prepareAttributes().build());
-        event.put(EntityRegistry.SCORPION.get(),         ScorpionEntity.prepareAttributes().build());
+        event.put(EntityRegistry.SCORPION.get(),          ScorpionEntity.prepareAttributes().build());
+        event.put(EntityRegistry.DESERT_SCORPION.get(),  ScorpionEntity.prepareAttributes().build());
+        event.put(EntityRegistry.FROST_SCORPION.get(),   ScorpionEntity.prepareAttributes().build());
+        event.put(EntityRegistry.NETHER_SCORPION.get(),  ScorpionEntity.prepareAttributes().build());
     }
 
     @SubscribeEvent

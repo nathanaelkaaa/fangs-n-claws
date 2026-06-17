@@ -49,5 +49,14 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_FIRE_GHOST =
             GameRules.register("allowSpawnFireGhost",       GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_DESERT_SCORPION =
+            GameRules.register("allowSpawnDesertScorpion",  GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_FROST_SCORPION =
+            GameRules.register("allowSpawnFrostScorpion",   GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_NETHER_SCORPION =
+            GameRules.register("allowSpawnNetherScorpion",  GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }

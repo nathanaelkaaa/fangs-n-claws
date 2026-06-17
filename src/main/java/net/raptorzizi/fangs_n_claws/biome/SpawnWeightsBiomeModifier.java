@@ -42,6 +42,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             TagKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("is_nether"));
     private static final ResourceKey<Biome> SNOWY_PLAINS =
             ResourceKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("snowy_plains"));
+    private static final TagKey<Biome> IS_DESERT =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_desert"));
+    private static final TagKey<Biome> IS_SNOWY =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_snowy"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -61,6 +65,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.WEREWOLF.get(),
                     EntityRegistry.HELL_OGRE.get(),
                     EntityRegistry.SCORPION.get(),
+                    EntityRegistry.DESERT_SCORPION.get(),
+                    EntityRegistry.FROST_SCORPION.get(),
+                    EntityRegistry.NETHER_SCORPION.get(),
                     EntityRegistry.ICE_GOLEM.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
@@ -92,13 +99,23 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_WEIGHT.get(),      1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
-                if (CommonConfigs.ALLOW_SPAWN_SCORPION.get())
+                if (CommonConfigs.ALLOW_SPAWN_SCORPION.get() && !biome.is(IS_DESERT) && !biome.is(IS_SNOWY))
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.SCORPION.get(),        ServerConfigs.SCORPION_WEIGHT.get(),        1, 1);
             }
 
             if (biome.is(SNOWY_PLAINS)) {
                 if (CommonConfigs.ALLOW_SPAWN_ICE_GOLEM.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.ICE_GOLEM.get(), ServerConfigs.ICE_GOLEM_WEIGHT.get(), 1, 1);
+            }
+
+            if (biome.is(IS_SNOWY)) {
+                if (CommonConfigs.ALLOW_SPAWN_FROST_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FROST_SCORPION.get(), ServerConfigs.FROST_SCORPION_WEIGHT.get(), 1, 2);
+            }
+
+            if (biome.is(IS_DESERT)) {
+                if (CommonConfigs.ALLOW_SPAWN_DESERT_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.DESERT_SCORPION.get(), ServerConfigs.DESERT_SCORPION_WEIGHT.get(), 1, 2);
             }
 
             if (biome.is(IS_PLAINS) && !biome.is(SNOWY_PLAINS)) {
@@ -113,9 +130,11 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
             if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {
                 if (CommonConfigs.ALLOW_SPAWN_IMP.get())
-                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(),        ServerConfigs.IMP_WEIGHT.get(),             1, 3);
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(),            ServerConfigs.IMP_WEIGHT.get(),              1, 3);
                 if (CommonConfigs.ALLOW_SPAWN_FIRE_GHOST.get())
-                    add(spawns, MobCategory.MONSTER, EntityRegistry.FIRE_GHOST.get(), ServerConfigs.FIRE_GHOST_NETHER_WEIGHT.get(), 1, 2);
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FIRE_GHOST.get(),     ServerConfigs.FIRE_GHOST_NETHER_WEIGHT.get(), 1, 2);
+                if (CommonConfigs.ALLOW_SPAWN_NETHER_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.NETHER_SCORPION.get(), ServerConfigs.NETHER_SCORPION_WEIGHT.get(),   1, 2);
             }
 
             if (biome.is(IS_NETHER)) {
