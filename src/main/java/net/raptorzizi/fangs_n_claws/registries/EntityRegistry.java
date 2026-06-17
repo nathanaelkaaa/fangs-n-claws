@@ -26,6 +26,7 @@ import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
@@ -186,4 +187,12 @@ public class EntityRegistry {
                     .sized(1.4F, 0.9F)
                     .clientTrackingRange(8)
                     .build("scorpion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<FrozenBoxEntity>> FROZEN_BOX =
+            ENTITIES.register("frozen_box", () -> EntityType.Builder
+                    .<FrozenBoxEntity>of(FrozenBoxEntity::new, MobCategory.MISC)
+                    .sized(1f, 1f)
+                    .clientTrackingRange(64)
+                    .updateInterval(1)
+                    .build("frozen_box"));
 }

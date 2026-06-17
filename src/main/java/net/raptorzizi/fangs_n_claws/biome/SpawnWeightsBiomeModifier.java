@@ -40,8 +40,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             ResourceKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("soul_sand_valley"));
     private static final TagKey<Biome> IS_NETHER =
             TagKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("is_nether"));
-    private static final TagKey<Biome> IS_SNOWY =
-            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_snowy"));
+    private static final ResourceKey<Biome> SNOWY_PLAINS =
+            ResourceKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("snowy_plains"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -93,12 +93,12 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.SCORPION.get(),        ServerConfigs.SCORPION_WEIGHT.get(),        1, 1);
             }
 
-            if (biome.is(IS_SNOWY)) {
+            if (biome.is(SNOWY_PLAINS)) {
                 if (CommonConfigs.ALLOW_SPAWN_ICE_GOLEM.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.ICE_GOLEM.get(), ServerConfigs.ICE_GOLEM_WEIGHT.get(), 1, 1);
             }
 
-            if (biome.is(IS_PLAINS)) {
+            if (biome.is(IS_PLAINS) && !biome.is(SNOWY_PLAINS)) {
                 if (CommonConfigs.ALLOW_SPAWN_GOLEM.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.GOLEM.get(),   ServerConfigs.GOLEM_WEIGHT.get(),   1, 1);
             }

@@ -105,6 +105,10 @@ public class GolemAttackGoal extends Goal {
                 }
             } else {
                 golem.getNavigation().stop();
+                if (hasLos && attackCooldown <= 0) {
+                    attackCooldown = ATTACK_INTERVAL;
+                    golem.doHurtTarget(target);
+                }
             }
         }
     }

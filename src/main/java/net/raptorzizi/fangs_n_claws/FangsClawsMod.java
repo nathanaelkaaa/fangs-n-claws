@@ -10,7 +10,10 @@ import net.neoforged.fml.config.ModConfig;
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -76,6 +79,18 @@ public class FangsClawsMod {
 
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
+
+        if (FMLEnvironment.dist.isClient()) {
+            modEventBus.addListener((RegisterPayloadHandlersEvent e) ->
+                e.registrar(MOD_ID).playToClient(
+                    TotemFrostPayload.TYPE,
+                    TotemFrostPayload.STREAM_CODEC,
+                    (payload, ctx) -> ctx.enqueueWork(() ->
+                        net.minecraft.client.Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item())
+                    )
+                )
+            );
+        }
 
         NeoForge.EVENT_BUS.register(this);
 

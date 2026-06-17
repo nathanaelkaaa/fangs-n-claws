@@ -6,13 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:packed_ice",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 0, "max": 3 }
-            }
-          ]
+          "name": "fangs_n_claws:totem_of_frost"
         }
       ]
     }

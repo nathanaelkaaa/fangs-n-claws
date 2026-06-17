@@ -129,6 +129,13 @@ public class ItemsRegistry {
     public static final Supplier<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final Supplier<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);
     public static final Supplier<PoisonousDartItem> POISONOUS_DART = ITEMS.register("poisonous_dart", PoisonousDartItem::new);
+
+    /**
+     * Totems
+     */
+    public static final Supplier<Item> TOTEM_OF_FROST = ITEMS.register("totem_of_frost",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
     /**
      * Blocks
      */

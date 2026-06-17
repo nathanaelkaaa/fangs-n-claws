@@ -30,6 +30,7 @@
   "item.fangs_n_claws.scorpion_leggings": "Scorpion Leggings",
   "item.fangs_n_claws.scorpion_boots": "Scorpion Boots",
   "effect.fangs_n_claws.mithridatic": "Mithridatic",
+  "effect.fangs_n_claws.frozen": "Frozen",
   "item.fangs_n_claws.vile_fat": "Vile Fat",
   "item.fangs_n_claws.spectral_essence": "Spectral Essence",
   "item.fangs_n_claws.fang_dagger": "Fang Dagger",
@@ -184,5 +185,8 @@
   "fangs_n_claws.configuration.spawn_weights.scorpion": "Scorpion",
   "fangs_n_claws.configuration.spawn_weights.scorpion.tooltip": "Spawn weight for Scorpions (overworld, any biome). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.ice_golem": "Ice Golem",
-  "fangs_n_claws.configuration.spawn_weights.ice_golem.tooltip": "Spawn weight for Ice Golems (snowy biomes). 0 = disabled."
+  "fangs_n_claws.configuration.spawn_weights.ice_golem.tooltip": "Spawn weight for Ice Golems (snowy biomes). 0 = disabled.",
+
+  "item.fangs_n_claws.totem_of_frost": "Totem of Frost",
+  "item.fangs_n_claws.totem_of_frost.tooltip1": "§7When held, activates at ≤25% health: fully heals and freezes all nearby enemies"
 }

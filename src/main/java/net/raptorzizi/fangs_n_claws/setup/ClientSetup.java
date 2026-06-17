@@ -1,11 +1,15 @@
 package net.raptorzizi.fangs_n_claws.setup;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
+import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxRenderer;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinRenderer;
@@ -36,12 +40,52 @@ import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @EventBusSubscriber(
         modid = FangsClawsMod.MOD_ID,
         //bus = EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public class ClientSetup {
+
+    private static final Map<Integer, float[]> frozenYaws     = new HashMap<>();
+    private static final Map<Integer, float[]> savedRotations = new HashMap<>();
+
+    @SubscribeEvent
+    public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
+        LivingEntity entity = event.getEntity();
+        if (!entity.hasEffect(MobEffectsRegistry.FROZEN)) {
+            frozenYaws.remove(entity.getId());
+            return;
+        }
+
+        entity.walkAnimation.setSpeed(0);
+        entity.walkAnimation.update(0, 0);
+        entity.attackAnim  = 0f;
+        entity.oAttackAnim = 0f;
+
+        int id = entity.getId();
+        frozenYaws.computeIfAbsent(id, k -> new float[]{ entity.yHeadRot, entity.yBodyRot });
+        float[] yaws = frozenYaws.get(id);
+
+        savedRotations.put(id, new float[]{ entity.yHeadRot, entity.yHeadRotO, entity.yBodyRot, entity.yBodyRotO });
+        entity.yHeadRot  = entity.yHeadRotO  = yaws[0];
+        entity.yBodyRot  = entity.yBodyRotO  = yaws[1];
+    }
+
+    @SubscribeEvent
+    public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event) {
+        float[] saved = savedRotations.remove(event.getEntity().getId());
+        if (saved != null) {
+            LivingEntity entity  = event.getEntity();
+            entity.yHeadRot  = saved[0];
+            entity.yHeadRotO = saved[1];
+            entity.yBodyRot  = saved[2];
+            entity.yBodyRotO = saved[3];
+        }
+    }
 
     @SubscribeEvent
     public static void rendererRegister(EntityRenderersEvent.RegisterRenderers event) {
@@ -52,6 +96,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.OWLBEAR.get(),         OwlbearRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SCORPION.get(),         ScorpionRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.FROZEN_BOX.get(),       FrozenBoxRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ICE_GOLEM.get(),           IceGolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);

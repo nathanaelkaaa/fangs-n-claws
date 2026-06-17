@@ -60,6 +60,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());
                         entries.accept(ItemsRegistry.VILE_LANTERN.get());
                         entries.accept(ItemsRegistry.BEAR_TRAP.get());
+                        entries.accept(ItemsRegistry.TOTEM_OF_FROST.get());
                     })
                     .build());
 
