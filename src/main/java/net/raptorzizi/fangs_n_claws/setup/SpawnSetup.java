@@ -103,5 +103,11 @@ public class SpawnSetup {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SpawnUtils::checkIceGolemSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.FIRE_GHOST.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkGhostSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
     }
 }

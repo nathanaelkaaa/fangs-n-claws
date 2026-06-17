@@ -11,6 +11,7 @@ import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
@@ -93,6 +94,13 @@ public class EntityRegistry {
                     .sized(0.8F, 1.6F)
                     .clientTrackingRange(8)
                     .build("ghost"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<FireGhostEntity>> FIRE_GHOST =
+            ENTITIES.register("fire_ghost", () -> EntityType.Builder.of(FireGhostEntity::new, MobCategory.MONSTER)
+                    .sized(0.8F, 1.6F)
+                    .clientTrackingRange(8)
+                    .fireImmune()
+                    .build("fire_ghost"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FirePitchforkEntity>> FIRE_PITCHFORk_ENTITY =
             ENTITIES.register("fire_pitchfork", () -> EntityType.Builder

@@ -22,6 +22,8 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue HELL_OGRE_WEIGHT;
     public static final ModConfigSpec.IntValue SCORPION_WEIGHT;
     public static final ModConfigSpec.IntValue ICE_GOLEM_WEIGHT;
+    public static final ModConfigSpec.IntValue FIRE_GHOST_WEIGHT;
+    public static final ModConfigSpec.IntValue FIRE_GHOST_NETHER_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -72,6 +74,12 @@ public class ServerConfigs {
         ICE_GOLEM_WEIGHT       = BUILDER.comment("Ice Golem (snowy biomes) — default: 5")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ice_golem")
                                         .defineInRange("ice_golem",        5, 0, 500);
+        FIRE_GHOST_WEIGHT      = BUILDER.comment("Fire Ghost (overworld, rare) — default: 10")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.fire_ghost")
+                                        .defineInRange("fire_ghost",        10, 0, 500);
+        FIRE_GHOST_NETHER_WEIGHT = BUILDER.comment("Fire Ghost (Crimson Forest + Nether Wastes) — default: 15")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.fire_ghost_nether")
+                                        .defineInRange("fire_ghost_nether", 15, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -2,6 +2,7 @@
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
 
   "item.fangs_n_claws.ghost_spawn_egg": "Ghost Spawn Egg",
+  "item.fangs_n_claws.fire_ghost_spawn_egg": "Fire Ghost Spawn Egg",
   "item.fangs_n_claws.evil_bat_spawn_egg": "Evil Bat Spawn Egg",
   "item.fangs_n_claws.ogre_spawn_egg": "Ogre Spawn Egg",
   "item.fangs_n_claws.cave_ogre_spawn_egg": "Cave Ogre Spawn Egg",
@@ -93,6 +94,7 @@
   "block.fangs_n_claws.vile_lantern": "Vile Lantern",
 
   "entity.fangs_n_claws.ghost": "Ghost",
+  "entity.fangs_n_claws.fire_ghost": "Fire Ghost",
   "entity.fangs_n_claws.evil_bat": "Evil Bat",
   "entity.fangs_n_claws.ogre": "Ogre",
   "entity.fangs_n_claws.cave_ogre": "Cave Ogre",
@@ -154,6 +156,8 @@
   "fangs_n_claws.configuration.spawn_toggles.scorpion.tooltip": "If false, Scorpions will never spawn naturally. Also controllable per-world via /gamerule allowSpawnScorpion.",
   "fangs_n_claws.configuration.spawn_toggles.ice_golem": "Allow Ice Golem Spawning",
   "fangs_n_claws.configuration.spawn_toggles.ice_golem.tooltip": "If false, Ice Golems will never spawn naturally. Also controllable per-world via /gamerule allowSpawnIceGolem.",
+  "fangs_n_claws.configuration.spawn_toggles.fire_ghost": "Allow Fire Ghost Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.fire_ghost.tooltip": "If false, Fire Ghosts will never spawn naturally. Also controllable per-world via /gamerule allowSpawnFireGhost.",
 
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
@@ -186,6 +190,10 @@
   "fangs_n_claws.configuration.spawn_weights.scorpion.tooltip": "Spawn weight for Scorpions (overworld, any biome). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.ice_golem": "Ice Golem",
   "fangs_n_claws.configuration.spawn_weights.ice_golem.tooltip": "Spawn weight for Ice Golems (snowy biomes). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.fire_ghost": "Fire Ghost",
+  "fangs_n_claws.configuration.spawn_weights.fire_ghost.tooltip": "Spawn weight for Fire Ghosts (overworld, rare). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.fire_ghost_nether": "Fire Ghost (Nether)",
+  "fangs_n_claws.configuration.spawn_weights.fire_ghost_nether.tooltip": "Spawn weight for Fire Ghosts in Crimson Forest and Nether Wastes. 0 = disabled.",
 
   "item.fangs_n_claws.totem_of_frost": "Totem of Frost",
   "item.fangs_n_claws.totem_of_frost.tooltip1": "§7When held, activates at ≤25% health: fully heals and freezes all nearby enemies"

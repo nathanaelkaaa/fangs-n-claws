@@ -57,6 +57,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.SILVER_SKELETON.get(),
                     EntityRegistry.EVIL_BAT.get(),
                     EntityRegistry.GHOST.get(),
+                    EntityRegistry.FIRE_GHOST.get(),
                     EntityRegistry.WEREWOLF.get(),
                     EntityRegistry.HELL_OGRE.get(),
                     EntityRegistry.SCORPION.get(),
@@ -87,6 +88,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.EVIL_BAT.get(),        ServerConfigs.EVIL_BAT_WEIGHT.get(),        1, 3);
                 if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.GHOST.get(),           ServerConfigs.GHOST_WEIGHT.get(),           1, 2);
+                if (CommonConfigs.ALLOW_SPAWN_FIRE_GHOST.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_WEIGHT.get(),      1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_SCORPION.get())
@@ -110,7 +113,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
 
             if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {
                 if (CommonConfigs.ALLOW_SPAWN_IMP.get())
-                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(), ServerConfigs.IMP_WEIGHT.get(), 1, 3);
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(),        ServerConfigs.IMP_WEIGHT.get(),             1, 3);
+                if (CommonConfigs.ALLOW_SPAWN_FIRE_GHOST.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FIRE_GHOST.get(), ServerConfigs.FIRE_GHOST_NETHER_WEIGHT.get(), 1, 2);
             }
 
             if (biome.is(IS_NETHER)) {

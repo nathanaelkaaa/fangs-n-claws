@@ -46,5 +46,8 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_ICE_GOLEM =
             GameRules.register("allowSpawnIceGolem",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_FIRE_GHOST =
+            GameRules.register("allowSpawnFireGhost",       GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }

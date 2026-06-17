@@ -22,6 +22,7 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HELL_OGRE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SCORPION;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_ICE_GOLEM;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FIRE_GHOST;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -96,6 +97,11 @@ public class CommonConfigs {
                 .comment("Allow Ice Golems to spawn naturally (snowy biomes)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.ice_golem")
                 .define("allow_ice_golem", true);
+
+        ALLOW_SPAWN_FIRE_GHOST = BUILDER
+                .comment("Allow Fire Ghosts to spawn naturally (overworld + Crimson Forest + Nether Wastes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.fire_ghost")
+                .define("allow_fire_ghost", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
