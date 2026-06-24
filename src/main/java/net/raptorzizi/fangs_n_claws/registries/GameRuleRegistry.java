@@ -58,5 +58,8 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_NETHER_SCORPION =
             GameRules.register("allowSpawnNetherScorpion",  GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_HORSE_BAT =
+            GameRules.register("allowSpawnHorseBat",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }

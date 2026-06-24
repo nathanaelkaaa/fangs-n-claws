@@ -31,6 +31,7 @@ import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxEntity;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
@@ -220,6 +221,13 @@ public class EntityRegistry {
                     .clientTrackingRange(8)
                     .fireImmune()
                     .build("nether_scorpion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<HorseBatEntity>> HORSE_BAT =
+            ENTITIES.register("horse_bat", () -> EntityType.Builder
+                    .<HorseBatEntity>of((type, level) -> new HorseBatEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .clientTrackingRange(8)
+                    .build("horse_bat"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FrozenBoxEntity>> FROZEN_BOX =
             ENTITIES.register("frozen_box", () -> EntityType.Builder

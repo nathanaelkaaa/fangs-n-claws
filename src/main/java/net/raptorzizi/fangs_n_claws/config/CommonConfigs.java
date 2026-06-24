@@ -26,6 +26,7 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_DESERT_SCORPION;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FROST_SCORPION;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_NETHER_SCORPION;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -120,6 +121,11 @@ public class CommonConfigs {
                 .comment("Allow Nether Scorpions to spawn naturally (Crimson Forest + Nether Wastes)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.nether_scorpion")
                 .define("allow_nether_scorpion", true);
+
+        ALLOW_SPAWN_HORSE_BAT = BUILDER
+                .comment("Allow Horse Bats to spawn naturally")
+                .translation("fangs_n_claws.configuration.spawn_toggles.horse_bat")
+                .define("allow_horse_bat", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

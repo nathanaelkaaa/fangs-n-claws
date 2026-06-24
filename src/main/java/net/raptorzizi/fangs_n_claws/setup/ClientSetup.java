@@ -25,6 +25,7 @@ import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowRenderer;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionRenderer;
@@ -93,6 +94,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void rendererRegister(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(EntityRegistry.HORSE_BAT.get(),         HorseBatRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_BAT.get(),         EvilBatRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OGRE.get(),            OgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CAVE_OGRE.get(),       CaveOgreRenderer::new);

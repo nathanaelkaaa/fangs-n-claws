@@ -18,6 +18,7 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
@@ -176,6 +177,12 @@ public class SpawnUtils {
     public static boolean checkSilverSkeletonSpawnRules(EntityType<? extends SilverSkeletonEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkHorseBatSpawnRules(EntityType<? extends HorseBatEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>) (EntityType<?>) type,
+                level, spawnType, pos, random);
     }
 
     /*public static boolean checkWerevillagerSpawnRules(EntityType<WerevillagerEntity> type,

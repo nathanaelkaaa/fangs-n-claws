@@ -41,6 +41,7 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
 
     private static final RawAnimation IDLE_ANIM          = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM          = RawAnimation.begin().thenLoop("walk");
+    private static final RawAnimation RIDING_ANIM        = RawAnimation.begin().thenLoop("riding");
     private static final RawAnimation ATTACK_RIGHT_ANIM  = RawAnimation.begin().then("attack_right",  Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation ATTACK_LEFT_ANIM   = RawAnimation.begin().then("attack_left",   Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation ATTACK_DOUBLE_ANIM = RawAnimation.begin().then("attack_double", Animation.LoopType.PLAY_ONCE);
@@ -139,6 +140,7 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
         registrar.add(new AnimationController<>(this, "movement", 5, state -> {
+            if (this.isPassenger()) return state.setAndContinue(RIDING_ANIM);
             if (state.isMoving()) return state.setAndContinue(WALK_ANIM);
             return state.setAndContinue(IDLE_ANIM);
         }));

@@ -27,6 +27,7 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue DESERT_SCORPION_WEIGHT;
     public static final ModConfigSpec.IntValue FROST_SCORPION_WEIGHT;
     public static final ModConfigSpec.IntValue NETHER_SCORPION_WEIGHT;
+    public static final ModConfigSpec.IntValue HORSE_BAT_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -92,6 +93,9 @@ public class ServerConfigs {
         NETHER_SCORPION_WEIGHT   = BUILDER.comment("Nether Scorpion (Crimson Forest + Nether Wastes) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.nether_scorpion")
                                         .defineInRange("nether_scorpion",   15, 0, 500);
+        HORSE_BAT_WEIGHT         = BUILDER.comment("Horse Bat (overworld) — default: 10")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.horse_bat")
+                                        .defineInRange("horse_bat",          10, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

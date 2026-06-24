@@ -59,6 +59,8 @@ import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
@@ -130,6 +132,10 @@ public class FangsClawsMod {
             event.register(EntityRegistry.NETHER_SCORPION.get(),
                     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     ScorpionEntity::checkScorpionSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register(EntityRegistry.HORSE_BAT.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    SpawnUtils::checkHorseBatSpawnRules,
                     RegisterSpawnPlacementsEvent.Operation.REPLACE);
         });
     }
@@ -308,6 +314,7 @@ public class FangsClawsMod {
         else if (event.getEntity() instanceof FrostScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FROST_SCORPION))  cancel = true;
         else if (event.getEntity() instanceof NetherScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NETHER_SCORPION)) cancel = true;
         else if (event.getEntity() instanceof ScorpionEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))      cancel = true;
+        else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 

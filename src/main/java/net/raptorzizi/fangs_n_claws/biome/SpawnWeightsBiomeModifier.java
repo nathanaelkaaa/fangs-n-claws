@@ -68,7 +68,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.DESERT_SCORPION.get(),
                     EntityRegistry.FROST_SCORPION.get(),
                     EntityRegistry.NETHER_SCORPION.get(),
-                    EntityRegistry.ICE_GOLEM.get()
+                    EntityRegistry.ICE_GOLEM.get(),
+                    EntityRegistry.HORSE_BAT.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -97,6 +98,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.GHOST.get(),           ServerConfigs.GHOST_WEIGHT.get(),           1, 2);
                 if (CommonConfigs.ALLOW_SPAWN_FIRE_GHOST.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_WEIGHT.get(),      1, 1);
+                if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.HORSE_BAT.get(),       ServerConfigs.HORSE_BAT_WEIGHT.get(),       1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_SCORPION.get() && !biome.is(IS_DESERT) && !biome.is(IS_SNOWY))
