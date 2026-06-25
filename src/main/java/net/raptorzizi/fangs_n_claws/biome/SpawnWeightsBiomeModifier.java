@@ -46,6 +46,12 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_desert"));
     private static final TagKey<Biome> IS_SNOWY =
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_snowy"));
+    private static final TagKey<Biome> IS_JUNGLE =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_jungle"));
+    private static final TagKey<Biome> IS_SAVANNA =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_savanna"));
+    private static final TagKey<Biome> IS_BADLANDS =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_badlands"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -69,7 +75,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.FROST_SCORPION.get(),
                     EntityRegistry.NETHER_SCORPION.get(),
                     EntityRegistry.ICE_GOLEM.get(),
-                    EntityRegistry.HORSE_BAT.get()
+                    EntityRegistry.HORSE_BAT.get(),
+                    EntityRegistry.WILD_WOLF.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -100,6 +107,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_WEIGHT.get(),      1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.HORSE_BAT.get(),       ServerConfigs.HORSE_BAT_WEIGHT.get(),       1, 1);
+                if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get()
+                        && !biome.is(IS_DESERT) && !biome.is(IS_JUNGLE)
+                        && !biome.is(IS_SAVANNA) && !biome.is(IS_BADLANDS))
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.WILD_WOLF.get(),       ServerConfigs.WILD_WOLF_WEIGHT.get(),       1, 4);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_SCORPION.get() && !biome.is(IS_DESERT) && !biome.is(IS_SNOWY))

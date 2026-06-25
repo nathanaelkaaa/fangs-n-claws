@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LightLayer;
@@ -19,6 +20,7 @@ import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
@@ -61,16 +63,6 @@ public class SpawnUtils {
                 ? level.getMaxLocalRawBrightness(pos, 10)
                 : level.getMaxLocalRawBrightness(pos);
         if (brightness > random.nextInt(8)) return false;
-        /*if (level instanceof ServerLevel serverLevel) {
-            if (serverLevel.isDay()) return false;
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 3;
-                case NORMAL -> 4;
-                default     -> 5;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(EvilBatEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }*/
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
     }
 
@@ -109,16 +101,6 @@ public class SpawnUtils {
 
     public static boolean checkGoblinSpawnRules(EntityType<? extends GoblinEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        /*if (level instanceof ServerLevel serverLevel) {
-            if (serverLevel.isDay()) return false;
-            int maxGroup = switch (level.getDifficulty()) {
-                case EASY   -> 2;
-                case NORMAL -> 3;
-                default     -> 4;
-            };
-            long nearby = serverLevel.getEntitiesOfClass(GoblinEntity.class, new AABB(pos).inflate(24, 8, 24)).size();
-            if (nearby >= maxGroup) return false;
-        }*/
         return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>)(EntityType<?>) type, level, spawnType, pos, random);
     }
 
@@ -177,6 +159,14 @@ public class SpawnUtils {
     public static boolean checkSilverSkeletonSpawnRules(EntityType<? extends SilverSkeletonEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkWildWolfSpawnRules(EntityType<? extends WildWolfEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!level.canSeeSky(pos)) return false;
+        if (level.getMaxLocalRawBrightness(pos) > 7) return false;
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static boolean checkHorseBatSpawnRules(EntityType<? extends HorseBatEntity> type,

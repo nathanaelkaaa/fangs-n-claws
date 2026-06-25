@@ -27,6 +27,7 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FROST_SCORPION;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_NETHER_SCORPION;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -126,6 +127,11 @@ public class CommonConfigs {
                 .comment("Allow Horse Bats to spawn naturally")
                 .translation("fangs_n_claws.configuration.spawn_toggles.horse_bat")
                 .define("allow_horse_bat", true);
+
+        ALLOW_SPAWN_WILD_WOLF = BUILDER
+                .comment("Allow Wild Wolves to spawn naturally")
+                .translation("fangs_n_claws.configuration.spawn_toggles.wild_wolf")
+                .define("allow_wild_wolf", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

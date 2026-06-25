@@ -61,6 +61,9 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> HORSE_BAT_SPAWN_EGG = ITEMS.register("horse_bat_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.HORSE_BAT, 0x1a1a2e, 0x6b0f1a, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> WILD_WOLF_SPAWN_EGG = ITEMS.register("wild_wolf_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.WILD_WOLF, 0x848589, 0x535251, new Item.Properties().stacksTo(64)));
+
     public static final Supplier<DeferredSpawnEggItem> FIRE_GHOST_SPAWN_EGG = ITEMS.register("fire_ghost_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.FIRE_GHOST, 0x9a3231, 0x641e1e, new Item.Properties().stacksTo(64)));
 
