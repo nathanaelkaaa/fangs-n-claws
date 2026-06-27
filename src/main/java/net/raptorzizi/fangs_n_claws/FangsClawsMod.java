@@ -13,6 +13,7 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.raptorzizi.fangs_n_claws.network.NightmareBoostPayload;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -60,6 +61,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
@@ -90,17 +92,27 @@ public class FangsClawsMod {
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
-        if (FMLEnvironment.dist.isClient()) {
-            modEventBus.addListener((RegisterPayloadHandlersEvent e) ->
-                e.registrar(MOD_ID).playToClient(
+        modEventBus.addListener((RegisterPayloadHandlersEvent e) -> {
+            var registrar = e.registrar(MOD_ID);
+            registrar.playToServer(
+                NightmareBoostPayload.TYPE,
+                NightmareBoostPayload.STREAM_CODEC,
+                (payload, ctx) -> ctx.enqueueWork(() -> {
+                    if (ctx.player().getVehicle() instanceof NightmareHorseEntity horse) {
+                        horse.setBoostHeld(payload.boosting());
+                    }
+                })
+            );
+            if (FMLEnvironment.dist.isClient()) {
+                registrar.playToClient(
                     TotemFrostPayload.TYPE,
                     TotemFrostPayload.STREAM_CODEC,
                     (payload, ctx) -> ctx.enqueueWork(() ->
                         net.minecraft.client.Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item())
                     )
-                )
-            );
-        }
+                );
+            }
+        });
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -137,6 +149,10 @@ public class FangsClawsMod {
             event.register(EntityRegistry.HORSE_BAT.get(),
                     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     SpawnUtils::checkHorseBatSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register(EntityRegistry.NIGHTMARE_HORSE.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    SpawnUtils::checkNightmareHorseSpawnRules,
                     RegisterSpawnPlacementsEvent.Operation.REPLACE);
             event.register(EntityRegistry.WILD_WOLF.get(),
                     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -319,6 +335,7 @@ public class FangsClawsMod {
         else if (event.getEntity() instanceof FrostScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FROST_SCORPION))  cancel = true;
         else if (event.getEntity() instanceof NetherScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NETHER_SCORPION)) cancel = true;
         else if (event.getEntity() instanceof ScorpionEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))      cancel = true;
+        else if (event.getEntity() instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
         else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
         else if (event.getEntity() instanceof WildWolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))    cancel = true;
 

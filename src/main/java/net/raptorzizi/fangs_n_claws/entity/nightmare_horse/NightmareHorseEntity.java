@@ -1,15 +1,17 @@
-package net.raptorzizi.fangs_n_claws.entity.horse_bat;
+package net.raptorzizi.fangs_n_claws.entity.nightmare_horse;
 
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,25 +19,22 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -47,98 +46,114 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
+import java.util.HashSet;
+import java.util.Set;
 
-    private static final int FLIGHT_HEADROOM      = 3;
-    private static final int MODE_SWITCH_COOLDOWN = 20;
+public class NightmareHorseEntity extends AbstractHorse implements GeoEntity, Enemy {
 
-    private static final int REAR_HIT_TICK    = 5;
-    private static final int REAR_TOTAL_TICKS = 25;
+    public static final int VARIANT_RED   = 0;
+    public static final int VARIANT_BLACK = 1;
 
     private static final int    REJECT_HIT_TICK    = 12;
     private static final int    REJECT_TOTAL_TICKS = 20;
     private static final double REJECT_KNOCKBACK   = 2.0;
 
-    private static final double GLIDE_FALL_SPEED = 0.15;
-    private static final int    FLAP_ANIM_TICKS  = 15; // durée de l'anim flap (0.75 s)
-    private static final int    FLAP_PUSH_DELAY  = 10; // poussée à 0.5 s dans l'anim
-    private static final double FLAP_JUMP_FACTOR = 1.6; // × hauteur de saut vanilla
+    private static final int REAR_HIT_TICK    = 5;
+    private static final int REAR_TOTAL_TICKS = 25;
 
-    private static final double AIR_MAX_SPEED = 0.5;  // plafond de vitesse horizontale en vol piloté (blocs/tick)
-    private static final double AIR_ACCEL     = 0.03; // montée en vitesse par tick vers le plafond
+    public static final int PHASE_IDLE   = 0;
+    public static final int PHASE_WINDUP = 1;
+    public static final int PHASE_CHARGE = 2;
 
-    private static final EntityDataAccessor<Boolean> IS_FLYING =
-            SynchedEntityData.defineId(HorseBatEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_FLAPPING =
-            SynchedEntityData.defineId(HorseBatEntity.class, EntityDataSerializers.BOOLEAN);
+    public  static final double CHARGE_SPEED      = 0.55;
+    public  static final double BACKUP_SPEED      = 0.12;
+    private static final int    CHARGE_COOLDOWN   = 120;
+    private static final int    WINDUP_TICKS      = 20;
+    private static final int    CHARGE_TICKS      = 25;
+    private static final double CHARGE_KNOCKBACK  = 1.2;
+    private static final int    CHARGE_FIRE_SECS  = 4;
+
+    private static final float BOOST_MULT       = 1.5f;
+    private static final float STAMINA_DRAIN    = 0.0125f;
+    private static final float STAMINA_RECHARGE = 0.0062f;
+
     private static final EntityDataAccessor<Boolean> STURDY_SADDLED =
-            SynchedEntityData.defineId(HorseBatEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> VARIANT =
+            SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> STAMINA =
+            SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> IS_BOOSTING =
+            SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.BOOLEAN);
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    private final PathNavigation groundNavigation;
-    private final PathNavigation flyingNavigation;
-    private final MoveControl    groundMoveControl;
-    private final MoveControl    flyingMoveControl;
+    private int    tamingBuckCounter = 0;
+    private int    rejectTick        = 0;
+    private Player tamingPlayer      = null;
+    private Vec3   pendingKick       = null;
+
+    private boolean boostHeld = false;
 
     private Entity pendingAttackTarget = null;
     private int    attackDelayTick     = 0;
-    private int    modeCooldown        = 0;
-    private int    tamingBuckCounter   = 0;
-    private int    rejectTick          = 0;
-    private Player tamingPlayer        = null;
-    private Vec3   pendingKick         = null;
-    private int    flapAnimTick        = 0;
-    private int    flapPushCountdown   = 0;
-    private float  flapCharge          = 0f;   // fraction de charge du saut (0–1), proportionnelle comme vanilla
-    private double airSpeed            = 0.0;   // vitesse horizontale courante en vol piloté (rampe vers AIR_MAX_SPEED)
+
+    private int   chargePhase    = PHASE_IDLE;
+    private Vec3  chargeDir      = Vec3.ZERO;
+    private int   chargeCooldown = 0;
+    private int   windupTimer    = 0;
+    private int   chargeTimer    = 0;
+    private final Set<Integer> chargeHits = new HashSet<>();
 
     private static final RawAnimation IDLE_ANIM         = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_SLOW_ANIM    = RawAnimation.begin().thenLoop("walk_slow");
     private static final RawAnimation WALK_ANIM         = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation RUN_ANIM          = RawAnimation.begin().thenLoop("run");
     private static final RawAnimation REAR_ANIM         = RawAnimation.begin().then("rear", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation REJECT_ANIM        = RawAnimation.begin().then("reject", Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation REJECT_ANIM       = RawAnimation.begin().then("reject", Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation EATING_GRASS_ANIM = RawAnimation.begin().thenLoop("eating_grass");
-    private static final RawAnimation FLY_HOVERING_ANIM = RawAnimation.begin().thenLoop("fly_hovering");
-    private static final RawAnimation FLY_FLAP_ANIM     = RawAnimation.begin().thenLoop("fly_flap");
 
-    public HorseBatEntity(EntityType<?> type, Level level) {
+    public NightmareHorseEntity(EntityType<?> type, Level level) {
         super((EntityType<? extends AbstractHorse>) type, level);
-        this.groundNavigation  = this.navigation;
-        this.groundMoveControl = this.moveControl;
-        FlyingPathNavigation flyNav = new FlyingPathNavigation(this, level);
-        flyNav.setCanOpenDoors(false);
-        flyNav.setCanFloat(true);
-        flyNav.setCanPassDoors(false);
-        this.flyingNavigation  = flyNav;
-        this.flyingMoveControl = new HorseBatFlyMoveControl(this);
+        this.moveControl = new NightmareHorseMoveControl(this);
     }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(IS_FLYING, false);
-        builder.define(IS_FLAPPING, false);
         builder.define(STURDY_SADDLED, false);
+        builder.define(VARIANT, VARIANT_RED);
+        builder.define(STAMINA, 1.0F);
+        builder.define(IS_BOOSTING, false);
     }
 
+    public float getStamina()        { return this.entityData.get(STAMINA); }
+    public void  setStamina(float v) { this.entityData.set(STAMINA, Mth.clamp(v, 0.0F, 1.0F)); }
+
+    public boolean isBoosting()           { return this.entityData.get(IS_BOOSTING); }
+    public void    setBoostHeld(boolean v) { this.boostHeld = v; }
+
     @Override
-    public void addAdditionalSaveData(@NotNull net.minecraft.nbt.CompoundTag tag) {
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("SturdySaddled", this.isSaddled());
+        tag.putInt("Variant", this.getVariant());
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull net.minecraft.nbt.CompoundTag tag) {
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setSturdySaddled(tag.getBoolean("SturdySaddled"));
+        this.setVariant(tag.getInt("Variant"));
     }
 
     public void setSturdySaddled(boolean v) { this.entityData.set(STURDY_SADDLED, v); }
 
     @Override
     public boolean isSaddled() { return this.entityData.get(STURDY_SADDLED); }
+
+    public int  getVariant()      { return this.entityData.get(VARIANT); }
+    public void setVariant(int v) { this.entityData.set(VARIANT, v); }
 
     public boolean isStruggling() {
         return rejectTick == 0 && !this.isTamed() && this.getFirstPassenger() instanceof Player;
@@ -154,9 +169,9 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new HorseBatStruggleGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, true));
-        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        this.goalSelector.addGoal(1, new NightmareHorseStruggleGoal(this));
+        this.goalSelector.addGoal(2, new NightmareHorseChargeGoal(this));
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2, true));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -167,16 +182,16 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return createBaseHorseAttributes()
-                .add(Attributes.MAX_HEALTH, 30.0)
+                .add(Attributes.MAX_HEALTH, 40.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.225)
-                .add(Attributes.FLYING_SPEED, 0.25)
-                .add(Attributes.ATTACK_DAMAGE, 5.0);
+                .add(Attributes.ATTACK_DAMAGE, 6.0);
     }
 
     @Nullable
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
                                         @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
+        this.setVariant(this.random.nextInt(2));
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
         if (level instanceof ServerLevel serverLevel && shouldSpawnRider(serverLevel.random)) {
             Mob rider = createRider(serverLevel);
@@ -190,18 +205,120 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
         return data;
     }
 
-    protected boolean shouldSpawnRider(net.minecraft.util.RandomSource random) {
-        return random.nextInt(3) != 0;
+    protected boolean shouldSpawnRider(RandomSource random) {
+        return true;
     }
 
     @Nullable
     protected Mob createRider(ServerLevel level) {
-        int roll = level.random.nextInt(20);
-        return (roll < 11)
-                ? EntityType.SKELETON.create(level)
-                : (roll < 19)
-                  ? EntityType.ZOMBIE.create(level)
-                  : EntityRegistry.SILVER_SKELETON.get().create(level);
+        return level.random.nextBoolean()
+                ? EntityType.WITHER_SKELETON.create(level)
+                : EntityType.SKELETON.create(level);
+    }
+
+    // Charge
+
+    public int  getChargePhase()    { return chargePhase; }
+    public Vec3 getChargeDir()      { return chargeDir; }
+    public int  getChargeCooldown() { return chargeCooldown; }
+
+    public void startWindup() {
+        this.chargePhase = PHASE_WINDUP;
+        this.windupTimer = WINDUP_TICKS;
+        this.triggerAnim("attack_controller", "rear");
+        this.playSound(SoundEvents.HORSE_ANGRY, 1.2F, 0.6F);
+    }
+
+    public void tickWindup(@Nullable LivingEntity target) {
+        this.spawnHeadSmoke();
+        if (--windupTimer <= 0) {
+            Vec3 dir = (target != null)
+                    ? new Vec3(target.getX() - this.getX(), 0.0, target.getZ() - this.getZ())
+                    : this.getLookAngle();
+            dir = new Vec3(dir.x, 0.0, dir.z);
+            this.chargeDir = dir.lengthSqr() < 1.0E-4 ? this.getLookAngle().multiply(1, 0, 1).normalize() : dir.normalize();
+            this.chargePhase = PHASE_CHARGE;
+            this.chargeTimer = CHARGE_TICKS;
+            this.chargeHits.clear();
+            this.playSound(SoundEvents.RAVAGER_ROAR, 1.0F, 1.2F);
+        }
+    }
+
+    public void tickCharge() {
+        this.spawnLegFire();
+        this.applyChargeHits();
+        if (--chargeTimer <= 0) {
+            this.endCharge();
+        }
+    }
+
+    public void endCharge() {
+        if (this.chargePhase != PHASE_IDLE) {
+            this.chargeCooldown = CHARGE_COOLDOWN;
+        }
+        this.chargePhase = PHASE_IDLE;
+        this.windupTimer = 0;
+        this.chargeTimer = 0;
+        this.chargeHits.clear();
+    }
+
+    private void applyChargeHits() {
+        AABB box = this.getBoundingBox().inflate(0.3);
+        float dmg = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        for (LivingEntity victim : this.level().getEntitiesOfClass(LivingEntity.class, box,
+                e -> e != this && e.isAlive() && !this.hasPassenger(e))) {
+            if (!chargeHits.add(victim.getId())) continue;
+            victim.hurt(this.damageSources().mobAttack(this), dmg);
+            victim.igniteForSeconds(CHARGE_FIRE_SECS);
+            victim.knockback(CHARGE_KNOCKBACK, -chargeDir.x, -chargeDir.z);
+            victim.hurtMarked = true;
+            if (victim instanceof ServerPlayer sp) {
+                sp.connection.send(new ClientboundSetEntityMotionPacket(sp));
+            }
+        }
+    }
+
+    private void applyBoostHits() {
+        float yaw = this.yBodyRot * Mth.DEG_TO_RAD;
+        double fx = -Mth.sin(yaw), fz = Mth.cos(yaw);
+        AABB box = this.getBoundingBox().inflate(0.2);
+        float dmg = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        for (LivingEntity victim : this.level().getEntitiesOfClass(LivingEntity.class, box,
+                e -> e != this && e.isAlive() && !this.hasPassenger(e))) {
+            victim.igniteForSeconds(CHARGE_FIRE_SECS);
+            if (victim.invulnerableTime <= 0) {
+                victim.hurt(this.damageSources().mobAttack(this), dmg);
+                victim.knockback(CHARGE_KNOCKBACK, -fx, -fz);
+                victim.hurtMarked = true;
+                if (victim instanceof ServerPlayer sp) {
+                    sp.connection.send(new ClientboundSetEntityMotionPacket(sp));
+                }
+            }
+        }
+    }
+
+    private void spawnHeadSmoke() {
+        if (!(this.level() instanceof ServerLevel sl)) return;
+        Vec3 p = partPos(0.8, 1.5, 0.0);
+        sl.sendParticles(ParticleTypes.SMOKE, p.x, p.y, p.z, 4, 0.1, 0.1, 0.1, 0.01);
+    }
+
+    private void spawnLegFire() {
+        if (!(this.level() instanceof ServerLevel sl)) return;
+        Vec3 l3 = partPos(0.7, 0.2,  0.35);
+        Vec3 l4 = partPos(0.7, 0.2, -0.35);
+        sl.sendParticles(ParticlesRegistry.FIRE.get(), l3.x, l3.y, l3.z, 2, 0.05, 0.05, 0.05, 0.01);
+        sl.sendParticles(ParticlesRegistry.FIRE.get(), l4.x, l4.y, l4.z, 2, 0.05, 0.05, 0.05, 0.01);
+    }
+
+    private Vec3 partPos(double forward, double up, double side) {
+        float yaw = this.yBodyRot * Mth.DEG_TO_RAD;
+        double fx = -Mth.sin(yaw), fz = Mth.cos(yaw);
+        double rx =  Mth.cos(yaw), rz = Mth.sin(yaw);
+        return new Vec3(
+                this.getX() + fx * forward + rx * side,
+                this.getY() + up,
+                this.getZ() + fz * forward + rz * side);
     }
 
     // Tick
@@ -210,7 +327,23 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide) {
-            this.setNoGravity(this.isFlying());
+            if (chargeCooldown > 0) chargeCooldown--;
+
+            boolean hasRider = this.getControllingPassenger() instanceof Player;
+            if (!hasRider) this.boostHeld = false;
+            boolean boosting = this.boostHeld && hasRider && this.getStamina() > 0.0F;
+            this.entityData.set(IS_BOOSTING, boosting);
+
+            if (this.boostHeld && this.getStamina() > 0.0F) {
+                this.setStamina(this.getStamina() - STAMINA_DRAIN);
+            } else if (!this.boostHeld) {
+                this.setStamina(this.getStamina() + STAMINA_RECHARGE);
+            }
+
+            if (boosting) {
+                this.spawnLegFire();
+                this.applyBoostHits();
+            }
 
             if (tamingBuckCounter > 0) {
                 if (this.isTamed() || tamingPlayer == null || tamingPlayer.getVehicle() != this) {
@@ -257,19 +390,6 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
                 }
             }
 
-            if (flapAnimTick > 0) {
-                if (flapAnimTick == FLAP_ANIM_TICKS - FLAP_PUSH_DELAY) {
-                    this.playSound(SoundEvents.PHANTOM_FLAP, 0.6F, 1.2F);
-                }
-                if (--flapAnimTick == 0) this.setFlapping(false);
-            } else if (this.isFlying()) {
-                Vec3 m = this.getDeltaMovement();
-                boolean moving = m.horizontalDistanceSqr() > 0.0025 || Math.abs(m.y) > 0.04;
-                if (moving != this.isFlapping()) this.setFlapping(moving);
-            } else if (this.isFlapping()) {
-                this.setFlapping(false);
-            }
-
             if (attackDelayTick > 0) {
                 attackDelayTick++;
                 if (attackDelayTick == REAR_HIT_TICK) {
@@ -284,11 +404,6 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
                     attackDelayTick = 0;
                 }
             }
-        } else if (flapPushCountdown > 0 && --flapPushCountdown == 0
-                && !this.isInWater() && this.getControllingPassenger() instanceof Player) {
-            Vec3 m = this.getDeltaMovement();
-            this.setDeltaMovement(m.x, this.getJumpPower() * FLAP_JUMP_FACTOR * flapCharge, m.z);
-            this.hasImpulse = true;
         }
     }
 
@@ -299,107 +414,6 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
         this.pendingAttackTarget = target;
         this.attackDelayTick = 1;
         return true;
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        super.customServerAiStep();
-        if (modeCooldown > 0) modeCooldown--;
-        if (this.isInWater()) {
-            if (this.isFlying()) {
-                this.setFlying(false);
-                modeCooldown = MODE_SWITCH_COOLDOWN;
-            }
-        } else {
-            LivingEntity target = this.getTarget();
-            boolean wantFly = !(this.getFirstPassenger() instanceof Player)
-                    && target != null && target.isAlive() && this.hasFlightHeadroom();
-            if (wantFly != this.isFlying() && modeCooldown == 0) {
-                this.setFlying(wantFly);
-                modeCooldown = MODE_SWITCH_COOLDOWN;
-            }
-        }
-
-        if (this.level().isDay()) {
-            float brightness = this.getLightLevelDependentMagicValue();
-            BlockPos eyePos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
-            boolean sheltered = this.isInWaterRainOrBubble() || this.isInPowderSnow || this.wasInPowderSnow;
-            if (brightness > 0.5F && !sheltered && this.level().canSeeSky(eyePos)) {
-                this.igniteForSeconds(8);
-            }
-        }
-    }
-
-    // Fly
-
-    public boolean isFlying()   { return this.entityData.get(IS_FLYING); }
-    public boolean isFlapping() { return this.entityData.get(IS_FLAPPING); }
-    private void setFlapping(boolean f) { this.entityData.set(IS_FLAPPING, f); }
-
-    public void setFlying(boolean flying) {
-        if (this.isFlying() == flying) return;
-        this.entityData.set(IS_FLYING, flying);
-        if (!this.level().isClientSide) {
-            this.navigation.stop();
-            this.navigation  = flying ? this.flyingNavigation  : this.groundNavigation;
-            this.moveControl = flying ? this.flyingMoveControl : this.groundMoveControl;
-            this.setNoGravity(flying);
-        }
-    }
-
-    private boolean hasFlightHeadroom() {
-        BlockPos head = this.blockPosition().above(Mth.ceil(this.getBbHeight()));
-        for (int i = 0; i < FLIGHT_HEADROOM; i++) {
-            if (this.level().getBlockState(head.above(i)).blocksMotion()) return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void onPlayerJump(int charge) {
-        if (charge > 0 && this.isSaddled() && !this.isInWater() && this.getControllingPassenger() instanceof Player) {
-            this.flapCharge = Math.min(1.0f, charge / 100.0f);
-            this.flapPushCountdown = FLAP_PUSH_DELAY;
-        }
-    }
-
-    @Override
-    public void handleStartJump(int charge) {
-        if (charge <= 0) return;
-        this.flapAnimTick = FLAP_ANIM_TICKS;
-        this.setFlapping(true);
-    }
-
-    @Override
-    public void handleStopJump() {
-    }
-
-    @Override
-    public void travel(@NotNull Vec3 input) {
-        LivingEntity controller = this.getControllingPassenger();
-        boolean gliding = !this.onGround() && !this.isInWater() && controller instanceof Player;
-        super.travel(input);
-        if (gliding) {
-            Vec3 m = this.getDeltaMovement();
-            double y = m.y < -GLIDE_FALL_SPEED ? -GLIDE_FALL_SPEED : m.y;
-
-            float fwd = controller.zza;
-            float str = controller.xxa;
-            if (fwd != 0f || str != 0f) {
-                airSpeed = Math.min(airSpeed + AIR_ACCEL, AIR_MAX_SPEED);
-                float yaw = this.getYRot() * Mth.DEG_TO_RAD;
-                float sin = Mth.sin(yaw), cos = Mth.cos(yaw);
-                double dirX = str * cos - fwd * sin;
-                double dirZ = fwd * cos + str * sin;
-                double len = Math.sqrt(dirX * dirX + dirZ * dirZ);
-                this.setDeltaMovement(dirX / len * airSpeed, y, dirZ / len * airSpeed);
-            } else {
-                airSpeed *= 0.9;
-                this.setDeltaMovement(m.x * 0.9, y, m.z * 0.9);
-            }
-        } else {
-            airSpeed = 0.0;
-        }
     }
 
     // AbstractHorse overrides
@@ -420,6 +434,20 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
     @Override
     public boolean dismountsUnderwater() {
         return true;
+    }
+
+    @Override
+    public void jumpFromGround() {
+        super.jumpFromGround();
+        if (!this.level().isClientSide) {
+            this.triggerAnim("attack_controller", "rear");
+        }
+    }
+
+    @Override
+    protected float getRiddenSpeed(@NotNull Player player) {
+        float base = (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED);
+        return this.isBoosting() ? base * BOOST_MULT : base;
     }
 
     @Override
@@ -485,17 +513,17 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
-        return SoundEvents.ZOMBIE_HORSE_AMBIENT;
+        return SoundEvents.SKELETON_HORSE_AMBIENT;
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound() {
-        return SoundEvents.ZOMBIE_HORSE_DEATH;
+        return SoundEvents.SKELETON_HORSE_DEATH;
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource source) {
-        return SoundEvents.ZOMBIE_HORSE_HURT;
+        return SoundEvents.SKELETON_HORSE_HURT;
     }
 
     // GeckoLib
@@ -509,12 +537,9 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
         );
 
         registrar.add(new AnimationController<>(this, "movement", 5, state -> {
-            if (!this.isInWater() && (this.isFlying() || !this.onGround())) {
-                if (this.isFlapping()) return state.setAndContinue(FLY_FLAP_ANIM);
-                return state.setAndContinue(FLY_HOVERING_ANIM);
-            }
-
             if (this.isEating()) return state.setAndContinue(EATING_GRASS_ANIM);
+
+            if (this.isJumping()) return state.setAndContinue(REAR_ANIM);
 
             float animSpeed = this.walkAnimation.speed();
             if (animSpeed > 0.55f) return state.setAndContinue(RUN_ANIM);

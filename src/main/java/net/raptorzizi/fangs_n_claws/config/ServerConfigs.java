@@ -28,6 +28,7 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue FROST_SCORPION_WEIGHT;
     public static final ModConfigSpec.IntValue NETHER_SCORPION_WEIGHT;
     public static final ModConfigSpec.IntValue HORSE_BAT_WEIGHT;
+    public static final ModConfigSpec.IntValue NIGHTMARE_HORSE_WEIGHT;
     public static final ModConfigSpec.IntValue WILD_WOLF_WEIGHT;
 
     static {
@@ -97,6 +98,9 @@ public class ServerConfigs {
         HORSE_BAT_WEIGHT         = BUILDER.comment("Horse Bat (overworld) — default: 10")
                                         .translation("fangs_n_claws.configuration.spawn_weights.horse_bat")
                                         .defineInRange("horse_bat",          10, 0, 500);
+        NIGHTMARE_HORSE_WEIGHT   = BUILDER.comment("Nightmare Horse (Nether) — default: 8")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.nightmare_horse")
+                                        .defineInRange("nightmare_horse",     8, 0, 500);
         WILD_WOLF_WEIGHT         = BUILDER.comment("Wild Wolf (overworld) — default: 8 (vanilla wolf weight)")
                                         .translation("fangs_n_claws.configuration.spawn_weights.wild_wolf")
                                         .defineInRange("wild_wolf",          8, 0, 500);

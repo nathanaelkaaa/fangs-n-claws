@@ -59,10 +59,13 @@ public class ItemsRegistry {
             () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x98989d, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> HORSE_BAT_SPAWN_EGG = ITEMS.register("horse_bat_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.HORSE_BAT, 0x1a1a2e, 0x6b0f1a, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.HORSE_BAT, 0x181818, 0xf3edbb, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> WILD_WOLF_SPAWN_EGG = ITEMS.register("wild_wolf_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.WILD_WOLF, 0x848589, 0x535251, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> NIGHTMARE_HORSE_SPAWN_EGG = ITEMS.register("nightmare_horse_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.NIGHTMARE_HORSE, 0x84412d, 0x947c6d, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> FIRE_GHOST_SPAWN_EGG = ITEMS.register("fire_ghost_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.FIRE_GHOST, 0x9a3231, 0x641e1e, new Item.Properties().stacksTo(64)));
@@ -149,8 +152,10 @@ public class ItemsRegistry {
     public static final Supplier<PoisonousDartItem> POISONOUS_DART = ITEMS.register("poisonous_dart", PoisonousDartItem::new);
 
     /**
-     * Totems
+     * Items
      */
+    public static final Supplier<Item> STURDY_SADDLE = ITEMS.register("sturdy_saddle",
+            () -> new Item(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> TOTEM_OF_FROST = ITEMS.register("totem_of_frost",
             () -> new Item(new Item.Properties().stacksTo(1)));
 

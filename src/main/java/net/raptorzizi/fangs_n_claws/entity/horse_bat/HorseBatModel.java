@@ -16,7 +16,7 @@ public class HorseBatModel extends GeoModel<HorseBatEntity> {
 
     @Override
     public ResourceLocation getModelResource(HorseBatEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/horse_bat.json");
+        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/horse_mob.json");
     }
 
     @Override
@@ -26,7 +26,7 @@ public class HorseBatModel extends GeoModel<HorseBatEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(HorseBatEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/horse_bat.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "animations/horse_mob.animation.json");
     }
 
     @Override
@@ -46,5 +46,20 @@ public class HorseBatModel extends GeoModel<HorseBatEntity> {
             int phase = (animatable.tickCount + seed * 7) % period;
             tailA.setRotY(phase < duration ? Mth.sin(phase * Mth.PI / duration) * 0.35f : 0f);
         }
+
+        boolean unsaddled = !animatable.isSaddled();
+        setHidden("Saddle", unsaddled);
+        setHidden("HeadSaddle", unsaddled);
+        setHidden("SaddleMouthL", unsaddled);
+        setHidden("SaddleMouthR", unsaddled);
+        setHidden("SaddleMouthLine", unsaddled);
+        setHidden("SaddleMouthLineR", unsaddled);
+        setHidden("Bag1", true);
+        setHidden("Bag2", true);
+    }
+
+    private void setHidden(String bone, boolean hidden) {
+        GeoBone b = getAnimationProcessor().getBone(bone);
+        if (b != null) b.setHidden(hidden);
     }
 }

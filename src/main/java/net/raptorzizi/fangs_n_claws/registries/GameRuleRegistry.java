@@ -61,6 +61,9 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_HORSE_BAT =
             GameRules.register("allowSpawnHorseBat",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_NIGHTMARE_HORSE =
+            GameRules.register("allowSpawnNightmareHorse",  GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_WILD_WOLF =
             GameRules.register("allowSpawnWildWolf",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 

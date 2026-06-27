@@ -4,9 +4,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareStaminaLayer;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxRenderer;
@@ -26,6 +29,7 @@ import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatRenderer;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseRenderer;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionRenderer;
@@ -96,6 +100,7 @@ public class ClientSetup {
     @SubscribeEvent
     public static void rendererRegister(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.HORSE_BAT.get(),         HorseBatRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.NIGHTMARE_HORSE.get(),   NightmareHorseRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WILD_WOLF.get(),         WildWolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_BAT.get(),         EvilBatRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OGRE.get(),            OgreRenderer::new);
@@ -121,6 +126,13 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),      BlockProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiLayers(RegisterGuiLayersEvent event) {
+        event.registerAboveAll(
+                ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "nightmare_stamina"),
+                new NightmareStaminaLayer());
     }
 
     @SubscribeEvent

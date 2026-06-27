@@ -20,6 +20,7 @@ import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -173,6 +174,11 @@ public class SpawnUtils {
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>) (EntityType<?>) type,
                 level, spawnType, pos, random);
+    }
+
+    public static boolean checkNightmareHorseSpawnRules(EntityType<? extends NightmareHorseEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     /*public static boolean checkWerevillagerSpawnRules(EntityType<WerevillagerEntity> type,

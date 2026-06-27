@@ -76,6 +76,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.NETHER_SCORPION.get(),
                     EntityRegistry.ICE_GOLEM.get(),
                     EntityRegistry.HORSE_BAT.get(),
+                    EntityRegistry.NIGHTMARE_HORSE.get(),
                     EntityRegistry.WILD_WOLF.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
@@ -154,6 +155,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             if (biome.is(IS_NETHER)) {
                 if (CommonConfigs.ALLOW_SPAWN_HELL_OGRE.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.HELL_OGRE.get(), ServerConfigs.HELL_OGRE_WEIGHT.get(), 1, 1);
+                if (CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.NIGHTMARE_HORSE.get(), ServerConfigs.NIGHTMARE_HORSE_WEIGHT.get(), 1, 1);
             }
 
             if (biome.is(SOUL_SAND_VALLEY)) {

@@ -21,10 +21,14 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.network.NightmareBoostPayload;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -55,6 +59,20 @@ public class FangsClawsModClient {
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onMovementInput);
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onMouseButton);
+        NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onClientTick);
+    }
+
+    private static boolean lastBoostSent = false;
+
+    static void onClientTick(ClientTickEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+        boolean riding = mc.player.getVehicle() instanceof NightmareHorseEntity;
+        boolean held = riding && mc.options.keySprint.isDown();
+        if (held != lastBoostSent) {
+            lastBoostSent = held;
+            PacketDistributor.sendToServer(new NightmareBoostPayload(held));
+        }
     }
 
     private static final ResourceLocation BLUR_SHADER =

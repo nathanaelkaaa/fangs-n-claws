@@ -95,6 +95,9 @@
 
   "entity.fangs_n_claws.horse_bat": "Horse Bat",
   "item.fangs_n_claws.horse_bat_spawn_egg": "Horse Bat Spawn Egg",
+  "entity.fangs_n_claws.nightmare_horse": "Nightmare Horse",
+  "item.fangs_n_claws.nightmare_horse_spawn_egg": "Nightmare Horse Spawn Egg",
+  "item.fangs_n_claws.sturdy_saddle": "Sturdy Saddle",
   "entity.fangs_n_claws.wild_wolf": "Wild Wolf",
   "item.fangs_n_claws.wild_wolf_spawn_egg": "Wild Wolf Spawn Egg",
   "entity.fangs_n_claws.ghost": "Ghost",
@@ -176,6 +179,8 @@
   "fangs_n_claws.configuration.spawn_toggles.nether_scorpion.tooltip": "If false, Nether Scorpions will never spawn naturally. Also controllable per-world via /gamerule allowSpawnNetherScorpion.",
   "fangs_n_claws.configuration.spawn_toggles.horse_bat": "Allow Horse Bat Spawning",
   "fangs_n_claws.configuration.spawn_toggles.horse_bat.tooltip": "If false, Horse Bats will never spawn naturally. Also controllable per-world via /gamerule allowSpawnHorseBat.",
+  "fangs_n_claws.configuration.spawn_toggles.nightmare_horse": "Allow Nightmare Horse Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.nightmare_horse.tooltip": "If false, Nightmare Horses will never spawn naturally. Also controllable per-world via /gamerule allowSpawnNightmareHorse.",
   "fangs_n_claws.configuration.spawn_toggles.wild_wolf": "Allow Wild Wolf Spawning",
   "fangs_n_claws.configuration.spawn_toggles.wild_wolf.tooltip": "If false, Wild Wolves will never spawn naturally. Also controllable per-world via /gamerule allowSpawnWildWolf.",
 
@@ -222,6 +227,8 @@
   "fangs_n_claws.configuration.spawn_weights.nether_scorpion.tooltip": "Spawn weight for Nether Scorpions (Crimson Forest + Nether Wastes). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.horse_bat": "Horse Bat",
   "fangs_n_claws.configuration.spawn_weights.horse_bat.tooltip": "Spawn weight for Horse Bats (overworld). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_weights.nightmare_horse": "Nightmare Horse",
+  "fangs_n_claws.configuration.spawn_weights.nightmare_horse.tooltip": "Spawn weight for Nightmare Horses (Nether). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.wild_wolf": "Wild Wolf",
   "fangs_n_claws.configuration.spawn_weights.wild_wolf.tooltip": "Spawn weight for Wild Wolves (overworld). 0 = disabled.",
 
