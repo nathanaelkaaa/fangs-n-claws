@@ -1,4 +1,4 @@
-package net.raptorzizi.fangs_n_claws.entity.horse_bat;
+package net.raptorzizi.fangs_n_claws.entity.horse;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
@@ -6,15 +6,15 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-public class HorseBatStruggleGoal extends Goal {
+public class HorseMobStruggleGoal extends Goal {
 
-    private static final double SPEED  = 2;
+    private static final double SPEED  = 2.0;
     private static final int    RADIUS = 8;
 
-    private final HorseBatEntity horse;
+    private final HorseMob horse;
     private double tx, ty, tz;
 
-    public HorseBatStruggleGoal(HorseBatEntity horse) {
+    public HorseMobStruggleGoal(HorseMob horse) {
         this.horse = horse;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
     }

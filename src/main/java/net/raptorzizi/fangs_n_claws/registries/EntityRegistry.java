@@ -18,7 +18,7 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
-import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
+import net.raptorzizi.fangs_n_claws.entity.projectile.PoisonousDartEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;

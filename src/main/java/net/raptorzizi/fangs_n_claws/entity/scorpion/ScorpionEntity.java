@@ -1,8 +1,10 @@
 package net.raptorzizi.fangs_n_claws.entity.scorpion;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -178,6 +180,23 @@ public class ScorpionEntity extends Spider implements GeoEntity {
             living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, false, true, true));
         }
     }
+
+    // Variant
+
+    public ResourceLocation textureLocation() {
+        return FangsClawsMod.id("textures/entity/scorpion.png");
+    }
+
+    @Nullable
+    public ResourceLocation eyesTexture() {
+        return FangsClawsMod.id("textures/entity/glowing_eyes/scorpion_eyes.png");
+    }
+
+    public EyeStyle eyeStyle() {
+        return EyeStyle.EYES;
+    }
+
+    public enum EyeStyle { NONE, EYES, EMISSIVE }
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {

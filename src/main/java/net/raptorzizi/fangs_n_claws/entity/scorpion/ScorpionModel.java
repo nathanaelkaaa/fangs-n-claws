@@ -13,7 +13,7 @@ public class ScorpionModel extends GeoModel<ScorpionEntity> {
 
     @Override
     public ResourceLocation getTextureResource(ScorpionEntity entity) {
-        return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "textures/entity/scorpion.png");
+        return entity.textureLocation();
     }
 
     @Override

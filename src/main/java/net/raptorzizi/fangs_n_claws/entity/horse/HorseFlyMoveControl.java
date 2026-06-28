@@ -1,20 +1,20 @@
-package net.raptorzizi.fangs_n_claws.entity.horse_bat;
+package net.raptorzizi.fangs_n_claws.entity.horse;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.phys.Vec3;
 
-public class HorseBatFlyMoveControl extends MoveControl {
+public class HorseFlyMoveControl extends MoveControl {
 
     private static final double ARRIVAL_THRESHOLD = 0.5;
-    private static final double MAX_SPEED          = 0.30;
-    private static final double STEER              = 0.5;
-    private static final double IDLE_BRAKE         = 0.8;
+    private static final double MAX_SPEED         = 0.30;
+    private static final double STEER             = 0.5;
+    private static final double IDLE_BRAKE        = 0.8;
 
-    private final HorseBatEntity horse;
+    private final FlyingHorseMob horse;
 
-    public HorseBatFlyMoveControl(HorseBatEntity horse) {
+    public HorseFlyMoveControl(FlyingHorseMob horse) {
         super(horse);
         this.horse = horse;
     }

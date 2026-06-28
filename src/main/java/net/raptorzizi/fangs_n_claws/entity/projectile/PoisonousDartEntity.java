@@ -1,4 +1,4 @@
-package net.raptorzizi.fangs_n_claws.entity.dart_goblin;
+package net.raptorzizi.fangs_n_claws.entity.projectile;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.sounds.SoundEvent;
@@ -10,6 +10,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
+import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;

@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.entity.scorpion;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
 public class DesertScorpionEntity extends ScorpionEntity {
 
@@ -28,5 +30,15 @@ public class DesertScorpionEntity extends ScorpionEntity {
     @Override
     protected void applyHitEffect(LivingEntity living, boolean isStingerAttack) {
         living.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 0, false, true, true));
+    }
+
+    @Override
+    public ResourceLocation textureLocation() {
+        return FangsClawsMod.id("textures/entity/desert_scorpion.png");
+    }
+
+    @Override
+    public EyeStyle eyeStyle() {
+        return EyeStyle.NONE;
     }
 }

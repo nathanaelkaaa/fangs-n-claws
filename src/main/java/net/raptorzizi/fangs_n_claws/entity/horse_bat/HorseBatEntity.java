@@ -1,23 +1,14 @@
 package net.raptorzizi.fangs_n_claws.entity.horse_bat;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -25,128 +16,31 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.entity.horse.FlyingHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.horse.HorseMobStruggleGoal;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
-import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.Animation;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
-
-    private static final int FLIGHT_HEADROOM      = 3;
-    private static final int MODE_SWITCH_COOLDOWN = 20;
-
-    private static final int REAR_HIT_TICK    = 5;
-    private static final int REAR_TOTAL_TICKS = 25;
-
-    private static final int    REJECT_HIT_TICK    = 12;
-    private static final int    REJECT_TOTAL_TICKS = 20;
-    private static final double REJECT_KNOCKBACK   = 2.0;
-
-    private static final double GLIDE_FALL_SPEED = 0.15;
-    private static final int    FLAP_ANIM_TICKS  = 15; // durée de l'anim flap (0.75 s)
-    private static final int    FLAP_PUSH_DELAY  = 10; // poussée à 0.5 s dans l'anim
-    private static final double FLAP_JUMP_FACTOR = 1.6; // × hauteur de saut vanilla
-
-    private static final double AIR_MAX_SPEED = 0.5;  // plafond de vitesse horizontale en vol piloté (blocs/tick)
-    private static final double AIR_ACCEL     = 0.03; // montée en vitesse par tick vers le plafond
-
-    private static final EntityDataAccessor<Boolean> IS_FLYING =
-            SynchedEntityData.defineId(HorseBatEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_FLAPPING =
-            SynchedEntityData.defineId(HorseBatEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> STURDY_SADDLED =
-            SynchedEntityData.defineId(HorseBatEntity.class, EntityDataSerializers.BOOLEAN);
-
-    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
-
-    private final PathNavigation groundNavigation;
-    private final PathNavigation flyingNavigation;
-    private final MoveControl    groundMoveControl;
-    private final MoveControl    flyingMoveControl;
-
-    private Entity pendingAttackTarget = null;
-    private int    attackDelayTick     = 0;
-    private int    modeCooldown        = 0;
-    private int    tamingBuckCounter   = 0;
-    private int    rejectTick          = 0;
-    private Player tamingPlayer        = null;
-    private Vec3   pendingKick         = null;
-    private int    flapAnimTick        = 0;
-    private int    flapPushCountdown   = 0;
-    private float  flapCharge          = 0f;   // fraction de charge du saut (0–1), proportionnelle comme vanilla
-    private double airSpeed            = 0.0;   // vitesse horizontale courante en vol piloté (rampe vers AIR_MAX_SPEED)
+public class HorseBatEntity extends FlyingHorseMob {
 
     private static final RawAnimation IDLE_ANIM         = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_SLOW_ANIM    = RawAnimation.begin().thenLoop("walk_slow");
     private static final RawAnimation WALK_ANIM         = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation RUN_ANIM          = RawAnimation.begin().thenLoop("run");
-    private static final RawAnimation REAR_ANIM         = RawAnimation.begin().then("rear", Animation.LoopType.PLAY_ONCE);
-    private static final RawAnimation REJECT_ANIM        = RawAnimation.begin().then("reject", Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation EATING_GRASS_ANIM = RawAnimation.begin().thenLoop("eating_grass");
     private static final RawAnimation FLY_HOVERING_ANIM = RawAnimation.begin().thenLoop("fly_hovering");
     private static final RawAnimation FLY_FLAP_ANIM     = RawAnimation.begin().thenLoop("fly_flap");
 
     public HorseBatEntity(EntityType<?> type, Level level) {
         super((EntityType<? extends AbstractHorse>) type, level);
-        this.groundNavigation  = this.navigation;
-        this.groundMoveControl = this.moveControl;
-        FlyingPathNavigation flyNav = new FlyingPathNavigation(this, level);
-        flyNav.setCanOpenDoors(false);
-        flyNav.setCanFloat(true);
-        flyNav.setCanPassDoors(false);
-        this.flyingNavigation  = flyNav;
-        this.flyingMoveControl = new HorseBatFlyMoveControl(this);
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(IS_FLYING, false);
-        builder.define(IS_FLAPPING, false);
-        builder.define(STURDY_SADDLED, false);
-    }
-
-    @Override
-    public void addAdditionalSaveData(@NotNull net.minecraft.nbt.CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean("SturdySaddled", this.isSaddled());
-    }
-
-    @Override
-    public void readAdditionalSaveData(@NotNull net.minecraft.nbt.CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setSturdySaddled(tag.getBoolean("SturdySaddled"));
-    }
-
-    public void setSturdySaddled(boolean v) { this.entityData.set(STURDY_SADDLED, v); }
-
-    @Override
-    public boolean isSaddled() { return this.entityData.get(STURDY_SADDLED); }
-
-    public boolean isStruggling() {
-        return rejectTick == 0 && !this.isTamed() && this.getFirstPassenger() instanceof Player;
-    }
-
-    @Override
-    public int getMaxTemper() {
-        return 200;
     }
 
     // Goals
@@ -154,7 +48,7 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new HorseBatStruggleGoal(this));
+        this.goalSelector.addGoal(1, new HorseMobStruggleGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2, true));
         this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.8));
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 8.0F));
@@ -173,28 +67,13 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
                 .add(Attributes.ATTACK_DAMAGE, 5.0);
     }
 
-    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
-                                        @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
-        SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-        if (level instanceof ServerLevel serverLevel && shouldSpawnRider(serverLevel.random)) {
-            Mob rider = createRider(serverLevel);
-            if (rider != null) {
-                rider.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                rider.finalizeSpawn(serverLevel, difficulty, MobSpawnType.MOB_SUMMONED, null);
-                serverLevel.addFreshEntity(rider);
-                rider.startRiding(this);
-            }
-        }
-        return data;
-    }
-
-    protected boolean shouldSpawnRider(net.minecraft.util.RandomSource random) {
+    protected boolean shouldSpawnRider(RandomSource random) {
         return random.nextInt(3) != 0;
     }
 
     @Nullable
+    @Override
     protected Mob createRider(ServerLevel level) {
         int roll = level.random.nextInt(20);
         return (roll < 11)
@@ -204,122 +83,11 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
                   : EntityRegistry.SILVER_SKELETON.get().create(level);
     }
 
-    // Tick
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (!this.level().isClientSide) {
-            this.setNoGravity(this.isFlying());
-
-            if (tamingBuckCounter > 0) {
-                if (this.isTamed() || tamingPlayer == null || tamingPlayer.getVehicle() != this) {
-                    tamingBuckCounter = 0;
-                    tamingPlayer = null;
-                } else if (--tamingBuckCounter == 0) {
-                    this.modifyTemper(5);
-                    if (this.random.nextInt(this.getMaxTemper()) < this.getTemper()) {
-                        this.tameWithName(tamingPlayer);
-                        this.tamingPlayer = null;
-                    } else {
-                        this.triggerAnim("attack_controller", "reject");
-                        this.rejectTick = 1;
-                    }
-                }
-            }
-
-            if (rejectTick > 0) {
-                rejectTick++;
-
-                if (rejectTick == REJECT_HIT_TICK && tamingPlayer != null && tamingPlayer.getVehicle() == this) {
-                    Vec3 look = this.getLookAngle();
-                    tamingPlayer.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                    tamingPlayer.stopRiding();
-                    this.pendingKick = new Vec3(-look.x, 0.0, -look.z).normalize().scale(REJECT_KNOCKBACK);
-                    this.playSound(SoundEvents.HORSE_ANGRY, 1.0F, 1.0F);
-                    this.level().broadcastEntityEvent(this, (byte) 6);
-                }
-
-                if (rejectTick == REJECT_HIT_TICK + 3 && tamingPlayer != null && pendingKick != null) {
-                    tamingPlayer.setDeltaMovement(pendingKick.x, 0.5, pendingKick.z);
-                    tamingPlayer.hasImpulse = true;
-                    tamingPlayer.hurtMarked = true;
-                    if (tamingPlayer instanceof ServerPlayer sp) {
-                        sp.connection.send(new ClientboundSetEntityMotionPacket(sp));
-                    }
-                    this.pendingKick = null;
-                }
-
-                if (rejectTick >= REJECT_TOTAL_TICKS) {
-                    rejectTick = 0;
-                    this.tamingPlayer = null;
-                    this.pendingKick = null;
-                }
-            }
-
-            if (flapAnimTick > 0) {
-                if (flapAnimTick == FLAP_ANIM_TICKS - FLAP_PUSH_DELAY) {
-                    this.playSound(SoundEvents.PHANTOM_FLAP, 0.6F, 1.2F);
-                }
-                if (--flapAnimTick == 0) this.setFlapping(false);
-            } else if (this.isFlying()) {
-                Vec3 m = this.getDeltaMovement();
-                boolean moving = m.horizontalDistanceSqr() > 0.0025 || Math.abs(m.y) > 0.04;
-                if (moving != this.isFlapping()) this.setFlapping(moving);
-            } else if (this.isFlapping()) {
-                this.setFlapping(false);
-            }
-
-            if (attackDelayTick > 0) {
-                attackDelayTick++;
-                if (attackDelayTick == REAR_HIT_TICK) {
-                    if (pendingAttackTarget != null
-                            && pendingAttackTarget.isAlive()
-                            && this.distanceTo(pendingAttackTarget) <= (this.getBbWidth() * 2.0F + pendingAttackTarget.getBbWidth() + 1.5F)) {
-                        super.doHurtTarget(pendingAttackTarget);
-                    }
-                    pendingAttackTarget = null;
-                }
-                if (attackDelayTick >= REAR_TOTAL_TICKS) {
-                    attackDelayTick = 0;
-                }
-            }
-        } else if (flapPushCountdown > 0 && --flapPushCountdown == 0
-                && !this.isInWater() && this.getControllingPassenger() instanceof Player) {
-            Vec3 m = this.getDeltaMovement();
-            this.setDeltaMovement(m.x, this.getJumpPower() * FLAP_JUMP_FACTOR * flapCharge, m.z);
-            this.hasImpulse = true;
-        }
-    }
-
-    @Override
-    public boolean doHurtTarget(@NotNull Entity target) {
-        if (attackDelayTick > 0) return true;
-        this.triggerAnim("attack_controller", "rear");
-        this.pendingAttackTarget = target;
-        this.attackDelayTick = 1;
-        return true;
-    }
+    // Tick : auto-combustion au soleil (par-dessus la gestion du vol héritée)
 
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        if (modeCooldown > 0) modeCooldown--;
-        if (this.isInWater()) {
-            if (this.isFlying()) {
-                this.setFlying(false);
-                modeCooldown = MODE_SWITCH_COOLDOWN;
-            }
-        } else {
-            LivingEntity target = this.getTarget();
-            boolean wantFly = !(this.getFirstPassenger() instanceof Player)
-                    && target != null && target.isAlive() && this.hasFlightHeadroom();
-            if (wantFly != this.isFlying() && modeCooldown == 0) {
-                this.setFlying(wantFly);
-                modeCooldown = MODE_SWITCH_COOLDOWN;
-            }
-        }
-
         if (this.level().isDay()) {
             float brightness = this.getLightLevelDependentMagicValue();
             BlockPos eyePos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
@@ -330,158 +98,7 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
         }
     }
 
-    // Fly
-
-    public boolean isFlying()   { return this.entityData.get(IS_FLYING); }
-    public boolean isFlapping() { return this.entityData.get(IS_FLAPPING); }
-    private void setFlapping(boolean f) { this.entityData.set(IS_FLAPPING, f); }
-
-    public void setFlying(boolean flying) {
-        if (this.isFlying() == flying) return;
-        this.entityData.set(IS_FLYING, flying);
-        if (!this.level().isClientSide) {
-            this.navigation.stop();
-            this.navigation  = flying ? this.flyingNavigation  : this.groundNavigation;
-            this.moveControl = flying ? this.flyingMoveControl : this.groundMoveControl;
-            this.setNoGravity(flying);
-        }
-    }
-
-    private boolean hasFlightHeadroom() {
-        BlockPos head = this.blockPosition().above(Mth.ceil(this.getBbHeight()));
-        for (int i = 0; i < FLIGHT_HEADROOM; i++) {
-            if (this.level().getBlockState(head.above(i)).blocksMotion()) return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void onPlayerJump(int charge) {
-        if (charge > 0 && this.isSaddled() && !this.isInWater() && this.getControllingPassenger() instanceof Player) {
-            this.flapCharge = Math.min(1.0f, charge / 100.0f);
-            this.flapPushCountdown = FLAP_PUSH_DELAY;
-        }
-    }
-
-    @Override
-    public void handleStartJump(int charge) {
-        if (charge <= 0) return;
-        this.flapAnimTick = FLAP_ANIM_TICKS;
-        this.setFlapping(true);
-    }
-
-    @Override
-    public void handleStopJump() {
-    }
-
-    @Override
-    public void travel(@NotNull Vec3 input) {
-        LivingEntity controller = this.getControllingPassenger();
-        boolean gliding = !this.onGround() && !this.isInWater() && controller instanceof Player;
-        super.travel(input);
-        if (gliding) {
-            Vec3 m = this.getDeltaMovement();
-            double y = m.y < -GLIDE_FALL_SPEED ? -GLIDE_FALL_SPEED : m.y;
-
-            float fwd = controller.zza;
-            float str = controller.xxa;
-            if (fwd != 0f || str != 0f) {
-                airSpeed = Math.min(airSpeed + AIR_ACCEL, AIR_MAX_SPEED);
-                float yaw = this.getYRot() * Mth.DEG_TO_RAD;
-                float sin = Mth.sin(yaw), cos = Mth.cos(yaw);
-                double dirX = str * cos - fwd * sin;
-                double dirZ = fwd * cos + str * sin;
-                double len = Math.sqrt(dirX * dirX + dirZ * dirZ);
-                this.setDeltaMovement(dirX / len * airSpeed, y, dirZ / len * airSpeed);
-            } else {
-                airSpeed *= 0.9;
-                this.setDeltaMovement(m.x * 0.9, y, m.z * 0.9);
-            }
-        } else {
-            airSpeed = 0.0;
-        }
-    }
-
-    // AbstractHorse overrides
-
-    @Nullable
-    @Override
-    public LivingEntity getControllingPassenger() {
-        if (this.isSaddled() && this.getFirstPassenger() instanceof Player player) {
-            return player;
-        }
-        return null;
-    }
-
-    @Override
-    public void openCustomInventoryScreen(@NotNull Player player) {
-    }
-
-    @Override
-    public boolean dismountsUnderwater() {
-        return true;
-    }
-
-    @Override
-    public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource source) {
-        return false;
-    }
-
-    @Override
-    public boolean hurt(@NotNull DamageSource source, float amount) {
-        Entity attacker = source.getEntity();
-        if (attacker != null && this.hasPassenger(attacker)) return false;
-        return super.hurt(source, amount);
-    }
-
-    @Override
-    public boolean canAttack(@NotNull LivingEntity target) {
-        if (this.isTamed()) return false;
-        return !this.hasPassenger(target) && super.canAttack(target);
-    }
-
-    @Override
-    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-
-        if (player.isSecondaryUseActive() && this.isSaddled()) {
-            if (!this.level().isClientSide) {
-                this.setSturdySaddled(false);
-                this.spawnAtLocation(new ItemStack(ItemsRegistry.STURDY_SADDLE.get()));
-                this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
-
-        if (this.isVehicle()) return InteractionResult.PASS;
-
-        if (this.isTamed() && !this.isSaddled() && stack.is(ItemsRegistry.STURDY_SADDLE.get())) {
-            if (!this.level().isClientSide) {
-                this.setSturdySaddled(true);
-                this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
-                if (!player.getAbilities().instabuild) stack.shrink(1);
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
-
-        if (!player.isSecondaryUseActive()) {
-            if (!this.level().isClientSide) {
-                this.doPlayerRide(player);
-                if (!this.isTamed()) {
-                    this.tamingPlayer = player;
-                    this.tamingBuckCounter = 30 + this.random.nextInt(30);
-                }
-            }
-            return InteractionResult.sidedSuccess(this.level().isClientSide);
-        }
-
-        return InteractionResult.PASS;
-    }
-
-    @Override
-    public boolean isFood(ItemStack stack) {
-        return false;
-    }
+    // Sons
 
     @Override
     protected @NotNull SoundEvent getAmbientSound() {
@@ -502,11 +119,7 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
-        registrar.add(
-                new AnimationController<>(this, "attack_controller", 2, state -> PlayState.STOP)
-                        .triggerableAnim("rear", REAR_ANIM)
-                        .triggerableAnim("reject", REJECT_ANIM)
-        );
+        this.addAttackController(registrar);
 
         registrar.add(new AnimationController<>(this, "movement", 5, state -> {
             if (!this.isInWater() && (this.isFlying() || !this.onGround())) {
@@ -522,10 +135,5 @@ public class HorseBatEntity extends AbstractHorse implements GeoEntity, Enemy {
             if (animSpeed > 0.05f) return state.setAndContinue(WALK_SLOW_ANIM);
             return state.setAndContinue(IDLE_ANIM);
         }));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return geoCache;
     }
 }
