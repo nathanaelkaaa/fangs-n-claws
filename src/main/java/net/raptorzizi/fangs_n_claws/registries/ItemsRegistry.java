@@ -156,6 +156,8 @@ public class ItemsRegistry {
      */
     public static final Supplier<Item> STURDY_SADDLE = ITEMS.register("sturdy_saddle",
             () -> new Item(new Item.Properties().stacksTo(1)));
+    public static final Supplier<Item> HORSE_BLANKET = ITEMS.register("horse_blanket",
+            () -> new Item(new Item.Properties().stacksTo(1)));
     public static final Supplier<Item> TOTEM_OF_FROST = ITEMS.register("totem_of_frost",
             () -> new Item(new Item.Properties().stacksTo(1)));
 

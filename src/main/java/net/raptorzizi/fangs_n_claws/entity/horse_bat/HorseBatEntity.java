@@ -91,7 +91,8 @@ public class HorseBatEntity extends FlyingHorseMob {
         if (this.level().isDay()) {
             float brightness = this.getLightLevelDependentMagicValue();
             BlockPos eyePos = BlockPos.containing(this.getX(), this.getEyeY(), this.getZ());
-            boolean sheltered = this.isInWaterRainOrBubble() || this.isInPowderSnow || this.wasInPowderSnow;
+            boolean sheltered = this.isInWaterRainOrBubble() || this.isInPowderSnow || this.wasInPowderSnow
+                    || this.isWearingArmor();
             if (brightness > 0.5F && !sheltered && this.level().canSeeSky(eyePos)) {
                 this.igniteForSeconds(8);
             }

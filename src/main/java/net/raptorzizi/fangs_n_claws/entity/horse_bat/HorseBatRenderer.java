@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.horse.HorseArmorLayer;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
@@ -21,6 +22,8 @@ public class HorseBatRenderer extends GeoEntityRenderer<HorseBatEntity> {
     public HorseBatRenderer(EntityRendererProvider.Context context) {
         super(context, new HorseBatModel());
         this.shadowRadius = 0.7F;
+
+        this.addRenderLayer(new HorseArmorLayer<>(this));
 
         this.addRenderLayer(new GeoRenderLayer<>(this) {
             @Override

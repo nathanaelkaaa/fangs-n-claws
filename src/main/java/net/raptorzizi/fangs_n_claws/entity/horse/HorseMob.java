@@ -19,14 +19,19 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.resources.ResourceLocation;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -50,6 +55,11 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
 
     private static final EntityDataAccessor<Boolean> STURDY_SADDLED =
             SynchedEntityData.defineId(HorseMob.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<ItemStack> ARMOR =
+            SynchedEntityData.defineId(HorseMob.class, EntityDataSerializers.ITEM_STACK);
+
+    private static final ResourceLocation ARMOR_MODIFIER_ID = FangsClawsMod.id("horse_blanket_armor");
+    private static final double           BLANKET_ARMOR     = 3.0;
 
     protected static final RawAnimation REAR_ANIM   = RawAnimation.begin().then("rear",   Animation.LoopType.PLAY_ONCE);
     protected static final RawAnimation REJECT_ANIM = RawAnimation.begin().then("reject", Animation.LoopType.PLAY_ONCE);
@@ -74,24 +84,56 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(STURDY_SADDLED, false);
+        builder.define(ARMOR, ItemStack.EMPTY);
     }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("SturdySaddled", this.isSaddled());
+        if (!this.getArmor().isEmpty()) {
+            tag.put("HorseArmor", this.getArmor().save(this.registryAccess()));
+        }
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setSturdySaddled(tag.getBoolean("SturdySaddled"));
+        if (tag.contains("HorseArmor", 10)) {
+            this.setArmor(ItemStack.parseOptional(this.registryAccess(), tag.getCompound("HorseArmor")));
+        } else {
+            this.setArmor(ItemStack.EMPTY);
+        }
     }
 
     public void setSturdySaddled(boolean v) { this.entityData.set(STURDY_SADDLED, v); }
 
     @Override
     public boolean isSaddled() { return this.entityData.get(STURDY_SADDLED); }
+
+
+    public ItemStack getArmor() { return this.entityData.get(ARMOR); }
+
+    public void setArmor(ItemStack stack) {
+        this.entityData.set(ARMOR, stack);
+        this.updateArmorAttribute();
+    }
+
+    public boolean isWearingArmor() { return !this.getArmor().isEmpty(); }
+
+    public boolean isBodyArmorItem(ItemStack stack) {
+        return stack.is(ItemsRegistry.HORSE_BLANKET.get());
+    }
+
+    private void updateArmorAttribute() {
+        AttributeInstance inst = this.getAttribute(Attributes.ARMOR);
+        if (inst == null) return;
+        inst.removeModifier(ARMOR_MODIFIER_ID);
+        if (this.isWearingArmor()) {
+            inst.addTransientModifier(new AttributeModifier(ARMOR_MODIFIER_ID, BLANKET_ARMOR, AttributeModifier.Operation.ADD_VALUE));
+        }
+    }
 
     public boolean isStruggling() {
         return rejectTick == 0 && !this.isTamed() && this.getFirstPassenger() instanceof Player;
@@ -227,6 +269,11 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
 
     @Override
     public void openCustomInventoryScreen(@NotNull Player player) {
+        if (!this.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.openMenu(
+                    new SimpleMenuProvider((id, inv, p) -> new HorseArmorMenu(id, inv, this), this.getDisplayName()),
+                    buf -> buf.writeInt(this.getId()));
+        }
     }
 
     @Override
@@ -256,12 +303,8 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        if (player.isSecondaryUseActive() && this.isSaddled()) {
-            if (!this.level().isClientSide) {
-                this.setSturdySaddled(false);
-                this.spawnAtLocation(new ItemStack(ItemsRegistry.STURDY_SADDLE.get()));
-                this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
-            }
+        if (this.isTamed() && player.isSecondaryUseActive()) {
+            this.openCustomInventoryScreen(player);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
@@ -271,6 +314,15 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
             if (!this.level().isClientSide) {
                 this.setSturdySaddled(true);
                 this.playSound(SoundEvents.HORSE_SADDLE, 0.5F, 1.0F);
+                if (!player.getAbilities().instabuild) stack.shrink(1);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
+        if (this.isTamed() && !this.isWearingArmor() && this.isBodyArmorItem(stack)) {
+            if (!this.level().isClientSide) {
+                this.setArmor(stack.copyWithCount(1));
+                this.playSound(SoundEvents.HORSE_ARMOR, 0.5F, 1.0F);
                 if (!player.getAbilities().instabuild) stack.shrink(1);
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
@@ -293,6 +345,19 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     @Override
     public boolean isFood(ItemStack stack) {
         return false;
+    }
+
+    @Override
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.isSaddled()) {
+            this.spawnAtLocation(new ItemStack(ItemsRegistry.STURDY_SADDLE.get()));
+            this.setSturdySaddled(false);
+        }
+        if (!this.getArmor().isEmpty()) {
+            this.spawnAtLocation(this.getArmor());
+            this.setArmor(ItemStack.EMPTY);
+        }
     }
 
     // GeckoLib

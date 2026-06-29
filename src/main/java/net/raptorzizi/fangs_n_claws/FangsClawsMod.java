@@ -76,6 +76,7 @@ import net.raptorzizi.fangs_n_claws.registries.CreativeModeTabs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import net.raptorzizi.fangs_n_claws.registries.MenuTypeRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.PotionsRegistry;
@@ -115,6 +116,7 @@ public class FangsClawsMod {
         BlocksRegistry.register(modEventBus);
         BlockEntityRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
+        MenuTypeRegistry.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.SERVER, ServerConfigs.SPEC, String.format("%s-server.toml", FangsClawsMod.MOD_ID));
         modContainer.registerConfig(ModConfig.Type.CLIENT, ClientConfigs.SPEC, String.format("%s-client.toml", FangsClawsMod.MOD_ID));

@@ -7,8 +7,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.raptorzizi.fangs_n_claws.entity.horse.HorseArmorScreen;
+import net.raptorzizi.fangs_n_claws.registries.MenuTypeRegistry;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareStaminaLayer;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -59,6 +62,11 @@ public class ClientSetup {
 
     private static final Map<Integer, float[]> frozenYaws     = new HashMap<>();
     private static final Map<Integer, float[]> savedRotations = new HashMap<>();
+
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        event.register(MenuTypeRegistry.HORSE_ARMOR.get(), HorseArmorScreen::new);
+    }
 
     @SubscribeEvent
     public static void onRenderLivingPre(RenderLivingEvent.Pre<?, ?> event) {
