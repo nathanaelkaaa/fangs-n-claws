@@ -33,6 +33,7 @@ import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -250,6 +251,18 @@ public class FangsClawsMod {
         }
     }
 
+    private static boolean wearsScorpion(LivingEntity entity, EquipmentSlot slot) {
+        return entity.getItemBySlot(slot).getItem() instanceof ScorpionArmorItem;
+    }
+
+    private static int countFurArmor(LivingEntity entity) {
+        int n = 0;
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            if (entity.getItemBySlot(slot).getItem() instanceof FurArmorItem) n++;
+        }
+        return n;
+    }
+
     @SubscribeEvent
     public void onIncomingDamage(LivingIncomingDamageEvent event) {
         if (event.getSource().getDirectEntity() instanceof Player player
@@ -280,6 +293,15 @@ public class FangsClawsMod {
         if (!(event.getEntity() instanceof LivingEntity entity)) return;
         if (entity.level().isClientSide()) return;
 
+        if (entity.isInPowderSnow) {
+            int furPieces = countFurArmor(entity);
+            if (furPieces >= 4) {
+                entity.setTicksFrozen(0);
+            } else if (furPieces > 0 && entity.getRandom().nextInt(4) < furPieces) {
+                entity.setTicksFrozen(Math.max(0, entity.getTicksFrozen() - 1));
+            }
+        }
+
         if (BleedingEffect.PENDING_REMOVAL.remove(entity.getUUID())) {
             entity.removeEffect(MobEffectsRegistry.BLEEDING);
         }
@@ -297,19 +319,11 @@ public class FangsClawsMod {
             }
         }
 
-        if (entity instanceof Player player && player.tickCount % 20 == 0) {
-            boolean fullSet = player.getItemBySlot(EquipmentSlot.HEAD).getItem()  instanceof ScorpionArmorItem
-                           && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScorpionArmorItem
-                           && player.getItemBySlot(EquipmentSlot.LEGS).getItem()  instanceof ScorpionArmorItem
-                           && player.getItemBySlot(EquipmentSlot.FEET).getItem()  instanceof ScorpionArmorItem;
-            if (fullSet) {
-                player.addEffect(new MobEffectInstance(MobEffectsRegistry.MITHRIDATIC, 40, 0, false, false, true));
-                player.removeEffect(MobEffects.POISON);
-                player.removeEffect(MobEffects.CONFUSION);
-                player.removeEffect(MobEffects.BLINDNESS);
-                player.removeEffect(MobEffects.HUNGER);
-                player.removeEffect(MobEffectsRegistry.VENOM);
-            }
+        if (entity.tickCount % 20 == 0) {
+            if (wearsScorpion(entity, EquipmentSlot.HEAD))  entity.removeEffect(MobEffects.CONFUSION);
+            if (wearsScorpion(entity, EquipmentSlot.CHEST)) entity.removeEffect(MobEffects.POISON);
+            if (wearsScorpion(entity, EquipmentSlot.LEGS))  entity.removeEffect(MobEffectsRegistry.VENOM);
+            if (wearsScorpion(entity, EquipmentSlot.FEET))  entity.removeEffect(MobEffects.HUNGER);
         }
 
         if (entity instanceof Monster monster && monster.tickCount % 15 == 0) {
@@ -350,14 +364,14 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onMobEffectApplicable(MobEffectEvent.Applicable event) {
-        if (!event.getEntity().hasEffect(MobEffectsRegistry.MITHRIDATIC)) return;
-
+        LivingEntity entity = event.getEntity();
         var effect = event.getEffectInstance().getEffect();
-        if (effect.is(MobEffects.POISON)
-                || effect.is(MobEffects.CONFUSION)
-                || effect.is(MobEffects.BLINDNESS)
-                || effect.is(MobEffects.HUNGER)
-                || effect.is(MobEffectsRegistry.VENOM)) {
+        boolean immune =
+                   (effect.is(MobEffects.CONFUSION)     && wearsScorpion(entity, EquipmentSlot.HEAD))
+                || (effect.is(MobEffects.POISON)        && wearsScorpion(entity, EquipmentSlot.CHEST))
+                || (effect.is(MobEffectsRegistry.VENOM) && wearsScorpion(entity, EquipmentSlot.LEGS))
+                || (effect.is(MobEffects.HUNGER)        && wearsScorpion(entity, EquipmentSlot.FEET));
+        if (immune) {
             event.setResult(MobEffectEvent.Applicable.Result.DO_NOT_APPLY);
         }
     }
@@ -365,6 +379,11 @@ public class FangsClawsMod {
     @SubscribeEvent
     public void onLivingChangeTarget(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof Zombie && event.getNewAboutToBeSetTarget() instanceof WerevillagerEntity) {
+            event.setCanceled(true);
+        }
+        if (event.getEntity() instanceof WildWolfEntity
+                && event.getNewAboutToBeSetTarget() instanceof Player player
+                && FurArmorItem.hasFurHelmet(player)) {
             event.setCanceled(true);
         }
         if (event.getNewAboutToBeSetTarget() != null

@@ -19,6 +19,7 @@ import net.raptorzizi.fangs_n_claws.item.PoisonousDartItem;
 import net.raptorzizi.fangs_n_claws.item.VelocityArrowItem;
 import net.raptorzizi.fangs_n_claws.item.VileFatItem;
 import net.minecraft.world.item.ArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import java.util.function.Supplier;
 
@@ -118,6 +119,9 @@ public class ItemsRegistry {
     public static final Supplier<Item> CHITIN = ITEMS.register("chitin",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> FUR = ITEMS.register("fur",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
     public static final Supplier<VileFatItem> VILE_FAT = ITEMS.register("vile_fat", VileFatItem::new);
 
     public static final Supplier<Item> SPECTRAL_ESSENCE = ITEMS.register("spectral_essence",
@@ -149,6 +153,15 @@ public class ItemsRegistry {
             () -> new ScorpionArmorItem(ArmorItem.Type.LEGGINGS,   200));
     public static final Supplier<ScorpionArmorItem> SCORPION_BOOTS      = ITEMS.register("scorpion_boots",
             () -> new ScorpionArmorItem(ArmorItem.Type.BOOTS,      175));
+
+    public static final Supplier<FurArmorItem> FUR_HELMET     = ITEMS.register("fur_helmet",
+            () -> new FurArmorItem(ArmorItem.Type.HELMET,     165));
+    public static final Supplier<FurArmorItem> FUR_CHESTPLATE = ITEMS.register("fur_chestplate",
+            () -> new FurArmorItem(ArmorItem.Type.CHESTPLATE, 240));
+    public static final Supplier<FurArmorItem> FUR_LEGGINGS   = ITEMS.register("fur_leggings",
+            () -> new FurArmorItem(ArmorItem.Type.LEGGINGS,   225));
+    public static final Supplier<FurArmorItem> FUR_BOOTS      = ITEMS.register("fur_boots",
+            () -> new FurArmorItem(ArmorItem.Type.BOOTS,      195));
 
     /**
      * Throwables / Projectiles

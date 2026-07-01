@@ -32,6 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
+import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -205,6 +206,10 @@ public class WildWolfEntity extends Monster implements GeoEntity {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+
+        if (this.getTarget() instanceof Player p && FurArmorItem.hasFurHelmet(p)) {
+            this.setTarget(null);
+        }
 
         if (panicCooldown > 0) {
             panicCooldown--;

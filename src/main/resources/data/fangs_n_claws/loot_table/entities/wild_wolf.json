@@ -26,6 +26,19 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:fur",
+          "functions": [
+            { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 0, "max": 2 } },
+            { "function": "minecraft:looting_enchant", "count": { "min": 0, "max": 1 } }
+          ]
+        }
+      ]
     }
   ]
 }
