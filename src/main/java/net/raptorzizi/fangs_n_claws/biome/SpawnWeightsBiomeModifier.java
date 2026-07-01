@@ -77,6 +77,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.ICE_GOLEM.get(),
                     EntityRegistry.HORSE_BAT.get(),
                     EntityRegistry.NIGHTMARE_HORSE.get(),
+                    EntityRegistry.SKELETON_HORSE_MOB.get(),
+                    EntityRegistry.ZOMBIE_HORSE_MOB.get(),
                     EntityRegistry.WILD_WOLF.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
@@ -108,6 +110,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_WEIGHT.get(),      1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.HORSE_BAT.get(),       ServerConfigs.HORSE_BAT_WEIGHT.get(),       1, 1);
+                if (CommonConfigs.ALLOW_NATURAL_SPAWN_SKELETON_HORSE.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.SKELETON_HORSE_MOB.get(), ServerConfigs.SKELETON_HORSE_WEIGHT.get(), 1, 1);
+                if (CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.ZOMBIE_HORSE_MOB.get(),   ServerConfigs.ZOMBIE_HORSE_WEIGHT.get(),   1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get()
                         && !biome.is(IS_DESERT) && !biome.is(IS_JUNGLE)
                         && !biome.is(IS_SAVANNA) && !biome.is(IS_BADLANDS))

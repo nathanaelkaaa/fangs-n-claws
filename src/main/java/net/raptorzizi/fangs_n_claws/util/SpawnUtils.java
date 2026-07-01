@@ -181,6 +181,12 @@ public class SpawnUtils {
         return level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
+    public static boolean checkUndeadHorseSpawnRules(EntityType<? extends Mob> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>) (EntityType<?>) type,
+                level, spawnType, pos, random);
+    }
+
     /*public static boolean checkWerevillagerSpawnRules(EntityType<WerevillagerEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level instanceof ServerLevel serverLevel && !serverLevel.isDay()) return false;

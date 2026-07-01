@@ -29,6 +29,12 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_NIGHTMARE_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
+    public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
+    public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
+
+    public static final ModConfigSpec.BooleanValue VANILLA_SKELETON_HORSE;
+    public static final ModConfigSpec.BooleanValue VANILLA_ZOMBIE_HORSE;
+    public static final ModConfigSpec.BooleanValue ALLOW_GOBLIN_STEALING;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -138,6 +144,35 @@ public class CommonConfigs {
                 .comment("Allow Wild Wolves to spawn naturally")
                 .translation("fangs_n_claws.configuration.spawn_toggles.wild_wolf")
                 .define("allow_wild_wolf", true);
+
+        BUILDER.pop();
+
+        BUILDER.comment("Mob behaviour toggles. Each mirrors a /gamerule of the same name — changing either applies.").push("behavior");
+
+        VANILLA_SKELETON_HORSE = BUILDER
+                .comment("Keep the vanilla Skeleton Horse instead of the mod's tamable version (also /gamerule vanillaSkeletonHorse)")
+                .translation("fangs_n_claws.configuration.behavior.vanilla_skeleton_horse")
+                .define("vanilla_skeleton_horse", false);
+
+        VANILLA_ZOMBIE_HORSE = BUILDER
+                .comment("Keep the vanilla Zombie Horse instead of the mod's tamable version (also /gamerule vanillaZombieHorse)")
+                .translation("fangs_n_claws.configuration.behavior.vanilla_zombie_horse")
+                .define("vanilla_zombie_horse", false);
+
+        ALLOW_NATURAL_SPAWN_SKELETON_HORSE = BUILDER
+                .comment("Allow Skeleton Horses to spawn naturally at night, whichever version is used (also /gamerule allowNaturalSpawnSkeletonHorse)")
+                .translation("fangs_n_claws.configuration.behavior.allow_natural_spawn_skeleton_horse")
+                .define("allow_natural_spawn_skeleton_horse", true);
+
+        ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE = BUILDER
+                .comment("Allow Zombie Horses to spawn naturally at night, whichever version is used (also /gamerule allowNaturalSpawnZombieHorse)")
+                .translation("fangs_n_claws.configuration.behavior.allow_natural_spawn_zombie_horse")
+                .define("allow_natural_spawn_zombie_horse", true);
+
+        ALLOW_GOBLIN_STEALING = BUILDER
+                .comment("Allow Goblins to steal items from players' inventories (also /gamerule allowGoblinStealing)")
+                .translation("fangs_n_claws.configuration.behavior.allow_goblin_stealing")
+                .define("allow_goblin_stealing", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

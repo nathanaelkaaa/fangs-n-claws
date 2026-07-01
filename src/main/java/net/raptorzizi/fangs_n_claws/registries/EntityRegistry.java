@@ -33,6 +33,8 @@ import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
@@ -238,6 +240,20 @@ public class EntityRegistry {
                     .fireImmune()
                     .clientTrackingRange(8)
                     .build("nightmare_horse"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<SkeletonHorseMob>> SKELETON_HORSE_MOB =
+            ENTITIES.register("skeleton_horse", () -> EntityType.Builder
+                    .of(SkeletonHorseMob::new, MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .clientTrackingRange(10)
+                    .build("skeleton_horse"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ZombieHorseMob>> ZOMBIE_HORSE_MOB =
+            ENTITIES.register("zombie_horse", () -> EntityType.Builder
+                    .of(ZombieHorseMob::new, MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .clientTrackingRange(10)
+                    .build("zombie_horse"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<WildWolfEntity>> WILD_WOLF =
             ENTITIES.register("wild_wolf", () -> EntityType.Builder

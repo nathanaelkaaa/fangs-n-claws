@@ -67,5 +67,20 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_WILD_WOLF =
             GameRules.register("allowSpawnWildWolf",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_NATURAL_SPAWN_SKELETON_HORSE =
+            GameRules.register("allowNaturalSpawnSkeletonHorse", GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE =
+            GameRules.register("allowNaturalSpawnZombieHorse",   GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> VANILLA_SKELETON_HORSE =
+            GameRules.register("vanillaSkeletonHorse",      GameRules.Category.MOBS, GameRules.BooleanValue.create(false));
+
+    public static final GameRules.Key<GameRules.BooleanValue> VANILLA_ZOMBIE_HORSE =
+            GameRules.register("vanillaZombieHorse",        GameRules.Category.MOBS, GameRules.BooleanValue.create(false));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_GOBLIN_STEALING =
+            GameRules.register("allowGoblinStealing",       GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
     public static void init() {}
 }

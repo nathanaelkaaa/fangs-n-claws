@@ -1,9 +1,9 @@
 package net.raptorzizi.fangs_n_claws.entity.horse_bat;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -20,6 +20,9 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.horse.FlyingHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseMobStruggleGoal;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
@@ -41,6 +44,21 @@ public class HorseBatEntity extends FlyingHorseMob {
 
     public HorseBatEntity(EntityType<?> type, Level level) {
         super((EntityType<? extends AbstractHorse>) type, level);
+    }
+
+    @Override
+    public ResourceLocation textureLocation() {
+        return FangsClawsMod.id("textures/entity/horse_bat.png");
+    }
+
+    @Override
+    public ResourceLocation eyesTexture() {
+        return FangsClawsMod.id("textures/entity/glowing_eyes/horse_bat_eyes.png");
+    }
+
+    @Override
+    public boolean isHealingItem(ItemStack stack) {
+        return stack.is(Items.PHANTOM_MEMBRANE);
     }
 
     // Goals
@@ -65,11 +83,6 @@ public class HorseBatEntity extends FlyingHorseMob {
                 .add(Attributes.MOVEMENT_SPEED, 0.225)
                 .add(Attributes.FLYING_SPEED, 0.25)
                 .add(Attributes.ATTACK_DAMAGE, 5.0);
-    }
-
-    @Override
-    protected boolean shouldSpawnRider(RandomSource random) {
-        return random.nextInt(3) != 0;
     }
 
     @Nullable

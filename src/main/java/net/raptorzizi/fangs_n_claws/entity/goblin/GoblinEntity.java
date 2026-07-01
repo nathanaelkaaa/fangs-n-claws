@@ -6,6 +6,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
+import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -160,7 +162,9 @@ public class GoblinEntity extends Monster implements GeoEntity {
 
     private void triggerAttack(LivingEntity target) {
         if (isActing() || attackCooldown > 0) return;
-        if (target instanceof Player && this.random.nextInt(4) == 0) {
+        if (target instanceof Player && this.random.nextInt(4) == 0
+                && this.level().getGameRules().getBoolean(GameRuleRegistry.ALLOW_GOBLIN_STEALING)
+                && CommonConfigs.ALLOW_GOBLIN_STEALING.get()) {
             this.triggerAnim("attack_controller", "steal");
             this.pendingTarget = target;
             this.stealTick     = 1;

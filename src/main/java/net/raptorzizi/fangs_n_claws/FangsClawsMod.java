@@ -1,7 +1,9 @@
 package net.raptorzizi.fangs_n_claws;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.*;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -15,16 +17,14 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Zombie;
 import net.neoforged.neoforge.event.entity.living.EffectParticleModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.living.FinalizeSpawnEvent;
 import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -32,7 +32,6 @@ import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
@@ -55,7 +54,6 @@ import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
-import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
@@ -68,6 +66,10 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
@@ -84,6 +86,8 @@ import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.List;
+
 @Mod(FangsClawsMod.MOD_ID)
 public class FangsClawsMod {
     public static final String MOD_ID = "fangs_n_claws";
@@ -98,7 +102,7 @@ public class FangsClawsMod {
                     TotemFrostPayload.TYPE,
                     TotemFrostPayload.STREAM_CODEC,
                     (payload, ctx) -> ctx.enqueueWork(() ->
-                        net.minecraft.client.Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item())
+                        Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item())
                     )
                 )
             );
@@ -149,6 +153,14 @@ public class FangsClawsMod {
                     SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                     SpawnUtils::checkWildWolfSpawnRules,
                     RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register(EntityRegistry.SKELETON_HORSE_MOB.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    SpawnUtils::checkUndeadHorseSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
+            event.register(EntityRegistry.ZOMBIE_HORSE_MOB.get(),
+                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    SpawnUtils::checkUndeadHorseSpawnRules,
+                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
         });
     }
 
@@ -174,6 +186,68 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
+    }
+
+    @SubscribeEvent
+    public void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if (event.loadedFromDisk()) return;
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+
+        if (event.getEntity() instanceof SkeletonHorse vanilla) {
+            if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_SKELETON_HORSE)
+                    || CommonConfigs.VANILLA_SKELETON_HORSE.get()) return; // garde le vanilla (gamerule OU config)
+            SkeletonHorseMob mob = EntityRegistry.SKELETON_HORSE_MOB.get().create(serverLevel);
+            if (mob != null) {
+                mob.moveTo(vanilla.getX(), vanilla.getY(), vanilla.getZ(), vanilla.getYRot(), vanilla.getXRot());
+                mob.setTamed(vanilla.isTamed());
+                mob.setTrap(vanilla.isTrap());
+                serverLevel.addFreshEntity(mob);
+                transferPassengers(vanilla, mob);
+            }
+            event.setCanceled(true);
+        } else if (event.getEntity() instanceof ZombieHorse vanilla) {
+            if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_ZOMBIE_HORSE)
+                    || CommonConfigs.VANILLA_ZOMBIE_HORSE.get()) return; // garde le vanilla (gamerule OU config)
+            ZombieHorseMob mob = EntityRegistry.ZOMBIE_HORSE_MOB.get().create(serverLevel);
+            if (mob != null) {
+                mob.moveTo(vanilla.getX(), vanilla.getY(), vanilla.getZ(), vanilla.getYRot(), vanilla.getXRot());
+                mob.setTamed(vanilla.isTamed());
+                serverLevel.addFreshEntity(mob);
+                transferPassengers(vanilla, mob);
+            }
+            event.setCanceled(true);
+
+        } else if (event.getEntity() instanceof SkeletonHorseMob mod
+                && (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_SKELETON_HORSE)
+                    || CommonConfigs.VANILLA_SKELETON_HORSE.get())) {
+            SkeletonHorse vanilla = EntityType.SKELETON_HORSE.create(serverLevel);
+            if (vanilla != null) {
+                vanilla.moveTo(mod.getX(), mod.getY(), mod.getZ(), mod.getYRot(), mod.getXRot());
+                vanilla.setTamed(mod.isTamed());
+                vanilla.setTrap(mod.isTrap());
+                serverLevel.addFreshEntity(vanilla);
+                transferPassengers(mod, vanilla);
+            }
+            event.setCanceled(true);
+        } else if (event.getEntity() instanceof ZombieHorseMob mod
+                && (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_ZOMBIE_HORSE)
+                    || CommonConfigs.VANILLA_ZOMBIE_HORSE.get())) {
+            ZombieHorse vanilla = EntityType.ZOMBIE_HORSE.create(serverLevel);
+            if (vanilla != null) {
+                vanilla.moveTo(mod.getX(), mod.getY(), mod.getZ(), mod.getYRot(), mod.getXRot());
+                vanilla.setTamed(mod.isTamed());
+                serverLevel.addFreshEntity(vanilla);
+                transferPassengers(mod, vanilla);
+            }
+            event.setCanceled(true);
+        }
+    }
+
+    private static void transferPassengers(Entity from, Entity to) {
+        for (Entity passenger : List.copyOf(from.getPassengers())) {
+            passenger.stopRiding();
+            passenger.startRiding(to, true);
+        }
     }
 
     @SubscribeEvent
@@ -329,6 +403,8 @@ public class FangsClawsMod {
         else if (event.getEntity() instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
         else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
         else if (event.getEntity() instanceof WildWolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))    cancel = true;
+        else if (event.getEntity() instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;
+        else if (event.getEntity() instanceof ZombieHorseMob   && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE))   cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 

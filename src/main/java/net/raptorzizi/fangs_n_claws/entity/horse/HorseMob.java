@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.entity.horse;
 
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -135,6 +136,13 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
         }
     }
 
+    public abstract ResourceLocation textureLocation();
+
+    @Nullable
+    public ResourceLocation eyesTexture() {
+        return null;
+    }
+
     public boolean isStruggling() {
         return rejectTick == 0 && !this.isTamed() && this.getFirstPassenger() instanceof Player;
     }
@@ -151,7 +159,8 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
                                         @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-        if (level instanceof ServerLevel serverLevel && shouldSpawnRider(serverLevel.random)) {
+        if (level instanceof ServerLevel serverLevel && spawnType != MobSpawnType.TRIGGERED
+                && shouldSpawnRider(serverLevel.random)) {
             Mob rider = createRider(serverLevel);
             if (rider != null) {
                 rider.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
@@ -164,7 +173,7 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     }
 
     protected boolean shouldSpawnRider(RandomSource random) {
-        return false;
+        return random.nextFloat() < 0.9f;
     }
 
     @Nullable
@@ -310,6 +319,19 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
 
         if (this.isVehicle()) return InteractionResult.PASS;
 
+        if (this.isHealingItem(stack) && this.getHealth() < this.getMaxHealth()) {
+            if (!this.level().isClientSide) {
+                this.heal(this.feedHealAmount());
+                this.playSound(SoundEvents.HORSE_EAT, 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
+                if (this.level() instanceof ServerLevel sl) {
+                    sl.sendParticles(ParticleTypes.HEART, this.getX(), this.getY() + this.getBbHeight() * 0.7,
+                            this.getZ(), 4, this.getBbWidth() * 0.5, 0.3, this.getBbWidth() * 0.5, 0.02);
+                }
+                if (!player.getAbilities().instabuild) stack.shrink(1);
+            }
+            return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
         if (this.isTamed() && !this.isSaddled() && stack.is(ItemsRegistry.STURDY_SADDLE.get())) {
             if (!this.level().isClientSide) {
                 this.setSturdySaddled(true);
@@ -340,6 +362,14 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
         }
 
         return InteractionResult.PASS;
+    }
+
+    public boolean isHealingItem(ItemStack stack) {
+        return false;
+    }
+
+    protected float feedHealAmount() {
+        return 4.0f;
     }
 
     @Override

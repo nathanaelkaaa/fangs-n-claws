@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -29,10 +28,14 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.resources.ResourceLocation;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.horse.ChargeAbility;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseChargeGoal;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseChargeMoveControl;
@@ -67,6 +70,9 @@ public class NightmareHorseEntity extends HorseMob {
             SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> STAMINA =
             SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.FLOAT);
+
+    private static final ResourceLocation TEX_RED   = FangsClawsMod.id("textures/entity/nightmare_horse.png");
+    private static final ResourceLocation TEX_BLACK = FangsClawsMod.id("textures/entity/nightmare_horse_black.png");
 
     private ChargeAbility charge;
 
@@ -110,6 +116,16 @@ public class NightmareHorseEntity extends HorseMob {
     public int  getVariant()      { return this.entityData.get(VARIANT); }
     public void setVariant(int v) { this.entityData.set(VARIANT, v); }
 
+    @Override
+    public ResourceLocation textureLocation() {
+        return this.getVariant() == VARIANT_BLACK ? TEX_BLACK : TEX_RED;
+    }
+
+    @Override
+    public boolean isHealingItem(ItemStack stack) {
+        return stack.is(Items.ROTTEN_FLESH) || stack.is(Items.BONE);
+    }
+
     public float getStamina()        { return this.entityData.get(STAMINA); }
     public void  setStamina(float v) { this.entityData.set(STAMINA, Mth.clamp(v, 0.0F, 1.0F)); }
 
@@ -147,11 +163,6 @@ public class NightmareHorseEntity extends HorseMob {
                                         @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         this.setVariant(this.random.nextInt(2));
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-    }
-
-    @Override
-    protected boolean shouldSpawnRider(RandomSource random) {
-        return true;
     }
 
     @Nullable

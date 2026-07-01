@@ -30,6 +30,8 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue HORSE_BAT_WEIGHT;
     public static final ModConfigSpec.IntValue NIGHTMARE_HORSE_WEIGHT;
     public static final ModConfigSpec.IntValue WILD_WOLF_WEIGHT;
+    public static final ModConfigSpec.IntValue SKELETON_HORSE_WEIGHT;
+    public static final ModConfigSpec.IntValue ZOMBIE_HORSE_WEIGHT;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Server Configuration").push("spawn_weights");
@@ -95,12 +97,18 @@ public class ServerConfigs {
         NETHER_SCORPION_WEIGHT   = BUILDER.comment("Nether Scorpion (Crimson Forest + Nether Wastes) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.nether_scorpion")
                                         .defineInRange("nether_scorpion",   15, 0, 500);
-        HORSE_BAT_WEIGHT         = BUILDER.comment("Horse Bat (overworld) — default: 10")
+        HORSE_BAT_WEIGHT         = BUILDER.comment("Horse Bat (overworld) — default: 3")
                                         .translation("fangs_n_claws.configuration.spawn_weights.horse_bat")
-                                        .defineInRange("horse_bat",          10, 0, 500);
+                                        .defineInRange("horse_bat",          3, 0, 500);
         NIGHTMARE_HORSE_WEIGHT   = BUILDER.comment("Nightmare Horse (Nether) — default: 8")
                                         .translation("fangs_n_claws.configuration.spawn_weights.nightmare_horse")
                                         .defineInRange("nightmare_horse",     8, 0, 500);
+        SKELETON_HORSE_WEIGHT    = BUILDER.comment("Skeleton Horse (overworld, night) — default: 3")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.skeleton_horse")
+                                        .defineInRange("skeleton_horse",     3, 0, 500);
+        ZOMBIE_HORSE_WEIGHT      = BUILDER.comment("Zombie Horse (overworld, night) — default: 3")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.zombie_horse")
+                                        .defineInRange("zombie_horse",       3, 0, 500);
         WILD_WOLF_WEIGHT         = BUILDER.comment("Wild Wolf (overworld) — default: 8 (vanilla wolf weight)")
                                         .translation("fangs_n_claws.configuration.spawn_weights.wild_wolf")
                                         .defineInRange("wild_wolf",          8, 0, 500);
