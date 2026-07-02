@@ -2,6 +2,8 @@ package net.raptorzizi.fangs_n_claws.entity.scorpion;
 
 import net.minecraft.resources.ResourceLocation;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.GeoModel;
 
 public class ScorpionModel extends GeoModel<ScorpionEntity> {
@@ -9,6 +11,12 @@ public class ScorpionModel extends GeoModel<ScorpionEntity> {
     @Override
     public ResourceLocation getModelResource(ScorpionEntity entity) {
         return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "geo/scorpion.geo.json");
+    }
+
+    @Override
+    public void setCustomAnimations(ScorpionEntity animatable, long instanceId, AnimationState<ScorpionEntity> state) {
+        GeoBone saddle = getAnimationProcessor().getBone("Saddle");
+        if (saddle != null) saddle.setHidden(!animatable.isSaddled());
     }
 
     @Override

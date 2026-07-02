@@ -10,6 +10,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowEntity;
+import net.raptorzizi.fangs_n_claws.entity.projectile.FeatherProjectileEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
@@ -30,6 +31,9 @@ import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.BabyShrikeEntity;
 import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
@@ -37,6 +41,7 @@ import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -85,6 +90,21 @@ public class EntityRegistry {
             ENTITIES.register("owlbear", () -> EntityType.Builder.of(OwlbearEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 1.95F)
                     .build("owlbear"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BabyOwlbearEntity>> BABY_OWLBEAR =
+            ENTITIES.register("baby_owlbear", () -> EntityType.Builder.of(BabyOwlbearEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 0.9F)
+                    .build("baby_owlbear"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<ShrikeEntity>> SHRIKE =
+            ENTITIES.register("shrike", () -> EntityType.Builder.of(ShrikeEntity::new, MobCategory.MONSTER)
+                    .sized(1.95F, 1.95F)
+                    .build("shrike"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BabyShrikeEntity>> BABY_SHRIKE =
+            ENTITIES.register("baby_shrike", () -> EntityType.Builder.of(BabyShrikeEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 0.9F)
+                    .build("baby_shrike"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<SilverSkeletonEntity>> SILVER_SKELETON =
             ENTITIES.register("silver_skeleton", () -> EntityType.Builder.of(SilverSkeletonEntity::new, MobCategory.MONSTER)
@@ -190,6 +210,14 @@ public class EntityRegistry {
                     .updateInterval(20)
                     .build("velocity_arrow"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<FeatherProjectileEntity>> FEATHER_PROJECTILE =
+            ENTITIES.register("feather_projectile", () -> EntityType.Builder
+                    .<FeatherProjectileEntity>of(FeatherProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .updateInterval(20)
+                    .build("feather_projectile"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<BlockProjectile>> BLOCK_PROJECTILE =
             ENTITIES.register("block_projectile", () -> EntityType.Builder
                     .<BlockProjectile>of(BlockProjectile::new, MobCategory.MISC)
@@ -225,6 +253,13 @@ public class EntityRegistry {
                     .clientTrackingRange(8)
                     .fireImmune()
                     .build("nether_scorpion"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BabyScorpionEntity>> BABY_SCORPION =
+            ENTITIES.register("baby_scorpion", () -> EntityType.Builder
+                    .<BabyScorpionEntity>of((type, level) -> new BabyScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.6F, 0.4F)
+                    .clientTrackingRange(8)
+                    .build("baby_scorpion"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<HorseBatEntity>> HORSE_BAT =
             ENTITIES.register("horse_bat", () -> EntityType.Builder

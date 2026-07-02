@@ -24,6 +24,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.HELL_OGRE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WEREWOLF_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.OWLBEAR_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.SHRIKE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.SILVER_SKELETON_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GOLEM_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.ICE_GOLEM_SPAWN_EGG.get());

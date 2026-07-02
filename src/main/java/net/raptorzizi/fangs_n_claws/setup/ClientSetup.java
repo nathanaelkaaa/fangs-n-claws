@@ -28,9 +28,12 @@ import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRendere
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowRenderer;
+import net.raptorzizi.fangs_n_claws.entity.projectile.FeatherProjectileRenderer;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearRenderer;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseMobRenderer;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionRenderer;
@@ -113,11 +116,15 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.CAVE_OGRE.get(),       CaveOgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WEREWOLF.get(),        WerewolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OWLBEAR.get(),         OwlbearRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BABY_OWLBEAR.get(),    BabyOwlbearRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.SHRIKE.get(),          OwlbearRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BABY_SHRIKE.get(),     BabyOwlbearRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonRenderer::new);
         event.registerEntityRenderer(EntityRegistry.SCORPION.get(),         ScorpionRenderer::new);
         event.registerEntityRenderer(EntityRegistry.DESERT_SCORPION.get(),  ScorpionRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FROST_SCORPION.get(),   ScorpionRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NETHER_SCORPION.get(),  ScorpionRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BABY_SCORPION.get(),     BabyScorpionRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FROZEN_BOX.get(),       FrozenBoxRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ICE_GOLEM.get(),           IceGolemRenderer::new);
@@ -131,6 +138,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.NETHERITE_CLAW_HOOK.get(),   NetheriteClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),      BlockProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.FEATHER_PROJECTILE.get(),    FeatherProjectileRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
 

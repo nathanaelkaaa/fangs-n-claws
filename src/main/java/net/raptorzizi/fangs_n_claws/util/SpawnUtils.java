@@ -92,12 +92,12 @@ public class SpawnUtils {
     public static boolean checkOwlbearSpawnRules(EntityType<? extends OwlbearEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (!Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (!level.canSeeSky(pos)) return false;
         if (level instanceof ServerLevel serverLevel) {
             AABB area = new AABB(pos).inflate(48, 16, 48);
             if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;
         }
-        return true;
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     public static boolean checkGoblinSpawnRules(EntityType<? extends GoblinEntity> type,

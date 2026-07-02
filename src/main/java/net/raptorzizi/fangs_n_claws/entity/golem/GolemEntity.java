@@ -54,7 +54,7 @@ public class GolemEntity extends Monster implements GeoEntity {
     private static final int    ATTACK_HIT_TICK     = 24;
     private static final int    ATTACK_TOTAL_TICKS  = 30;
     private static final int    WAKE_UP_TOTAL_TICKS = 70;
-    private static final float  BODY_HEALTH_MAX     = 30f;
+    private static final float  BODY_HEALTH_MAX     = 40f;
     private static final int    FALL_ANIM_TICKS     = 20;
     private static final int    VULNERABLE_TICKS    = 100;
     private static final int    GET_UP_ANIM_TICKS   = 30;

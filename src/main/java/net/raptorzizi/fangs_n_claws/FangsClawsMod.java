@@ -57,6 +57,7 @@ import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
@@ -68,6 +69,7 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
@@ -460,6 +462,46 @@ public class FangsClawsMod {
                     dartGoblin.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(dartGoblin.blockPosition()),
                             MobSpawnType.MOB_SUMMONED, null);
                     serverLevel.addFreshEntity(dartGoblin);
+                }
+            }
+
+            if (event.getEntity() instanceof OwlbearEntity owlbearParent && !event.isSpawnCancelled()) {
+                float roll = serverLevel.random.nextFloat();
+                int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
+                for (int i = 0; i < babies; i++) {
+                    BabyOwlbearEntity baby = EntityRegistry.BABY_OWLBEAR.get().create(serverLevel);
+                    if (baby != null) {
+                        double ox = (serverLevel.random.nextDouble() - 0.5) * 3.0;
+                        double oz = (serverLevel.random.nextDouble() - 0.5) * 3.0;
+                        baby.moveTo(owlbearParent.getX() + ox, owlbearParent.getY(), owlbearParent.getZ() + oz,
+                                serverLevel.random.nextFloat() * 360f, 0f);
+                        baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                                MobSpawnType.MOB_SUMMONED, null);
+                        baby.setParent(owlbearParent);
+                        serverLevel.addFreshEntity(baby);
+                    }
+                }
+            }
+
+            if (event.getEntity() instanceof ScorpionEntity scorpionParent && !event.isSpawnCancelled()) {
+                float roll = serverLevel.random.nextFloat();
+                int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
+                int variant = BabyScorpionEntity.variantOf(scorpionParent);
+                for (int i = 0; i < babies; i++) {
+                    BabyScorpionEntity baby = EntityRegistry.BABY_SCORPION.get().create(serverLevel);
+                    if (baby != null) {
+                        baby.setVariant(variant);
+                        double ox = (serverLevel.random.nextDouble() - 0.5) * 2.5;
+                        double oz = (serverLevel.random.nextDouble() - 0.5) * 2.5;
+                        baby.moveTo(scorpionParent.getX() + ox, scorpionParent.getY(), scorpionParent.getZ() + oz,
+                                serverLevel.random.nextFloat() * 360f, 0f);
+                        baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                                MobSpawnType.MOB_SUMMONED, null);
+                        baby.setParent(scorpionParent);
+                        baby.setRideYaw(serverLevel.random.nextFloat() * 360f);
+                        serverLevel.addFreshEntity(baby);
+                        baby.startRiding(scorpionParent, false);
+                    }
                 }
             }
         }

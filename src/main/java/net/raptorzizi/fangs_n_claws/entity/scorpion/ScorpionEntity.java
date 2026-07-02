@@ -3,6 +3,7 @@ package net.raptorzizi.fangs_n_claws.entity.scorpion;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -32,6 +33,17 @@ import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.nbt.CompoundTag;
+import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -58,6 +70,10 @@ public class ScorpionEntity extends Spider implements GeoEntity {
     private int     stingerCooldown     = 0;
     private boolean isStingerAttack     = false;
 
+    private static final EntityDataAccessor<Boolean> SADDLED =
+            SynchedEntityData.defineId(ScorpionEntity.class, EntityDataSerializers.BOOLEAN);
+    private UUID ownerUuid;
+
     private static final RawAnimation IDLE_ANIM           = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM           = RawAnimation.begin().thenLoop("walk");
     private static final RawAnimation ATTACK1_ANIM        = RawAnimation.begin().then("attack1",        Animation.LoopType.PLAY_ONCE);
@@ -70,6 +86,12 @@ public class ScorpionEntity extends Spider implements GeoEntity {
 
     public static boolean checkScorpionSpawnRules(EntityType<? extends ScorpionEntity> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return level.getDifficulty() != Difficulty.PEACEFUL;
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(SADDLED, false);
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -110,7 +132,10 @@ public class ScorpionEntity extends Spider implements GeoEntity {
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
+            @Override public boolean canUse()           { return !isTamed() && super.canUse(); }
+            @Override public boolean canContinueToUse() { return !isTamed() && super.canContinueToUse(); }
+        });
     }
 
     // Sound, Death
@@ -178,6 +203,139 @@ public class ScorpionEntity extends Spider implements GeoEntity {
     protected void applyHitEffect(LivingEntity living, boolean isStingerAttack) {
         if (isStingerAttack) {
             living.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0, false, true, true));
+        }
+    }
+
+    private static final double[] BABY_SLOT_X = { -0.25, 0.25, -0.25, 0.25 };
+    private static final double[] BABY_SLOT_Z = {  0.30, 0.30, -0.35, -0.35 };
+
+    @Override
+    protected boolean canAddPassenger(Entity passenger) {
+        return this.getPassengers().size() < 4;
+    }
+
+    // Interact
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (hand == InteractionHand.MAIN_HAND) {
+            ItemStack held = player.getItemInHand(hand);
+
+            if (isTamed() && isOwnedBy(player)) {
+                if (held.is(ItemsRegistry.CHITIN.get()) && this.getHealth() < this.getMaxHealth()) {
+                    if (!this.level().isClientSide) {
+                        this.heal(4.0F);
+                        if (!player.getAbilities().instabuild) held.shrink(1);
+                        this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F + (this.random.nextFloat() - 0.5F) * 0.2F);
+                    }
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (!isSaddled() && held.is(ItemsRegistry.STURDY_SADDLE.get())) {
+                    if (!this.level().isClientSide) {
+                        setSaddled(true);
+                        if (!player.getAbilities().instabuild) held.shrink(1);
+                        this.playSound(SoundEvents.HORSE_SADDLE, 1.0F, 1.0F);
+                    }
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+                if (isSaddled() && held.isEmpty() && !player.isShiftKeyDown()) {
+                    if (!this.level().isClientSide) player.startRiding(this);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
+            }
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    public boolean isSaddled()              { return this.entityData.get(SADDLED); }
+    public void    setSaddled(boolean s)    { this.entityData.set(SADDLED, s); }
+
+    public boolean isTamed()                { return ownerUuid != null; }
+    public boolean isOwnedBy(Player player) { return ownerUuid != null && ownerUuid.equals(player.getUUID()); }
+
+    public void setOwner(UUID uuid) {
+        this.ownerUuid = uuid;
+        this.setPersistenceRequired();
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
+        return !isTamed() && super.removeWhenFarAway(distance);
+    }
+
+    // Mount
+
+    @Nullable
+    @Override
+    public LivingEntity getControllingPassenger() {
+        if (!this.isSaddled()) return null;
+        for (Entity passenger : this.getPassengers()) {
+            if (passenger instanceof Player player) return player;
+        }
+        return null;
+    }
+
+    @Override
+    protected Vec3 getRiddenInput(Player player, Vec3 travelVector) {
+        float strafe  = player.xxa * 0.5F;
+        float forward = player.zza;
+        if (forward <= 0.0F) forward *= 0.25F;
+        return new Vec3(strafe, 0.0, forward);
+    }
+
+    @Override
+    protected float getRiddenSpeed(Player player) {
+        return (float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.5F;
+    }
+
+    @Override
+    protected void tickRidden(Player player, Vec3 travelVector) {
+        super.tickRidden(player, travelVector);
+        this.setRot(player.getYRot(), player.getXRot() * 0.5F);
+        this.yRotO = this.yBodyRot = this.yHeadRot = this.getYRot();
+    }
+
+    @Override
+    public boolean onClimbable() {
+        if (this.getControllingPassenger() != null) {
+            return this.horizontalCollision;
+        }
+        return super.onClimbable();
+    }
+
+    // NBT
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("Saddled", isSaddled());
+        if (ownerUuid != null) tag.putUUID("OwnerUUID", ownerUuid);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        setSaddled(tag.getBoolean("Saddled"));
+        if (tag.hasUUID("OwnerUUID")) ownerUuid = tag.getUUID("OwnerUUID");
+    }
+
+    @Override
+    protected void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+        if (!this.hasPassenger(passenger)) return;
+        if (passenger instanceof BabyScorpionEntity baby) {
+            int slot = Mth.clamp(this.getPassengers().indexOf(baby), 0, 3);
+            float yawRad = this.getYRot() * Mth.DEG_TO_RAD;
+            double cos = Mth.cos(yawRad);
+            double sin = Mth.sin(yawRad);
+            double wx = BABY_SLOT_X[slot] * cos - BABY_SLOT_Z[slot] * sin;
+            double wz = BABY_SLOT_X[slot] * sin + BABY_SLOT_Z[slot] * cos;
+            double y = this.getY() + this.getBbHeight() * 0.65 + slot * 0.01;
+            moveFunction.accept(baby, this.getX() + wx, y, this.getZ() + wz);
+            baby.setYRot(baby.getRideYaw());
+            baby.setYBodyRot(baby.getRideYaw());
+            baby.setYHeadRot(baby.getRideYaw());
+        } else {
+            super.positionRider(passenger, moveFunction);
         }
     }
 

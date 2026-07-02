@@ -112,6 +112,7 @@ public class OgreEntity extends Monster implements GeoEntity {
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,               60.0)
+                .add(Attributes.ARMOR,               5.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.15)
                 .add(Attributes.ATTACK_DAMAGE,             5.0)
                 .add(Attributes.FOLLOW_RANGE,             20.0)

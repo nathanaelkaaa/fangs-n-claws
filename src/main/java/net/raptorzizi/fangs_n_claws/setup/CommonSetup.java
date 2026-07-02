@@ -6,17 +6,22 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.minecraft.world.InteractionResult;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
@@ -25,12 +30,10 @@ import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxEntity;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import net.minecraft.world.entity.Mob;
+
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
@@ -43,7 +46,8 @@ import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
-import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
@@ -74,6 +78,71 @@ public class CommonSetup {
         }
     }
 
+    @SubscribeEvent
+    public static void onOwlbearEggBaby(PlayerInteractEvent.EntityInteract event) {
+        if (!(event.getTarget() instanceof OwlbearEntity owlbear)) return;
+
+        ItemStack stack = event.getItemStack();
+        EntityType<? extends BabyOwlbearEntity> babyType;
+        if (owlbear instanceof ShrikeEntity) {
+            if (!stack.is(ItemsRegistry.SHRIKE_SPAWN_EGG.get())) return;
+            babyType = EntityRegistry.BABY_SHRIKE.get();
+        } else {
+            if (!stack.is(ItemsRegistry.OWLBEAR_SPAWN_EGG.get())) return;
+            babyType = EntityRegistry.BABY_OWLBEAR.get();
+        }
+
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            BabyOwlbearEntity baby = babyType.create(serverLevel);
+            if (baby != null) {
+                baby.moveTo(owlbear.getX(), owlbear.getY(), owlbear.getZ(), owlbear.getYRot(), 0f);
+                baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                        MobSpawnType.SPAWN_EGG, null);
+                baby.setParent(owlbear);
+                serverLevel.addFreshEntity(baby);
+                if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+            }
+        }
+
+        event.getEntity().swing(event.getHand());
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+    }
+
+    @SubscribeEvent
+    public static void onScorpionEggBaby(PlayerInteractEvent.EntityInteract event) {
+        if (!(event.getTarget() instanceof ScorpionEntity scorpion)) return;
+
+        ItemStack stack = event.getItemStack();
+        int variant = BabyScorpionEntity.variantOf(scorpion);
+        var expectedEgg = switch (variant) {
+            case BabyScorpionEntity.VARIANT_DESERT -> ItemsRegistry.DESERT_SCORPION_SPAWN_EGG.get();
+            case BabyScorpionEntity.VARIANT_FROST  -> ItemsRegistry.FROST_SCORPION_SPAWN_EGG.get();
+            case BabyScorpionEntity.VARIANT_NETHER -> ItemsRegistry.NETHER_SCORPION_SPAWN_EGG.get();
+            default                                -> ItemsRegistry.SCORPION_SPAWN_EGG.get();
+        };
+        if (!stack.is(expectedEgg)) return;
+
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            BabyScorpionEntity baby = EntityRegistry.BABY_SCORPION.get().create(serverLevel);
+            if (baby != null) {
+                baby.setVariant(variant);
+                baby.moveTo(scorpion.getX(), scorpion.getY(), scorpion.getZ(), scorpion.getYRot(), 0f);
+                baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                        MobSpawnType.SPAWN_EGG, null);
+                baby.setParent(scorpion);
+                baby.setRideYaw(serverLevel.random.nextFloat() * 360f);
+                serverLevel.addFreshEntity(baby);
+                baby.startRiding(scorpion, false);
+                if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+            }
+        }
+
+        event.getEntity().swing(event.getHand());
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+    }
+
     private static final int JUMPS_TO_BREAK_FREE = 4;
     private static final Map<UUID, Integer> frozenJumpCounts = new HashMap<>();
     private static final Map<UUID, Boolean> frozenPrevAI = new HashMap<>();
@@ -85,6 +154,10 @@ public class CommonSetup {
         event.put(EntityRegistry.CAVE_OGRE.get(),      OgreEntity.prepareAttributes().build());
         event.put(EntityRegistry.WEREWOLF.get(),       WerewolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.OWLBEAR.get(),        OwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_OWLBEAR.get(),   BabyOwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.SHRIKE.get(),         OwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_SHRIKE.get(),    BabyOwlbearEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_SCORPION.get(),  BabyScorpionEntity.prepareAttributes().build());
         event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.ICE_GOLEM.get(),       GolemEntity.prepareAttributes().build());
