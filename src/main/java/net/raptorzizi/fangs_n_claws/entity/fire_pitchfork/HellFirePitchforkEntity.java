@@ -32,7 +32,8 @@ public class HellFirePitchforkEntity extends FirePitchforkEntity {
 
     @Override
     protected void applyFlamebrandOnHit(LivingEntity victim) {
-        HellFlamebrandEffect.addHellFlamebrandStack(victim);
+        LivingEntity source = this.getOwner() instanceof LivingEntity le ? le : null;
+        HellFlamebrandEffect.addHellFlamebrandStack(victim, source);
     }
 
     @Override

@@ -16,6 +16,8 @@ import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
+import net.raptorzizi.fangs_n_claws.network.OwlFlightPayload;
+import net.raptorzizi.fangs_n_claws.network.OwlFlightSyncPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -97,17 +99,31 @@ public class FangsClawsMod {
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
-        if (FMLEnvironment.dist.isClient()) {
-            modEventBus.addListener((RegisterPayloadHandlersEvent e) ->
-                e.registrar(MOD_ID).playToClient(
+        modEventBus.addListener((RegisterPayloadHandlersEvent e) -> {
+            var registrar = e.registrar(MOD_ID);
+
+            registrar.playToServer(
+                OwlFlightPayload.TYPE,
+                OwlFlightPayload.STREAM_CODEC,
+                OwlFlightPayload::handleServer
+            );
+
+            registrar.playToClient(
+                OwlFlightSyncPayload.TYPE,
+                OwlFlightSyncPayload.STREAM_CODEC,
+                OwlFlightSyncPayload::handleClient
+            );
+
+            if (FMLEnvironment.dist.isClient()) {
+                registrar.playToClient(
                     TotemFrostPayload.TYPE,
                     TotemFrostPayload.STREAM_CODEC,
                     (payload, ctx) -> ctx.enqueueWork(() ->
                         Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item())
                     )
-                )
-            );
-        }
+                );
+            }
+        });
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -395,55 +411,72 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onFinalizeSpawn(FinalizeSpawnEvent event) {
-        MobSpawnType type = event.getSpawnType();
-        if (type != MobSpawnType.NATURAL && type != MobSpawnType.CHUNK_GENERATION) return;
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+        MobSpawnType type = event.getSpawnType();
 
-        var rules = serverLevel.getGameRules();
-        boolean cancel = false;
+        if (type == MobSpawnType.NATURAL || type == MobSpawnType.CHUNK_GENERATION) {
+            var rules = serverLevel.getGameRules();
+            boolean cancel = false;
 
-        if (event.getEntity() instanceof GoblinEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
-        else if (event.getEntity() instanceof DartGoblinEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)) cancel = true;
-        else if (event.getEntity() instanceof CaveOgreEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
-        else if (event.getEntity() instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
-        else if (event.getEntity() instanceof IceGolemEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ICE_GOLEM))      cancel = true;
-        else if (event.getEntity() instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
-        else if (event.getEntity() instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
-        else if (event.getEntity() instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
-        else if (event.getEntity() instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
-        else if (event.getEntity() instanceof FireGhostEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FIRE_GHOST))    cancel = true;
-        else if (event.getEntity() instanceof GhostEntity      && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))         cancel = true;
-        else if (event.getEntity() instanceof WerewolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))      cancel = true;
-        else if (event.getEntity() instanceof ImpEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))           cancel = true;
-        else if (event.getEntity() instanceof DesertScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DESERT_SCORPION)) cancel = true;
-        else if (event.getEntity() instanceof FrostScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FROST_SCORPION))  cancel = true;
-        else if (event.getEntity() instanceof NetherScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NETHER_SCORPION)) cancel = true;
-        else if (event.getEntity() instanceof ScorpionEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))      cancel = true;
-        else if (event.getEntity() instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
-        else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
-        else if (event.getEntity() instanceof WildWolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))    cancel = true;
-        else if (event.getEntity() instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;
-        else if (event.getEntity() instanceof ZombieHorseMob   && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE))   cancel = true;
+            if (event.getEntity() instanceof GoblinEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
+            else if (event.getEntity() instanceof DartGoblinEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)) cancel = true;
+            else if (event.getEntity() instanceof CaveOgreEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
+            else if (event.getEntity() instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
+            else if (event.getEntity() instanceof IceGolemEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ICE_GOLEM))      cancel = true;
+            else if (event.getEntity() instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
+            else if (event.getEntity() instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
+            else if (event.getEntity() instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
+            else if (event.getEntity() instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
+            else if (event.getEntity() instanceof FireGhostEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FIRE_GHOST))    cancel = true;
+            else if (event.getEntity() instanceof GhostEntity      && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))         cancel = true;
+            else if (event.getEntity() instanceof WerewolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))      cancel = true;
+            else if (event.getEntity() instanceof ImpEntity        && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))           cancel = true;
+            else if (event.getEntity() instanceof DesertScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DESERT_SCORPION)) cancel = true;
+            else if (event.getEntity() instanceof FrostScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FROST_SCORPION))  cancel = true;
+            else if (event.getEntity() instanceof NetherScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NETHER_SCORPION)) cancel = true;
+            else if (event.getEntity() instanceof ScorpionEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))      cancel = true;
+            else if (event.getEntity() instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
+            else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
+            else if (event.getEntity() instanceof WildWolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))    cancel = true;
+            else if (event.getEntity() instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;
+            else if (event.getEntity() instanceof ZombieHorseMob   && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE))   cancel = true;
 
-        if (cancel) event.setSpawnCancelled(true);
+            if (cancel) event.setSpawnCancelled(true);
 
-        if (event.getEntity() instanceof GoblinEntity
+            if (event.getEntity() instanceof GoblinEntity
+                    && !event.isSpawnCancelled()
+                    && rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)
+                    && serverLevel.random.nextInt(25) == 0) {
+
+                DartGoblinEntity dartGoblin = EntityRegistry.DART_GOBLIN.get().create(serverLevel);
+                if (dartGoblin != null) {
+                    double offsetX = (serverLevel.random.nextDouble() - 0.5) * 6.0;
+                    double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 6.0;
+                    dartGoblin.moveTo(
+                            event.getEntity().getX() + offsetX,
+                            event.getEntity().getY(),
+                            event.getEntity().getZ() + offsetZ,
+                            serverLevel.random.nextFloat() * 360f, 0f);
+                    dartGoblin.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(dartGoblin.blockPosition()),
+                            MobSpawnType.MOB_SUMMONED, null);
+                    serverLevel.addFreshEntity(dartGoblin);
+                }
+            }
+        }
+
+        if (event.getEntity() instanceof GoblinEntity goblin
                 && !event.isSpawnCancelled()
-                && rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)
-                && serverLevel.random.nextInt(25) == 0) {
+                && !goblin.isPassenger()
+                && serverLevel.getGameRules().getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF)
+                && serverLevel.random.nextInt(1) == 0) {
 
-            DartGoblinEntity dartGoblin = EntityRegistry.DART_GOBLIN.get().create(serverLevel);
-            if (dartGoblin != null) {
-                double offsetX = (serverLevel.random.nextDouble() - 0.5) * 6.0;
-                double offsetZ = (serverLevel.random.nextDouble() - 0.5) * 6.0;
-                dartGoblin.moveTo(
-                        event.getEntity().getX() + offsetX,
-                        event.getEntity().getY(),
-                        event.getEntity().getZ() + offsetZ,
-                        serverLevel.random.nextFloat() * 360f, 0f);
-                dartGoblin.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(dartGoblin.blockPosition()),
-                        MobSpawnType.MOB_SUMMONED, null);
-                serverLevel.addFreshEntity(dartGoblin);
+            WildWolfEntity wolf = EntityRegistry.WILD_WOLF.get().create(serverLevel);
+            if (wolf != null) {
+                wolf.moveTo(goblin.getX(), goblin.getY(), goblin.getZ(), goblin.getYRot(), 0f);
+                wolf.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(wolf.blockPosition()),
+                        MobSpawnType.JOCKEY, null);
+                serverLevel.addFreshEntity(wolf);
+                goblin.startRiding(wolf, true);
             }
         }
     }

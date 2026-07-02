@@ -58,6 +58,10 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.FUR_CHESTPLATE.get());
                         entries.accept(ItemsRegistry.FUR_LEGGINGS.get());
                         entries.accept(ItemsRegistry.FUR_BOOTS.get());
+                        entries.accept(ItemsRegistry.OWL_HELMET.get());
+                        entries.accept(ItemsRegistry.OWL_CHESTPLATE.get());
+                        entries.accept(ItemsRegistry.OWL_LEGGINGS.get());
+                        entries.accept(ItemsRegistry.OWL_BOOTS.get());
                         entries.accept(ItemsRegistry.VILE_FAT.get());
                         entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
                         entries.accept(ItemsRegistry.BLACK_HORN.get());

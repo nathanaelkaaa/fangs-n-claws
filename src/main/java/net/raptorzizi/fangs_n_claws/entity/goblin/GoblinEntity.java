@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import java.util.ArrayList;
 import java.util.List;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -79,6 +80,7 @@ public class GoblinEntity extends Monster implements GeoEntity {
     private static final RawAnimation RUN_ANIM    = RawAnimation.begin().thenLoop("run");
     private static final RawAnimation ATTACK_ANIM = RawAnimation.begin().then("attack", Animation.LoopType.PLAY_ONCE);
     private static final RawAnimation STEAL_ANIM  = RawAnimation.begin().then("steal",  Animation.LoopType.PLAY_ONCE);
+    private static final RawAnimation RIDING_ANIM = RawAnimation.begin().thenLoop("riding");
 
     // Spawn
 
@@ -106,6 +108,11 @@ public class GoblinEntity extends Monster implements GeoEntity {
     @Override
     protected float getEquipmentDropChance(EquipmentSlot slot) {
         return 0f;
+    }
+
+    @Override
+    public boolean canControlVehicle() {
+        return false;
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -254,6 +261,12 @@ public class GoblinEntity extends Monster implements GeoEntity {
             combatStuckTick = 0;
             return;
         }
+
+        if (this.isPassenger()) {
+            tickMountedBehavior(target);
+            return;
+        }
+
         double movedSq = Math.pow(this.getX() - prevCombatX, 2) + Math.pow(this.getZ() - prevCombatZ, 2);
         if (!isActing() && movedSq < COMBAT_STUCK_MIN_MOVE) {
             combatStuckTick++;
@@ -271,6 +284,22 @@ public class GoblinEntity extends Monster implements GeoEntity {
             tickGroupBehavior(target);
         } else {
             tickSoloBehavior(target);
+        }
+    }
+
+    private void tickMountedBehavior(LivingEntity target) {
+        if (this.getVehicle() instanceof WildWolfEntity wolf && wolf.getTarget() != target) {
+            wolf.setTarget(target);
+        }
+
+        if (isActing()) return;
+
+        faceToward(new Vec3(target.getX(), target.getY(), target.getZ()));
+
+        if (this.distanceTo(target) <= this.getAttributeValue(Attributes.ENTITY_INTERACTION_RANGE)
+                && attackCooldown == 0) {
+            triggerAttack(target);
+            attackCooldown = ATTACK_COOLDOWN_MAX;
         }
     }
     private void tickSoloBehavior(LivingEntity target) {
@@ -375,6 +404,7 @@ public class GoblinEntity extends Monster implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
         registrar.add(new AnimationController<>(this, "movement", 5, state -> {
+            if (this.isPassenger()) return state.setAndContinue(RIDING_ANIM);
             if (isAttacking() || isStealing()) return PlayState.STOP;
             double speed = this.getDeltaMovement().horizontalDistance();
             if (speed > 0.18) return state.setAndContinue(RUN_ANIM);

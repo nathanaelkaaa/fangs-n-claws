@@ -12,11 +12,27 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FlamebrandEffect extends MobEffect {
 
     public static final int STACKS_REQUIRED = 3;
     public static final int STACKS_REQUIRED_AMPLIFIER = STACKS_REQUIRED - 1;
+
+    private static final Map<UUID, UUID> FLAMEBRAND_SOURCES = new ConcurrentHashMap<>();
+
+    protected static void rememberSource(LivingEntity victim, @Nullable LivingEntity source) {
+        if (source != null && source != victim) FLAMEBRAND_SOURCES.put(victim.getUUID(), source.getUUID());
+    }
+
+    @Nullable
+    protected static UUID consumeSource(LivingEntity victim) {
+        return FLAMEBRAND_SOURCES.remove(victim.getUUID());
+    }
 
     public FlamebrandEffect(MobEffectCategory category, int color) {
         super(category, color);
@@ -27,6 +43,11 @@ public class FlamebrandEffect extends MobEffect {
     }
 
     public static void addFlamebrandStack(LivingEntity entity) {
+        addFlamebrandStack(entity, null);
+    }
+
+    public static void addFlamebrandStack(LivingEntity entity, @Nullable LivingEntity source) {
+        rememberSource(entity, source);
         MobEffectInstance previous = entity.getEffect(MobEffectsRegistry.FLAMEBRAND);
         int newAmplifier = previous != null ? previous.getAmplifier() + 1 : 0;
         entity.addEffect(new MobEffectInstance(
@@ -62,9 +83,12 @@ public class FlamebrandEffect extends MobEffect {
         float radiusSqr = radius * radius;
         float baseDamage = 8.0f;
 
+        UUID sourceId = consumeSource(entity);
+
         AABB box = entity.getBoundingBox().inflate(radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box)) {
             if (target.distanceToSqr(entity.position()) >= radiusSqr) continue;
+            if (sourceId != null && target.getUUID().equals(sourceId)) continue; // pas de degat a la source
             target.invulnerableTime = 0;
             target.hurt(level.damageSources().magic(), baseDamage);
             target.setRemainingFireTicks(100);

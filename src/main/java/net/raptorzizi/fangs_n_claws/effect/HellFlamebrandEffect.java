@@ -11,6 +11,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public class HellFlamebrandEffect extends FlamebrandEffect {
 
@@ -19,6 +22,11 @@ public class HellFlamebrandEffect extends FlamebrandEffect {
     }
 
     public static void addHellFlamebrandStack(LivingEntity entity) {
+        addHellFlamebrandStack(entity, null);
+    }
+
+    public static void addHellFlamebrandStack(LivingEntity entity, @Nullable LivingEntity source) {
+        rememberSource(entity, source);
         MobEffectInstance previous = entity.getEffect(MobEffectsRegistry.HELLFIRE_FLAMEBRAND);
         int newAmplifier = previous != null ? previous.getAmplifier() + 1 : 0;
         entity.addEffect(new MobEffectInstance(
@@ -37,9 +45,12 @@ public class HellFlamebrandEffect extends FlamebrandEffect {
         float radiusSqr = radius * radius;
         float baseDamage = 12.0f;
 
+        UUID sourceId = consumeSource(entity);
+
         AABB box = entity.getBoundingBox().inflate(radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box)) {
             if (target.distanceToSqr(entity.position()) >= radiusSqr) continue;
+            if (sourceId != null && target.getUUID().equals(sourceId)) continue; // pas de degat a la source
             target.invulnerableTime = 0;
             target.hurt(level.damageSources().magic(), baseDamage);
             target.setRemainingFireTicks(100);

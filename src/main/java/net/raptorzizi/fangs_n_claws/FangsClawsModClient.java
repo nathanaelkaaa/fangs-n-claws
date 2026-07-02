@@ -15,12 +15,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
@@ -29,6 +31,8 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.raptorzizi.fangs_n_claws.network.OwlFlightPayload;
 import net.raptorzizi.fangs_n_claws.block.GhostBlock;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookRenderer;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkItemRenderer;
@@ -38,8 +42,10 @@ import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkRende
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpRenderer;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
+import net.raptorzizi.fangs_n_claws.client.OwlFlightState;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
+import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -55,6 +61,7 @@ public class FangsClawsModClient {
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onMovementInput);
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onMouseButton);
+        NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onClientTick);
     }
 
     private static final ResourceLocation BLUR_SHADER =
@@ -130,6 +137,73 @@ public class FangsClawsModClient {
         boolean tmpLeft = input.left;
         input.left  = input.right;
         input.right = tmpLeft;
+    }
+
+    // Owl Armor
+    private static final double OWL_FLAP_IMPULSE = 0.8;
+    private static final double OWL_FLAP_IMPULSE_PER_MISSING = 0.1;
+    private static final double OWL_GLIDE_FALL   = -0.2;
+    private static final double OWL_GLIDE_FALL_PER_MISSING   = 0.75;
+    private static boolean owlPrevJumpDown  = false;
+    private static boolean owlPrevOnGround  = true;
+    private static boolean owlFlapUsed      = false;
+    private static boolean owlSentGlideLast = false;
+
+    static void onClientTick(ClientTickEvent.Post event) {
+        Minecraft mc = Minecraft.getInstance();
+        OwlFlightState.tickLocal();
+
+        Player player = mc.player;
+        if (player == null || mc.level == null || mc.isPaused()) {
+            owlPrevJumpDown = false;
+            owlPrevOnGround = true;
+            OwlFlightState.setLocalGliding(false);
+            return;
+        }
+
+        int owlPieces = OwlArmorItem.countOwlPieces(player);
+        boolean canFly = OwlArmorItem.hasOwlChestplate(player)
+                && !player.getAbilities().flying
+                && !player.isFallFlying()
+                && !player.isInWater() && !player.isInLava()
+                && !player.onClimbable() && !player.isPassenger();
+
+        double flapImpulse = OWL_FLAP_IMPULSE - (4 - owlPieces) * OWL_FLAP_IMPULSE_PER_MISSING;
+        double glideFall   = OWL_GLIDE_FALL   - (4 - owlPieces) * OWL_GLIDE_FALL_PER_MISSING;
+
+        boolean jumpDown = mc.options.keyJump.isDown();
+        boolean airborne = !player.onGround();
+        boolean gliding  = false;
+        boolean flapped  = false;
+
+        if (!airborne) owlFlapUsed = false;
+
+        if (canFly && airborne) {
+            boolean freshPress = jumpDown && !owlPrevJumpDown && !owlPrevOnGround && !owlFlapUsed;
+            if (freshPress) {
+                owlFlapUsed = true;
+                Vec3 m = player.getDeltaMovement();
+                player.setDeltaMovement(m.x, Math.max(m.y, flapImpulse), m.z);
+                player.hasImpulse = true;
+                player.resetFallDistance();
+                OwlFlightState.triggerLocalFlap();
+                flapped = true;
+            } else if (jumpDown && player.getDeltaMovement().y < 0.0) {
+                Vec3 m = player.getDeltaMovement();
+                if (m.y < glideFall) player.setDeltaMovement(m.x, glideFall, m.z);
+                player.resetFallDistance();
+                gliding = true;
+            }
+        }
+
+        if (gliding || flapped || owlSentGlideLast) {
+            PacketDistributor.sendToServer(new OwlFlightPayload(gliding, flapped));
+        }
+        owlSentGlideLast = gliding;
+
+        OwlFlightState.setLocalGliding(gliding);
+        owlPrevJumpDown = jumpDown;
+        owlPrevOnGround = player.onGround();
     }
 
     @SubscribeEvent

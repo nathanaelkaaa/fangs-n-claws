@@ -16,6 +16,8 @@ import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
+import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.EntityTickEvent;
 import net.raptorzizi.fangs_n_claws.effect.FrozenEffect;
@@ -57,6 +59,20 @@ import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
 public class CommonSetup {
+
+    private static final float OWL_FEATHER_PER_PIECE = 0.12f;
+    private static final float OWL_FEATHER_MAX       = 0.8f;
+
+    @SubscribeEvent
+    public static void onOwlFall(LivingFallEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        int pieces = OwlArmorItem.countOwlPieces(player);
+        if (pieces > 0) {
+            float reduction = Math.min(pieces * OWL_FEATHER_PER_PIECE, OWL_FEATHER_MAX);
+            event.setDamageMultiplier(event.getDamageMultiplier() * (1f - reduction));
+        }
+    }
 
     private static final int JUMPS_TO_BREAK_FREE = 4;
     private static final Map<UUID, Integer> frozenJumpCounts = new HashMap<>();

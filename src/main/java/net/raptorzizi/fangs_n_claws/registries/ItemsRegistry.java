@@ -20,6 +20,7 @@ import net.raptorzizi.fangs_n_claws.item.VelocityArrowItem;
 import net.raptorzizi.fangs_n_claws.item.VileFatItem;
 import net.minecraft.world.item.ArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import java.util.function.Supplier;
 
@@ -162,6 +163,15 @@ public class ItemsRegistry {
             () -> new FurArmorItem(ArmorItem.Type.LEGGINGS,   225));
     public static final Supplier<FurArmorItem> FUR_BOOTS      = ITEMS.register("fur_boots",
             () -> new FurArmorItem(ArmorItem.Type.BOOTS,      195));
+
+    public static final Supplier<OwlArmorItem> OWL_HELMET     = ITEMS.register("owl_helmet",
+            () -> new OwlArmorItem(ArmorItem.Type.HELMET,     165));
+    public static final Supplier<OwlArmorItem> OWL_CHESTPLATE = ITEMS.register("owl_chestplate",
+            () -> new OwlArmorItem(ArmorItem.Type.CHESTPLATE, 240));
+    public static final Supplier<OwlArmorItem> OWL_LEGGINGS   = ITEMS.register("owl_leggings",
+            () -> new OwlArmorItem(ArmorItem.Type.LEGGINGS,   225));
+    public static final Supplier<OwlArmorItem> OWL_BOOTS      = ITEMS.register("owl_boots",
+            () -> new OwlArmorItem(ArmorItem.Type.BOOTS,      195));
 
     /**
      * Throwables / Projectiles
