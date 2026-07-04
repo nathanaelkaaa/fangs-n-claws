@@ -46,6 +46,7 @@ import net.raptorzizi.fangs_n_claws.client.OwlFlightState;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
 import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -139,15 +140,17 @@ public class FangsClawsModClient {
         input.right = tmpLeft;
     }
 
-    // Owl Armor
-    private static final double OWL_FLAP_IMPULSE = 0.8;
+    private static final double OWL_FLAP_IMPULSE = 0.75;
     private static final double OWL_FLAP_IMPULSE_PER_MISSING = 0.1;
     private static final double OWL_GLIDE_FALL   = -0.2;
     private static final double OWL_GLIDE_FALL_PER_MISSING   = 0.75;
+    private static final double SHRIKE_FLAP_BONUS_PER_PIECE  = 0.035;
+    private static final double SHRIKE_GLIDE_BONUS_PER_PIECE = 0.02;
     private static boolean owlPrevJumpDown  = false;
     private static boolean owlPrevOnGround  = true;
     private static boolean owlFlapUsed      = false;
     private static boolean owlSentGlideLast = false;
+    private static boolean shrikeFlapUsed   = false;
 
     static void onClientTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
@@ -161,22 +164,29 @@ public class FangsClawsModClient {
             return;
         }
 
-        int owlPieces = OwlArmorItem.countOwlPieces(player);
-        boolean canFly = OwlArmorItem.hasOwlChestplate(player)
+        int owlPieces    = OwlArmorItem.countOwlPieces(player);
+        int shrikePieces = ShrikeArmorItem.countShrikePieces(player);
+        int flightPieces = owlPieces + shrikePieces;
+        boolean canFly = (OwlArmorItem.hasOwlChestplate(player) || ShrikeArmorItem.hasShrikeChestplate(player))
                 && !player.getAbilities().flying
                 && !player.isFallFlying()
                 && !player.isInWater() && !player.isInLava()
                 && !player.onClimbable() && !player.isPassenger();
 
-        double flapImpulse = OWL_FLAP_IMPULSE - (4 - owlPieces) * OWL_FLAP_IMPULSE_PER_MISSING;
-        double glideFall   = OWL_GLIDE_FALL   - (4 - owlPieces) * OWL_GLIDE_FALL_PER_MISSING;
+        double flapImpulse = OWL_FLAP_IMPULSE - (4 - flightPieces) * OWL_FLAP_IMPULSE_PER_MISSING
+                + shrikePieces * SHRIKE_FLAP_BONUS_PER_PIECE;
+        double glideFall   = OWL_GLIDE_FALL   - (4 - flightPieces) * OWL_GLIDE_FALL_PER_MISSING
+                + shrikePieces * SHRIKE_GLIDE_BONUS_PER_PIECE;
 
         boolean jumpDown = mc.options.keyJump.isDown();
         boolean airborne = !player.onGround();
         boolean gliding  = false;
         boolean flapped  = false;
 
-        if (!airborne) owlFlapUsed = false;
+        if (!airborne) {
+            owlFlapUsed = false;
+            shrikeFlapUsed = false;
+        }
 
         if (canFly && airborne) {
             boolean freshPress = jumpDown && !owlPrevJumpDown && !owlPrevOnGround && !owlFlapUsed;
@@ -200,6 +210,24 @@ public class FangsClawsModClient {
             PacketDistributor.sendToServer(new OwlFlightPayload(gliding, flapped));
         }
         owlSentGlideLast = gliding;
+
+        if (ShrikeArmorItem.hasShrikeChestplate(player) && player.isFallFlying()) {
+            boolean freshPress = jumpDown && !owlPrevJumpDown && !shrikeFlapUsed;
+            if (freshPress) {
+                shrikeFlapUsed = true;
+                Vec3 look = player.getLookAngle();
+                double hx = look.x, hz = look.z;
+                double hlen = Math.sqrt(hx * hx + hz * hz);
+                if (hlen > 1.0e-4) { hx /= hlen; hz /= hlen; }
+                Vec3 m = player.getDeltaMovement();
+                double up  = flapImpulse * 0.6;
+                double fwd = flapImpulse * 0.7;
+                player.setDeltaMovement(m.x + hx * fwd, m.y + up, m.z + hz * fwd);
+                player.hasImpulse = true;
+                OwlFlightState.triggerLocalFlap();
+                PacketDistributor.sendToServer(new OwlFlightPayload(false, true));
+            }
+        }
 
         OwlFlightState.setLocalGliding(gliding);
         owlPrevJumpDown = jumpDown;

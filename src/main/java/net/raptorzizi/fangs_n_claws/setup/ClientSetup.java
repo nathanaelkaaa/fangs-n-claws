@@ -29,6 +29,11 @@ import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookRender
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectileRenderer;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.FeatherProjectileRenderer;
+import net.raptorzizi.fangs_n_claws.client.ShrikeWingsLayer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.PlayerSkin;
+import net.minecraft.world.entity.player.Player;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
@@ -101,6 +106,16 @@ public class ClientSetup {
             entity.yHeadRotO = saved[1];
             entity.yBodyRot  = saved[2];
             entity.yBodyRotO = saved[3];
+        }
+    }
+
+    @SubscribeEvent
+    public static void addPlayerLayers(EntityRenderersEvent.AddLayers event) {
+        for (PlayerSkin.Model model : event.getSkins()) {
+            EntityRenderer<? extends Player> renderer = event.getSkin(model);
+            if (renderer instanceof PlayerRenderer pr) {
+                pr.addLayer(new ShrikeWingsLayer<>(pr, event.getEntityModels()));
+            }
         }
     }
 

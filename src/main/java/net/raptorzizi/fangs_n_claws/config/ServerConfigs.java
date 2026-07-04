@@ -12,6 +12,7 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue CAVE_OGRE_WEIGHT;
     public static final ModConfigSpec.IntValue GOLEM_WEIGHT;
     public static final ModConfigSpec.IntValue OWLBEAR_WEIGHT;
+    public static final ModConfigSpec.IntValue SHRIKE_WEIGHT;
     public static final ModConfigSpec.IntValue SILVER_SKELETON_WEIGHT;
     public static final ModConfigSpec.IntValue EVIL_BAT_WEIGHT;
     public static final ModConfigSpec.IntValue GHOST_WEIGHT;
@@ -49,9 +50,12 @@ public class ServerConfigs {
         GOLEM_WEIGHT           = BUILDER.comment("Big Golem (plains only) — default: 5")
                                         .translation("fangs_n_claws.configuration.spawn_weights.golem")
                                         .defineInRange("golem",            5, 0, 500);
-        OWLBEAR_WEIGHT         = BUILDER.comment("Owlbear (forest only) — default: 8")
+        OWLBEAR_WEIGHT         = BUILDER.comment("Owlbear (forest + taiga) — default: 8")
                                         .translation("fangs_n_claws.configuration.spawn_weights.owlbear")
                                         .defineInRange("owlbear",          8, 0, 500);
+        SHRIKE_WEIGHT          = BUILDER.comment("Shrike (snowy forest + snowy taiga) — default: 5")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.shrike")
+                                        .defineInRange("shrike",           5, 0, 500);
         SILVER_SKELETON_WEIGHT = BUILDER.comment("Silver Skeleton (overworld) — default: 20ckGobl")
                                         .translation("fangs_n_claws.configuration.spawn_weights.silver_skeleton")
                                         .defineInRange("silver_skeleton", 20, 0, 500);

@@ -39,7 +39,34 @@ public final class OwlFlightState {
     public static void tickLocal()               { clientTick++; }
     public static void setLocalGliding(boolean g) { localGliding = g; }
     public static void triggerLocalFlap()         { localFlapEndTick = clientTick + FLAP_DURATION; }
-    public static boolean isLocalFlapping()       { return clientTick < localFlapEndTick; }
+
+    private static final float[] WING_TIMES  = { 0f,  0.30f, 0.55f, 1f };
+    private static final float[] WING_VALUES = { 0f,  0.7f, -1.2f,  0f };
+
+    public static float flapWingSweep(Player player) {
+        float p = flapProgress(player);
+        if (p < 0f) return 0f;
+        for (int i = 0; i < WING_TIMES.length - 1; i++) {
+            if (p <= WING_TIMES[i + 1]) {
+                float f = (p - WING_TIMES[i]) / (WING_TIMES[i + 1] - WING_TIMES[i]);
+                return Mth.lerp(f, WING_VALUES[i], WING_VALUES[i + 1]);
+            }
+        }
+        return 0f;
+    }
+
+    private static float flapProgress(Player player) {
+        long remaining;
+        if (player == Minecraft.getInstance().player) {
+            remaining = localFlapEndTick - clientTick;
+        } else {
+            RemoteState rs = REMOTE.get(player.getId());
+            if (rs == null) return -1f;
+            remaining = rs.flapEndTick - clientTick;
+        }
+        if (remaining <= 0) return -1f;
+        return 1f - Math.min(remaining, FLAP_DURATION) / (float) FLAP_DURATION;
+    }
 
     public static void setRemote(int entityId, boolean gliding, boolean flap) {
         RemoteState rs = REMOTE.computeIfAbsent(entityId, k -> new RemoteState());

@@ -22,6 +22,9 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_OWLBEAR =
             GameRules.register("allowSpawnOwlbear",         GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_SHRIKE =
+            GameRules.register("allowSpawnShrike",          GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_SILVER_SKELETON =
             GameRules.register("allowSpawnSilverSkeleton",  GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 

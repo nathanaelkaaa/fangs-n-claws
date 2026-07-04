@@ -13,6 +13,7 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_CAVE_OGRE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GOLEM;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_OWLBEAR;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SHRIKE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_SILVER_SKELETON;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_EVIL_BAT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GHOST;
@@ -61,9 +62,14 @@ public class CommonConfigs {
                 .define("allow_golem", true);
 
         ALLOW_SPAWN_OWLBEAR = BUILDER
-                .comment("Allow Owlbears to spawn naturally (forest)")
+                .comment("Allow Owlbears to spawn naturally (forest + taiga)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.owlbear")
                 .define("allow_owlbear", true);
+
+        ALLOW_SPAWN_SHRIKE = BUILDER
+                .comment("Allow Shrikes to spawn naturally (snowy forest + snowy taiga)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.shrike")
+                .define("allow_shrike", true);
 
         ALLOW_SPAWN_SILVER_SKELETON = BUILDER
                 .comment("Allow Silver Skeletons to spawn naturally (overworld)")

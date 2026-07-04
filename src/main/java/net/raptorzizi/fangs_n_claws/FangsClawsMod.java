@@ -58,6 +58,8 @@ import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.BabyShrikeEntity;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
@@ -426,6 +428,7 @@ public class FangsClawsMod {
             else if (event.getEntity() instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
             else if (event.getEntity() instanceof IceGolemEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ICE_GOLEM))      cancel = true;
             else if (event.getEntity() instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
+            else if (event.getEntity() instanceof ShrikeEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SHRIKE))         cancel = true;
             else if (event.getEntity() instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
             else if (event.getEntity() instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
             else if (event.getEntity() instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
@@ -468,8 +471,11 @@ public class FangsClawsMod {
             if (event.getEntity() instanceof OwlbearEntity owlbearParent && !event.isSpawnCancelled()) {
                 float roll = serverLevel.random.nextFloat();
                 int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
+                boolean parentIsShrike = owlbearParent instanceof ShrikeEntity;
                 for (int i = 0; i < babies; i++) {
-                    BabyOwlbearEntity baby = EntityRegistry.BABY_OWLBEAR.get().create(serverLevel);
+                    BabyOwlbearEntity baby = parentIsShrike
+                            ? EntityRegistry.BABY_SHRIKE.get().create(serverLevel)
+                            : EntityRegistry.BABY_OWLBEAR.get().create(serverLevel);
                     if (baby != null) {
                         double ox = (serverLevel.random.nextDouble() - 0.5) * 3.0;
                         double oz = (serverLevel.random.nextDouble() - 0.5) * 3.0;

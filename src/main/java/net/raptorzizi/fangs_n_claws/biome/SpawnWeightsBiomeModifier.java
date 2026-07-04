@@ -48,6 +48,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_snowy"));
     private static final TagKey<Biome> IS_JUNGLE =
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_jungle"));
+    private static final TagKey<Biome> IS_TAIGA =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_taiga"));
     private static final TagKey<Biome> IS_SAVANNA =
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_savanna"));
     private static final TagKey<Biome> IS_BADLANDS =
@@ -64,6 +66,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.OGRE.get(),
                     EntityRegistry.GOLEM.get(),
                     EntityRegistry.OWLBEAR.get(),
+                    EntityRegistry.SHRIKE.get(),
                     EntityRegistry.SILVER_SKELETON.get(),
                     EntityRegistry.EVIL_BAT.get(),
                     EntityRegistry.GHOST.get(),
@@ -144,9 +147,14 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER, EntityRegistry.GOLEM.get(),   ServerConfigs.GOLEM_WEIGHT.get(),   1, 1);
             }
 
-            if (biome.is(IS_FOREST)) {
+            if (biome.is(IS_FOREST) || biome.is(IS_TAIGA)) {
                 if (CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
+            }
+
+            if (biome.is(IS_SNOWY) && (biome.is(IS_FOREST) || biome.is(IS_TAIGA))) {
+                if (CommonConfigs.ALLOW_SPAWN_SHRIKE.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.SHRIKE.get(), ServerConfigs.SHRIKE_WEIGHT.get(), 1, 1);
             }
 
             if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {

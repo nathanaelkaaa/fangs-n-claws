@@ -32,7 +32,7 @@ public class ScorpionArmorItem extends ArmorItem implements GeoItem {
                     Type.LEGGINGS,   5,
                     Type.BOOTS,      2
             ),
-            15,
+            12,
             SoundEvents.ARMOR_EQUIP_CHAIN,
             () -> Ingredient.of(ItemsRegistry.CHITIN.get()),
             List.of(new ArmorMaterial.Layer(FangsClawsMod.id("scorpion_armor"))),
@@ -46,7 +46,6 @@ public class ScorpionArmorItem extends ArmorItem implements GeoItem {
         super(MATERIAL, type, new Item.Properties().durability(durability));
     }
 
-    // MUST be an anonymous class for physical-server safety (GeoItem contract)
     @Override
     public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
         consumer.accept(new GeoRenderProvider() {

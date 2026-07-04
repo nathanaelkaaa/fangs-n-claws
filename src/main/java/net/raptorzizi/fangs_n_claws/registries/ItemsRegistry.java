@@ -1,7 +1,10 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SmithingTemplateItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -21,6 +24,7 @@ import net.raptorzizi.fangs_n_claws.item.VileFatItem;
 import net.minecraft.world.item.ArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import java.util.function.Supplier;
 
@@ -123,6 +127,27 @@ public class ItemsRegistry {
     public static final Supplier<Item> CHITIN = ITEMS.register("chitin",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> SNOW_DUVET = ITEMS.register("snow_duvet",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<SmithingTemplateItem> SHRIKE_UPGRADE_SMITHING_TEMPLATE =
+            ITEMS.register("shrike_upgrade_smithing_template", () -> new SmithingTemplateItem(
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.applies_to")
+                            .withStyle(net.minecraft.ChatFormatting.BLUE),
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.ingredients")
+                            .withStyle(net.minecraft.ChatFormatting.BLUE),
+                    Component.translatable("upgrade.fangs_n_claws.shrike_upgrade")
+                            .withStyle(net.minecraft.ChatFormatting.GRAY),
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.base_slot_description"),
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.additions_slot_description"),
+                    java.util.List.of(
+                            ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet"),
+                            ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate"),
+                            ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings"),
+                            ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots")),
+                    java.util.List.of(
+                            ResourceLocation.withDefaultNamespace("item/empty_slot_diamond"))));
+
     public static final Supplier<Item> FUR = ITEMS.register("fur",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
@@ -175,6 +200,15 @@ public class ItemsRegistry {
             () -> new OwlArmorItem(ArmorItem.Type.LEGGINGS,   225));
     public static final Supplier<OwlArmorItem> OWL_BOOTS      = ITEMS.register("owl_boots",
             () -> new OwlArmorItem(ArmorItem.Type.BOOTS,      195));
+
+    public static final Supplier<ShrikeArmorItem> SHRIKE_HELMET     = ITEMS.register("shrike_helmet",
+            () -> new ShrikeArmorItem(ArmorItem.Type.HELMET,     363));
+    public static final Supplier<ShrikeArmorItem> SHRIKE_CHESTPLATE = ITEMS.register("shrike_chestplate",
+            () -> new ShrikeArmorItem(ArmorItem.Type.CHESTPLATE, 528));
+    public static final Supplier<ShrikeArmorItem> SHRIKE_LEGGINGS   = ITEMS.register("shrike_leggings",
+            () -> new ShrikeArmorItem(ArmorItem.Type.LEGGINGS,   495));
+    public static final Supplier<ShrikeArmorItem> SHRIKE_BOOTS      = ITEMS.register("shrike_boots",
+            () -> new ShrikeArmorItem(ArmorItem.Type.BOOTS,      429));
 
     /**
      * Throwables / Projectiles

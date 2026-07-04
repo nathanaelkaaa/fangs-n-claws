@@ -68,6 +68,12 @@ public class SpawnSetup {
                 SpawnUtils::checkOwlbearSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
+        event.register(EntityRegistry.SHRIKE.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkShrikeSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+
         event.register(EntityRegistry.GOBLIN.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,

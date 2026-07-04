@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SDS",
+    "SDS",
+    "SSS"
+  ],
+  "key": {
+    "S": { "item": "fangs_n_claws:snow_duvet" },
+    "D": { "item": "minecraft:diamond" }
+  },
+  "result": {
+    "id": "fangs_n_claws:shrike_upgrade_smithing_template",
+    "count": 1
+  }
+}

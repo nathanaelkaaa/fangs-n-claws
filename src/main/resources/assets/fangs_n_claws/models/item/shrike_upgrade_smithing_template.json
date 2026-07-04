@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "fangs_n_claws:item/shrike_upgrade_smithing_template"
+  }
+}

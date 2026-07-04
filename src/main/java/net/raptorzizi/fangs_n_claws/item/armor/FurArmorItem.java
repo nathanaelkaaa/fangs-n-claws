@@ -32,7 +32,7 @@ public class FurArmorItem extends ArmorItem implements GeoItem {
                     Type.LEGGINGS,   5,
                     Type.BOOTS,      2
             ),
-            9,
+            15,
             SoundEvents.ARMOR_EQUIP_LEATHER,
             () -> Ingredient.of(ItemsRegistry.FUR.get()),
             List.of(new ArmorMaterial.Layer(FangsClawsMod.id("fur_armor"))),

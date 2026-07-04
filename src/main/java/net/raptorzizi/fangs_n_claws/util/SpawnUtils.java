@@ -25,6 +25,7 @@ import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
@@ -96,6 +97,17 @@ public class SpawnUtils {
         if (level instanceof ServerLevel serverLevel) {
             AABB area = new AABB(pos).inflate(48, 16, 48);
             if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;
+        }
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkShrikeSpawnRules(EntityType<? extends ShrikeEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!level.canSeeSky(pos)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            AABB area = new AABB(pos).inflate(48, 16, 48);
+            if (!serverLevel.getEntitiesOfClass(ShrikeEntity.class, area).isEmpty()) return false;
         }
         return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
