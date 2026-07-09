@@ -5,6 +5,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LightLayer;
@@ -17,9 +18,14 @@ import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -98,12 +104,23 @@ public class SpawnUtils {
     public static boolean checkOwlbearSpawnRules(EntityType<? extends OwlbearEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (!Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (!level.canSeeSky(pos)) return false;
         if (level instanceof ServerLevel serverLevel) {
             AABB area = new AABB(pos).inflate(48, 16, 48);
             if (!serverLevel.getEntitiesOfClass(OwlbearEntity.class, area).isEmpty()) return false;
         }
-        return true;
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkShrikeSpawnRules(EntityType<? extends ShrikeEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!level.canSeeSky(pos)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            AABB area = new AABB(pos).inflate(48, 16, 48);
+            if (!serverLevel.getEntitiesOfClass(ShrikeEntity.class, area).isEmpty()) return false;
+        }
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     @SuppressWarnings("unchecked")
@@ -174,5 +191,43 @@ public class SpawnUtils {
     public static boolean checkSilverSkeletonSpawnRules(EntityType<? extends SilverSkeletonEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         return Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkIceGolemSpawnRules(EntityType<? extends IceGolemEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)) return false;
+        if (level instanceof ServerLevel serverLevel) {
+            AABB area = new AABB(pos).inflate(48, 16, 48);
+            if (!serverLevel.getEntitiesOfClass(IceGolemEntity.class, area).isEmpty()) return false;
+        }
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static boolean checkHorseBatSpawnRules(EntityType<? extends HorseBatEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>) (EntityType<?>) type,
+                level, spawnType, pos, random);
+    }
+
+    public static boolean checkWildWolfSpawnRules(EntityType<? extends WildWolfEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (!level.canSeeSky(pos)) return false;
+        if (level.getMaxLocalRawBrightness(pos) > 7) return false;
+        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+    }
+
+    public static boolean checkNightmareHorseSpawnRules(EntityType<? extends NightmareHorseEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static boolean checkUndeadHorseSpawnRules(EntityType<? extends Mob> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return Monster.checkMonsterSpawnRules((EntityType<? extends Monster>) (EntityType<?>) type,
+                level, spawnType, pos, random);
     }
 }

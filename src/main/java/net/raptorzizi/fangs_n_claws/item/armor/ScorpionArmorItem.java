@@ -36,7 +36,7 @@ public class ScorpionArmorItem extends ArmorItem implements GeoItem {
         }
 
         @Override
-        public int getEnchantmentValue() { return 15; }
+        public int getEnchantmentValue() { return 12; }
 
         @Override
         public SoundEvent getEquipSound() { return SoundEvents.ARMOR_EQUIP_CHAIN; }

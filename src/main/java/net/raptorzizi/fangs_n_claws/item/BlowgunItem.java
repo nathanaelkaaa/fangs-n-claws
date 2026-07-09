@@ -16,7 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
+import net.raptorzizi.fangs_n_claws.entity.projectile.PoisonousDartEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;

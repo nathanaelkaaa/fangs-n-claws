@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": { "item": "fangs_n_claws:shrike_upgrade_smithing_template" },
+  "base": { "item": "fangs_n_claws:owl_helmet" },
+  "addition": { "item": "fangs_n_claws:snow_duvet" },
+  "result": {
+    "item": "fangs_n_claws:shrike_helmet",
+    "count": 1
+  }
+}

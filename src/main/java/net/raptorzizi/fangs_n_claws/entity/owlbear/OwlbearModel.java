@@ -18,7 +18,8 @@ public class OwlbearModel extends GeoModel<OwlbearEntity> {
 
     @Override
     public ResourceLocation getTextureResource(OwlbearEntity entity) {
-        return new ResourceLocation(FangsClawsMod.MOD_ID, "textures/entity/owlbear.png");
+        String suffix = entity.isSleeping() ? "_sleep" : "";
+        return FangsClawsMod.id("textures/entity/" + entity.textureBaseName() + suffix + ".png");
     }
 
     @Override

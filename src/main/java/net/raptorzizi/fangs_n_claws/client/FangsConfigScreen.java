@@ -2,242 +2,178 @@ package net.raptorzizi.fangs_n_claws.client;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 
+import java.util.List;
+
+/**
+ * Landing page for the mod config. Splits the settings into categories
+ * (Spawn Toggles / Spawn Rates / Behavior), each reachable through a button
+ * that opens a dedicated sub-page — mirroring the sectioned layout of the
+ * 1.21.1 NeoForge auto-generated config screen. A single "Reset to Defaults"
+ * button restores every category at once (disabled when nothing differs).
+ */
 public class FangsConfigScreen extends Screen {
 
     private final Screen parent;
 
-    // ── toggle state (client-side copy, written to config on Save) ──────────
-    private boolean[] toggles;
+    private final List<FangsToggleListScreen.Entry> spawnToggles    = buildSpawnToggles();
+    private final List<FangsToggleListScreen.Entry> behaviorToggles = buildBehaviorToggles();
+    private final List<FangsWeightListScreen.Entry> spawnWeights    = buildSpawnWeights();
 
-    private static final String[] TOGGLE_NAMES = {
-        "Goblin", "Ogre", "Cave Ogre", "Golem", "Owlbear",
-        "Silver Skeleton", "Evil Bat", "Ghost", "Werewolf",
-        "Dart Goblin", "Imp", "Hell Ogre", "Scorpion"
-    };
+    private Button resetButton;
 
-    // Refs kept so we can flip the label on click
-    private final Button[] toggleButtons = new Button[TOGGLE_NAMES.length];
-
-    // ── weight fields ────────────────────────────────────────────────────────
-    private EditBox[] weightBoxes;
-
-    private static final String[] WEIGHT_LABELS = {
-        "Goblin", "Ogre", "Cave Ogre", "Golem", "Owlbear",
-        "Silver Skeleton", "Evil Bat", "Ghost", "Ghost (Nether)", "Werewolf",
-        "Dart Goblin", "Imp", "Hell Ogre", "Scorpion"
-    };
-
-    private boolean serverConfigAvailable = true;
-
-    // ── layout constants ─────────────────────────────────────────────────────
-    private static final int COLS      = 3;
-    private static final int COL_W     = 110;
-    private static final int ROW_H     = 24;
-    private static final int BTN_H     = 18;
-    private static final int FIELD_H   = 12;
+    private static final int BTN_W = 200;
+    private static final int BTN_H = 20;
+    private static final int GAP   = 24;
 
     public FangsConfigScreen(Screen parent) {
         super(Component.literal("Fangs 'n Claws — Configuration"));
         this.parent = parent;
     }
 
-    // ── init ─────────────────────────────────────────────────────────────────
-
     @Override
     protected void init() {
         super.init();
 
-        // Load current toggle values
-        toggles = new boolean[] {
-            CommonConfigs.ALLOW_SPAWN_GOBLIN.get(),
-            CommonConfigs.ALLOW_SPAWN_OGRE.get(),
-            CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get(),
-            CommonConfigs.ALLOW_SPAWN_GOLEM.get(),
-            CommonConfigs.ALLOW_SPAWN_OWLBEAR.get(),
-            CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get(),
-            CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get(),
-            CommonConfigs.ALLOW_SPAWN_GHOST.get(),
-            CommonConfigs.ALLOW_SPAWN_WEREWOLF.get(),
-            CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get(),
-            CommonConfigs.ALLOW_SPAWN_IMP.get(),
-            CommonConfigs.ALLOW_SPAWN_HELL_OGRE.get(),
-            CommonConfigs.ALLOW_SPAWN_SCORPION.get()
-        };
-
-        int leftX = this.width / 2 - (COLS * COL_W) / 2;
-        int y     = 32;
-
-        // ── toggle section ───────────────────────────────────────────────────
-        for (int i = 0; i < TOGGLE_NAMES.length; i++) {
-            int col = i % COLS;
-            int row = i / COLS;
-            int bx  = leftX + col * COL_W;
-            int by  = y + row * ROW_H;
-            int idx = i;
-
-            toggleButtons[i] = Button.builder(toggleLabel(i), b -> {
-                toggles[idx] = !toggles[idx];
-                b.setMessage(toggleLabel(idx));
-            }).bounds(bx, by, COL_W - 4, BTN_H).build();
-
-            this.addRenderableWidget(toggleButtons[i]);
-        }
-
-        // rows used by toggles (13 items, 3 cols → ceil(13/3)=5 rows)
-        int toggleRows   = (int) Math.ceil((double) TOGGLE_NAMES.length / COLS);
-        int weightStartY = y + toggleRows * ROW_H + 18; // 18 px gap + section header
-
-        // ── weight section ───────────────────────────────────────────────────
-        weightBoxes = new EditBox[WEIGHT_LABELS.length];
-
-        // Try to read server config values; if not loaded yet, show defaults
-        int[] weightValues;
-        try {
-            weightValues = new int[] {
-                ServerConfigs.GOBLIN_WEIGHT.get(),
-                ServerConfigs.OGRE_WEIGHT.get(),
-                ServerConfigs.CAVE_OGRE_WEIGHT.get(),
-                ServerConfigs.GOLEM_WEIGHT.get(),
-                ServerConfigs.OWLBEAR_WEIGHT.get(),
-                ServerConfigs.SILVER_SKELETON_WEIGHT.get(),
-                ServerConfigs.EVIL_BAT_WEIGHT.get(),
-                ServerConfigs.GHOST_WEIGHT.get(),
-                ServerConfigs.GHOST_NETHER_WEIGHT.get(),
-                ServerConfigs.WEREWOLF_WEIGHT.get(),
-                ServerConfigs.DART_GOBLIN_WEIGHT.get(),
-                ServerConfigs.IMP_WEIGHT.get(),
-                ServerConfigs.HELL_OGRE_WEIGHT.get(),
-                ServerConfigs.SCORPION_WEIGHT.get()
-            };
-            serverConfigAvailable = true;
-        } catch (Exception e) {
-            weightValues = new int[] { 20, 15, 15, 5, 8, 20, 35, 25, 15, 25, 5, 10, 10, 25 };
-            serverConfigAvailable = false;
-        }
-
-        for (int i = 0; i < WEIGHT_LABELS.length; i++) {
-            int col = i % COLS;
-            int row = i / COLS;
-            int fx  = leftX + col * COL_W;
-            int fy  = weightStartY + row * ROW_H + 10; // +10 to leave room for label above
-
-            EditBox box = new EditBox(
-                this.font,
-                fx, fy,
-                COL_W - 4, FIELD_H,
-                Component.literal(WEIGHT_LABELS[i])
-            );
-            box.setValue(String.valueOf(weightValues[i]));
-            box.setMaxLength(3);
-            box.setFilter(s -> s.isEmpty() || s.matches("\\d{0,3}"));
-            box.setEditable(serverConfigAvailable);
-            this.addRenderableWidget(box);
-            weightBoxes[i] = box;
-        }
-
-        // ── bottom buttons ───────────────────────────────────────────────────
         int cx = this.width / 2;
-        int bottomY = this.height - 28;
+        int y  = this.height / 2 - 60;
 
-        this.addRenderableWidget(Button.builder(
-            Component.literal("Save & Close"),
-            b -> { saveConfig(); this.minecraft.setScreen(parent); }
-        ).bounds(cx - 105, bottomY, 100, 20).build());
+        this.addRenderableWidget(Button.builder(Component.literal("Spawn Toggles"),
+                b -> this.minecraft.setScreen(new FangsToggleListScreen(
+                        this, Component.literal("Spawn Toggles"), spawnToggles)))
+                .bounds(cx - BTN_W / 2, y, BTN_W, BTN_H).build());
 
-        this.addRenderableWidget(Button.builder(
-            Component.literal("Cancel"),
-            b -> this.minecraft.setScreen(parent)
-        ).bounds(cx + 5, bottomY, 100, 20).build());
+        this.addRenderableWidget(Button.builder(Component.literal("Spawn Rates"),
+                b -> this.minecraft.setScreen(new FangsWeightListScreen(
+                        this, Component.literal("Spawn Rates"), spawnWeights)))
+                .bounds(cx - BTN_W / 2, y + GAP, BTN_W, BTN_H).build());
+
+        this.addRenderableWidget(Button.builder(Component.literal("Behavior"),
+                b -> this.minecraft.setScreen(new FangsToggleListScreen(
+                        this, Component.literal("Behavior"), behaviorToggles)))
+                .bounds(cx - BTN_W / 2, y + GAP * 2, BTN_W, BTN_H).build());
+
+        this.resetButton = Button.builder(Component.literal("Reset to Defaults"),
+                b -> { resetAll(); b.active = false; })
+                .bounds(cx - BTN_W / 2, y + GAP * 3 + 8, BTN_W, BTN_H).build();
+        this.resetButton.active = hasChanges();
+        this.addRenderableWidget(this.resetButton);
+
+        this.addRenderableWidget(Button.builder(Component.literal("Done"),
+                b -> this.minecraft.setScreen(parent))
+                .bounds(cx - BTN_W / 2, y + GAP * 4 + 12, BTN_W, BTN_H).build());
     }
 
-    // ── render ────────────────────────────────────────────────────────────────
+    // ── reset / change detection ────────────────────────────────────────────────
+
+    private static boolean weightsAvailable() {
+        // ServerConfigs is a SERVER config — only loaded inside a world.
+        try {
+            ServerConfigs.GOBLIN_WEIGHT.get();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean hasChanges() {
+        for (FangsToggleListScreen.Entry e : spawnToggles)    if (e.cfg().get() != e.def()) return true;
+        for (FangsToggleListScreen.Entry e : behaviorToggles) if (e.cfg().get() != e.def()) return true;
+        if (weightsAvailable()) {
+            for (FangsWeightListScreen.Entry e : spawnWeights) if (e.cfg().get() != e.def()) return true;
+        }
+        return false;
+    }
+
+    private void resetAll() {
+        for (FangsToggleListScreen.Entry e : spawnToggles)    e.cfg().set(e.def());
+        for (FangsToggleListScreen.Entry e : behaviorToggles) e.cfg().set(e.def());
+        if (weightsAvailable()) {
+            for (FangsWeightListScreen.Entry e : spawnWeights) e.cfg().set(e.def());
+        }
+    }
+
+    // ── category contents ─────────────────────────────────────────────────────
+
+    private static List<FangsToggleListScreen.Entry> buildSpawnToggles() {
+        return List.of(
+                new FangsToggleListScreen.Entry("Goblin",          CommonConfigs.ALLOW_SPAWN_GOBLIN,          true),
+                new FangsToggleListScreen.Entry("Ogre",            CommonConfigs.ALLOW_SPAWN_OGRE,            true),
+                new FangsToggleListScreen.Entry("Cave Ogre",       CommonConfigs.ALLOW_SPAWN_CAVE_OGRE,       true),
+                new FangsToggleListScreen.Entry("Golem",           CommonConfigs.ALLOW_SPAWN_GOLEM,           true),
+                new FangsToggleListScreen.Entry("Owlbear",         CommonConfigs.ALLOW_SPAWN_OWLBEAR,         true),
+                new FangsToggleListScreen.Entry("Shrike",          CommonConfigs.ALLOW_SPAWN_SHRIKE,          true),
+                new FangsToggleListScreen.Entry("Silver Skeleton", CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON, true),
+                new FangsToggleListScreen.Entry("Evil Bat",        CommonConfigs.ALLOW_SPAWN_EVIL_BAT,        true),
+                new FangsToggleListScreen.Entry("Ghost",           CommonConfigs.ALLOW_SPAWN_GHOST,           true),
+                new FangsToggleListScreen.Entry("Werewolf",        CommonConfigs.ALLOW_SPAWN_WEREWOLF,        true),
+                new FangsToggleListScreen.Entry("Dart Goblin",     CommonConfigs.ALLOW_SPAWN_DART_GOBLIN,     true),
+                new FangsToggleListScreen.Entry("Imp",             CommonConfigs.ALLOW_SPAWN_IMP,             true),
+                new FangsToggleListScreen.Entry("Hell Ogre",       CommonConfigs.ALLOW_SPAWN_HELL_OGRE,       true),
+                new FangsToggleListScreen.Entry("Scorpion",        CommonConfigs.ALLOW_SPAWN_SCORPION,        true),
+                new FangsToggleListScreen.Entry("Ice Golem",       CommonConfigs.ALLOW_SPAWN_ICE_GOLEM,       true),
+                new FangsToggleListScreen.Entry("Fire Ghost",      CommonConfigs.ALLOW_SPAWN_FIRE_GHOST,      true),
+                new FangsToggleListScreen.Entry("Desert Scorpion", CommonConfigs.ALLOW_SPAWN_DESERT_SCORPION, true),
+                new FangsToggleListScreen.Entry("Frost Scorpion",  CommonConfigs.ALLOW_SPAWN_FROST_SCORPION,  true),
+                new FangsToggleListScreen.Entry("Nether Scorpion", CommonConfigs.ALLOW_SPAWN_NETHER_SCORPION, true),
+                new FangsToggleListScreen.Entry("Horse Bat",       CommonConfigs.ALLOW_SPAWN_HORSE_BAT,       true),
+                new FangsToggleListScreen.Entry("Wild Wolf",       CommonConfigs.ALLOW_SPAWN_WILD_WOLF,       true),
+                new FangsToggleListScreen.Entry("Nightmare Horse", CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE, true)
+        );
+    }
+
+    private static List<FangsToggleListScreen.Entry> buildBehaviorToggles() {
+        return List.of(
+                new FangsToggleListScreen.Entry("Vanilla Skeleton Horse", CommonConfigs.VANILLA_SKELETON_HORSE,             false),
+                new FangsToggleListScreen.Entry("Vanilla Zombie Horse",   CommonConfigs.VANILLA_ZOMBIE_HORSE,               false),
+                new FangsToggleListScreen.Entry("Natural Skeleton Horse", CommonConfigs.ALLOW_NATURAL_SPAWN_SKELETON_HORSE, true),
+                new FangsToggleListScreen.Entry("Natural Zombie Horse",   CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE,   true),
+                new FangsToggleListScreen.Entry("Goblin Stealing",        CommonConfigs.ALLOW_GOBLIN_STEALING,              true)
+        );
+    }
+
+    private static List<FangsWeightListScreen.Entry> buildSpawnWeights() {
+        return List.of(
+                new FangsWeightListScreen.Entry("Goblin",             ServerConfigs.GOBLIN_WEIGHT,          20),
+                new FangsWeightListScreen.Entry("Ogre",               ServerConfigs.OGRE_WEIGHT,            15),
+                new FangsWeightListScreen.Entry("Cave Ogre",          ServerConfigs.CAVE_OGRE_WEIGHT,       15),
+                new FangsWeightListScreen.Entry("Golem",              ServerConfigs.GOLEM_WEIGHT,            5),
+                new FangsWeightListScreen.Entry("Owlbear",            ServerConfigs.OWLBEAR_WEIGHT,          8),
+                new FangsWeightListScreen.Entry("Shrike",             ServerConfigs.SHRIKE_WEIGHT,           5),
+                new FangsWeightListScreen.Entry("Silver Skeleton",    ServerConfigs.SILVER_SKELETON_WEIGHT, 20),
+                new FangsWeightListScreen.Entry("Evil Bat",           ServerConfigs.EVIL_BAT_WEIGHT,        35),
+                new FangsWeightListScreen.Entry("Ghost",              ServerConfigs.GHOST_WEIGHT,           25),
+                new FangsWeightListScreen.Entry("Ghost (Nether)",     ServerConfigs.GHOST_NETHER_WEIGHT,    15),
+                new FangsWeightListScreen.Entry("Werewolf",           ServerConfigs.WEREWOLF_WEIGHT,        25),
+                new FangsWeightListScreen.Entry("Dart Goblin",        ServerConfigs.DART_GOBLIN_WEIGHT,      5),
+                new FangsWeightListScreen.Entry("Imp",                ServerConfigs.IMP_WEIGHT,             10),
+                new FangsWeightListScreen.Entry("Hell Ogre",          ServerConfigs.HELL_OGRE_WEIGHT,       10),
+                new FangsWeightListScreen.Entry("Scorpion",           ServerConfigs.SCORPION_WEIGHT,        25),
+                new FangsWeightListScreen.Entry("Ice Golem",          ServerConfigs.ICE_GOLEM_WEIGHT,        5),
+                new FangsWeightListScreen.Entry("Fire Ghost",         ServerConfigs.FIRE_GHOST_WEIGHT,      10),
+                new FangsWeightListScreen.Entry("Fire Ghost (Nether)",ServerConfigs.FIRE_GHOST_NETHER_WEIGHT,12),
+                new FangsWeightListScreen.Entry("Desert Scorpion",    ServerConfigs.DESERT_SCORPION_WEIGHT, 20),
+                new FangsWeightListScreen.Entry("Frost Scorpion",     ServerConfigs.FROST_SCORPION_WEIGHT,  15),
+                new FangsWeightListScreen.Entry("Nether Scorpion",    ServerConfigs.NETHER_SCORPION_WEIGHT, 15),
+                new FangsWeightListScreen.Entry("Horse Bat",          ServerConfigs.HORSE_BAT_WEIGHT,        3),
+                new FangsWeightListScreen.Entry("Wild Wolf",          ServerConfigs.WILD_WOLF_WEIGHT,        8),
+                new FangsWeightListScreen.Entry("Nightmare Horse",    ServerConfigs.NIGHTMARE_HORSE_WEIGHT,  8),
+                new FangsWeightListScreen.Entry("Skeleton Horse",     ServerConfigs.SKELETON_HORSE_WEIGHT,   3),
+                new FangsWeightListScreen.Entry("Zombie Horse",       ServerConfigs.ZOMBIE_HORSE_WEIGHT,     3)
+        );
+    }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(graphics);
-
-        int leftX     = this.width / 2 - (COLS * COL_W) / 2;
-        int toggleRows = (int) Math.ceil((double) TOGGLE_NAMES.length / COLS);
-        int weightSectionTop = 32 + toggleRows * ROW_H + 18;
-
-        // Title
-        graphics.drawCenteredString(this.font, this.title, this.width / 2, 10, 0xFFFFFF);
-
-        // Section headers
-        graphics.drawString(this.font,
-            Component.literal("§lSpawn Toggles"),
-            leftX, 24, 0xAAAAAA, false);
-
-        graphics.drawString(this.font,
-            Component.literal("§lSpawn Weights" + (serverConfigAvailable ? "" : "  §7(join a world to edit)")),
-            leftX, weightSectionTop - 10, 0xAAAAAA, false);
-
-        // Weight field labels
-        for (int i = 0; i < WEIGHT_LABELS.length; i++) {
-            int col = i % COLS;
-            int row = i / COLS;
-            int lx  = leftX + col * COL_W;
-            int ly  = weightSectionTop + row * ROW_H;
-            graphics.drawString(this.font, WEIGHT_LABELS[i], lx, ly, 0xCCCCCC, false);
-        }
-
+        graphics.drawCenteredString(this.font, this.title, this.width / 2, this.height / 2 - 88, 0xFFFFFF);
+        graphics.drawCenteredString(this.font,
+                Component.literal("§7Choose a category"), this.width / 2, this.height / 2 - 74, 0xAAAAAA);
         super.render(graphics, mouseX, mouseY, partialTick);
-    }
-
-    // ── helpers ───────────────────────────────────────────────────────────────
-
-    private Component toggleLabel(int idx) {
-        String state = toggles[idx] ? "§aON" : "§cOFF";
-        return Component.literal(TOGGLE_NAMES[idx] + ": " + state);
-    }
-
-    private void saveConfig() {
-        // Save spawn toggles
-        CommonConfigs.ALLOW_SPAWN_GOBLIN.set(         toggles[0]);
-        CommonConfigs.ALLOW_SPAWN_OGRE.set(           toggles[1]);
-        CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.set(      toggles[2]);
-        CommonConfigs.ALLOW_SPAWN_GOLEM.set(          toggles[3]);
-        CommonConfigs.ALLOW_SPAWN_OWLBEAR.set(        toggles[4]);
-        CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.set(toggles[5]);
-        CommonConfigs.ALLOW_SPAWN_EVIL_BAT.set(       toggles[6]);
-        CommonConfigs.ALLOW_SPAWN_GHOST.set(          toggles[7]);
-        CommonConfigs.ALLOW_SPAWN_WEREWOLF.set(       toggles[8]);
-        CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.set(    toggles[9]);
-        CommonConfigs.ALLOW_SPAWN_IMP.set(            toggles[10]);
-        CommonConfigs.ALLOW_SPAWN_HELL_OGRE.set(      toggles[11]);
-        CommonConfigs.ALLOW_SPAWN_SCORPION.set(       toggles[12]);
-
-        // Save spawn weights (only if server config is loaded)
-        if (serverConfigAvailable) {
-            ServerConfigs.GOBLIN_WEIGHT.set(          parseWeight(weightBoxes[0],  ServerConfigs.GOBLIN_WEIGHT.get()));
-            ServerConfigs.OGRE_WEIGHT.set(            parseWeight(weightBoxes[1],  ServerConfigs.OGRE_WEIGHT.get()));
-            ServerConfigs.CAVE_OGRE_WEIGHT.set(       parseWeight(weightBoxes[2],  ServerConfigs.CAVE_OGRE_WEIGHT.get()));
-            ServerConfigs.GOLEM_WEIGHT.set(           parseWeight(weightBoxes[3],  ServerConfigs.GOLEM_WEIGHT.get()));
-            ServerConfigs.OWLBEAR_WEIGHT.set(         parseWeight(weightBoxes[4],  ServerConfigs.OWLBEAR_WEIGHT.get()));
-            ServerConfigs.SILVER_SKELETON_WEIGHT.set( parseWeight(weightBoxes[5],  ServerConfigs.SILVER_SKELETON_WEIGHT.get()));
-            ServerConfigs.EVIL_BAT_WEIGHT.set(        parseWeight(weightBoxes[6],  ServerConfigs.EVIL_BAT_WEIGHT.get()));
-            ServerConfigs.GHOST_WEIGHT.set(           parseWeight(weightBoxes[7],  ServerConfigs.GHOST_WEIGHT.get()));
-            ServerConfigs.GHOST_NETHER_WEIGHT.set(    parseWeight(weightBoxes[8],  ServerConfigs.GHOST_NETHER_WEIGHT.get()));
-            ServerConfigs.WEREWOLF_WEIGHT.set(        parseWeight(weightBoxes[9],  ServerConfigs.WEREWOLF_WEIGHT.get()));
-            ServerConfigs.DART_GOBLIN_WEIGHT.set(     parseWeight(weightBoxes[10], ServerConfigs.DART_GOBLIN_WEIGHT.get()));
-            ServerConfigs.IMP_WEIGHT.set(             parseWeight(weightBoxes[11], ServerConfigs.IMP_WEIGHT.get()));
-            ServerConfigs.HELL_OGRE_WEIGHT.set(       parseWeight(weightBoxes[12], ServerConfigs.HELL_OGRE_WEIGHT.get()));
-            ServerConfigs.SCORPION_WEIGHT.set(        parseWeight(weightBoxes[13], ServerConfigs.SCORPION_WEIGHT.get()));
-        }
-    }
-
-    private static int parseWeight(EditBox box, int fallback) {
-        try {
-            return Math.max(0, Math.min(500, Integer.parseInt(box.getValue())));
-        } catch (NumberFormatException e) {
-            return fallback;
-        }
     }
 
     @Override

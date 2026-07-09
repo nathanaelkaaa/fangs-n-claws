@@ -9,6 +9,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.effect.FlamebrandEffect;
+import net.raptorzizi.fangs_n_claws.effect.FrozenEffect;
 import net.raptorzizi.fangs_n_claws.effect.HellFlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.effect.MithridaticEffect;
 import net.raptorzizi.fangs_n_claws.effect.StunnedEffect;
@@ -36,6 +37,9 @@ public class MobEffectsRegistry {
 
     public static final RegistryObject<MithridaticEffect> MITHRIDATIC =
             MOB_EFFECTS.register("mithridatic", MithridaticEffect::new);
+
+    public static final RegistryObject<FrozenEffect> FROZEN =
+            MOB_EFFECTS.register("frozen", FrozenEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

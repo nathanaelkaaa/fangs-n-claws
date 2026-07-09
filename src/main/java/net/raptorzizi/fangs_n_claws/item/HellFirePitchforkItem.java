@@ -59,8 +59,8 @@ public class HellFirePitchforkItem extends FirePitchforkItem {
     }
 
     @Override
-    protected void applyFlamebrand(LivingEntity target) {
-        HellFlamebrandEffect.addHellFlamebrandStack(target);
+    protected void applyFlamebrand(LivingEntity target, LivingEntity attacker) {
+        HellFlamebrandEffect.addHellFlamebrandStack(target, attacker);
     }
 
     @Override

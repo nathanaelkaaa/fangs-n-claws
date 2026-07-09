@@ -6,6 +6,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
 
@@ -62,6 +63,12 @@ public class SpawnSetup {
                 SpawnUtils::checkOwlbearSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.OR);
 
+        event.register(EntityRegistry.SHRIKE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkShrikeSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.OR);
+
         event.register(EntityRegistry.GOBLIN.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
@@ -91,6 +98,66 @@ public class SpawnSetup {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SpawnUtils::checkScorpionSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.OR);
+
+        event.register(EntityRegistry.ICE_GOLEM.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkIceGolemSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.OR);
+
+        event.register(EntityRegistry.FIRE_GHOST.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkGhostSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.OR);
+
+        event.register(EntityRegistry.DESERT_SCORPION.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ScorpionEntity::checkScorpionSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.FROST_SCORPION.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ScorpionEntity::checkScorpionSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.NETHER_SCORPION.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ScorpionEntity::checkScorpionSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.HORSE_BAT.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkHorseBatSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.WILD_WOLF.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkWildWolfSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.NIGHTMARE_HORSE.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkNightmareHorseSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.SKELETON_HORSE_MOB.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkUndeadHorseSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.ZOMBIE_HORSE_MOB.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkUndeadHorseSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
 
         // event.register(EntityRegistry.WEREVILLAGER.get(),
         //         SpawnPlacements.Type.ON_GROUND,

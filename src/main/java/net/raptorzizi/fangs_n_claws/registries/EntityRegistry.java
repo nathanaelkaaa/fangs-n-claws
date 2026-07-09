@@ -16,19 +16,35 @@ import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
-import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
+import net.raptorzizi.fangs_n_claws.entity.projectile.PoisonousDartEntity;
 import net.raptorzizi.fangs_n_claws.entity.decrepit_pitchfork.DecrepitPitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
+import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.frozen_box.FrozenBoxEntity;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.BabyShrikeEntity;
+import net.raptorzizi.fangs_n_claws.entity.projectile.FeatherProjectileEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 
 public class EntityRegistry {
@@ -44,6 +60,11 @@ public class EntityRegistry {
             ENTITIES.register("golem", () -> EntityType.Builder.of(GolemEntity::new, MobCategory.MONSTER)
                     .sized(2F, 2.6F)
                     .build("golem"));
+
+    public static final RegistryObject<EntityType<IceGolemEntity>> ICE_GOLEM =
+            ENTITIES.register("ice_golem", () -> EntityType.Builder.of(IceGolemEntity::new, MobCategory.MONSTER)
+                    .sized(1.95F, 2.6F)
+                    .build("ice_golem"));
 
     public static final RegistryObject<EntityType<OgreEntity>> OGRE =
             ENTITIES.register("ogre", () -> EntityType.Builder.of(OgreEntity::new, MobCategory.MONSTER)
@@ -71,6 +92,21 @@ public class EntityRegistry {
                     .sized(2.0F, 2.0F)
                     .build("owlbear"));
 
+    public static final RegistryObject<EntityType<BabyOwlbearEntity>> BABY_OWLBEAR =
+            ENTITIES.register("baby_owlbear", () -> EntityType.Builder.of(BabyOwlbearEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 0.9F)
+                    .build("baby_owlbear"));
+
+    public static final RegistryObject<EntityType<ShrikeEntity>> SHRIKE =
+            ENTITIES.register("shrike", () -> EntityType.Builder.of(ShrikeEntity::new, MobCategory.MONSTER)
+                    .sized(1.95F, 1.95F)
+                    .build("shrike"));
+
+    public static final RegistryObject<EntityType<BabyShrikeEntity>> BABY_SHRIKE =
+            ENTITIES.register("baby_shrike", () -> EntityType.Builder.of(BabyShrikeEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 0.9F)
+                    .build("baby_shrike"));
+
     public static final RegistryObject<EntityType<SilverSkeletonEntity>> SILVER_SKELETON =
             ENTITIES.register("silver_skeleton", () -> EntityType.Builder.of(SilverSkeletonEntity::new, MobCategory.MONSTER)
                     .sized(0.6F, 2.4F)
@@ -87,6 +123,13 @@ public class EntityRegistry {
                     .sized(0.8F, 1.6F)
                     .clientTrackingRange(8)
                     .build("ghost"));
+
+    public static final RegistryObject<EntityType<FireGhostEntity>> FIRE_GHOST =
+            ENTITIES.register("fire_ghost", () -> EntityType.Builder.of(FireGhostEntity::new, MobCategory.MONSTER)
+                    .sized(0.8F, 1.6F)
+                    .clientTrackingRange(8)
+                    .fireImmune()
+                    .build("fire_ghost"));
 
     public static final RegistryObject<EntityType<GoblinEntity>> GOBLIN =
             ENTITIES.register("goblin", () -> EntityType.Builder.of(GoblinEntity::new, MobCategory.MONSTER)
@@ -124,6 +167,71 @@ public class EntityRegistry {
                     .sized(1.4F, 0.9F)
                     .clientTrackingRange(8)
                     .build("scorpion"));
+
+    public static final RegistryObject<EntityType<DesertScorpionEntity>> DESERT_SCORPION =
+            ENTITIES.register("desert_scorpion", () -> EntityType.Builder
+                    .<DesertScorpionEntity>of((type, level) -> new DesertScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("desert_scorpion"));
+
+    public static final RegistryObject<EntityType<FrostScorpionEntity>> FROST_SCORPION =
+            ENTITIES.register("frost_scorpion", () -> EntityType.Builder
+                    .<FrostScorpionEntity>of((type, level) -> new FrostScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("frost_scorpion"));
+
+    public static final RegistryObject<EntityType<NetherScorpionEntity>> NETHER_SCORPION =
+            ENTITIES.register("nether_scorpion", () -> EntityType.Builder
+                    .<NetherScorpionEntity>of((type, level) -> new NetherScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .clientTrackingRange(8)
+                    .fireImmune()
+                    .build("nether_scorpion"));
+
+    public static final RegistryObject<EntityType<BabyScorpionEntity>> BABY_SCORPION =
+            ENTITIES.register("baby_scorpion", () -> EntityType.Builder
+                    .<BabyScorpionEntity>of((type, level) -> new BabyScorpionEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.6F, 0.4F)
+                    .clientTrackingRange(8)
+                    .build("baby_scorpion"));
+
+    public static final RegistryObject<EntityType<HorseBatEntity>> HORSE_BAT =
+            ENTITIES.register("horse_bat", () -> EntityType.Builder
+                    .<HorseBatEntity>of((type, level) -> new HorseBatEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .clientTrackingRange(8)
+                    .build("horse_bat"));
+
+    public static final RegistryObject<EntityType<WildWolfEntity>> WILD_WOLF =
+            ENTITIES.register("wild_wolf", () -> EntityType.Builder
+                    .<WildWolfEntity>of((type, level) -> new WildWolfEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.78F, 1.105F)
+                    .clientTrackingRange(10)
+                    .build("wild_wolf"));
+
+    public static final RegistryObject<EntityType<NightmareHorseEntity>> NIGHTMARE_HORSE =
+            ENTITIES.register("nightmare_horse", () -> EntityType.Builder
+                    .<NightmareHorseEntity>of((type, level) -> new NightmareHorseEntity(type, level), MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .fireImmune()
+                    .clientTrackingRange(8)
+                    .build("nightmare_horse"));
+
+    public static final RegistryObject<EntityType<SkeletonHorseMob>> SKELETON_HORSE_MOB =
+            ENTITIES.register("skeleton_horse", () -> EntityType.Builder
+                    .of(SkeletonHorseMob::new, MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .clientTrackingRange(10)
+                    .build("skeleton_horse"));
+
+    public static final RegistryObject<EntityType<ZombieHorseMob>> ZOMBIE_HORSE_MOB =
+            ENTITIES.register("zombie_horse", () -> EntityType.Builder
+                    .of(ZombieHorseMob::new, MobCategory.MONSTER)
+                    .sized(1.4F, 1.6F)
+                    .clientTrackingRange(10)
+                    .build("zombie_horse"));
 
     public static final RegistryObject<EntityType<ImpEntity>> IMP =
             ENTITIES.register("imp", () -> EntityType.Builder.of(ImpEntity::new, MobCategory.MONSTER)
@@ -183,10 +291,26 @@ public class EntityRegistry {
                     .updateInterval(20)
                     .build("velocity_arrow"));
 
+    public static final RegistryObject<EntityType<FeatherProjectileEntity>> FEATHER_PROJECTILE =
+            ENTITIES.register("feather_projectile", () -> EntityType.Builder
+                    .<FeatherProjectileEntity>of(FeatherProjectileEntity::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .updateInterval(20)
+                    .build("feather_projectile"));
+
     public static final RegistryObject<EntityType<BlockProjectile>> BLOCK_PROJECTILE =
             ENTITIES.register("block_projectile", () -> EntityType.Builder
                     .<BlockProjectile>of(BlockProjectile::new, MobCategory.MISC)
                     .sized(1.5F, 1.5F)
                     .clientTrackingRange(64)
                     .build("block_projectile"));
+
+    public static final RegistryObject<EntityType<FrozenBoxEntity>> FROZEN_BOX =
+            ENTITIES.register("frozen_box", () -> EntityType.Builder
+                    .<FrozenBoxEntity>of(FrozenBoxEntity::new, MobCategory.MISC)
+                    .sized(1f, 1f)
+                    .clientTrackingRange(64)
+                    .updateInterval(1)
+                    .build("frozen_box"));
 }

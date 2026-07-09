@@ -119,13 +119,13 @@ public class FirePitchforkItem extends TridentItem {
         player.awardStat(Stats.ITEM_USED.get(this));
     }
 
-    protected void applyFlamebrand(LivingEntity target) {
-        FlamebrandEffect.addFlamebrandStack(target);
+    protected void applyFlamebrand(LivingEntity target, LivingEntity attacker) {
+        FlamebrandEffect.addFlamebrandStack(target, attacker);
     }
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        applyFlamebrand(target);
+        applyFlamebrand(target, attacker);
         int blazingLevel = EnchantmentsRegistry.getLevel(stack, EnchantmentsRegistry.BLAZING);
         if (blazingLevel > 0 && target.isOnFire()) {
             target.invulnerableTime = 0;

@@ -49,7 +49,8 @@ public class FirePitchforkEntity extends ThrownTrident {
     // Hit
 
     protected void applyFlamebrandOnHit(LivingEntity victim) {
-        FlamebrandEffect.addFlamebrandStack(victim);
+        LivingEntity source = this.getOwner() instanceof LivingEntity le ? le : null;
+        FlamebrandEffect.addFlamebrandStack(victim, source);
     }
 
     @Override

@@ -16,10 +16,10 @@ import net.minecraft.core.dispenser.AbstractProjectileDispenseBehavior;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.raptorzizi.fangs_n_claws.entity.dart_goblin.PoisonousDartEntity;
-import net.minecraft.world.effect.MobEffectInstance;
+import net.raptorzizi.fangs_n_claws.entity.projectile.PoisonousDartEntity;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -46,6 +46,7 @@ import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.raptorzizi.fangs_n_claws.config.ClientConfigs;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
@@ -58,11 +59,27 @@ import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
+import net.raptorzizi.fangs_n_claws.network.FangsNetwork;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
+import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
@@ -70,6 +87,9 @@ import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
 import net.raptorzizi.fangs_n_claws.registries.CreativeModeTabs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.MenuTypeRegistry;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import java.util.List;
 import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -101,11 +121,13 @@ public class FangsClawsMod {
         BlocksRegistry.register(modEventBus);
         BlockEntityRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
+        MenuTypeRegistry.register(modEventBus);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfigs.SPEC, FangsClawsMod.MOD_ID + "-server.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfigs.SPEC, FangsClawsMod.MOD_ID + "-client.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfigs.SPEC, FangsClawsMod.MOD_ID + "-common.toml");
 
+        FangsNetwork.register();
         GameRuleRegistry.init();
     }
 
@@ -171,6 +193,68 @@ public class FangsClawsMod {
     }
 
     @SubscribeEvent
+    public void onEntityJoinLevel(EntityJoinLevelEvent event) {
+        if (event.loadedFromDisk()) return;
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+
+        if (event.getEntity() instanceof SkeletonHorse vanilla) {
+            if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_SKELETON_HORSE)
+                    || CommonConfigs.VANILLA_SKELETON_HORSE.get()) return; // garde le vanilla (gamerule OU config)
+            SkeletonHorseMob mob = EntityRegistry.SKELETON_HORSE_MOB.get().create(serverLevel);
+            if (mob != null) {
+                mob.moveTo(vanilla.getX(), vanilla.getY(), vanilla.getZ(), vanilla.getYRot(), vanilla.getXRot());
+                mob.setTamed(vanilla.isTamed());
+                mob.setTrap(vanilla.isTrap());
+                serverLevel.addFreshEntity(mob);
+                transferPassengers(vanilla, mob);
+            }
+            event.setCanceled(true);
+        } else if (event.getEntity() instanceof ZombieHorse vanilla) {
+            if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_ZOMBIE_HORSE)
+                    || CommonConfigs.VANILLA_ZOMBIE_HORSE.get()) return; // garde le vanilla (gamerule OU config)
+            ZombieHorseMob mob = EntityRegistry.ZOMBIE_HORSE_MOB.get().create(serverLevel);
+            if (mob != null) {
+                mob.moveTo(vanilla.getX(), vanilla.getY(), vanilla.getZ(), vanilla.getYRot(), vanilla.getXRot());
+                mob.setTamed(vanilla.isTamed());
+                serverLevel.addFreshEntity(mob);
+                transferPassengers(vanilla, mob);
+            }
+            event.setCanceled(true);
+
+        } else if (event.getEntity() instanceof SkeletonHorseMob mod
+                && (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_SKELETON_HORSE)
+                    || CommonConfigs.VANILLA_SKELETON_HORSE.get())) {
+            SkeletonHorse vanilla = EntityType.SKELETON_HORSE.create(serverLevel);
+            if (vanilla != null) {
+                vanilla.moveTo(mod.getX(), mod.getY(), mod.getZ(), mod.getYRot(), mod.getXRot());
+                vanilla.setTamed(mod.isTamed());
+                vanilla.setTrap(mod.isTrap());
+                serverLevel.addFreshEntity(vanilla);
+                transferPassengers(mod, vanilla);
+            }
+            event.setCanceled(true);
+        } else if (event.getEntity() instanceof ZombieHorseMob mod
+                && (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_ZOMBIE_HORSE)
+                    || CommonConfigs.VANILLA_ZOMBIE_HORSE.get())) {
+            ZombieHorse vanilla = EntityType.ZOMBIE_HORSE.create(serverLevel);
+            if (vanilla != null) {
+                vanilla.moveTo(mod.getX(), mod.getY(), mod.getZ(), mod.getYRot(), mod.getXRot());
+                vanilla.setTamed(mod.isTamed());
+                serverLevel.addFreshEntity(vanilla);
+                transferPassengers(mod, vanilla);
+            }
+            event.setCanceled(true);
+        }
+    }
+
+    private static void transferPassengers(Entity from, Entity to) {
+        for (Entity passenger : List.copyOf(from.getPassengers())) {
+            passenger.stopRiding();
+            passenger.startRiding(to, true);
+        }
+    }
+
+    @SubscribeEvent
     public void onIncomingDamage(LivingHurtEvent event) {
         if (event.getSource().getDirectEntity() instanceof Player player
                 && player.getMainHandItem().getItem() instanceof CatchingClawItem) {
@@ -193,10 +277,31 @@ public class FangsClawsMod {
     //     if (event.getEffect().getEffect().is(FangsClawsMod.id("stunned")))  { event.setVisible(false); }
     // }
 
+    private static boolean wearsScorpion(LivingEntity entity, EquipmentSlot slot) {
+        return entity.getItemBySlot(slot).getItem() instanceof ScorpionArmorItem;
+    }
+
+    private static int countFurArmor(LivingEntity entity) {
+        int n = 0;
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            if (entity.getItemBySlot(slot).getItem() instanceof FurArmorItem) n++;
+        }
+        return n;
+    }
+
     @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         if (entity.level().isClientSide()) return;
+
+        if (entity.isInPowderSnow) {
+            int furPieces = countFurArmor(entity);
+            if (furPieces >= 4) {
+                entity.setTicksFrozen(0);
+            } else if (furPieces > 0 && entity.getRandom().nextInt(4) < furPieces) {
+                entity.setTicksFrozen(Math.max(0, entity.getTicksFrozen() - 1));
+            }
+        }
 
         if (BleedingEffect.PENDING_REMOVAL.remove(entity.getUUID())) {
             entity.removeEffect(MobEffectsRegistry.BLEEDING.get());
@@ -215,19 +320,11 @@ public class FangsClawsMod {
             }
         }
 
-        if (entity instanceof Player player && player.tickCount % 20 == 0) {
-            boolean fullSet = player.getItemBySlot(EquipmentSlot.HEAD).getItem()  instanceof ScorpionArmorItem
-                           && player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof ScorpionArmorItem
-                           && player.getItemBySlot(EquipmentSlot.LEGS).getItem()  instanceof ScorpionArmorItem
-                           && player.getItemBySlot(EquipmentSlot.FEET).getItem()  instanceof ScorpionArmorItem;
-            if (fullSet) {
-                player.addEffect(new MobEffectInstance(MobEffectsRegistry.MITHRIDATIC.get(), 40, 0, false, false, true));
-                player.removeEffect(MobEffects.POISON);
-                player.removeEffect(MobEffects.CONFUSION);
-                player.removeEffect(MobEffects.BLINDNESS);
-                player.removeEffect(MobEffects.HUNGER);
-                player.removeEffect(MobEffectsRegistry.VENOM.get());
-            }
+        if (entity.tickCount % 20 == 0) {
+            if (wearsScorpion(entity, EquipmentSlot.HEAD))  entity.removeEffect(MobEffects.CONFUSION);
+            if (wearsScorpion(entity, EquipmentSlot.CHEST)) entity.removeEffect(MobEffects.POISON);
+            if (wearsScorpion(entity, EquipmentSlot.LEGS))  entity.removeEffect(MobEffectsRegistry.VENOM.get());
+            if (wearsScorpion(entity, EquipmentSlot.FEET))  entity.removeEffect(MobEffects.HUNGER);
         }
 
         if (entity instanceof Monster monster && monster.tickCount % 15 == 0) {
@@ -267,13 +364,14 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onMobEffectApplicable(MobEffectEvent.Applicable event) {
-        if (!event.getEntity().hasEffect(MobEffectsRegistry.MITHRIDATIC.get())) return;
+        LivingEntity entity = event.getEntity();
         MobEffect effect = event.getEffectInstance().getEffect();
-        if (effect == MobEffects.POISON
-                || effect == MobEffects.CONFUSION
-                || effect == MobEffects.BLINDNESS
-                || effect == MobEffects.HUNGER
-                || effect == MobEffectsRegistry.VENOM.get()) {
+        boolean immune =
+                   (effect == MobEffects.CONFUSION           && wearsScorpion(entity, EquipmentSlot.HEAD))
+                || (effect == MobEffects.POISON              && wearsScorpion(entity, EquipmentSlot.CHEST))
+                || (effect == MobEffectsRegistry.VENOM.get() && wearsScorpion(entity, EquipmentSlot.LEGS))
+                || (effect == MobEffects.HUNGER              && wearsScorpion(entity, EquipmentSlot.FEET));
+        if (immune) {
             event.setResult(net.minecraftforge.eventbus.api.Event.Result.DENY);
         }
     }
@@ -281,6 +379,11 @@ public class FangsClawsMod {
     @SubscribeEvent
     public void onLivingChangeTarget(LivingChangeTargetEvent event) {
         if (event.getEntity() instanceof Zombie && event.getNewTarget() instanceof WerevillagerEntity) {
+            event.setCanceled(true);
+        }
+        if (event.getEntity() instanceof WildWolfEntity
+                && event.getNewTarget() instanceof Player player
+                && FurArmorItem.hasFurHelmet(player)) {
             event.setCanceled(true);
         }
         if (event.getNewTarget() != null
@@ -293,27 +396,39 @@ public class FangsClawsMod {
     @SubscribeEvent
     public void onFinalizeSpawn(MobSpawnEvent.FinalizeSpawn event) {
         MobSpawnType type = event.getSpawnType();
-        if (type != MobSpawnType.NATURAL && type != MobSpawnType.CHUNK_GENERATION) return;
         // MobSpawnEvent.FinalizeSpawn.getLevel() returns ServerLevelAccessor; get the actual ServerLevel
         ServerLevelAccessor accessor = event.getLevel();
         ServerLevel serverLevel = accessor.getLevel();
 
         var rules = serverLevel.getGameRules();
-        boolean cancel = false;
         Entity entity = event.getEntity();
+
+        if (type == MobSpawnType.NATURAL || type == MobSpawnType.CHUNK_GENERATION) {
+        boolean cancel = false;
 
         if (entity instanceof GoblinEntity           && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
         else if (entity instanceof DartGoblinEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DART_GOBLIN)) cancel = true;
         else if (entity instanceof CaveOgreEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CAVE_OGRE))     cancel = true;
         else if (entity instanceof OgreEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OGRE))           cancel = true;
+        else if (entity instanceof IceGolemEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ICE_GOLEM))      cancel = true;
         else if (entity instanceof GolemEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOLEM))          cancel = true;
+        else if (entity instanceof ShrikeEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SHRIKE))         cancel = true;
         else if (entity instanceof OwlbearEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_OWLBEAR))        cancel = true;
         else if (entity instanceof SilverSkeletonEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SILVER_SKELETON)) cancel = true;
         else if (entity instanceof EvilBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_EVIL_BAT))       cancel = true;
+        else if (entity instanceof FireGhostEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FIRE_GHOST))    cancel = true;
         else if (entity instanceof GhostEntity    && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GHOST))          cancel = true;
         else if (entity instanceof WerewolfEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WEREWOLF))       cancel = true;
         else if (entity instanceof ImpEntity       && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_IMP))            cancel = true;
+        else if (entity instanceof DesertScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_DESERT_SCORPION)) cancel = true;
+        else if (entity instanceof FrostScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FROST_SCORPION))  cancel = true;
+        else if (entity instanceof NetherScorpionEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NETHER_SCORPION)) cancel = true;
         else if (entity instanceof ScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))       cancel = true;
+        else if (entity instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
+        else if (entity instanceof HorseBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))      cancel = true;
+        else if (entity instanceof WildWolfEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))      cancel = true;
+        else if (entity instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;
+        else if (entity instanceof ZombieHorseMob   && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE))   cancel = true;
 
         if (cancel) event.setSpawnCancelled(true);
 
@@ -334,6 +449,66 @@ public class FangsClawsMod {
                 dartGoblin.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(dartGoblin.blockPosition()),
                         MobSpawnType.MOB_SUMMONED, null, null);
                 serverLevel.addFreshEntity(dartGoblin);
+            }
+        }
+
+        if (entity instanceof OwlbearEntity owlbearParent && !event.isSpawnCancelled()) {
+            float roll = serverLevel.random.nextFloat();
+            int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
+            boolean parentIsShrike = owlbearParent instanceof ShrikeEntity;
+            for (int i = 0; i < babies; i++) {
+                BabyOwlbearEntity baby = parentIsShrike
+                        ? EntityRegistry.BABY_SHRIKE.get().create(serverLevel)
+                        : EntityRegistry.BABY_OWLBEAR.get().create(serverLevel);
+                if (baby != null) {
+                    double ox = (serverLevel.random.nextDouble() - 0.5) * 3.0;
+                    double oz = (serverLevel.random.nextDouble() - 0.5) * 3.0;
+                    baby.moveTo(owlbearParent.getX() + ox, owlbearParent.getY(), owlbearParent.getZ() + oz,
+                            serverLevel.random.nextFloat() * 360f, 0f);
+                    baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                            MobSpawnType.MOB_SUMMONED, null, null);
+                    baby.setParent(owlbearParent);
+                    serverLevel.addFreshEntity(baby);
+                }
+            }
+        }
+
+        if (entity instanceof ScorpionEntity scorpionParent && !event.isSpawnCancelled()) {
+            float roll = serverLevel.random.nextFloat();
+            int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
+            int variant = BabyScorpionEntity.variantOf(scorpionParent);
+            for (int i = 0; i < babies; i++) {
+                BabyScorpionEntity baby = EntityRegistry.BABY_SCORPION.get().create(serverLevel);
+                if (baby != null) {
+                    baby.setVariant(variant);
+                    double ox = (serverLevel.random.nextDouble() - 0.5) * 2.5;
+                    double oz = (serverLevel.random.nextDouble() - 0.5) * 2.5;
+                    baby.moveTo(scorpionParent.getX() + ox, scorpionParent.getY(), scorpionParent.getZ() + oz,
+                            serverLevel.random.nextFloat() * 360f, 0f);
+                    baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                            MobSpawnType.MOB_SUMMONED, null, null);
+                    baby.setParent(scorpionParent);
+                    baby.setRideYaw(serverLevel.random.nextFloat() * 360f);
+                    serverLevel.addFreshEntity(baby);
+                    baby.startRiding(scorpionParent, false);
+                }
+            }
+        }
+        }
+
+        if (entity instanceof GoblinEntity goblin
+                && !event.isSpawnCancelled()
+                && !goblin.isPassenger()
+                && rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF)
+                && serverLevel.random.nextInt(20) == 0) {  // ~5% : goblin-cavalier sur un loup (main avait nextInt(1) = 100%, valeur de debug)
+
+            WildWolfEntity wolf = EntityRegistry.WILD_WOLF.get().create(serverLevel);
+            if (wolf != null) {
+                wolf.moveTo(goblin.getX(), goblin.getY(), goblin.getZ(), goblin.getYRot(), 0f);
+                wolf.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(wolf.blockPosition()),
+                        MobSpawnType.JOCKEY, null, null);
+                serverLevel.addFreshEntity(wolf);
+                goblin.startRiding(wolf, true);
             }
         }
     }

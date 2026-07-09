@@ -576,6 +576,26 @@
 				}
 			}
 		},
+		"riding": {
+			"loop": true,
+			"bones": {
+				"Body": {
+					"position": [0, -4, 0]
+				},
+				"RightArm": {
+					"rotation": [-60, 0, 0]
+				},
+				"LeftArm": {
+					"rotation": [-60, 0, 0]
+				},
+				"RightLeg": {
+					"rotation": [-90, 17.5, 0]
+				},
+				"LeftLeg": {
+					"rotation": [-90, -17.5, 0]
+				}
+			}
+		},
 		"runFlying": {
 			"loop": true,
 			"animation_length": 0.5,

@@ -13,6 +13,7 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_CAVE_OGRE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GOLEM;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_OWLBEAR;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_SHRIKE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_SILVER_SKELETON;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_EVIL_BAT;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GHOST;
@@ -21,6 +22,20 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_IMP;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HELL_OGRE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_SCORPION;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_ICE_GOLEM;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_FIRE_GHOST;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_DESERT_SCORPION;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_FROST_SCORPION;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_NETHER_SCORPION;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_NIGHTMARE_HORSE;
+
+    public static final ForgeConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
+    public static final ForgeConfigSpec.BooleanValue VANILLA_SKELETON_HORSE;
+    public static final ForgeConfigSpec.BooleanValue VANILLA_ZOMBIE_HORSE;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_GOBLIN_STEALING;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -47,9 +62,14 @@ public class CommonConfigs {
                 .define("allow_golem", true);
 
         ALLOW_SPAWN_OWLBEAR = BUILDER
-                .comment("Allow Owlbears to spawn naturally (forest)")
+                .comment("Allow Owlbears to spawn naturally (forest + taiga)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.owlbear")
                 .define("allow_owlbear", true);
+
+        ALLOW_SPAWN_SHRIKE = BUILDER
+                .comment("Allow Shrikes to spawn naturally (snowy forest + snowy taiga)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.shrike")
+                .define("allow_shrike", true);
 
         ALLOW_SPAWN_SILVER_SKELETON = BUILDER
                 .comment("Allow Silver Skeletons to spawn naturally (overworld)")
@@ -90,6 +110,75 @@ public class CommonConfigs {
                 .comment("Allow Scorpions to spawn naturally (overworld)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.scorpion")
                 .define("allow_scorpion", true);
+
+        ALLOW_SPAWN_ICE_GOLEM = BUILDER
+                .comment("Allow Ice Golems to spawn naturally (snowy biomes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.ice_golem")
+                .define("allow_ice_golem", true);
+
+        ALLOW_SPAWN_FIRE_GHOST = BUILDER
+                .comment("Allow Fire Ghosts to spawn naturally (overworld + Crimson Forest + Nether Wastes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.fire_ghost")
+                .define("allow_fire_ghost", true);
+
+        ALLOW_SPAWN_DESERT_SCORPION = BUILDER
+                .comment("Allow Desert Scorpions to spawn naturally (desert, daytime)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.desert_scorpion")
+                .define("allow_desert_scorpion", true);
+
+        ALLOW_SPAWN_FROST_SCORPION = BUILDER
+                .comment("Allow Frost Scorpions to spawn naturally (snowy biomes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.frost_scorpion")
+                .define("allow_frost_scorpion", true);
+
+        ALLOW_SPAWN_NETHER_SCORPION = BUILDER
+                .comment("Allow Nether Scorpions to spawn naturally (Crimson Forest + Nether Wastes)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.nether_scorpion")
+                .define("allow_nether_scorpion", true);
+
+        ALLOW_SPAWN_HORSE_BAT = BUILDER
+                .comment("Allow Horse Bats to spawn naturally")
+                .translation("fangs_n_claws.configuration.spawn_toggles.horse_bat")
+                .define("allow_horse_bat", true);
+
+        ALLOW_SPAWN_WILD_WOLF = BUILDER
+                .comment("Allow Wild Wolves to spawn naturally")
+                .translation("fangs_n_claws.configuration.spawn_toggles.wild_wolf")
+                .define("allow_wild_wolf", true);
+
+        ALLOW_SPAWN_NIGHTMARE_HORSE = BUILDER
+                .comment("Allow Nightmare Horses to spawn naturally (Nether)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.nightmare_horse")
+                .define("allow_nightmare_horse", true);
+
+        BUILDER.pop();
+
+        BUILDER.comment("Mob behaviour toggles. Each mirrors a /gamerule of the same name — changing either applies.").push("behavior");
+
+        VANILLA_SKELETON_HORSE = BUILDER
+                .comment("Keep the vanilla Skeleton Horse instead of the mod's tamable version (also /gamerule vanillaSkeletonHorse)")
+                .translation("fangs_n_claws.configuration.behavior.vanilla_skeleton_horse")
+                .define("vanilla_skeleton_horse", false);
+
+        VANILLA_ZOMBIE_HORSE = BUILDER
+                .comment("Keep the vanilla Zombie Horse instead of the mod's tamable version (also /gamerule vanillaZombieHorse)")
+                .translation("fangs_n_claws.configuration.behavior.vanilla_zombie_horse")
+                .define("vanilla_zombie_horse", false);
+
+        ALLOW_NATURAL_SPAWN_SKELETON_HORSE = BUILDER
+                .comment("Allow Skeleton Horses to spawn naturally at night, whichever version is used (also /gamerule allowNaturalSpawnSkeletonHorse)")
+                .translation("fangs_n_claws.configuration.behavior.allow_natural_spawn_skeleton_horse")
+                .define("allow_natural_spawn_skeleton_horse", true);
+
+        ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE = BUILDER
+                .comment("Allow Zombie Horses to spawn naturally at night, whichever version is used (also /gamerule allowNaturalSpawnZombieHorse)")
+                .translation("fangs_n_claws.configuration.behavior.allow_natural_spawn_zombie_horse")
+                .define("allow_natural_spawn_zombie_horse", true);
+
+        ALLOW_GOBLIN_STEALING = BUILDER
+                .comment("Allow Goblins to steal items from players' inventories (also /gamerule allowGoblinStealing)")
+                .translation("fangs_n_claws.configuration.behavior.allow_goblin_stealing")
+                .define("allow_goblin_stealing", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -11,12 +11,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -24,8 +27,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.raptorzizi.fangs_n_claws.block.GhostBlock;
 import net.raptorzizi.fangs_n_claws.client.FangsConfigScreen;
+import net.raptorzizi.fangs_n_claws.client.OwlFlightState;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareStaminaLayer;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
+import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
+import net.raptorzizi.fangs_n_claws.network.FangsNetwork;
+import net.raptorzizi.fangs_n_claws.network.OwlFlightPacket;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import org.lwjgl.glfw.GLFW;
@@ -40,6 +49,12 @@ public class FangsClawsModClient {
         MinecraftForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
         MinecraftForge.EVENT_BUS.addListener(FangsClawsModClient::onMouseButton);
         MinecraftForge.EVENT_BUS.addListener(FangsClawsModClient::onMovementInput);
+        MinecraftForge.EVENT_BUS.addListener(FangsClawsModClient::onClientTick);
+    }
+
+    @SubscribeEvent
+    static void registerOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("nightmare_stamina", new NightmareStaminaLayer());
     }
 
     static void onRenderGui(RenderGuiOverlayEvent.Pre event) {
@@ -101,6 +116,102 @@ public class FangsClawsModClient {
         input.right = tmpLeft;
     }
 
+    // Owl Armor
+    private static final double OWL_FLAP_IMPULSE = 0.75;
+    private static final double OWL_FLAP_IMPULSE_PER_MISSING = 0.1;
+    private static final double OWL_GLIDE_FALL   = -0.2;
+    private static final double OWL_GLIDE_FALL_PER_MISSING   = 0.75;
+    private static final double SHRIKE_FLAP_BONUS_PER_PIECE  = 0.035;
+    private static final double SHRIKE_GLIDE_BONUS_PER_PIECE = 0.02;
+    private static boolean owlPrevJumpDown  = false;
+    private static boolean owlPrevOnGround  = true;
+    private static boolean owlFlapUsed      = false;
+    private static boolean owlSentGlideLast = false;
+    private static boolean shrikeFlapUsed   = false;
+
+    static void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Minecraft mc = Minecraft.getInstance();
+        OwlFlightState.tickLocal();
+
+        Player player = mc.player;
+        if (player == null || mc.level == null || mc.isPaused()) {
+            owlPrevJumpDown = false;
+            owlPrevOnGround = true;
+            OwlFlightState.setLocalGliding(false);
+            return;
+        }
+
+        int owlPieces    = OwlArmorItem.countOwlPieces(player);
+        int shrikePieces = ShrikeArmorItem.countShrikePieces(player);
+        int flightPieces = owlPieces + shrikePieces;
+        boolean canFly = (OwlArmorItem.hasOwlChestplate(player) || ShrikeArmorItem.hasShrikeChestplate(player))
+                && !player.getAbilities().flying
+                && !player.isFallFlying()
+                && !player.isInWater() && !player.isInLava()
+                && !player.onClimbable() && !player.isPassenger();
+
+        double flapImpulse = OWL_FLAP_IMPULSE - (4 - flightPieces) * OWL_FLAP_IMPULSE_PER_MISSING
+                + shrikePieces * SHRIKE_FLAP_BONUS_PER_PIECE;
+        double glideFall   = OWL_GLIDE_FALL   - (4 - flightPieces) * OWL_GLIDE_FALL_PER_MISSING
+                + shrikePieces * SHRIKE_GLIDE_BONUS_PER_PIECE;
+
+        boolean jumpDown = mc.options.keyJump.isDown();
+        boolean airborne = !player.onGround();
+        boolean gliding  = false;
+        boolean flapped  = false;
+
+        if (!airborne) {
+            owlFlapUsed = false;
+            shrikeFlapUsed = false;
+        }
+
+        if (canFly && airborne) {
+            boolean freshPress = jumpDown && !owlPrevJumpDown && !owlPrevOnGround && !owlFlapUsed;
+            if (freshPress) {
+                owlFlapUsed = true;
+                Vec3 m = player.getDeltaMovement();
+                player.setDeltaMovement(m.x, Math.max(m.y, flapImpulse), m.z);
+                player.hasImpulse = true;
+                player.resetFallDistance();
+                OwlFlightState.triggerLocalFlap();
+                flapped = true;
+            } else if (jumpDown && player.getDeltaMovement().y < 0.0) {
+                Vec3 m = player.getDeltaMovement();
+                if (m.y < glideFall) player.setDeltaMovement(m.x, glideFall, m.z);
+                player.resetFallDistance();
+                gliding = true;
+            }
+        }
+
+        if (gliding || flapped || owlSentGlideLast) {
+            FangsNetwork.CHANNEL.sendToServer(new OwlFlightPacket(gliding, flapped));
+        }
+        owlSentGlideLast = gliding;
+
+        if (ShrikeArmorItem.hasShrikeChestplate(player) && player.isFallFlying()) {
+            boolean freshPress = jumpDown && !owlPrevJumpDown && !shrikeFlapUsed;
+            if (freshPress) {
+                shrikeFlapUsed = true;
+                Vec3 look = player.getLookAngle();
+                double hx = look.x, hz = look.z;
+                double hlen = Math.sqrt(hx * hx + hz * hz);
+                if (hlen > 1.0e-4) { hx /= hlen; hz /= hlen; }
+                Vec3 m = player.getDeltaMovement();
+                double up  = flapImpulse * 0.6;
+                double fwd = flapImpulse * 0.7;
+                player.setDeltaMovement(m.x + hx * fwd, m.y + up, m.z + hz * fwd);
+                player.hasImpulse = true;
+                OwlFlightState.triggerLocalFlap();
+                FangsNetwork.CHANNEL.sendToServer(new OwlFlightPacket(false, true));
+            }
+        }
+
+        OwlFlightState.setLocalGliding(gliding);
+        owlPrevJumpDown = jumpDown;
+        owlPrevOnGround = player.onGround();
+    }
+
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         FangsClawsModClient.init();
@@ -113,6 +224,10 @@ public class FangsClawsModClient {
         );
 
         event.enqueueWork(() -> {
+            net.minecraft.client.gui.screens.MenuScreens.register(
+                net.raptorzizi.fangs_n_claws.registries.MenuTypeRegistry.HORSE_ARMOR.get(),
+                net.raptorzizi.fangs_n_claws.entity.horse.HorseArmorScreen::new);
+
             ItemProperties.register(ItemsRegistry.FANG_DAGGER.get(),
                 FangsClawsMod.id("backstab"),
                 (stack, level, entity, seed) -> {

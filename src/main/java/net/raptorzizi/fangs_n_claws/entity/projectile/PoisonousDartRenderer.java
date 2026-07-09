@@ -1,4 +1,4 @@
-package net.raptorzizi.fangs_n_claws.entity.dart_goblin;
+package net.raptorzizi.fangs_n_claws.entity.projectile;
 
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

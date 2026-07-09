@@ -489,6 +489,36 @@
 					}
 				}
 			}
+		},
+		"riding": {
+			"loop": true,
+			"bones": {
+				"Body": {
+					"position": {
+						"vector": [0, -4, 0]
+					}
+				},
+				"RightArm": {
+					"rotation": {
+						"vector": [-60, 0, 0]
+					}
+				},
+				"LeftArm": {
+					"rotation": {
+						"vector": [-60, 0, 0]
+					}
+				},
+				"RightLeg": {
+					"rotation": {
+						"vector": [-90, 17.5, 0]
+					}
+				},
+				"LeftLeg": {
+					"rotation": {
+						"vector": [-90, -17.5, 0]
+					}
+				}
+			}
 		}
 	}
 }

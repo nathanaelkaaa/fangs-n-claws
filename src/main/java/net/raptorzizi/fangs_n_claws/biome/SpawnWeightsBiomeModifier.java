@@ -39,6 +39,20 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             ResourceKey.create(Registries.BIOME, new ResourceLocation("soul_sand_valley"));
     private static final TagKey<Biome> IS_NETHER =
             TagKey.create(Registries.BIOME, new ResourceLocation("is_nether"));
+    private static final ResourceKey<Biome> SNOWY_PLAINS =
+            ResourceKey.create(Registries.BIOME, new ResourceLocation("snowy_plains"));
+    private static final TagKey<Biome> IS_DESERT =
+            TagKey.create(Registries.BIOME, new ResourceLocation("forge", "is_desert"));
+    private static final TagKey<Biome> IS_SNOWY =
+            TagKey.create(Registries.BIOME, new ResourceLocation("forge", "is_snowy"));
+    private static final TagKey<Biome> IS_JUNGLE =
+            TagKey.create(Registries.BIOME, new ResourceLocation("is_jungle"));
+    private static final TagKey<Biome> IS_TAIGA =
+            TagKey.create(Registries.BIOME, new ResourceLocation("minecraft", "is_taiga"));
+    private static final TagKey<Biome> IS_SAVANNA =
+            TagKey.create(Registries.BIOME, new ResourceLocation("is_savanna"));
+    private static final TagKey<Biome> IS_BADLANDS =
+            TagKey.create(Registries.BIOME, new ResourceLocation("is_badlands"));
 
     @Override
     public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
@@ -53,11 +67,22 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.HELL_OGRE.get(),
                     EntityRegistry.GOLEM.get(),
                     EntityRegistry.OWLBEAR.get(),
+                    EntityRegistry.SHRIKE.get(),
                     EntityRegistry.SILVER_SKELETON.get(),
                     EntityRegistry.EVIL_BAT.get(),
                     EntityRegistry.GHOST.get(),
+                    EntityRegistry.FIRE_GHOST.get(),
                     EntityRegistry.WEREWOLF.get(),
-                    EntityRegistry.SCORPION.get()
+                    EntityRegistry.SCORPION.get(),
+                    EntityRegistry.DESERT_SCORPION.get(),
+                    EntityRegistry.FROST_SCORPION.get(),
+                    EntityRegistry.NETHER_SCORPION.get(),
+                    EntityRegistry.ICE_GOLEM.get(),
+                    EntityRegistry.HORSE_BAT.get(),
+                    EntityRegistry.NIGHTMARE_HORSE.get(),
+                    EntityRegistry.SKELETON_HORSE_MOB.get(),
+                    EntityRegistry.ZOMBIE_HORSE_MOB.get(),
+                    EntityRegistry.WILD_WOLF.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -84,25 +109,61 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.EVIL_BAT.get(),        ServerConfigs.EVIL_BAT_WEIGHT.get(),        1, 3);
                 if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.GHOST.get(),           ServerConfigs.GHOST_WEIGHT.get(),           1, 2);
+                if (CommonConfigs.ALLOW_SPAWN_FIRE_GHOST.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_WEIGHT.get(),      1, 1);
+                if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.HORSE_BAT.get(),       ServerConfigs.HORSE_BAT_WEIGHT.get(),       1, 1);
+                if (CommonConfigs.ALLOW_NATURAL_SPAWN_SKELETON_HORSE.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.SKELETON_HORSE_MOB.get(), ServerConfigs.SKELETON_HORSE_WEIGHT.get(), 1, 1);
+                if (CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE.get())
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.ZOMBIE_HORSE_MOB.get(),   ServerConfigs.ZOMBIE_HORSE_WEIGHT.get(),   1, 1);
+                if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get()
+                        && !biome.is(IS_DESERT) && !biome.is(IS_JUNGLE)
+                        && !biome.is(IS_SAVANNA) && !biome.is(IS_BADLANDS))
+                    add(spawns, MobCategory.MONSTER,  EntityRegistry.WILD_WOLF.get(),       ServerConfigs.WILD_WOLF_WEIGHT.get(),       1, 4);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
-                if (CommonConfigs.ALLOW_SPAWN_SCORPION.get())
+                if (CommonConfigs.ALLOW_SPAWN_SCORPION.get() && !biome.is(IS_DESERT) && !biome.is(IS_SNOWY))
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.SCORPION.get(),        ServerConfigs.SCORPION_WEIGHT.get(),        1, 2);
             }
 
-            if (biome.is(IS_PLAINS)) {
+            if (biome.is(IS_SNOWY)) {
+                if (CommonConfigs.ALLOW_SPAWN_FROST_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FROST_SCORPION.get(), ServerConfigs.FROST_SCORPION_WEIGHT.get(), 1, 2);
+            }
+
+            if (biome.is(IS_DESERT)) {
+                if (CommonConfigs.ALLOW_SPAWN_DESERT_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.DESERT_SCORPION.get(), ServerConfigs.DESERT_SCORPION_WEIGHT.get(), 1, 2);
+            }
+
+            if (biome.is(SNOWY_PLAINS)) {
+                if (CommonConfigs.ALLOW_SPAWN_ICE_GOLEM.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.ICE_GOLEM.get(), ServerConfigs.ICE_GOLEM_WEIGHT.get(), 1, 1);
+            }
+
+            if (biome.is(IS_PLAINS) && !biome.is(SNOWY_PLAINS)) {
                 if (CommonConfigs.ALLOW_SPAWN_GOLEM.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.GOLEM.get(),   ServerConfigs.GOLEM_WEIGHT.get(),   1, 1);
             }
 
-            if (biome.is(IS_FOREST)) {
+            if (biome.is(IS_FOREST) || biome.is(IS_TAIGA)) {
                 if (CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
             }
 
+            if (biome.is(IS_SNOWY) && (biome.is(IS_FOREST) || biome.is(IS_TAIGA))) {
+                if (CommonConfigs.ALLOW_SPAWN_SHRIKE.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.SHRIKE.get(), ServerConfigs.SHRIKE_WEIGHT.get(), 1, 1);
+            }
+
             if (biome.is(CRIMSON_FOREST) || biome.is(NETHER_WASTES)) {
                 if (CommonConfigs.ALLOW_SPAWN_IMP.get())
-                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(), ServerConfigs.IMP_WEIGHT.get(), 1, 3);
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.IMP.get(),             ServerConfigs.IMP_WEIGHT.get(),               1, 3);
+                if (CommonConfigs.ALLOW_SPAWN_FIRE_GHOST.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FIRE_GHOST.get(),      ServerConfigs.FIRE_GHOST_NETHER_WEIGHT.get(), 1, 2);
+                if (CommonConfigs.ALLOW_SPAWN_NETHER_SCORPION.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.NETHER_SCORPION.get(), ServerConfigs.NETHER_SCORPION_WEIGHT.get(),   1, 2);
             }
 
             if (biome.is(SOUL_SAND_VALLEY)) {
@@ -113,6 +174,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             if (biome.is(IS_NETHER)) {
                 if (CommonConfigs.ALLOW_SPAWN_HELL_OGRE.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.HELL_OGRE.get(), ServerConfigs.HELL_OGRE_WEIGHT.get(), 1, 2);
+                if (CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.NIGHTMARE_HORSE.get(), ServerConfigs.NIGHTMARE_HORSE_WEIGHT.get(), 1, 1);
             }
         }
     }

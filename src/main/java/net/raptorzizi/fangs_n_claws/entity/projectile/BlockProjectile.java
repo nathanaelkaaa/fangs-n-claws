@@ -190,7 +190,7 @@ public class BlockProjectile extends ThrowableProjectile {
 
     private void spawnTrailParticles() {
         BlockParticleOption particle = new BlockParticleOption(
-                ParticleTypes.BLOCK, Blocks.PACKED_MUD.defaultBlockState());
+                ParticleTypes.BLOCK, getBlockState());
 
         Vec3   motion     = this.getDeltaMovement();
         int    count      = isRegenMode() ? 2 : 5;
@@ -300,7 +300,7 @@ public class BlockProjectile extends ThrowableProjectile {
                     (int) Math.round(ox), (int) Math.round(oy), (int) Math.round(oz));
             BlockState state = serverLevel.getBlockState(candidate);
             if (state.isAir() || state.canBeReplaced()) {
-                serverLevel.setBlock(candidate, Blocks.PACKED_MUD.defaultBlockState(), 3);
+                serverLevel.setBlock(candidate, getBlockState(), 3);
                 placed++;
             }
         }

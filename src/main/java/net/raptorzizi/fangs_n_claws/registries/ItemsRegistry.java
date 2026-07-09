@@ -11,6 +11,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.SmithingTemplateItem;
+import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
+import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.PoisonousDartItem;
 import net.raptorzizi.fangs_n_claws.item.DecrepitPitchforkItem;
@@ -43,17 +49,41 @@ public class ItemsRegistry {
     public static final RegistryObject<ForgeSpawnEggItem> OWLBEAR_SPAWN_EGG = ITEMS.register("owlbear_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.OWLBEAR, 0x554030, 0x2d2625, new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> SHRIKE_SPAWN_EGG = ITEMS.register("shrike_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.SHRIKE, 0x9fb0bd, 0xe0edf3, new Item.Properties().stacksTo(64)));
+
     public static final RegistryObject<ForgeSpawnEggItem> SILVER_SKELETON_SPAWN_EGG = ITEMS.register("silver_skeleton_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.SILVER_SKELETON, 0x7b7871, 0xc2c0be, new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<ForgeSpawnEggItem> GOLEM_SPAWN_EGG = ITEMS.register("golem_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.GOLEM, 0x9b775b, 0x52a12f, new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<ForgeSpawnEggItem> ICE_GOLEM_SPAWN_EGG = ITEMS.register("ice_golem_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.ICE_GOLEM, 0xa8d8e8, 0xffffff, new Item.Properties().stacksTo(64)));
+
     public static final RegistryObject<ForgeSpawnEggItem> EVIL_BAT_SPAWN_EGG = ITEMS.register("evil_bat_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.EVIL_BAT, 0x43372f, 0xe8d063, new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<ForgeSpawnEggItem> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x98989d, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> HORSE_BAT_SPAWN_EGG = ITEMS.register("horse_bat_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.HORSE_BAT, 0x181818, 0xf3edbb, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> NIGHTMARE_HORSE_SPAWN_EGG = ITEMS.register("nightmare_horse_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.NIGHTMARE_HORSE, 0x84412d, 0x947c6d, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> SKELETON_HORSE_SPAWN_EGG = ITEMS.register("skeleton_horse_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.SKELETON_HORSE_MOB, 0x68684f, 0xe5e5d8, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> ZOMBIE_HORSE_SPAWN_EGG = ITEMS.register("zombie_horse_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.ZOMBIE_HORSE_MOB, 0x315234, 0x97c284, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> WILD_WOLF_SPAWN_EGG = ITEMS.register("wild_wolf_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.WILD_WOLF, 0x848589, 0x535251, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> FIRE_GHOST_SPAWN_EGG = ITEMS.register("fire_ghost_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.FIRE_GHOST, 0x9a3231, 0x641e1e, new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<ForgeSpawnEggItem> GOBLIN_SPAWN_EGG = ITEMS.register("goblin_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.GOBLIN, 0x5d8745, 0x554035, new Item.Properties().stacksTo(64)));
@@ -72,6 +102,15 @@ public class ItemsRegistry {
 
     public static final RegistryObject<ForgeSpawnEggItem> SCORPION_SPAWN_EGG = ITEMS.register("scorpion_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.SCORPION, 0x2a2e32, 0x2f3338, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> DESERT_SCORPION_SPAWN_EGG = ITEMS.register("desert_scorpion_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.DESERT_SCORPION, 0xc0a35a, 0x443a23, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> FROST_SCORPION_SPAWN_EGG = ITEMS.register("frost_scorpion_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.FROST_SCORPION, 0x245066, 0xffffff, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> NETHER_SCORPION_SPAWN_EGG = ITEMS.register("nether_scorpion_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.NETHER_SCORPION, 0x240f10, 0xff5d1d, new Item.Properties().stacksTo(64)));
 
     /**
      * Materials
@@ -93,10 +132,40 @@ public class ItemsRegistry {
     public static final RegistryObject<Item> BLACK_HORN = ITEMS.register("black_horn",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<Item> STURDY_SADDLE = ITEMS.register("sturdy_saddle",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
+    public static final RegistryObject<Item> HORSE_BLANKET = ITEMS.register("horse_blanket",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<Item> SCORPION_STING = ITEMS.register("scorpion_sting",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<Item> CHITIN = ITEMS.register("chitin",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<Item> SNOW_DUVET = ITEMS.register("snow_duvet",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<SmithingTemplateItem> SHRIKE_UPGRADE_SMITHING_TEMPLATE =
+            ITEMS.register("shrike_upgrade_smithing_template", () -> new SmithingTemplateItem(
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.applies_to")
+                            .withStyle(net.minecraft.ChatFormatting.BLUE),
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.ingredients")
+                            .withStyle(net.minecraft.ChatFormatting.BLUE),
+                    Component.translatable("upgrade.fangs_n_claws.shrike_upgrade")
+                            .withStyle(net.minecraft.ChatFormatting.GRAY),
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.base_slot_description"),
+                    Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.additions_slot_description"),
+                    java.util.List.of(
+                            new ResourceLocation("item/empty_armor_slot_helmet"),
+                            new ResourceLocation("item/empty_armor_slot_chestplate"),
+                            new ResourceLocation("item/empty_armor_slot_leggings"),
+                            new ResourceLocation("item/empty_armor_slot_boots")),
+                    java.util.List.of(
+                            new ResourceLocation("item/empty_slot_diamond"))));
+
+    public static final RegistryObject<Item> FUR = ITEMS.register("fur",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
     /**
@@ -110,6 +179,33 @@ public class ItemsRegistry {
             () -> new ScorpionArmorItem(ArmorItem.Type.LEGGINGS,   200));
     public static final RegistryObject<ScorpionArmorItem> SCORPION_BOOTS      = ITEMS.register("scorpion_boots",
             () -> new ScorpionArmorItem(ArmorItem.Type.BOOTS,      175));
+
+    public static final RegistryObject<FurArmorItem> FUR_HELMET     = ITEMS.register("fur_helmet",
+            () -> new FurArmorItem(ArmorItem.Type.HELMET,     165));
+    public static final RegistryObject<FurArmorItem> FUR_CHESTPLATE = ITEMS.register("fur_chestplate",
+            () -> new FurArmorItem(ArmorItem.Type.CHESTPLATE, 240));
+    public static final RegistryObject<FurArmorItem> FUR_LEGGINGS   = ITEMS.register("fur_leggings",
+            () -> new FurArmorItem(ArmorItem.Type.LEGGINGS,   225));
+    public static final RegistryObject<FurArmorItem> FUR_BOOTS      = ITEMS.register("fur_boots",
+            () -> new FurArmorItem(ArmorItem.Type.BOOTS,      195));
+
+    public static final RegistryObject<OwlArmorItem> OWL_HELMET     = ITEMS.register("owl_helmet",
+            () -> new OwlArmorItem(ArmorItem.Type.HELMET,     165));
+    public static final RegistryObject<OwlArmorItem> OWL_CHESTPLATE = ITEMS.register("owl_chestplate",
+            () -> new OwlArmorItem(ArmorItem.Type.CHESTPLATE, 240));
+    public static final RegistryObject<OwlArmorItem> OWL_LEGGINGS   = ITEMS.register("owl_leggings",
+            () -> new OwlArmorItem(ArmorItem.Type.LEGGINGS,   225));
+    public static final RegistryObject<OwlArmorItem> OWL_BOOTS      = ITEMS.register("owl_boots",
+            () -> new OwlArmorItem(ArmorItem.Type.BOOTS,      195));
+
+    public static final RegistryObject<ShrikeArmorItem> SHRIKE_HELMET     = ITEMS.register("shrike_helmet",
+            () -> new ShrikeArmorItem(ArmorItem.Type.HELMET,     363));
+    public static final RegistryObject<ShrikeArmorItem> SHRIKE_CHESTPLATE = ITEMS.register("shrike_chestplate",
+            () -> new ShrikeArmorItem(ArmorItem.Type.CHESTPLATE, 528));
+    public static final RegistryObject<ShrikeArmorItem> SHRIKE_LEGGINGS   = ITEMS.register("shrike_leggings",
+            () -> new ShrikeArmorItem(ArmorItem.Type.LEGGINGS,   495));
+    public static final RegistryObject<ShrikeArmorItem> SHRIKE_BOOTS      = ITEMS.register("shrike_boots",
+            () -> new ShrikeArmorItem(ArmorItem.Type.BOOTS,      429));
 
     /**
      * Weapons
@@ -128,6 +224,13 @@ public class ItemsRegistry {
     public static final RegistryObject<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",     FirePitchforkItem::new);
     public static final RegistryObject<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
     public static final RegistryObject<PoisonousDartItem>  POISONOUS_DART = ITEMS.register("poisonous_dart", PoisonousDartItem::new);
+
+    /**
+     * Totems
+     */
+    public static final RegistryObject<Item> TOTEM_OF_FROST = ITEMS.register("totem_of_frost",
+            () -> new Item(new Item.Properties().stacksTo(1)));
+
     public static final RegistryObject<EvilEyeItem>       EVIL_EYE       = ITEMS.register("evil_eye",       EvilEyeItem::new);
     public static final RegistryObject<VelocityArrowItem> VELOCITY_ARROW = ITEMS.register("velocity_arrow", VelocityArrowItem::new);
 

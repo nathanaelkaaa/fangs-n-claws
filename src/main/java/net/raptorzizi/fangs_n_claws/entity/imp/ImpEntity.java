@@ -179,7 +179,7 @@ public class ImpEntity extends Monster implements GeoEntity {
                     && pendingTarget != null && pendingTarget.isAlive()) {
                 if (this.getBoundingBox().inflate(0.15).intersects(pendingTarget.getBoundingBox())) {
                     super.doHurtTarget(pendingTarget);
-                    FlamebrandEffect.addFlamebrandStack(pendingTarget);
+                    FlamebrandEffect.addFlamebrandStack(pendingTarget, this);
                     dashHasHit    = true;
                     pendingTarget = null;
                 }

@@ -27,7 +27,8 @@ public class OwlbearRenderer extends GeoEntityRenderer<OwlbearEntity> {
             public void render(PoseStack poseStack, OwlbearEntity animatable, BakedGeoModel bakedModel,
                                @Nullable RenderType renderType, MultiBufferSource bufferSource,
                                @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-                RenderType eyesType = RenderType.eyes(EYES);
+                if (animatable.isSleeping()) return;
+                RenderType eyesType = RenderType.eyes(animatable.eyesTexture());
                 getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, eyesType,
                         bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, 1.0f, 1.0f, 1.0f, 1.0f);
             }
