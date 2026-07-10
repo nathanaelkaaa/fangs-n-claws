@@ -281,7 +281,59 @@
   "fangs_n_claws.configuration.spawn_weights.skeleton_horse.tooltip": "Spawn weight for Skeleton Horses (overworld, night). 0 = disabled.",
   "fangs_n_claws.configuration.spawn_weights.zombie_horse": "Zombie Horse",
   "fangs_n_claws.configuration.spawn_weights.zombie_horse.tooltip": "Spawn weight for Zombie Horses (overworld, night). 0 = disabled.",
+  "fangs_n_claws.configuration.spawn_limits": "Per-Dimension Spawn Limits",
+  "fangs_n_claws.configuration.spawn_limits.overworld": "Overworld",
+  "fangs_n_claws.configuration.spawn_limits.overworld.tooltip": "Max Fangs 'n Claws mob density in the Overworld. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
+  "fangs_n_claws.configuration.spawn_limits.the_nether": "The Nether",
+  "fangs_n_claws.configuration.spawn_limits.the_nether.tooltip": "Max Fangs 'n Claws mob density in the Nether. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
+  "fangs_n_claws.configuration.spawn_limits.twilight_forest": "Twilight Forest",
+  "fangs_n_claws.configuration.spawn_limits.twilight_forest.tooltip": "Max Fangs 'n Claws mob density in the Twilight Forest. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
 
   "item.fangs_n_claws.totem_of_frost": "Totem of Frost",
-  "item.fangs_n_claws.totem_of_frost.tooltip1": "§7When held, activates at ≤25% health: fully heals and freezes all nearby enemies"
+  "item.fangs_n_claws.totem_of_frost.tooltip1": "§7When held, activates at ≤25% health: fully heals and freezes all nearby enemies",
+
+  "jei.fangs_n_claws.owlbear": "The Owlbear roams forests and taigas (surface only). Feed a baby Owlbear salmon to tame it; a tamed baby behaves like a cat, sitting down to sleep. Each piece of Owlbear armor grants hidden Feather Falling, and the chestplate lets you flap and glide.",
+  "jei.fangs_n_claws.shrike": "A frost-touched Owlbear that spawns in snowy forests and snowy taigas. It fights mostly at range, loosing volleys of feathers and unleashing a freezing blizzard that pushes, slows and freezes. Shrikes drop Snow Duvet, used to upgrade Owl armor into Shrike armor.",
+  "jei.fangs_n_claws.scorpion": "Scorpions spawn across the Overworld. Right-click a baby Scorpion to tame it; it then rides on your head (sneak to dismount). A baby raised while tamed grows into an adult you can ride with a Sturdy Saddle: it has no jump but climbs walls. Heal a tamed Scorpion with Chitin.",
+  "jei.fangs_n_claws.desert_scorpion": "The Desert Scorpion spawns in desert biomes during the day. Like all scorpions, a tamed one can be ridden with a Sturdy Saddle and healed with Chitin.",
+  "jei.fangs_n_claws.frost_scorpion": "The Frost Scorpion spawns in snowy biomes. Like all scorpions, a tamed one can be ridden with a Sturdy Saddle and healed with Chitin.",
+  "jei.fangs_n_claws.nether_scorpion": "The Nether Scorpion spawns in the Crimson Forest and Nether Wastes. Like all scorpions, a tamed one can be ridden with a Sturdy Saddle and healed with Chitin.",
+
+  "jei.fangs_n_claws.giant_feather": "Dropped by Owlbears. Used to craft the Owl armor set and Velocity Arrows.",
+  "jei.fangs_n_claws.snow_duvet": "Dropped by Shrikes. Combined with the Shrike Upgrade Smithing Template to turn Owl armor into Shrike armor. The chestplate is upgraded with an Elytra instead of Snow Duvet.",
+  "jei.fangs_n_claws.chitin": "Dropped by Scorpions. Used to craft Scorpion armor and to heal tamed Scorpions.",
+  "jei.fangs_n_claws.fur": "Dropped by Wild Wolves. Used to craft the Fur armor set, which protects against cold.",
+  "jei.fangs_n_claws.shrike_upgrade_template": "Smithing template that upgrades Owl armor into Shrike armor. Helmet, leggings and boots are upgraded with Snow Duvet; the chestplate with an Elytra. Craft the template from Snow Duvet and Diamond.",
+
+  "jei.fangs_n_claws.heavy_claw": "Dropped by Owlbears, Shrikes and Werewolves. Used to craft the Catching Claw.",
+  "jei.fangs_n_claws.long_fang": "Dropped by Werewolves. Used to craft the Fang Dagger and the Bear Trap.",
+  "jei.fangs_n_claws.scorpion_sting": "Dropped by Scorpions. Used to craft Poisonous Darts.",
+  "jei.fangs_n_claws.black_horn": "Dropped by Hell Ogres. Used to craft the Hellfire Pitchfork.",
+  "jei.fangs_n_claws.spectral_essence": "Dropped by Ghosts and Fire Ghosts. Used to craft the Ghost Block.",
+  "jei.fangs_n_claws.vile_fat": "Dropped by Ogres. Smelts into a Slime Ball, can be used as furnace fuel, and is used to craft the Vile Lantern.",
+
+  "jei.fangs_n_claws.blowgun": "Fires Poisonous Darts. Hold to charge, release to shoot — a longer charge sends the dart faster and farther.",
+  "jei.fangs_n_claws.poisonous_dart": "Ammunition for the Blowgun. Applies Venom to whatever it hits. Crafted from Scorpion Sting.",
+  "jei.fangs_n_claws.fang_dagger": "A fast, light blade. Striking a target from behind inflicts Bleeding. Crafted from Long Fang.",
+  "jei.fangs_n_claws.netherite_dagger": "Upgraded Fang Dagger: backstabs inflict Bleeding II, and it is fire-resistant.",
+  "jei.fangs_n_claws.catching_claw": "Grappling weapon. Fire it to hook a target, then retrieve to launch the target toward where you are aiming. Crafted from Heavy Claw.",
+  "jei.fangs_n_claws.catching_claw_netherite": "Upgraded Catching Claw: fire-resistant and more durable, with the same hook-and-launch mechanic.",
+  "jei.fangs_n_claws.silver_sword": "The only weapon that can effectively kill a Werewolf.",
+  "jei.fangs_n_claws.fire_pitchfork": "Thrown like a trident. Hits inflict Flamebrand; on the 3rd stack the target explodes in flames. The explosion no longer harms the thrower.",
+  "jei.fangs_n_claws.hellfire_pitchfork": "Upgraded, fire-resistant pitchfork. Inflicts Hellfire Flamebrand; the target explodes in flames on the 3rd stack. Crafted with Black Horn.",
+  "jei.fangs_n_claws.evil_eye": "Thrown item. Blinds all nearby enemies on impact and instantly kills flying pests.",
+  "jei.fangs_n_claws.velocity_arrow": "A special arrow fired 20% faster than normal that violently launches whatever it strikes.",
+
+  "jei.fangs_n_claws.ghost_block": "A phantom block with no collision — you walk straight through it. Place a block inside it and the Ghost Block takes on that block's texture. Standing inside it blurs your vision. Crafted from Spectral Essence.",
+  "jei.fangs_n_claws.vile_lantern": "A bright light source (light level 15) that sits on the ground or hangs, like a lantern. It repels hostile mobs within about 6 blocks, shoving them away. Crafted from Vile Fat.",
+  "jei.fangs_n_claws.bear_trap": "A hidden trap. When a creature steps on it, it snaps shut, dealing 8 damage and inflicting Bleeding II for 10 seconds. Crafted with Long Fang.",
+
+  "jei.fangs_n_claws.sturdy_saddle": "A reinforced saddle used to ride a tamed adult Scorpion as well as any of the mod's horse mobs (Horse Bat, Nightmare Horse, Zombie Horse, Skeleton Horse). A ridden Scorpion cannot jump but can climb walls.",
+  "jei.fangs_n_claws.horse_blanket": "Armor for the mod's horses (Nightmare, Skeleton, Zombie Horse and Horse Bat). Equip it in their armor slot for extra protection; it also stops the horse from burning in sunlight.",
+  "jei.fangs_n_claws.totem_of_frost": "When held, it activates automatically at 25% health or below: it fully heals you and freezes every nearby enemy.",
+
+  "jei.fangs_n_claws.scorpion_armor": "Scorpion armor. Each piece grants immunity to one effect: helmet negates Nausea, chestplate negates Poison, leggings negate Venom, boots negate Hunger. Crafted from Chitin.",
+  "jei.fangs_n_claws.fur_armor": "Fur armor, warm gear. Wearing Fur reduces freezing in powder snow — a full set makes you immune. The helmet makes Wild Wolves ignore you; the boots keep you from sinking into powder snow. Crafted from Fur.",
+  "jei.fangs_n_claws.owl_armor": "Owl armor. Every piece grants hidden Feather Falling. The chestplate lets you flap upward (tap jump in mid-air) and glide (hold jump). Crafted from Giant Feather.",
+  "jei.fangs_n_claws.shrike_armor": "Shrike armor, an upgrade of Owl armor. Hidden Feather Falling on every piece plus +20% jump and fall-cushion stats. The chestplate works as an Elytra with an upward-and-forward flap boost. Made by upgrading Owl armor with the Shrike Upgrade Smithing Template."
 }

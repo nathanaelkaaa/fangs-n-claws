@@ -51,8 +51,10 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SCORPION_STING.get());
                         entries.accept(ItemsRegistry.CHITIN.get());
                         entries.accept(ItemsRegistry.SNOW_DUVET.get());
-                        entries.accept(ItemsRegistry.SHRIKE_UPGRADE_SMITHING_TEMPLATE.get());
                         entries.accept(ItemsRegistry.FUR.get());
+                        entries.accept(ItemsRegistry.VILE_FAT.get());
+                        entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
+                        entries.accept(ItemsRegistry.BLACK_HORN.get());
                         entries.accept(ItemsRegistry.SCORPION_HELMET.get());
                         entries.accept(ItemsRegistry.SCORPION_CHESTPLATE.get());
                         entries.accept(ItemsRegistry.SCORPION_LEGGINGS.get());
@@ -69,9 +71,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SHRIKE_CHESTPLATE.get());
                         entries.accept(ItemsRegistry.SHRIKE_LEGGINGS.get());
                         entries.accept(ItemsRegistry.SHRIKE_BOOTS.get());
-                        entries.accept(ItemsRegistry.VILE_FAT.get());
-                        entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
-                        entries.accept(ItemsRegistry.BLACK_HORN.get());
+                        entries.accept(ItemsRegistry.SHRIKE_UPGRADE_SMITHING_TEMPLATE.get());
                         entries.accept(ItemsRegistry.BLOWGUN.get());
                         entries.accept(ItemsRegistry.FANG_DAGGER.get());
                         entries.accept(ItemsRegistry.NETHERITE_DAGGER.get());

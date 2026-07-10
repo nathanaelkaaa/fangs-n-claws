@@ -50,7 +50,7 @@ public class ItemsRegistry {
             () -> new DeferredSpawnEggItem(EntityRegistry.OWLBEAR, 0x554030, 0x2d2625, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> SHRIKE_SPAWN_EGG =  ITEMS.register("shrike_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.SHRIKE, 0x9fb0bd, 0xe0edf3, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.SHRIKE, 0xd9e0e1, 0x626464, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> SILVER_SKELETON_SPAWN_EGG = ITEMS.register("silver_skeleton_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.SILVER_SKELETON, 0x7b7871, 0xc2c0be, new Item.Properties().stacksTo(64)));

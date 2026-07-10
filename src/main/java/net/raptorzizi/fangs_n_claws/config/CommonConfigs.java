@@ -1,11 +1,18 @@
 package net.raptorzizi.fangs_n_claws.config;
 
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.ModConfigSpec;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CommonConfigs {
 
     private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     public static final ModConfigSpec SPEC;
+
+    public static final Map<ResourceLocation, ModConfigSpec.IntValue> DIMENSION_CAPS = new LinkedHashMap<>();
 
     // Spawn toggles
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_GOBLIN;
@@ -181,6 +188,27 @@ public class CommonConfigs {
                 .define("allow_goblin_stealing", true);
 
         BUILDER.pop();
+
+        BUILDER.comment("Cap Fangs 'n Claws mob density per dimension.",
+                        "For each: -1 = unlimited, 0 = no F&C spawns, N = density cap (N scaled by loaded chunks / 289, like the vanilla mob cap).")
+                .translation("fangs_n_claws.configuration.spawn_limits")
+                .push("spawn_limits");
+
+        defineDimensionCap("minecraft:overworld",   "overworld",   40);
+        defineDimensionCap("minecraft:the_nether",  "the_nether",  20);
+
+        if (ModList.get().isLoaded("twilightforest")) {
+            defineDimensionCap("twilightforest:twilight_forest", "twilight_forest", 15);
+        }
+
+        BUILDER.pop();
         SPEC = BUILDER.build();
+    }
+
+    private static void defineDimensionCap(String dimensionId, String key, int defaultCap) {
+        ModConfigSpec.IntValue value = BUILDER
+                .translation("fangs_n_claws.configuration.spawn_limits." + key)
+                .defineInRange(key, defaultCap, -1, 100000);
+        DIMENSION_CAPS.put(ResourceLocation.parse(dimensionId), value);
     }
 }

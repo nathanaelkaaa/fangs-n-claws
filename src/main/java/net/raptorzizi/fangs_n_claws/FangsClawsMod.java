@@ -60,6 +60,7 @@ import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
 import net.raptorzizi.fangs_n_claws.entity.shrike.BabyShrikeEntity;
+import net.raptorzizi.fangs_n_claws.util.DimensionSpawnCap;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
@@ -419,6 +420,11 @@ public class FangsClawsMod {
         MobSpawnType type = event.getSpawnType();
 
         if (type == MobSpawnType.NATURAL || type == MobSpawnType.CHUNK_GENERATION) {
+            if (DimensionSpawnCap.isOurMob(event.getEntity()) && DimensionSpawnCap.isOverCap(serverLevel)) {
+                event.setSpawnCancelled(true);
+                return;
+            }
+
             var rules = serverLevel.getGameRules();
             boolean cancel = false;
 
@@ -516,7 +522,7 @@ public class FangsClawsMod {
                 && !event.isSpawnCancelled()
                 && !goblin.isPassenger()
                 && serverLevel.getGameRules().getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF)
-                && serverLevel.random.nextInt(1) == 0) {
+                && serverLevel.random.nextInt(20) == 0) { // goblin jockey : 1/20
 
             WildWolfEntity wolf = EntityRegistry.WILD_WOLF.get().create(serverLevel);
             if (wolf != null) {
