@@ -3,6 +3,10 @@
   "minVersion": "0.8",
   "package": "net.raptorzizi.fangs_n_claws.mixin",
   "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "StructurePieceMixin",
+    "FeatureMixin"
+  ],
   "client": [
     "client.PlayerModelMixin"
   ],

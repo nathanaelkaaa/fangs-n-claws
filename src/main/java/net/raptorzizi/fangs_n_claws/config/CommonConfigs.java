@@ -37,12 +37,15 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_NIGHTMARE_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_MIMIC;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
 
     public static final ModConfigSpec.BooleanValue VANILLA_SKELETON_HORSE;
     public static final ModConfigSpec.BooleanValue VANILLA_ZOMBIE_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_GOBLIN_STEALING;
+
+    public static final ModConfigSpec.IntValue MIMIC_SPAWN_CHANCE;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -158,6 +161,11 @@ public class CommonConfigs {
                 .translation("fangs_n_claws.configuration.spawn_toggles.wild_wolf")
                 .define("allow_wild_wolf", true);
 
+        ALLOW_SPAWN_MIMIC = BUILDER
+                .comment("Allow Mimics to replace loot chests in structures (also /gamerule allowSpawnMimic). See mimic_spawn_chance for the rate.")
+                .translation("fangs_n_claws.configuration.spawn_toggles.mimic")
+                .define("allow_mimic", true);
+
         BUILDER.pop();
 
         BUILDER.comment("Mob behaviour toggles. Each mirrors a /gamerule of the same name — changing either applies.").push("behavior");
@@ -186,6 +194,14 @@ public class CommonConfigs {
                 .comment("Allow Goblins to steal items from players' inventories (also /gamerule allowGoblinStealing)")
                 .translation("fangs_n_claws.configuration.behavior.allow_goblin_stealing")
                 .define("allow_goblin_stealing", true);
+
+        MIMIC_SPAWN_CHANCE = BUILDER
+                .comment("When a loot chest is generated in a structure (stronghold, mineshaft, temple, dungeon, ...),",
+                         "it has a 1/x chance of being replaced by a Mimic that steals the chest's loot.",
+                         "Higher value = fewer mimics. 1 = every structure chest is a mimic.",
+                         "Set very high (e.g. 100000) to effectively disable structure mimics.")
+                .translation("fangs_n_claws.configuration.behavior.mimic_spawn_chance")
+                .defineInRange("mimic_spawn_chance", 20, 1, 100000);
 
         BUILDER.pop();
 

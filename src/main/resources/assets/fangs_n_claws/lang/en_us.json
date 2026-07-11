@@ -2,6 +2,7 @@
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
 
   "item.fangs_n_claws.ghost_spawn_egg": "Ghost Spawn Egg",
+  "item.fangs_n_claws.mimic_spawn_egg": "Mimic Spawn Egg",
   "item.fangs_n_claws.fire_ghost_spawn_egg": "Fire Ghost Spawn Egg",
   "item.fangs_n_claws.evil_bat_spawn_egg": "Evil Bat Spawn Egg",
   "item.fangs_n_claws.ogre_spawn_egg": "Ogre Spawn Egg",
@@ -127,6 +128,7 @@
   "entity.fangs_n_claws.wild_wolf": "Wild Wolf",
   "item.fangs_n_claws.wild_wolf_spawn_egg": "Wild Wolf Spawn Egg",
   "entity.fangs_n_claws.ghost": "Ghost",
+  "entity.fangs_n_claws.mimic": "Mimic",
   "entity.fangs_n_claws.fire_ghost": "Fire Ghost",
   "entity.fangs_n_claws.desert_scorpion": "Desert Scorpion",
   "entity.fangs_n_claws.frost_scorpion": "Frost Scorpion",
@@ -215,6 +217,8 @@
   "fangs_n_claws.configuration.spawn_toggles.nightmare_horse.tooltip": "If false, Nightmare Horses will never spawn naturally. Also controllable per-world via /gamerule allowSpawnNightmareHorse.",
   "fangs_n_claws.configuration.spawn_toggles.wild_wolf": "Allow Wild Wolf Spawning",
   "fangs_n_claws.configuration.spawn_toggles.wild_wolf.tooltip": "If false, Wild Wolves will never spawn naturally. Also controllable per-world via /gamerule allowSpawnWildWolf.",
+  "fangs_n_claws.configuration.spawn_toggles.mimic": "Allow Mimic Spawning",
+  "fangs_n_claws.configuration.spawn_toggles.mimic.tooltip": "If false, Mimics will never replace structure loot chests. Also controllable per-world via /gamerule allowSpawnMimic. Rate is set by the Structure Mimic Chance in Behaviors.",
   "fangs_n_claws.configuration.behavior.allow_natural_spawn_skeleton_horse": "Allow Skeleton Horse Natural Spawning",
   "fangs_n_claws.configuration.behavior.allow_natural_spawn_skeleton_horse.tooltip": "If false, Skeleton Horses won't spawn naturally at night (trap still works). Applies to either version. Also /gamerule allowNaturalSpawnSkeletonHorse.",
   "fangs_n_claws.configuration.behavior.allow_natural_spawn_zombie_horse": "Allow Zombie Horse Natural Spawning",
@@ -288,6 +292,9 @@
   "fangs_n_claws.configuration.spawn_limits.the_nether.tooltip": "Max Fangs 'n Claws mob density in the Nether. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
   "fangs_n_claws.configuration.spawn_limits.twilight_forest": "Twilight Forest",
   "fangs_n_claws.configuration.spawn_limits.twilight_forest.tooltip": "Max Fangs 'n Claws mob density in the Twilight Forest. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
+
+  "fangs_n_claws.configuration.behavior.mimic_spawn_chance": "Structure Mimic Chance (1/x)",
+  "fangs_n_claws.configuration.behavior.mimic_spawn_chance.tooltip": "A loot chest generated in a structure has a 1/x chance of being replaced by a Mimic that steals its loot. Higher = fewer mimics. 1 = every structure chest. Set very high to disable.",
 
   "item.fangs_n_claws.totem_of_frost": "Totem of Frost",
   "item.fangs_n_claws.totem_of_frost.tooltip1": "§7When held, activates at ≤25% health: fully heals and freezes all nearby enemies",

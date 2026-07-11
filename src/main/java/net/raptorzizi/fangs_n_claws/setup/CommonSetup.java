@@ -40,6 +40,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.mimic.MimicEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
@@ -162,6 +163,7 @@ public class CommonSetup {
         event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.ICE_GOLEM.get(),       GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.GHOST.get(),           GhostEntity.prepareAttributes().build());
+        event.put(EntityRegistry.MIMIC.get(),           MimicEntity.prepareAttributes().build());
         event.put(EntityRegistry.FIRE_GHOST.get(),      FireGhostEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOBLIN.get(),          GoblinEntity.prepareAttributes().build());
         event.put(EntityRegistry.DART_GOBLIN.get(),     DartGoblinEntity.prepareAttributes().build());
