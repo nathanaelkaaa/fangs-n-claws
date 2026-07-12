@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:horse_bat_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.taming.lent_wings.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.taming.lent_wings.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:taming/root"
+}

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:totem_of_frost"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.frozen_savior.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.frozen_savior.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:forge/root"
+}

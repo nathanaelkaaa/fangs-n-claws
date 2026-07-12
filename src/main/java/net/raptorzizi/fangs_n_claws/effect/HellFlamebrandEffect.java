@@ -46,6 +46,7 @@ public class HellFlamebrandEffect extends FlamebrandEffect {
         float baseDamage = 12.0f;
 
         UUID sourceId = consumeSource(entity);
+        grantPyromaniac(level, sourceId);
 
         AABB box = entity.getBoundingBox().inflate(radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box)) {

@@ -156,6 +156,24 @@
       { "name": "fangs_n_claws:owlbear/owlbear_flap_3", "weight": 1 }
     ]
   },
+  "owlbear.hurt": {
+    "subtitle": "subtitles.entity.owlbear.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_hurt" }
+    ]
+  },
+  "baby.owlbear.death": {
+    "subtitle": "subtitles.entity.baby.owlbear.death",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/baby_owlbear_death" }
+    ]
+  },
+  "baby.owlbear.hurt": {
+    "subtitle": "subtitles.entity.baby.owlbear.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/baby_owlbear_hurt" }
+    ]
+  },
   "generic.heavy_impact": {
     "subtitle": "subtitles.entity.generic.heavy_impact",
     "sounds": [
@@ -172,12 +190,6 @@
     "subtitle": "subtitles.entity.generic.rock_impact",
     "sounds": [
       { "name": "fangs_n_claws:rock_impact" }
-    ]
-  },
-  "owlbear.hurt": {
-    "subtitle": "subtitles.entity.owlbear.hurt",
-    "sounds": [
-      { "name": "fangs_n_claws:owlbear/owlbear_hurt" }
     ]
   },
   "werewolf.ambient": {
@@ -215,6 +227,18 @@
     "sounds": [
       { "name": "fangs_n_claws:werewolf/werewolf_death1", "weight": 1 },
       { "name": "fangs_n_claws:werewolf/werewolf_death2", "weight": 1 }
+    ]
+  },
+  "mimic.death": {
+    "subtitle": "subtitles.entity.mimic.death",
+    "sounds": [
+      { "name": "fangs_n_claws:mimic/mimic_death"}
+    ]
+  },
+  "mimic.open": {
+    "subtitle": "subtitles.entity.mimic.open",
+    "sounds": [
+      { "name": "fangs_n_claws:mimic/mimic_open"}
     ]
   }
 }

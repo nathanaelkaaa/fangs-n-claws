@@ -10,6 +10,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,13 +26,15 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -106,6 +111,7 @@ public class MimicEntity extends Monster implements GeoEntity {
             if (!this.level().isClientSide) {
                 if (player.getAbilities().instabuild || player.isSpectator()) {
                     setRevealed(true);
+                    playOpenSound();
                 } else {
                     beginCatch(player);
                 }
@@ -131,14 +137,28 @@ public class MimicEntity extends Monster implements GeoEntity {
         this.yBodyRot = yaw;
         this.yHeadRot = yaw;
 
+        playOpenSound();
         triggerAnim("main", "catch");
+
+        if (player instanceof ServerPlayer sp) {
+            FncAdvancements.grant(sp, "forge/fake_treasure");
+        }
+    }
+
+    private void playOpenSound() {
+        this.playSound(SoundsRegistry.MIMIC_OPEN.get(), 1.0f, 1.0f);
     }
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
+        if (source.getDirectEntity() instanceof LivingEntity attacker
+                && attacker.getMainHandItem().getItem() instanceof AxeItem) {
+            amount *= 1.5f;
+        }
         boolean result = super.hurt(source, amount);
         if (result && !this.level().isClientSide && !isRevealed()) {
             setRevealed(true);
+            playOpenSound();
         }
         return result;
     }
@@ -231,6 +251,8 @@ public class MimicEntity extends Monster implements GeoEntity {
 
         this.setDeltaMovement(dir.x * 0.7, 0.55, dir.z * 0.7);
         this.hasImpulse = true;
+        float jumpPitch = 0.8f + (this.random.nextFloat() - 0.5f) * 0.2f;
+        this.playSound(SoundEvents.CHEST_OPEN, 1.0f, jumpPitch);
         triggerAnim("main", "jump");
         jumpCooldown = 25 + this.random.nextInt(15);
     }
@@ -254,6 +276,16 @@ public class MimicEntity extends Monster implements GeoEntity {
     @Override
     public boolean removeWhenFarAway(double distanceToClosestPlayer) {
         return false;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return SoundEvents.SHIELD_BLOCK;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsRegistry.MIMIC_DEATH.get();
     }
 
     public void consumeChest(BlockPos chestPos) {

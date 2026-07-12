@@ -1,0 +1,100 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:spectral_essence"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.progression.bestiary.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.progression.bestiary.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "goblin": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:goblin"
+        }
+      }
+    },
+    "ogre": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:ogre"
+        }
+      }
+    },
+    "golem": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:golem"
+        }
+      }
+    },
+    "owlbear": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:owlbear"
+        }
+      }
+    },
+    "shrike": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:shrike"
+        }
+      }
+    },
+    "werewolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:werewolf"
+        }
+      }
+    },
+    "ghost": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:ghost"
+        }
+      }
+    },
+    "imp": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:imp"
+        }
+      }
+    },
+    "scorpion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:scorpion"
+        }
+      }
+    },
+    "silver_skeleton": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:silver_skeleton"
+        }
+      }
+    }
+  },
+  "parent": "fangs_n_claws:progression/root"
+}

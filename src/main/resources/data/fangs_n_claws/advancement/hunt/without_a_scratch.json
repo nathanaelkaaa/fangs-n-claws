@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:black_horn"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.hunt.without_a_scratch.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.hunt.without_a_scratch.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:hunt/root"
+}

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:owlbear_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.taming.cozy_nest.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.taming.cozy_nest.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:taming/root"
+}

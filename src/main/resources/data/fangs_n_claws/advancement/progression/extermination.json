@@ -1,0 +1,188 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:evil_eye"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.progression.extermination.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.progression.extermination.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "golem": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:golem"
+        }
+      }
+    },
+    "ice_golem": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:ice_golem"
+        }
+      }
+    },
+    "ogre": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:ogre"
+        }
+      }
+    },
+    "cave_ogre": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:cave_ogre"
+        }
+      }
+    },
+    "hell_ogre": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:hell_ogre"
+        }
+      }
+    },
+    "werewolf": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:werewolf"
+        }
+      }
+    },
+    "werevillager": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:werevillager"
+        }
+      }
+    },
+    "owlbear": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:owlbear"
+        }
+      }
+    },
+    "shrike": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:shrike"
+        }
+      }
+    },
+    "silver_skeleton": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:silver_skeleton"
+        }
+      }
+    },
+    "evil_bat": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:evil_bat"
+        }
+      }
+    },
+    "ghost": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:ghost"
+        }
+      }
+    },
+    "fire_ghost": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:fire_ghost"
+        }
+      }
+    },
+    "mimic": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:mimic"
+        }
+      }
+    },
+    "imp": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:imp"
+        }
+      }
+    },
+    "goblin": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:goblin"
+        }
+      }
+    },
+    "dart_goblin": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:dart_goblin"
+        }
+      }
+    },
+    "scorpion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:scorpion"
+        }
+      }
+    },
+    "desert_scorpion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:desert_scorpion"
+        }
+      }
+    },
+    "frost_scorpion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:frost_scorpion"
+        }
+      }
+    },
+    "nether_scorpion": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "fangs_n_claws:nether_scorpion"
+        }
+      }
+    }
+  },
+  "parent": "fangs_n_claws:progression/bestiary"
+}

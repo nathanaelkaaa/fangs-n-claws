@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:fur_chestplate"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.progression.hunter_geared.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.progression.hunter_geared.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "fangs_n_claws:fur_helmet",
+              "fangs_n_claws:fur_chestplate",
+              "fangs_n_claws:fur_leggings",
+              "fangs_n_claws:fur_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "fangs_n_claws:progression/skin_of_beast"
+}

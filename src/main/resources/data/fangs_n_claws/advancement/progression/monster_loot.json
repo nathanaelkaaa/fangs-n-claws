@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:scorpion_sting"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.progression.monster_loot.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.progression.monster_loot.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "fangs_n_claws:long_fang",
+              "fangs_n_claws:scorpion_sting",
+              "fangs_n_claws:black_horn",
+              "fangs_n_claws:giant_feather",
+              "fangs_n_claws:snow_duvet"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "fangs_n_claws:progression/root"
+}

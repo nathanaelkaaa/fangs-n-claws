@@ -3,6 +3,7 @@ package net.raptorzizi.fangs_n_claws.item;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -18,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -54,6 +56,9 @@ public class NetheriteFangDaggerItem extends SwordItem {
                 int cooldown = Math.round(BACKSTAB_COOLDOWN_TICKS * cooldownMultiplier);
 
                 target.addEffect(new MobEffectInstance(MobEffectsRegistry.BLEEDING, 200, 1));
+                if (player instanceof ServerPlayer sp) {
+                    FncAdvancements.grant(sp, "hunt/root");
+                }
                 player.getCooldowns().addCooldown(stack.getItem(), cooldown);
                 target.level().playSound(null,
                         target.getX(), target.getY(), target.getZ(),

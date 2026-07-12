@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:shrike_chestplate"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.wind_master.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.wind_master.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:forge/take_flight"
+}

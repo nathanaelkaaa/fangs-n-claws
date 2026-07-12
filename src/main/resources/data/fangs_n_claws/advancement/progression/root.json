@@ -1,0 +1,41 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:scorpion_sting"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.progression.root.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.progression.root.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_material": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "fangs_n_claws:fur",
+              "fangs_n_claws:long_fang",
+              "fangs_n_claws:scorpion_sting",
+              "fangs_n_claws:giant_feather",
+              "fangs_n_claws:black_horn",
+              "fangs_n_claws:snow_duvet",
+              "fangs_n_claws:chitin",
+              "fangs_n_claws:vile_fat",
+              "fangs_n_claws:spectral_essence",
+              "fangs_n_claws:heavy_claw"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "fangs_n_claws:root"
+}

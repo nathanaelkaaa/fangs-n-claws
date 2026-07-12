@@ -1,0 +1,52 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:shrike_chestplate"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.metamorphosis.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.metamorphosis.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "craft_shrike_helmet_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_helmet_smithing"
+      }
+    },
+    "craft_shrike_chestplate_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_chestplate_smithing"
+      }
+    },
+    "craft_shrike_leggings_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_leggings_smithing"
+      }
+    },
+    "craft_shrike_boots_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_boots_smithing"
+      }
+    }
+  },
+  "parent": "fangs_n_claws:forge/winter_feathers",
+  "requirements": [
+    [
+      "craft_shrike_helmet_smithing",
+      "craft_shrike_chestplate_smithing",
+      "craft_shrike_leggings_smithing",
+      "craft_shrike_boots_smithing"
+    ]
+  ]
+}

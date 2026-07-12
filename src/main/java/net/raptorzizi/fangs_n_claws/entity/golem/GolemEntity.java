@@ -19,6 +19,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -78,6 +79,7 @@ public class GolemEntity extends Monster implements GeoEntity {
 
     protected Set<Block> getRegenBlocks() { return REGEN_BLOCKS; }
     protected BlockState getBodyBlockState() { return Blocks.PACKED_MUD.defaultBlockState(); }
+    protected SoundEvent getBodyHitSound() { return SoundEvents.MUD_HIT; }
 
     private static final EntityDataAccessor<Boolean> IS_SLEEPING = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> GOLEM_STATE = SynchedEntityData.defineId(GolemEntity.class, EntityDataSerializers.INT);
@@ -231,6 +233,12 @@ public class GolemEntity extends Monster implements GeoEntity {
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
         if (isInvulnerableTo(source)) return false;
+
+        if (source.getDirectEntity() instanceof LivingEntity attacker
+                && attacker.getMainHandItem().getItem() instanceof ShovelItem) {
+            amount *= 2.0f;
+        }
+
         int state = getGolemState();
         if (state == STATE_VULNERABLE) {
             boolean damaged = super.hurt(source, amount);
@@ -240,7 +248,7 @@ public class GolemEntity extends Monster implements GeoEntity {
 
         if (state == STATE_NORMAL && !level().isClientSide) {
             setBodyHealth(Math.max(0f, getBodyHealth() - amount));
-            playSound(SoundEvents.MUD_HIT, 0.9f, 0.85f + this.random.nextFloat() * 0.3f);
+            playSound(getBodyHitSound(), 0.9f, 0.85f + this.random.nextFloat() * 0.3f);
 
             Entity attacker = source.getEntity();
             double px = attacker != null ? (this.getX() + attacker.getX()) * 0.5 : this.getX();
@@ -440,7 +448,7 @@ public class GolemEntity extends Monster implements GeoEntity {
             if (wakeUpTick == 42)
                 this.playSound(SoundEvents.WARDEN_DIG,   1.6f, 0.90f);
             if (wakeUpTick == 56)
-                this.playSound(SoundEvents.MUD_HIT,      1.6f, 0.55f);
+                this.playSound(getBodyHitSound(),        1.6f, 0.55f);
 
             if (wakeUpTick % 4 == 0) {
                 float progress = Math.min(1f, wakeUpTick / (float) WAKE_UP_TOTAL_TICKS);

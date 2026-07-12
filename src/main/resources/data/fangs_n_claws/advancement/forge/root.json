@@ -1,0 +1,234 @@
+{
+  "parent": "fangs_n_claws:root",
+  "display": {
+    "icon": {
+      "id": "minecraft:crafting_table"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.root.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.root.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "craft_beartrap": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:beartrap"
+      }
+    },
+    "craft_catching_claw": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:catching_claw"
+      }
+    },
+    "craft_catching_claw_netherite": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:catching_claw_netherite"
+      }
+    },
+    "craft_fang_dagger": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:fang_dagger"
+      }
+    },
+    "craft_fur_boots": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:fur_boots"
+      }
+    },
+    "craft_fur_chestplate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:fur_chestplate"
+      }
+    },
+    "craft_fur_helmet": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:fur_helmet"
+      }
+    },
+    "craft_fur_leggings": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:fur_leggings"
+      }
+    },
+    "craft_fur_to_wool": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:fur_to_wool"
+      }
+    },
+    "craft_ghost_block": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:ghost_block"
+      }
+    },
+    "craft_hellfire_pitchfork": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:hellfire_pitchfork"
+      }
+    },
+    "craft_horse_blanket": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:horse_blanket"
+      }
+    },
+    "craft_netherite_dagger": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:netherite_dagger"
+      }
+    },
+    "craft_owl_boots": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:owl_boots"
+      }
+    },
+    "craft_owl_chestplate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:owl_chestplate"
+      }
+    },
+    "craft_owl_helmet": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:owl_helmet"
+      }
+    },
+    "craft_owl_leggings": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:owl_leggings"
+      }
+    },
+    "craft_poisonous_dart": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:poisonous_dart"
+      }
+    },
+    "craft_scorpion_boots": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:scorpion_boots"
+      }
+    },
+    "craft_scorpion_chestplate": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:scorpion_chestplate"
+      }
+    },
+    "craft_scorpion_helmet": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:scorpion_helmet"
+      }
+    },
+    "craft_scorpion_leggings": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:scorpion_leggings"
+      }
+    },
+    "craft_shrike_boots_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_boots_smithing"
+      }
+    },
+    "craft_shrike_chestplate_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_chestplate_smithing"
+      }
+    },
+    "craft_shrike_helmet_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_helmet_smithing"
+      }
+    },
+    "craft_shrike_leggings_smithing": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_leggings_smithing"
+      }
+    },
+    "craft_shrike_upgrade_smithing_template": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:shrike_upgrade_smithing_template"
+      }
+    },
+    "craft_velocity_arrow": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:velocity_arrow"
+      }
+    },
+    "craft_vile_fat_smelting": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:vile_fat_smelting"
+      }
+    },
+    "craft_vile_lantern": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:vile_lantern"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "craft_beartrap",
+      "craft_catching_claw",
+      "craft_catching_claw_netherite",
+      "craft_fang_dagger",
+      "craft_fur_boots",
+      "craft_fur_chestplate",
+      "craft_fur_helmet",
+      "craft_fur_leggings",
+      "craft_fur_to_wool",
+      "craft_ghost_block",
+      "craft_hellfire_pitchfork",
+      "craft_horse_blanket",
+      "craft_netherite_dagger",
+      "craft_owl_boots",
+      "craft_owl_chestplate",
+      "craft_owl_helmet",
+      "craft_owl_leggings",
+      "craft_poisonous_dart",
+      "craft_scorpion_boots",
+      "craft_scorpion_chestplate",
+      "craft_scorpion_helmet",
+      "craft_scorpion_leggings",
+      "craft_shrike_boots_smithing",
+      "craft_shrike_chestplate_smithing",
+      "craft_shrike_helmet_smithing",
+      "craft_shrike_leggings_smithing",
+      "craft_shrike_upgrade_smithing_template",
+      "craft_velocity_arrow",
+      "craft_vile_fat_smelting",
+      "craft_vile_lantern"
+    ]
+  ]
+}

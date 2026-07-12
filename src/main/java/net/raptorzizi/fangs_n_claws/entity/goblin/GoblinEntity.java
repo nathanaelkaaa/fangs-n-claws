@@ -3,9 +3,11 @@ package net.raptorzizi.fangs_n_claws.entity.goblin;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -195,6 +197,9 @@ public class GoblinEntity extends Monster implements GeoEntity {
         player.getInventory().setItem(slot, ItemStack.EMPTY);
         this.setItemSlot(EquipmentSlot.OFFHAND, stolen);
         this.playSound(SoundsRegistry.GOBLIN_CELEBRATE.get(), 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
+        if (player instanceof ServerPlayer sp) {
+            FncAdvancements.grant(sp, "forge/smooth_criminal");
+        }
 
         stealFleeMode  = true;
         fleeTick       = STEAL_FLEE_TICKS;

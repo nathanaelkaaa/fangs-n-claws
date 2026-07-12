@@ -26,7 +26,6 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> OGRE_ROAR =
             register("ogre.roar");
 
-    //TODO Create ogre sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> OGRE_AMBIENT =
             register("ogre.ambient");
     public static final Supplier<SoundEvent> OGRE_HURT =
@@ -44,6 +43,11 @@ public class SoundsRegistry {
             register("owlbear.flap");
     public static final Supplier<SoundEvent> OWLBEAR_SLASH =
             register("owlbear.slash");
+
+    public static final Supplier<SoundEvent> BABY_OWLBEAR_HURT =
+            register("baby.owlbear.hurt");
+    public static final Supplier<SoundEvent> BABY_OWLBEAR_DEATH =
+            register("baby.owlbear.death");
 
     public static final Supplier<SoundEvent> BLOWGUN_SHOOT =
             register("blowgun.shoot");
@@ -77,7 +81,6 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> GOLEM_DEATH =
             register("golem.death");
 
-    //TODO Create werewolf sounds (actual are from mo creatures)
     public static final Supplier<SoundEvent> WEREWOLF_AMBIENT =
             register("werewolf.ambient");
     public static final Supplier<SoundEvent> WEREWOLF_HOWL =
@@ -88,6 +91,11 @@ public class SoundsRegistry {
             register("werewolf.hurt");
     public static final Supplier<SoundEvent> WEREWOLF_DEATH =
             register("werewolf.death");
+
+    public static final Supplier<SoundEvent> MIMIC_OPEN =
+            register("mimic.open");
+    public static final Supplier<SoundEvent> MIMIC_DEATH =
+            register("mimic.death");
 
     private static Supplier<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(FangsClawsMod.id(name)));

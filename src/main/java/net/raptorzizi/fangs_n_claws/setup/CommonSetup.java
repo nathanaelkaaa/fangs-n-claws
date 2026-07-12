@@ -13,6 +13,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -339,6 +340,9 @@ public class CommonSetup {
         ItemStack displayItem = totem.copy();
         totem.shrink(1);
 
+        if (player instanceof ServerPlayer frostPlayer) {
+            FncAdvancements.grant(frostPlayer, "forge/frozen_savior");
+        }
         if (player.level() instanceof ServerLevel serverLevel && player instanceof ServerPlayer serverPlayer) {
             PacketDistributor.sendToPlayer(serverPlayer, new TotemFrostPayload(displayItem));
 

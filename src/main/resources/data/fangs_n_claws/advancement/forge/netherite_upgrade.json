@@ -1,0 +1,38 @@
+{
+  "parent": "fangs_n_claws:forge/root",
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:netherite_dagger"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.netherite_upgrade.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.netherite_upgrade.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "netherite_dagger": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:netherite_dagger"
+      }
+    },
+    "catching_claw_netherite": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:catching_claw_netherite"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "netherite_dagger",
+      "catching_claw_netherite"
+    ]
+  ]
+}

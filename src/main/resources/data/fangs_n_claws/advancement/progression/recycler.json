@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "id": "fangs_n_claws:vile_fat"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.recycler.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.recycler.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "fangs_n_claws:vile_fat"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "parent": "fangs_n_claws:progression/root"
+}
