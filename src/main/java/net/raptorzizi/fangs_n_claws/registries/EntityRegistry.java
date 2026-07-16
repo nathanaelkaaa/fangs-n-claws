@@ -209,6 +209,14 @@ public class EntityRegistry {
                     .clientTrackingRange(64)
                     .build("evil_eye_projectile"));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile>> TOMAHAWK_PROJECTILE =
+            ENTITIES.register("tomahawk_projectile", () -> EntityType.Builder
+                    .<net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile>of(
+                            net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .build("tomahawk_projectile"));
+
     public static final DeferredHolder<EntityType<?>, EntityType<VelocityArrowEntity>> VELOCITY_ARROW_ENTITY =
             ENTITIES.register("velocity_arrow", () -> EntityType.Builder
                     .<VelocityArrowEntity>of(VelocityArrowEntity::new, MobCategory.MISC)

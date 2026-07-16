@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {"item": "fangs_n_claws:owlbear_meat"},
+  "result": {
+    "id": "fangs_n_claws:cooked_owlbear_meat"
+  },
+  "experience": 0.35,
+  "cookingtime": 600
+}

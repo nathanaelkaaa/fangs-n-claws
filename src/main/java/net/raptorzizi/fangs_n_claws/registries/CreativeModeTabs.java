@@ -52,6 +52,8 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SCORPION_STING.get());
                         entries.accept(ItemsRegistry.CHITIN.get());
                         entries.accept(ItemsRegistry.SNOW_DUVET.get());
+                        entries.accept(ItemsRegistry.OWLBEAR_MEAT.get());
+                        entries.accept(ItemsRegistry.COOKED_OWLBEAR_MEAT.get());
                         entries.accept(ItemsRegistry.FUR.get());
                         entries.accept(ItemsRegistry.VILE_FAT.get());
                         entries.accept(ItemsRegistry.SPECTRAL_ESSENCE.get());
@@ -79,6 +81,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.CATCHING_CLAW.get());
                         entries.accept(ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
                         entries.accept(ItemsRegistry.SILVER_SWORD.get());
+                        entries.accept(ItemsRegistry.TOMAHAWK.get());
                         entries.accept(ItemsRegistry.FIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.HELLFIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());

@@ -133,6 +133,16 @@ public class ItemsRegistry {
     public static final Supplier<Item> SNOW_DUVET = ITEMS.register("snow_duvet",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> OWLBEAR_MEAT = ITEMS.register("owlbear_meat",
+            () -> new Item(new Item.Properties().food(
+                    new net.minecraft.world.food.FoodProperties.Builder()
+                            .nutrition(4).saturationModifier(0.4f).build())));
+
+    public static final Supplier<Item> COOKED_OWLBEAR_MEAT = ITEMS.register("cooked_owlbear_meat",
+            () -> new Item(new Item.Properties().food(
+                    new net.minecraft.world.food.FoodProperties.Builder()
+                            .nutrition(10).saturationModifier(1.0f).build())));
+
     public static final Supplier<SmithingTemplateItem> SHRIKE_UPGRADE_SMITHING_TEMPLATE =
             ITEMS.register("shrike_upgrade_smithing_template", () -> new SmithingTemplateItem(
                     Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.applies_to")
@@ -173,6 +183,7 @@ public class ItemsRegistry {
     public static final Supplier<SilverSwordItem>       SILVER_SWORD       = ITEMS.register("silver_sword",       SilverSwordItem::new);
     public static final Supplier<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",    FirePitchforkItem::new);
     public static final Supplier<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
+    public static final Supplier<net.raptorzizi.fangs_n_claws.item.TomahawkItem> TOMAHAWK = ITEMS.register("tomahawk", net.raptorzizi.fangs_n_claws.item.TomahawkItem::new);
 
     /**
      * Armor

@@ -333,5 +333,7 @@ public class FangsClawsModClient {
         event.registerEntityRenderer(EntityRegistry.HELLFIRE_PITCHFORK_ENTITY.get(), HellFirePitchforkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.TOMAHAWK_PROJECTILE.get(),
+                net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer::new);
     }
 }

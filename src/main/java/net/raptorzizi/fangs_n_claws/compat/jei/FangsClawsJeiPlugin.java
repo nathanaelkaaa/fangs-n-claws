@@ -46,6 +46,7 @@ public class FangsClawsJeiPlugin implements IModPlugin {
         info(reg, "catching_claw",    ItemsRegistry.CATCHING_CLAW.get());
         info(reg, "catching_claw_netherite", ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
         info(reg, "silver_sword",     ItemsRegistry.SILVER_SWORD.get());
+        info(reg, "tomahawk",         ItemsRegistry.TOMAHAWK.get());
         info(reg, "fire_pitchfork",   ItemsRegistry.FIRE_PITCHFORK.get());
         info(reg, "hellfire_pitchfork", ItemsRegistry.HELLFIRE_PITCHFORK.get());
         info(reg, "evil_eye",         ItemsRegistry.EVIL_EYE.get());

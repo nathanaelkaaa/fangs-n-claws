@@ -187,10 +187,12 @@ public class FangsClawsMod {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        event.enqueueWork(() ->
+        event.enqueueWork(() -> {
             DispenserBlock.registerBehavior(ItemsRegistry.POISONOUS_DART.get(),
-                    new ProjectileDispenseBehavior(ItemsRegistry.POISONOUS_DART.get()))
-        );
+                    new ProjectileDispenseBehavior(ItemsRegistry.POISONOUS_DART.get()));
+            DispenserBlock.registerBehavior(ItemsRegistry.TOMAHAWK.get(),
+                    new net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkDispenseBehavior());
+        });
     }
 
     @SubscribeEvent

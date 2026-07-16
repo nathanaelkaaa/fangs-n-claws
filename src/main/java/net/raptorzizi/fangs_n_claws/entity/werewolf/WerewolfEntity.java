@@ -111,6 +111,11 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     public boolean isFleeing()                  { return fleeing; }
     public void    setFleeing(boolean fleeing)  { this.fleeing = fleeing; }
 
+    @Override
+    public float maxUpStep() {
+        return this.isRunning() ? Math.max(1.0F, super.maxUpStep()) : super.maxUpStep();
+    }
+
     // AI
 
     @Override
