@@ -124,6 +124,10 @@ public class HellOgreAttackGoal extends Goal {
         } else {
             ogre.setRunning(false);
             ogre.getNavigation().stop();
+            if (attackCooldown <= 0) {
+                attackCooldown = ATTACK_INTERVAL;
+                ogre.doHurtTarget(target);
+            }
         }
     }
 }

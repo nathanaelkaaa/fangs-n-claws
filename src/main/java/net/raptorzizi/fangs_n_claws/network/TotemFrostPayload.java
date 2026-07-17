@@ -1,10 +1,12 @@
 package net.raptorzizi.fangs_n_claws.network;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
 public record TotemFrostPayload(ItemStack item) implements CustomPacketPayload {
@@ -21,5 +23,10 @@ public record TotemFrostPayload(ItemStack item) implements CustomPacketPayload {
     @Override
     public Type<? extends CustomPacketPayload> type() {
         return TYPE;
+    }
+
+    public static void handleClient(TotemFrostPayload payload, IPayloadContext ctx) {
+        ctx.enqueueWork(() ->
+            Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item()));
     }
 }

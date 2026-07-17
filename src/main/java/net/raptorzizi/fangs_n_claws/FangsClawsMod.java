@@ -1,7 +1,6 @@
 package net.raptorzizi.fangs_n_claws;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.*;
 import net.neoforged.bus.api.IEventBus;
@@ -12,7 +11,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.minecraft.core.dispenser.ProjectileDispenseBehavior;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
@@ -119,15 +117,11 @@ public class FangsClawsMod {
                 OwlFlightSyncPayload::handleClient
             );
 
-            if (FMLEnvironment.dist.isClient()) {
-                registrar.playToClient(
-                    TotemFrostPayload.TYPE,
-                    TotemFrostPayload.STREAM_CODEC,
-                    (payload, ctx) -> ctx.enqueueWork(() ->
-                        Minecraft.getInstance().gameRenderer.displayItemActivation(payload.item())
-                    )
-                );
-            }
+            registrar.playToClient(
+                TotemFrostPayload.TYPE,
+                TotemFrostPayload.STREAM_CODEC,
+                TotemFrostPayload::handleClient
+            );
         });
 
         NeoForge.EVENT_BUS.register(this);

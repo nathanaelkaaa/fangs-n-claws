@@ -30,7 +30,7 @@ public class NetheriteFangDaggerItem extends SwordItem {
 
     public NetheriteFangDaggerItem() {
         super(Tiers.NETHERITE, new Properties()
-                .attributes(SwordItem.createAttributes(Tiers.NETHERITE, 0, -0.8f))
+                .attributes(SwordItem.createAttributes(Tiers.NETHERITE, -1, -1.2f))
                 .fireResistant());
     }
 

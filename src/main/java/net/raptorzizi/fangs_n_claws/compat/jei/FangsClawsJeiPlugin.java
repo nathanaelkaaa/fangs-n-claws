@@ -3,11 +3,22 @@ package net.raptorzizi.fangs_n_claws.compat.jei;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import org.jetbrains.annotations.Nullable;
 
 @JeiPlugin
 public class FangsClawsJeiPlugin implements IModPlugin {
@@ -73,6 +84,15 @@ public class FangsClawsJeiPlugin implements IModPlugin {
         info(reg, "shrike_armor",
                 ItemsRegistry.SHRIKE_HELMET.get(), ItemsRegistry.SHRIKE_CHESTPLATE.get(),
                 ItemsRegistry.SHRIKE_LEGGINGS.get(), ItemsRegistry.SHRIKE_BOOTS.get());
+
+        RegistryAccess registries = registryAccess();
+        if (registries != null) {
+            enchantInfo(reg, registries, EnchantmentsRegistry.CRITICAL_BACKSTAB, "critical_backstab");
+            enchantInfo(reg, registries, EnchantmentsRegistry.QUICK_KILLER,      "quick_killer");
+            enchantInfo(reg, registries, EnchantmentsRegistry.ITEM_CATCHER,      "item_catcher");
+            enchantInfo(reg, registries, EnchantmentsRegistry.SCRATCH,           "scratch");
+            enchantInfo(reg, registries, EnchantmentsRegistry.BLAZING,           "blazing");
+        }
     }
 
     private static void info(IRecipeRegistration reg, String key, ItemLike... items) {
@@ -80,5 +100,24 @@ public class FangsClawsJeiPlugin implements IModPlugin {
         for (ItemLike item : items) {
             reg.addIngredientInfo(item, desc);
         }
+    }
+
+    @Nullable
+    private static RegistryAccess registryAccess() {
+        var level = Minecraft.getInstance().level;
+        return level != null ? level.registryAccess() : null;
+    }
+
+    private static void enchantInfo(IRecipeRegistration reg, RegistryAccess registries,
+                                    ResourceKey<Enchantment> key, String langKey) {
+        registries.registry(Registries.ENCHANTMENT)
+                .flatMap(r -> r.getHolder(key))
+                .ifPresent(holder -> {
+                    ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+                    ItemEnchantments.Mutable mut = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+                    mut.set(holder, holder.value().getMaxLevel());
+                    book.set(DataComponents.STORED_ENCHANTMENTS, mut.toImmutable());
+                    reg.addItemStackInfo(book, Component.translatable("jei.fangs_n_claws.enchantment." + langKey));
+                });
     }
 }

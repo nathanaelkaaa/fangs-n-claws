@@ -1,12 +1,15 @@
 package net.raptorzizi.fangs_n_claws.entity.ice_golem;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -20,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -45,6 +49,13 @@ public class IceGolemEntity extends GolemEntity {
     private static final EntityDataAccessor<CompoundTag> FISH_DATA =
             SynchedEntityData.defineId(IceGolemEntity.class, EntityDataSerializers.COMPOUND_TAG);
 
+    private static final EntityDataAccessor<Boolean> SNOWLESS =
+            SynchedEntityData.defineId(IceGolemEntity.class, EntityDataSerializers.BOOLEAN);
+
+    private static final ResourceKey<Biome> YCB_FROSTED_CAVES =
+            ResourceKey.create(Registries.BIOME,
+                    ResourceLocation.fromNamespaceAndPath("yungscavebiomes", "frosted_caves"));
+
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
     private boolean isUppercutAttack = false;
 
@@ -59,7 +70,11 @@ public class IceGolemEntity extends GolemEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(FISH_DATA, new CompoundTag());
+        builder.define(SNOWLESS, false);
     }
+
+    public boolean isSnowless()          { return this.entityData.get(SNOWLESS); }
+    public void setSnowless(boolean v)   { this.entityData.set(SNOWLESS, v); }
 
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
@@ -96,6 +111,9 @@ public class IceGolemEntity extends GolemEntity {
                                                   @Nullable SpawnGroupData spawnGroupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
         initFrozenFish();
+        if (level.getBiome(this.blockPosition()).is(YCB_FROSTED_CAVES)) {
+            setSnowless(true);
+        }
         return data;
     }
 
@@ -114,6 +132,7 @@ public class IceGolemEntity extends GolemEntity {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putBoolean("Snowless", isSnowless());
         ListTag list = new ListTag();
         for (ItemStack stack : frozenFish) {
             list.add(stack.save(this.registryAccess()));
@@ -124,6 +143,7 @@ public class IceGolemEntity extends GolemEntity {
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        setSnowless(tag.getBoolean("Snowless"));
         frozenFish.clear();
         if (tag.contains(FISH_TAG, Tag.TAG_LIST)) {
             ListTag list = tag.getList(FISH_TAG, Tag.TAG_COMPOUND);

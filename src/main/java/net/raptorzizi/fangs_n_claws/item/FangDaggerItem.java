@@ -32,7 +32,7 @@ public class FangDaggerItem extends SwordItem {
 
     public FangDaggerItem() {
         super(Tiers.STONE, new Properties()
-                .attributes(SwordItem.createAttributes(Tiers.STONE, 2, -0.8f)));
+                .attributes(SwordItem.createAttributes(Tiers.STONE, 1, -1.1f)));
     }
 
     public static boolean isBackstab(LivingEntity attacker, LivingEntity target) {

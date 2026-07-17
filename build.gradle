@@ -127,6 +127,7 @@ repositories {
     maven { url = "https://cursemaven.com" }
     maven { url = "https://maven.blamejared.com" }
     maven { url = "https://maven.kosmx.dev/" }
+    maven { url = "https://api.modrinth.com/maven" } // TEMP: test YUNG's Cave Biomes
 }
 
 dependencies {
@@ -140,6 +141,11 @@ dependencies {
     compileOnly "mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${jei_mc_version}-neoforge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${jei_mc_version}-neoforge:${jei_version}"
+
+    // TEMP (test only) — YUNG's Cave Biomes + ses dependances, à retirer apres test.
+    localRuntime "maven.modrinth:yungs-cave-biomes:HYGqXWqQ"
+    localRuntime "maven.modrinth:yungs-api:ZB22DE9q"
+    localRuntime "maven.modrinth:terrablender:6e8GCrLb"
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
