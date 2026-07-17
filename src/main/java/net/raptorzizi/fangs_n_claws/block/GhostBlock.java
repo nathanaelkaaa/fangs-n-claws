@@ -2,6 +2,8 @@ package net.raptorzizi.fangs_n_claws.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -87,6 +89,9 @@ public class GhostBlock extends BaseEntityBlock {
                     level.setBlock(pos, state.setValue(HAS_MIMIC, true), 3);
                     level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM,
                             SoundSource.BLOCKS, 1.0f, 1.0f);
+                    if (player instanceof ServerPlayer sp) {
+                        FncAdvancements.grant(sp, "forge/chameleon");
+                    }
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }

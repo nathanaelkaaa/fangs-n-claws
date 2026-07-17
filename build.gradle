@@ -95,6 +95,9 @@ configurations {
 
 repositories {
     maven { url = "https://maven.minecraftforge.net/" }
+    // SpongePowered — hosts the Mixin annotation processor (":processor" classifier)
+    // used to generate the refmap for reobf/production runs.
+    maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
     flatDir {
         dir 'libs'
     }
@@ -115,6 +118,12 @@ dependencies {
     // Forge itself
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+    // Mixin annotation processor — generates fangs_n_claws.refmap.json at compile time so the
+    // mixins can be remapped (named -> SRG) in reobf/production runs. Without this, the AP never
+    // runs, no refmap is produced, and the mixins crash on the built jar (target methods like
+    // Feature#safeSetBlock / StructurePiece#createChest can't be resolved under SRG names).
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
     // GECKOLIB — patched local JAR: geckolib.refmap.json 'mappings' section has been fixed to use
     // the official method name 'getTexture' instead of the SRG name 'm_118506_', so Mixin
     // injection works in the dev (official-mapped) environment without needing disableRefMap.
@@ -122,7 +131,9 @@ dependencies {
     // from the ForgeGradle deobf cache. See libs/geckolib-original.jar for the unpatched source.
     implementation files('libs/geckolib-forge-1.20.1-4.4.4-patched.jar')
 
-    // JEI
+    // JEI — the forge-api artifact only holds mezz.jei.api.forge.*; the core API
+    // (IModPlugin, IRecipeRegistration, …) lives in the common-api artifact.
+    compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}")
     localRuntime fg.deobf("mezz.jei:jei-${jei_mc_version}-forge:${jei_version}")
 }

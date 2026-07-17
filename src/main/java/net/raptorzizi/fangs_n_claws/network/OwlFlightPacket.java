@@ -2,8 +2,11 @@ package net.raptorzizi.fangs_n_claws.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
+import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
 import java.util.function.Supplier;
 
@@ -31,6 +34,9 @@ public record OwlFlightPacket(boolean gliding, boolean flap) {
             FangsNetwork.CHANNEL.send(
                     PacketDistributor.TRACKING_ENTITY.with(() -> sp),
                     new OwlFlightSyncPacket(sp.getId(), pkt.gliding(), pkt.flap()));
+            if (sp.getItemBySlot(EquipmentSlot.CHEST).is(ItemsRegistry.OWL_CHESTPLATE.get())) {
+                FncAdvancements.grant(sp, "forge/take_flight");
+            }
         });
         ctx.get().setPacketHandled(true);
     }

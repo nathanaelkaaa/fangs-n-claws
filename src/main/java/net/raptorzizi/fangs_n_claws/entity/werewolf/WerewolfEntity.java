@@ -115,6 +115,11 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     public boolean isFleeing()                  { return fleeing; }
     public void    setFleeing(boolean fleeing)  { this.fleeing = fleeing; }
 
+    @Override
+    public float maxUpStep() {
+        return this.isRunning() ? Math.max(1.0F, super.maxUpStep()) : super.maxUpStep();
+    }
+
     // AI
 
     @Override
@@ -158,7 +163,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,        30.0)
+                .add(Attributes.MAX_HEALTH,        25.0)
                 .add(Attributes.MOVEMENT_SPEED,     0.2)
                 .add(Attributes.ATTACK_DAMAGE,      4.0)
                 .add(Attributes.FOLLOW_RANGE,       28.0);
@@ -173,7 +178,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
                 && player.getMainHandItem().getItem() instanceof SilverSwordItem;
 
         if (!hasSilverSword && (directEntity != null || source.getEntity() != null)) {
-            amount *= 0.5f;
+            amount = 1.0f;
         }
         return super.hurt(source, amount);
     }

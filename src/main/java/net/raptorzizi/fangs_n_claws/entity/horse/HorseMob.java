@@ -32,6 +32,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
+import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -128,6 +130,21 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
 
     public boolean isWearingArmor() { return !this.getArmor().isEmpty(); }
 
+    private void grantTameAdvancements() {
+        if (!(this.tamingPlayer instanceof ServerPlayer sp)) return;
+        FncAdvancements.grant(sp, "taming/root");
+        var type = this.getType();
+        if (type == EntityRegistry.HORSE_BAT.get()) {
+            FncAdvancements.grant(sp, "taming/full_stable", "horse_bat");
+        } else if (type == EntityRegistry.NIGHTMARE_HORSE.get()) {
+            FncAdvancements.grant(sp, "taming/full_stable", "nightmare_horse");
+        } else if (type == EntityRegistry.SKELETON_HORSE_MOB.get()) {
+            FncAdvancements.grant(sp, "taming/full_stable", "skeleton_horse");
+        } else if (type == EntityRegistry.ZOMBIE_HORSE_MOB.get()) {
+            FncAdvancements.grant(sp, "taming/full_stable", "zombie_horse");
+        }
+    }
+
     public boolean isBodyArmorItem(ItemStack stack) {
         return stack.is(ItemsRegistry.HORSE_BLANKET.get());
     }
@@ -208,6 +225,7 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
                 this.modifyTemper(5);
                 if (this.random.nextInt(this.getMaxTemper()) < this.getTemper()) {
                     this.tameWithName(tamingPlayer);
+                    grantTameAdvancements();
                     this.tamingPlayer = null;
                 } else {
                     this.triggerAnim("attack_controller", "reject");

@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "fangs_n_claws:scorpion_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.taming.desert_rider.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.taming.desert_rider.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:taming/root"
+}

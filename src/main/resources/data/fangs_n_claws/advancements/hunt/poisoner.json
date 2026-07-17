@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "fangs_n_claws:blowgun"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.hunt.poisoner.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.hunt.poisoner.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:hunt/root"
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LSL",
+    "HHH"
+  ],
+  "key": {
+    "L": { "item": "minecraft:leather" },
+    "S": { "item": "minecraft:saddle" },
+    "H": { "item": "fangs_n_claws:heavy_claw" }
+  },
+  "result": {
+    "item": "fangs_n_claws:sturdy_saddle",
+    "count": 1
+  }
+}

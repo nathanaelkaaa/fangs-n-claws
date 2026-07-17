@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
@@ -189,6 +191,10 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
             living.setDeltaMovement(impulse.scale(force));
             living.invulnerableTime = 0;
             living.hurt(this.level().damageSources().thrown(this, player), getHookDamage());
+
+            if (player instanceof ServerPlayer sp) {
+                FncAdvancements.grant(sp, "forge/grapple");
+            }
 
         } else if (hooked instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem().copy();

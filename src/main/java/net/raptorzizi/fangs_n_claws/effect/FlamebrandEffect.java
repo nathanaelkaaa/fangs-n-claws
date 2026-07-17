@@ -2,6 +2,7 @@ package net.raptorzizi.fangs_n_claws.effect;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffect;
@@ -10,6 +11,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.registries.RegistryObject;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -83,6 +85,7 @@ public class FlamebrandEffect extends MobEffect {
         float baseDamage = 8.0f;
 
         UUID sourceId = consumeSource(entity);
+        grantPyromaniac(level, sourceId);
 
         AABB box = entity.getBoundingBox().inflate(radius);
         for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, box)) {
@@ -100,6 +103,13 @@ public class FlamebrandEffect extends MobEffect {
         level.playSound(null, entity.getX(), entity.getY(), entity.getZ(),
                 SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS,
                 2.5f, 0.9f + level.random.nextFloat() * 0.2f);
+    }
+
+    protected void grantPyromaniac(ServerLevel level, @Nullable UUID sourceId) {
+        if (sourceId == null) return;
+        if (level.getPlayerByUUID(sourceId) instanceof ServerPlayer sp) {
+            FncAdvancements.grant(sp, "hunt/pyromaniac");
+        }
     }
 
     @Override

@@ -31,6 +31,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.ICE_GOLEM_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.EVIL_BAT_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GHOST_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.MIMIC_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.FIRE_GHOST_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.SCORPION_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.DESERT_SCORPION_SPAWN_EGG.get());
@@ -57,6 +58,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.CATCHING_CLAW.get());
                         entries.accept(ItemsRegistry.CATCHING_CLAW_NETHERITE.get());
                         entries.accept(ItemsRegistry.SILVER_SWORD.get());
+                        entries.accept(ItemsRegistry.TOMAHAWK.get());
                         entries.accept(ItemsRegistry.FIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.HELLFIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.BLACK_HORN.get());
@@ -65,7 +67,8 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SCORPION_STING.get());
                         entries.accept(ItemsRegistry.CHITIN.get());
                         entries.accept(ItemsRegistry.SNOW_DUVET.get());
-                        entries.accept(ItemsRegistry.SHRIKE_UPGRADE_SMITHING_TEMPLATE.get());
+                        entries.accept(ItemsRegistry.OWLBEAR_MEAT.get());
+                        entries.accept(ItemsRegistry.COOKED_OWLBEAR_MEAT.get());
                         entries.accept(ItemsRegistry.FUR.get());
                         entries.accept(ItemsRegistry.SCORPION_HELMET.get());
                         entries.accept(ItemsRegistry.SCORPION_CHESTPLATE.get());
@@ -83,6 +86,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SHRIKE_CHESTPLATE.get());
                         entries.accept(ItemsRegistry.SHRIKE_LEGGINGS.get());
                         entries.accept(ItemsRegistry.SHRIKE_BOOTS.get());
+                        entries.accept(ItemsRegistry.SHRIKE_UPGRADE_SMITHING_TEMPLATE.get());
                         entries.accept(ItemsRegistry.EVIL_EYE.get());
                         entries.accept(ItemsRegistry.VELOCITY_ARROW.get());
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());

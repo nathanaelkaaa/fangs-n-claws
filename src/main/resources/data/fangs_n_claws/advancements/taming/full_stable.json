@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "item": "minecraft:saddle"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.taming.full_stable.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.taming.full_stable.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "horse_bat": {
+      "trigger": "minecraft:impossible"
+    },
+    "nightmare_horse": {
+      "trigger": "minecraft:impossible"
+    },
+    "skeleton_horse": {
+      "trigger": "minecraft:impossible"
+    },
+    "zombie_horse": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:taming/lent_wings"
+}

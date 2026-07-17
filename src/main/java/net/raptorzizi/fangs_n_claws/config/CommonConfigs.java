@@ -1,11 +1,18 @@
 package net.raptorzizi.fangs_n_claws.config;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.common.ForgeConfigSpec;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CommonConfigs {
 
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
+
+    public static final Map<ResourceLocation, ForgeConfigSpec.IntValue> DIMENSION_CAPS = new LinkedHashMap<>();
 
     // Spawn toggles
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_GOBLIN;
@@ -30,12 +37,15 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_NIGHTMARE_HORSE;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_MIMIC;
 
     public static final ForgeConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
     public static final ForgeConfigSpec.BooleanValue VANILLA_SKELETON_HORSE;
     public static final ForgeConfigSpec.BooleanValue VANILLA_ZOMBIE_HORSE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_GOBLIN_STEALING;
+
+    public static final ForgeConfigSpec.IntValue MIMIC_SPAWN_CHANCE;
 
     static {
         BUILDER.comment("Fangs 'n Claws — Common Configuration").push("spawn_toggles");
@@ -151,6 +161,11 @@ public class CommonConfigs {
                 .translation("fangs_n_claws.configuration.spawn_toggles.nightmare_horse")
                 .define("allow_nightmare_horse", true);
 
+        ALLOW_SPAWN_MIMIC = BUILDER
+                .comment("Allow Mimics to replace loot chests in structures (also /gamerule allowSpawnMimic). See mimic_spawn_chance for the rate.")
+                .translation("fangs_n_claws.configuration.spawn_toggles.mimic")
+                .define("allow_mimic", true);
+
         BUILDER.pop();
 
         BUILDER.comment("Mob behaviour toggles. Each mirrors a /gamerule of the same name — changing either applies.").push("behavior");
@@ -180,7 +195,36 @@ public class CommonConfigs {
                 .translation("fangs_n_claws.configuration.behavior.allow_goblin_stealing")
                 .define("allow_goblin_stealing", true);
 
+        MIMIC_SPAWN_CHANCE = BUILDER
+                .comment("When a loot chest is generated in a structure (stronghold, mineshaft, temple, dungeon, ...),",
+                         "it has a 1/x chance of being replaced by a Mimic that steals the chest's loot.",
+                         "Higher value = fewer mimics. 1 = every structure chest is a mimic.",
+                         "Set very high (e.g. 100000) to effectively disable structure mimics.")
+                .translation("fangs_n_claws.configuration.behavior.mimic_spawn_chance")
+                .defineInRange("mimic_spawn_chance", 20, 1, 100000);
+
+        BUILDER.pop();
+
+        BUILDER.comment("Cap Fangs 'n Claws mob density per dimension.",
+                        "For each: -1 = unlimited, 0 = no F&C spawns, N = density cap (N scaled by loaded chunks / 289, like the vanilla mob cap).")
+                .translation("fangs_n_claws.configuration.spawn_limits")
+                .push("spawn_limits");
+
+        defineDimensionCap("minecraft:overworld",   "overworld",   40);
+        defineDimensionCap("minecraft:the_nether",  "the_nether",  20);
+
+        if (ModList.get().isLoaded("twilightforest")) {
+            defineDimensionCap("twilightforest:twilight_forest", "twilight_forest", 15);
+        }
+
         BUILDER.pop();
         SPEC = BUILDER.build();
+    }
+
+    private static void defineDimensionCap(String dimensionId, String key, int defaultCap) {
+        ForgeConfigSpec.IntValue value = BUILDER
+                .translation("fangs_n_claws.configuration.spawn_limits." + key)
+                .defineInRange(key, defaultCap, -1, 100000);
+        DIMENSION_CAPS.put(new ResourceLocation(dimensionId), value);
     }
 }

@@ -1,0 +1,26 @@
+{
+  "parent": "fangs_n_claws:forge/root",
+  "display": {
+    "icon": {
+      "item": "fangs_n_claws:hellfire_pitchfork"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.hell_yeah.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.hell_yeah.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "craft": {
+      "trigger": "minecraft:recipe_crafted",
+      "conditions": {
+        "recipe_id": "fangs_n_claws:hellfire_pitchfork"
+      }
+    }
+  }
+}

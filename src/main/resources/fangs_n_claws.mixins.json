@@ -4,6 +4,10 @@
   "package": "net.raptorzizi.fangs_n_claws.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "fangs_n_claws.refmap.json",
+  "mixins": [
+    "StructurePieceMixin",
+    "FeatureMixin"
+  ],
   "client": [
     "client.PlayerModelMixin"
   ],

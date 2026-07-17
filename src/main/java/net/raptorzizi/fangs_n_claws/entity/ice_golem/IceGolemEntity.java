@@ -22,6 +22,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
@@ -182,6 +184,11 @@ public class IceGolemEntity extends GolemEntity {
     @Override
     protected BlockState getBodyBlockState() {
         return Blocks.PACKED_ICE.defaultBlockState();
+    }
+
+    @Override
+    protected SoundEvent getBodyHitSound() {
+        return SoundEvents.GLASS_HIT;
     }
 
     @Override

@@ -7,6 +7,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -120,6 +122,9 @@ public class BabyScorpionEntity extends Monster implements GeoEntity {
             serverLevel.sendParticles(ParticleTypes.HEART,
                     this.getX(), this.getY() + 0.4, this.getZ(),
                     7, 0.3, 0.3, 0.3, 0.05);
+            if (player instanceof ServerPlayer sp) {
+                FncAdvancements.grant(sp, "taming/root");
+            }
         }
     }
 

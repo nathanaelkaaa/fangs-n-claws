@@ -4,9 +4,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +25,8 @@ public class FangsConfigScreen extends Screen {
 
     private final List<FangsToggleListScreen.Entry> spawnToggles    = buildSpawnToggles();
     private final List<FangsToggleListScreen.Entry> behaviorToggles = buildBehaviorToggles();
+    private final List<FangsToggleListScreen.IntEntry> behaviorInts = buildBehaviorInts();
+    private final List<FangsToggleListScreen.IntEntry> dimensionCaps = buildDimensionCaps();
     private final List<FangsWeightListScreen.Entry> spawnWeights    = buildSpawnWeights();
 
     private Button resetButton;
@@ -40,7 +45,7 @@ public class FangsConfigScreen extends Screen {
         super.init();
 
         int cx = this.width / 2;
-        int y  = this.height / 2 - 60;
+        int y  = this.height / 2 - 72;
 
         this.addRenderableWidget(Button.builder(Component.literal("Spawn Toggles"),
                 b -> this.minecraft.setScreen(new FangsToggleListScreen(
@@ -52,20 +57,27 @@ public class FangsConfigScreen extends Screen {
                         this, Component.literal("Spawn Rates"), spawnWeights)))
                 .bounds(cx - BTN_W / 2, y + GAP, BTN_W, BTN_H).build());
 
+        this.addRenderableWidget(Button.builder(Component.literal("Spawn Limits (per dimension)"),
+                b -> this.minecraft.setScreen(new FangsToggleListScreen(
+                        this, Component.literal("Spawn Limits"),
+                        "§7Per dimension: -1 = unlimited, 0 = no F&C spawns, N = density cap",
+                        List.of(), dimensionCaps)))
+                .bounds(cx - BTN_W / 2, y + GAP * 2, BTN_W, BTN_H).build());
+
         this.addRenderableWidget(Button.builder(Component.literal("Behavior"),
                 b -> this.minecraft.setScreen(new FangsToggleListScreen(
-                        this, Component.literal("Behavior"), behaviorToggles)))
-                .bounds(cx - BTN_W / 2, y + GAP * 2, BTN_W, BTN_H).build());
+                        this, Component.literal("Behavior"), behaviorToggles, behaviorInts)))
+                .bounds(cx - BTN_W / 2, y + GAP * 3, BTN_W, BTN_H).build());
 
         this.resetButton = Button.builder(Component.literal("Reset to Defaults"),
                 b -> { resetAll(); b.active = false; })
-                .bounds(cx - BTN_W / 2, y + GAP * 3 + 8, BTN_W, BTN_H).build();
+                .bounds(cx - BTN_W / 2, y + GAP * 4 + 8, BTN_W, BTN_H).build();
         this.resetButton.active = hasChanges();
         this.addRenderableWidget(this.resetButton);
 
         this.addRenderableWidget(Button.builder(Component.literal("Done"),
                 b -> this.minecraft.setScreen(parent))
-                .bounds(cx - BTN_W / 2, y + GAP * 4 + 12, BTN_W, BTN_H).build());
+                .bounds(cx - BTN_W / 2, y + GAP * 5 + 12, BTN_W, BTN_H).build());
     }
 
     // ── reset / change detection ────────────────────────────────────────────────
@@ -83,6 +95,8 @@ public class FangsConfigScreen extends Screen {
     private boolean hasChanges() {
         for (FangsToggleListScreen.Entry e : spawnToggles)    if (e.cfg().get() != e.def()) return true;
         for (FangsToggleListScreen.Entry e : behaviorToggles) if (e.cfg().get() != e.def()) return true;
+        for (FangsToggleListScreen.IntEntry e : behaviorInts) if (e.cfg().get() != e.def()) return true;
+        for (FangsToggleListScreen.IntEntry e : dimensionCaps) if (e.cfg().get() != e.def()) return true;
         if (weightsAvailable()) {
             for (FangsWeightListScreen.Entry e : spawnWeights) if (e.cfg().get() != e.def()) return true;
         }
@@ -92,6 +106,8 @@ public class FangsConfigScreen extends Screen {
     private void resetAll() {
         for (FangsToggleListScreen.Entry e : spawnToggles)    e.cfg().set(e.def());
         for (FangsToggleListScreen.Entry e : behaviorToggles) e.cfg().set(e.def());
+        for (FangsToggleListScreen.IntEntry e : behaviorInts) e.cfg().set(e.def());
+        for (FangsToggleListScreen.IntEntry e : dimensionCaps) e.cfg().set(e.def());
         if (weightsAvailable()) {
             for (FangsWeightListScreen.Entry e : spawnWeights) e.cfg().set(e.def());
         }
@@ -122,7 +138,8 @@ public class FangsConfigScreen extends Screen {
                 new FangsToggleListScreen.Entry("Nether Scorpion", CommonConfigs.ALLOW_SPAWN_NETHER_SCORPION, true),
                 new FangsToggleListScreen.Entry("Horse Bat",       CommonConfigs.ALLOW_SPAWN_HORSE_BAT,       true),
                 new FangsToggleListScreen.Entry("Wild Wolf",       CommonConfigs.ALLOW_SPAWN_WILD_WOLF,       true),
-                new FangsToggleListScreen.Entry("Nightmare Horse", CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE, true)
+                new FangsToggleListScreen.Entry("Nightmare Horse", CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE, true),
+                new FangsToggleListScreen.Entry("Mimic",           CommonConfigs.ALLOW_SPAWN_MIMIC,           true)
         );
     }
 
@@ -134,6 +151,29 @@ public class FangsConfigScreen extends Screen {
                 new FangsToggleListScreen.Entry("Natural Zombie Horse",   CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE,   true),
                 new FangsToggleListScreen.Entry("Goblin Stealing",        CommonConfigs.ALLOW_GOBLIN_STEALING,              true)
         );
+    }
+
+    private static List<FangsToggleListScreen.IntEntry> buildBehaviorInts() {
+        return List.of(
+                // 1/x chance a structure loot chest becomes a Mimic (higher = fewer; huge = disabled).
+                new FangsToggleListScreen.IntEntry("Mimic Spawn Chance (1/x)",
+                        CommonConfigs.MIMIC_SPAWN_CHANCE, 20, 1, 100000)
+        );
+    }
+
+    // Per-dimension mob-density caps (CommonConfigs.DIMENSION_CAPS). Twilight Forest is only
+    // present in the map when the mod is loaded, so we add each entry only if it exists.
+    private static List<FangsToggleListScreen.IntEntry> buildDimensionCaps() {
+        List<FangsToggleListScreen.IntEntry> list = new ArrayList<>();
+        addCap(list, "minecraft:overworld",            "Overworld",       40);
+        addCap(list, "minecraft:the_nether",           "Nether",          20);
+        addCap(list, "twilightforest:twilight_forest", "Twilight Forest", 15);
+        return list;
+    }
+
+    private static void addCap(List<FangsToggleListScreen.IntEntry> list, String dimId, String label, int def) {
+        ForgeConfigSpec.IntValue cfg = CommonConfigs.DIMENSION_CAPS.get(new ResourceLocation(dimId));
+        if (cfg != null) list.add(new FangsToggleListScreen.IntEntry(label, cfg, def, -1, 100000));
     }
 
     private static List<FangsWeightListScreen.Entry> buildSpawnWeights() {

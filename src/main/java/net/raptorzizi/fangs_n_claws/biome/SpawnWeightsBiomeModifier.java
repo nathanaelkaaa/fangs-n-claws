@@ -177,6 +177,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                 if (CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.NIGHTMARE_HORSE.get(), ServerConfigs.NIGHTMARE_HORSE_WEIGHT.get(), 1, 1);
             }
+
+            addTwilightForestSpawns(biome, spawns);
         }
     }
 
@@ -184,6 +186,157 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                              EntityType<?> type, int weight, int min, int max) {
         if (weight <= 0) return;
         builder.addSpawn(category, new MobSpawnSettings.SpawnerData(type, weight, min, max));
+    }
+
+    private static ResourceKey<Biome> tf(String path) {
+        return ResourceKey.create(Registries.BIOME, new ResourceLocation("twilightforest", path));
+    }
+
+    private static final ResourceKey<Biome> TF_FOREST                = tf("forest");
+    private static final ResourceKey<Biome> TF_DENSE_FOREST          = tf("dense_forest");
+    private static final ResourceKey<Biome> TF_FIREFLY_FOREST        = tf("firefly_forest");
+    private static final ResourceKey<Biome> TF_MUSHROOM_FOREST       = tf("mushroom_forest");
+    private static final ResourceKey<Biome> TF_DENSE_MUSHROOM_FOREST = tf("dense_mushroom_forest");
+    private static final ResourceKey<Biome> TF_CLEARING              = tf("clearing");
+    private static final ResourceKey<Biome> TF_OAK_SAVANNAH          = tf("oak_savannah");
+    private static final ResourceKey<Biome> TF_SPOOKY_FOREST         = tf("spooky_forest");
+    private static final ResourceKey<Biome> TF_SWAMP                 = tf("swamp");
+    private static final ResourceKey<Biome> TF_DARK_FOREST           = tf("dark_forest");
+    private static final ResourceKey<Biome> TF_DARK_FOREST_CENTER    = tf("dark_forest_center");
+    private static final ResourceKey<Biome> TF_SNOWY_FOREST          = tf("snowy_forest");
+    private static final ResourceKey<Biome> TF_GLACIER               = tf("glacier");
+    private static final ResourceKey<Biome> TF_HIGHLANDS             = tf("highlands");
+    private static final ResourceKey<Biome> TF_THORNLANDS            = tf("thornlands");
+    private static final ResourceKey<Biome> TF_FINAL_PLATEAU         = tf("final_plateau");
+    private static final ResourceKey<Biome> TF_UNDERGROUND           = tf("underground");
+
+    @SafeVarargs
+    private static boolean isAny(Holder<Biome> biome, ResourceKey<Biome>... keys) {
+        for (ResourceKey<Biome> key : keys) if (biome.is(key)) return true;
+        return false;
+    }
+
+    private static void addTwilightForestSpawns(Holder<Biome> biome, MobSpawnSettingsBuilder spawns) {
+        if (biome.is(TF_DENSE_FOREST) && CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
+            add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
+
+        if (biome.is(TF_CLEARING) && CommonConfigs.ALLOW_SPAWN_GOLEM.get())
+            add(spawns, MobCategory.MONSTER, EntityRegistry.GOLEM.get(), ServerConfigs.GOLEM_WEIGHT.get(), 1, 1);
+
+        if (isAny(biome, TF_FOREST, TF_DENSE_FOREST, TF_FIREFLY_FOREST, TF_MUSHROOM_FOREST,
+                         TF_DENSE_MUSHROOM_FOREST, TF_CLEARING, TF_OAK_SAVANNAH)) {
+            if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.WILD_WOLF.get(), ServerConfigs.WILD_WOLF_WEIGHT.get(), 1, 4);
+            if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
+        }
+
+        if (isAny(biome, TF_OAK_SAVANNAH, TF_SWAMP) && CommonConfigs.ALLOW_SPAWN_SCORPION.get())
+            add(spawns, MobCategory.MONSTER, EntityRegistry.SCORPION.get(), ServerConfigs.SCORPION_WEIGHT.get(), 1, 1);
+
+        if (biome.is(TF_SWAMP)) {
+            if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
+            if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.WILD_WOLF.get(), ServerConfigs.WILD_WOLF_WEIGHT.get(), 1, 4);
+        }
+
+        if (biome.is(TF_SPOOKY_FOREST)) {
+            if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_WEIGHT.get(), 1, 2);
+            if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
+            if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.WEREWOLF.get(), ServerConfigs.WEREWOLF_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.HORSE_BAT.get(), ServerConfigs.HORSE_BAT_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_NATURAL_SPAWN_SKELETON_HORSE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SKELETON_HORSE_MOB.get(), ServerConfigs.SKELETON_HORSE_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.ZOMBIE_HORSE_MOB.get(), ServerConfigs.ZOMBIE_HORSE_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(TF_DARK_FOREST)) {
+            if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GOBLIN.get(), ServerConfigs.GOBLIN_WEIGHT.get(), 1, 4);
+            if (CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.DART_GOBLIN.get(), ServerConfigs.DART_GOBLIN_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.WEREWOLF.get(), ServerConfigs.WEREWOLF_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_WEIGHT.get(), 1, 2);
+            if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.HORSE_BAT.get(), ServerConfigs.HORSE_BAT_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
+        }
+
+        if (biome.is(TF_DARK_FOREST_CENTER)) {
+            if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GOBLIN.get(), ServerConfigs.GOBLIN_WEIGHT.get(), 2, 4);
+            if (CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.DART_GOBLIN.get(), ServerConfigs.DART_GOBLIN_WEIGHT.get(), 1, 2);
+            if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.OGRE.get(), ServerConfigs.OGRE_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(TF_SNOWY_FOREST)) {
+            if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.WILD_WOLF.get(), ServerConfigs.WILD_WOLF_WEIGHT.get(), 1, 4);
+            if (CommonConfigs.ALLOW_SPAWN_SHRIKE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SHRIKE.get(), ServerConfigs.SHRIKE_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_FROST_SCORPION.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.FROST_SCORPION.get(), ServerConfigs.FROST_SCORPION_WEIGHT.get(), 1, 2);
+            if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.WEREWOLF.get(), ServerConfigs.WEREWOLF_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(TF_GLACIER) && CommonConfigs.ALLOW_SPAWN_FROST_SCORPION.get())
+            add(spawns, MobCategory.MONSTER, EntityRegistry.FROST_SCORPION.get(), ServerConfigs.FROST_SCORPION_WEIGHT.get(), 1, 2);
+
+        if (biome.is(TF_HIGHLANDS)) {
+            if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.OGRE.get(), ServerConfigs.OGRE_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.CAVE_OGRE.get(), ServerConfigs.CAVE_OGRE_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(TF_THORNLANDS)) {
+            if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.OGRE.get(), ServerConfigs.OGRE_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.CAVE_OGRE.get(), ServerConfigs.CAVE_OGRE_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(TF_FINAL_PLATEAU)) {
+            if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_WEIGHT.get(), 1, 2);
+            if (CommonConfigs.ALLOW_SPAWN_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.OGRE.get(), ServerConfigs.OGRE_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(TF_UNDERGROUND)) {
+            if (CommonConfigs.ALLOW_SPAWN_CAVE_OGRE.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.CAVE_OGRE.get(), ServerConfigs.CAVE_OGRE_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GOBLIN.get(), ServerConfigs.GOBLIN_WEIGHT.get(), 1, 4);
+            if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
+            if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.HORSE_BAT.get(), ServerConfigs.HORSE_BAT_WEIGHT.get(), 1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_WEIGHT.get(), 1, 2);
+        }
     }
 
     @Override

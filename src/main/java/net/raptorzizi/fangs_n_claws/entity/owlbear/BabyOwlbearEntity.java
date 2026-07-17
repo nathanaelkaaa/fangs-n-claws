@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -144,6 +145,10 @@ public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity {
                     this.setOrderedToSit(true);
                     this.setParent(null);
                     this.level().broadcastEntityEvent(this, (byte) 7);
+                    if (player instanceof net.minecraft.server.level.ServerPlayer sp) {
+                        FncAdvancements.grant(sp, "taming/root");
+                        FncAdvancements.grant(sp, "taming/cozy_nest");
+                    }
                 } else {
                     this.level().broadcastEntityEvent(this, (byte) 6);
                 }
@@ -167,8 +172,8 @@ public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity {
 
     // Sound
 
-    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.OWLBEAR_HURT.get(); }
-    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.OWLBEAR_DEATH.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.BABY_OWLBEAR_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.BABY_OWLBEAR_DEATH.get(); }
 
     // NBT
 

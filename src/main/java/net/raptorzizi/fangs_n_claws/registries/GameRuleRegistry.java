@@ -67,6 +67,9 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_WILD_WOLF =
             GameRules.register("allowSpawnWildWolf",        GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_MIMIC =
+            GameRules.register("allowSpawnMimic",           GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_NIGHTMARE_HORSE =
             GameRules.register("allowSpawnNightmareHorse",  GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
 

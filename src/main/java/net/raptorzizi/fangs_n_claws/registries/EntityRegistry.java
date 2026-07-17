@@ -11,6 +11,7 @@ import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
+import net.raptorzizi.fangs_n_claws.entity.mimic.MimicEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.CatchingClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.catching_claw.NetheriteClawHookEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
@@ -123,6 +124,12 @@ public class EntityRegistry {
                     .sized(0.8F, 1.6F)
                     .clientTrackingRange(8)
                     .build("ghost"));
+
+    public static final RegistryObject<EntityType<MimicEntity>> MIMIC =
+            ENTITIES.register("mimic", () -> EntityType.Builder.of(MimicEntity::new, MobCategory.MONSTER)
+                    .sized(0.9F, 0.9F)
+                    .clientTrackingRange(8)
+                    .build("mimic"));
 
     public static final RegistryObject<EntityType<FireGhostEntity>> FIRE_GHOST =
             ENTITIES.register("fire_ghost", () -> EntityType.Builder.of(FireGhostEntity::new, MobCategory.MONSTER)
@@ -282,6 +289,14 @@ public class EntityRegistry {
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(64)
                     .build("evil_eye_projectile"));
+
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile>> TOMAHAWK_PROJECTILE =
+            ENTITIES.register("tomahawk_projectile", () -> EntityType.Builder
+                    .<net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile>of(
+                            net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile::new, MobCategory.MISC)
+                    .sized(0.5F, 0.5F)
+                    .clientTrackingRange(64)
+                    .build("tomahawk_projectile"));
 
     public static final RegistryObject<EntityType<VelocityArrowEntity>> VELOCITY_ARROW_ENTITY =
             ENTITIES.register("velocity_arrow", () -> EntityType.Builder

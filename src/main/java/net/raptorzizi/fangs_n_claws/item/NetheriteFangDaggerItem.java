@@ -3,6 +3,7 @@ package net.raptorzizi.fangs_n_claws.item;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,6 +22,7 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -74,6 +76,9 @@ public class NetheriteFangDaggerItem extends SwordItem {
 
                 target.addEffect(new MobEffectInstance(
                         MobEffectsRegistry.BLEEDING.get(), 200, 1, false, false));
+                if (player instanceof ServerPlayer sp) {
+                    FncAdvancements.grant(sp, "hunt/root");
+                }
                 player.getCooldowns().addCooldown(stack.getItem(), cooldown);
                 target.level().playSound(null,
                         target.getX(), target.getY(), target.getZ(),

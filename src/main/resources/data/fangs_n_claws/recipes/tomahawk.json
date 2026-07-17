@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:iron_axe" },
+    { "item": "fangs_n_claws:giant_feather" }
+  ],
+  "result": {
+    "item": "fangs_n_claws:tomahawk",
+    "count": 1
+  }
+}

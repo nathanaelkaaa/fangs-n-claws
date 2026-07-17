@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "fangs_n_claws:ghost_block"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.forge.chameleon.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.forge.chameleon.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": true
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:forge/root"
+}

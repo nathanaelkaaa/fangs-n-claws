@@ -9,6 +9,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatRenderer;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostRenderer;
+import net.raptorzizi.fangs_n_claws.entity.mimic.MimicRenderer;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostRenderer;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinRenderer;
 import net.raptorzizi.fangs_n_claws.entity.projectile.PoisonousDartRenderer;
@@ -90,6 +91,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.GOLEM.get(),               GolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ICE_GOLEM.get(),           IceGolemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GHOST.get(),               GhostRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.MIMIC.get(),               MimicRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FIRE_GHOST.get(),          FireGhostRenderer::new);
         event.registerEntityRenderer(EntityRegistry.GOBLIN.get(),              GoblinRenderer::new);
         event.registerEntityRenderer(EntityRegistry.DART_GOBLIN.get(),              DartGoblinRenderer::new);
@@ -111,6 +113,8 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FEATHER_PROJECTILE.get(),    FeatherProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.TOMAHAWK_PROJECTILE.get(),
+                net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
 

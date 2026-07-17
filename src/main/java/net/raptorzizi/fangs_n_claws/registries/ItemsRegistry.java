@@ -50,7 +50,7 @@ public class ItemsRegistry {
             () -> new ForgeSpawnEggItem(EntityRegistry.OWLBEAR, 0x554030, 0x2d2625, new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<ForgeSpawnEggItem> SHRIKE_SPAWN_EGG = ITEMS.register("shrike_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityRegistry.SHRIKE, 0x9fb0bd, 0xe0edf3, new Item.Properties().stacksTo(64)));
+            () -> new ForgeSpawnEggItem(EntityRegistry.SHRIKE, 0xd9e0e1, 0x626464, new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<ForgeSpawnEggItem> SILVER_SKELETON_SPAWN_EGG = ITEMS.register("silver_skeleton_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.SILVER_SKELETON, 0x7b7871, 0xc2c0be, new Item.Properties().stacksTo(64)));
@@ -66,6 +66,9 @@ public class ItemsRegistry {
 
     public static final RegistryObject<ForgeSpawnEggItem> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x98989d, new Item.Properties().stacksTo(64)));
+
+    public static final RegistryObject<ForgeSpawnEggItem> MIMIC_SPAWN_EGG = ITEMS.register("mimic_spawn_egg",
+            () -> new ForgeSpawnEggItem(EntityRegistry.MIMIC, 0xa26b23, 0x363026, new Item.Properties().stacksTo(64)));
 
     public static final RegistryObject<ForgeSpawnEggItem> HORSE_BAT_SPAWN_EGG = ITEMS.register("horse_bat_spawn_egg",
             () -> new ForgeSpawnEggItem(EntityRegistry.HORSE_BAT, 0x181818, 0xf3edbb, new Item.Properties().stacksTo(64)));
@@ -147,6 +150,16 @@ public class ItemsRegistry {
     public static final RegistryObject<Item> SNOW_DUVET = ITEMS.register("snow_duvet",
             () -> new Item(new Item.Properties().stacksTo(64)));
 
+    public static final RegistryObject<Item> OWLBEAR_MEAT = ITEMS.register("owlbear_meat",
+            () -> new Item(new Item.Properties().food(
+                    new net.minecraft.world.food.FoodProperties.Builder()
+                            .nutrition(4).saturationMod(0.4f).meat().build())));
+
+    public static final RegistryObject<Item> COOKED_OWLBEAR_MEAT = ITEMS.register("cooked_owlbear_meat",
+            () -> new Item(new Item.Properties().food(
+                    new net.minecraft.world.food.FoodProperties.Builder()
+                            .nutrition(10).saturationMod(1.0f).meat().build())));
+
     public static final RegistryObject<SmithingTemplateItem> SHRIKE_UPGRADE_SMITHING_TEMPLATE =
             ITEMS.register("shrike_upgrade_smithing_template", () -> new SmithingTemplateItem(
                     Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.applies_to")
@@ -223,6 +236,7 @@ public class ItemsRegistry {
     public static final RegistryObject<DecrepitPitchforkItem> DECREPIT_PITCHFORK = ITEMS.register("decrepit_pitchfork", DecrepitPitchforkItem::new);
     public static final RegistryObject<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",     FirePitchforkItem::new);
     public static final RegistryObject<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
+    public static final RegistryObject<net.raptorzizi.fangs_n_claws.item.TomahawkItem> TOMAHAWK = ITEMS.register("tomahawk", net.raptorzizi.fangs_n_claws.item.TomahawkItem::new);
     public static final RegistryObject<PoisonousDartItem>  POISONOUS_DART = ITEMS.register("poisonous_dart", PoisonousDartItem::new);
 
     /**

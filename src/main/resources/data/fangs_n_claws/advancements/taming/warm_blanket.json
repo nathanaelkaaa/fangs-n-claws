@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "fangs_n_claws:horse_blanket"
+    },
+    "title": {
+      "translate": "advancements.fangs_n_claws.taming.warm_blanket.title"
+    },
+    "description": {
+      "translate": "advancements.fangs_n_claws.taming.warm_blanket.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "code": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "parent": "fangs_n_claws:taming/root"
+}

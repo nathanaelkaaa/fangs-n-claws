@@ -216,5 +216,29 @@
     "sounds": [
       { "name": "fangs_n_claws:scorpion/scorpion_claw2" }
     ]
+  },
+  "baby.owlbear.death": {
+    "subtitle": "subtitles.entity.baby.owlbear.death",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/baby_owlbear_death" }
+    ]
+  },
+  "baby.owlbear.hurt": {
+    "subtitle": "subtitles.entity.baby.owlbear.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/baby_owlbear_hurt" }
+    ]
+  },
+  "mimic.death": {
+    "subtitle": "subtitles.entity.mimic.death",
+    "sounds": [
+      { "name": "fangs_n_claws:mimic/mimic_death" }
+    ]
+  },
+  "mimic.open": {
+    "subtitle": "subtitles.entity.mimic.open",
+    "sounds": [
+      { "name": "fangs_n_claws:mimic/mimic_open" }
+    ]
   }
 }

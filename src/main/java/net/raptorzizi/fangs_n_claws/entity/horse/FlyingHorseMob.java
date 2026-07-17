@@ -86,7 +86,12 @@ public abstract class FlyingHorseMob extends HorseMob {
         } else if (flapPushCountdown > 0 && --flapPushCountdown == 0
                 && !this.isInWater() && this.getControllingPassenger() instanceof Player) {
             Vec3 m = this.getDeltaMovement();
-            this.setDeltaMovement(m.x, this.getJumpPower() * flapJumpFactor() * flapCharge, m.z);
+            // NB: don't use LivingEntity#getJumpPower() here. In 1.20.1 AbstractHorse does
+            // NOT override it, so it returns the flat 0.42 base and ignores the horse's
+            // JUMP_STRENGTH attribute — giving only ~60% of the 1.21 flap. Compute the same
+            // value 1.21's getJumpPower() does: JUMP_STRENGTH (getCustomJump) * block factor.
+            double jump = this.getCustomJump() * this.getBlockJumpFactor() + this.getJumpBoostPower();
+            this.setDeltaMovement(m.x, jump * flapJumpFactor() * flapCharge, m.z);
             this.hasImpulse = true;
         }
     }

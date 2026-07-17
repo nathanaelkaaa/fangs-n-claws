@@ -65,6 +65,7 @@ import net.raptorzizi.fangs_n_claws.network.FangsNetwork;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
+import net.raptorzizi.fangs_n_claws.util.DimensionSpawnCap;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
@@ -150,6 +151,9 @@ public class FangsClawsMod {
                             return dart;
                         }
                     });
+
+            DispenserBlock.registerBehavior(ItemsRegistry.TOMAHAWK.get(),
+                    new net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkDispenseBehavior());
 
             // Brewing recipes: BrewingRecipeRegistry.addRecipe(inputPotionIngredient, catalystIngredient, outputPotionStack)
             // Forge 1.20.1 uses addRecipe(Ingredient, Ingredient, ItemStack) — no addMix.
@@ -404,6 +408,11 @@ public class FangsClawsMod {
         Entity entity = event.getEntity();
 
         if (type == MobSpawnType.NATURAL || type == MobSpawnType.CHUNK_GENERATION) {
+        if (DimensionSpawnCap.isOurMob(event.getEntity()) && DimensionSpawnCap.isOverCap(serverLevel)) {
+            event.setSpawnCancelled(true);
+            return;
+        }
+
         boolean cancel = false;
 
         if (entity instanceof GoblinEntity           && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_GOBLIN))         cancel = true;
