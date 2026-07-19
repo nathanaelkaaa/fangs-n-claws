@@ -185,7 +185,7 @@ public class FangsConfigScreen extends Screen {
                 new FangsWeightListScreen.Entry("Owlbear",            ServerConfigs.OWLBEAR_WEIGHT,          8),
                 new FangsWeightListScreen.Entry("Shrike",             ServerConfigs.SHRIKE_WEIGHT,           5),
                 new FangsWeightListScreen.Entry("Silver Skeleton",    ServerConfigs.SILVER_SKELETON_WEIGHT, 20),
-                new FangsWeightListScreen.Entry("Evil Bat",           ServerConfigs.EVIL_BAT_WEIGHT,        35),
+                new FangsWeightListScreen.Entry("Evil Bat",           ServerConfigs.EVIL_BAT_WEIGHT,        20),
                 new FangsWeightListScreen.Entry("Ghost",              ServerConfigs.GHOST_WEIGHT,           25),
                 new FangsWeightListScreen.Entry("Ghost (Nether)",     ServerConfigs.GHOST_NETHER_WEIGHT,    15),
                 new FangsWeightListScreen.Entry("Werewolf",           ServerConfigs.WEREWOLF_WEIGHT,        25),

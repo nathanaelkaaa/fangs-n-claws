@@ -59,9 +59,9 @@ public class ServerConfigs {
         SILVER_SKELETON_WEIGHT = BUILDER.comment("Silver Skeleton (overworld) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.silver_skeleton")
                                         .defineInRange("silver_skeleton", 20, 0, 500);
-        EVIL_BAT_WEIGHT        = BUILDER.comment("Evil Bat (overworld) — default: 35")
+        EVIL_BAT_WEIGHT        = BUILDER.comment("Evil Bat (overworld) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.evil_bat")
-                                        .defineInRange("evil_bat",        35, 0, 500);
+                                        .defineInRange("evil_bat",        20, 0, 500);
         GHOST_WEIGHT           = BUILDER.comment("Ghost (overworld) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.ghost")
                                         .defineInRange("ghost",           25, 0, 500);

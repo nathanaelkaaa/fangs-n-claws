@@ -336,6 +336,12 @@
   "jei.fangs_n_claws.catching_claw_netherite": "Upgraded Catching Claw: fire-resistant and more durable, with the same hook-and-launch mechanic.",
   "jei.fangs_n_claws.silver_sword": "The only weapon that can effectively kill a Werewolf.",
   "jei.fangs_n_claws.tomahawk": "A throwing axe. Melee stats are 1 damage below an iron axe. Right-click to throw it (5s cooldown) - the axe stays in your inventory but each throw costs 1 durability. It spins in flight, damages the first target, then vanishes. Can also be fired from a dispenser.",
+
+  "jei.fangs_n_claws.enchantment.critical_backstab": "Fang Dagger / Netherite Dagger only. Backstabs deal bonus damage, increasing with level.",
+  "jei.fangs_n_claws.enchantment.quick_killer": "Fang Dagger / Netherite Dagger only. Shortens the backstab cooldown and grants a burst of Speed after a successful backstab.",
+  "jei.fangs_n_claws.enchantment.item_catcher": "Catching Claw / Netherite Catching Claw only. The hook can grab dropped items and reel them back to you.",
+  "jei.fangs_n_claws.enchantment.scratch": "Catching Claw / Netherite Catching Claw only. Increases its melee attack damage, scaling with level.",
+  "jei.fangs_n_claws.enchantment.blazing": "Fire Pitchfork / Hellfire Pitchfork only. Deals up to +2.5 bonus damage to targets that are on fire.",
   "jei.fangs_n_claws.fire_pitchfork": "Thrown like a trident. Hits inflict Flamebrand; on the 3rd stack the target explodes in flames. The explosion no longer harms the thrower.",
   "jei.fangs_n_claws.hellfire_pitchfork": "Upgraded, fire-resistant pitchfork. Inflicts Hellfire Flamebrand; the target explodes in flames on the 3rd stack. Crafted with Black Horn.",
   "jei.fangs_n_claws.evil_eye": "Thrown item. Blinds all nearby enemies on impact and instantly kills flying pests.",

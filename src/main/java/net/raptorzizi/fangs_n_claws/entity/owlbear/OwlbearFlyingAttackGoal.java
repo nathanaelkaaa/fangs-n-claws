@@ -32,13 +32,16 @@ public class OwlbearFlyingAttackGoal extends Goal {
     private static final double DIVE_AOE_RADIUS     = 3.5;
     private static final float  DIVE_DAMAGE         = 10.0f;
     private static final int    DIVE_COOLDOWN       = 100;
+    private static final int    DIVE_MAX_TICKS      = 40;    // securite : le dive s'acheve apres ~2s
     private static final int    SMOKE_COUNT         = 28;
 
     private int    flapHysteresisTicks = 0;
     private Vec3   lockedTargetPos     = null;
+    private Vec3   diveDir             = null;
     private int    chargeTick          = 0;
     private int    landingTick         = 0;
     private int    diveCooldown        = 0;
+    private int    diveTick            = 0;
     private double prevDiveVelY        = 0.0;
 
     // AI
@@ -81,7 +84,9 @@ public class OwlbearFlyingAttackGoal extends Goal {
         owlbear.setDiveState(OwlbearEntity.DIVE_NONE);
         flapHysteresisTicks = 0;
         diveCooldown = 0;
+        diveTick = 0;
         lockedTargetPos = null;
+        diveDir = null;
         prevDiveVelY = 0.0;
     }
 
@@ -125,6 +130,10 @@ public class OwlbearFlyingAttackGoal extends Goal {
 
                 chargeTick++;
                 if (chargeTick >= 5) {
+                    Vec3 toTarget = lockedTargetPos != null
+                            ? lockedTargetPos.subtract(owlbear.position()) : owlbear.getLookAngle();
+                    diveDir = toTarget.lengthSqr() > 1.0e-4 ? toTarget.normalize() : owlbear.getLookAngle();
+                    diveTick = 0;
                     owlbear.setDiveState(OwlbearEntity.DIVE_DIVING);
                 }
             }
@@ -132,21 +141,26 @@ public class OwlbearFlyingAttackGoal extends Goal {
             case OwlbearEntity.DIVE_DIVING -> {
                 owlbear.getNavigation().stop();
                 owlbear.setNoGravity(true);
-                if (lockedTargetPos != null) {
-                    double survivedVelY = owlbear.getDeltaMovement().y;
-                    boolean lostInertia = prevDiveVelY < -0.2 && survivedVelY > prevDiveVelY * 0.3;
+                diveTick++;
 
-                    Vec3 dir      = lockedTargetPos.subtract(owlbear.position());
-                    Vec3 velocity = dir.normalize().scale(DIVE_SPEED);
-                    owlbear.setDeltaMovement(velocity);
-                    prevDiveVelY = velocity.y;
+                double survivedVelY = owlbear.getDeltaMovement().y;
+                boolean lostInertia = prevDiveVelY < -0.2 && survivedVelY > prevDiveVelY * 0.3;
 
+                // Le piqué s'acheve uniquement sur un impact reel (sol / mur) ou par securite (delai) :
+                // on ne s'arrete plus a un point precis, la trajectoire est une droite continue.
+                if (diveDir == null || owlbear.onGround() || lostInertia || diveTick >= DIVE_MAX_TICKS) {
+                    triggerLanding();
+                    return;
+                }
+
+                Vec3 velocity = diveDir.scale(DIVE_SPEED);
+                owlbear.setDeltaMovement(velocity);
+                prevDiveVelY = velocity.y;
+
+                // Direction figee : orientation stable, aucun spin errative.
+                if (velocity.x * velocity.x + velocity.z * velocity.z > 1.0e-4) {
                     owlbear.setYRot(-((float) Mth.atan2(velocity.x, velocity.z)) * Mth.RAD_TO_DEG);
                     owlbear.yBodyRot = owlbear.getYRot();
-
-                    if (owlbear.onGround() || lostInertia) {
-                        triggerLanding();
-                    }
                 }
             }
 

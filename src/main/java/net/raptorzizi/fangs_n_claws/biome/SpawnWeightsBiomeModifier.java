@@ -179,6 +179,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             }
 
             addTwilightForestSpawns(biome, spawns);
+            addCaveBiomesSpawns(biome, spawns);
         }
     }
 
@@ -209,6 +210,28 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
     private static final ResourceKey<Biome> TF_THORNLANDS            = tf("thornlands");
     private static final ResourceKey<Biome> TF_FINAL_PLATEAU         = tf("final_plateau");
     private static final ResourceKey<Biome> TF_UNDERGROUND           = tf("underground");
+
+    // YUNG's Cave Biomes compat — data-driven via biome keys, no hard dependency on the mod.
+    private static ResourceKey<Biome> ycb(String path) {
+        return ResourceKey.create(Registries.BIOME, new ResourceLocation("yungscavebiomes", path));
+    }
+
+    private static final ResourceKey<Biome> YCB_FROSTED_CAVES = ycb("frosted_caves");
+    private static final ResourceKey<Biome> YCB_LOST_CAVES    = ycb("lost_caves");
+
+    private static void addCaveBiomesSpawns(Holder<Biome> biome, MobSpawnSettingsBuilder spawns) {
+        if (biome.is(YCB_FROSTED_CAVES)) {
+            if (CommonConfigs.ALLOW_SPAWN_ICE_GOLEM.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.ICE_GOLEM.get(),      ServerConfigs.ICE_GOLEM_WEIGHT.get(),      1, 1);
+            if (CommonConfigs.ALLOW_SPAWN_FROST_SCORPION.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.FROST_SCORPION.get(), ServerConfigs.FROST_SCORPION_WEIGHT.get(), 1, 1);
+        }
+
+        if (biome.is(YCB_LOST_CAVES)) {
+            if (CommonConfigs.ALLOW_SPAWN_DESERT_SCORPION.get())
+                add(spawns, MobCategory.MONSTER, EntityRegistry.DESERT_SCORPION.get(), ServerConfigs.DESERT_SCORPION_WEIGHT.get(), 1, 1);
+        }
+    }
 
     @SafeVarargs
     private static boolean isAny(Holder<Biome> biome, ResourceKey<Biome>... keys) {

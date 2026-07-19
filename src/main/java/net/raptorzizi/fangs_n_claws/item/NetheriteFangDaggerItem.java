@@ -35,7 +35,7 @@ public class NetheriteFangDaggerItem extends SwordItem {
     private static final int BACKSTAB_COOLDOWN_TICKS = 120;
 
     public NetheriteFangDaggerItem() {
-        super(Tiers.NETHERITE, 0, -0.8f, new Properties().fireResistant());
+        super(Tiers.NETHERITE, -1, -1.2f, new Properties().fireResistant());
     }
 
     @Override

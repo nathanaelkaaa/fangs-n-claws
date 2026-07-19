@@ -5,8 +5,15 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.RegistryObject;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
 @JeiPlugin
@@ -73,6 +80,12 @@ public class FangsClawsJeiPlugin implements IModPlugin {
         info(reg, "shrike_armor",
                 ItemsRegistry.SHRIKE_HELMET.get(), ItemsRegistry.SHRIKE_CHESTPLATE.get(),
                 ItemsRegistry.SHRIKE_LEGGINGS.get(), ItemsRegistry.SHRIKE_BOOTS.get());
+
+        enchantInfo(reg, EnchantmentsRegistry.CRITICAL_BACKSTAB, "critical_backstab");
+        enchantInfo(reg, EnchantmentsRegistry.QUICK_KILLER,      "quick_killer");
+        enchantInfo(reg, EnchantmentsRegistry.ITEM_CATCHER,      "item_catcher");
+        enchantInfo(reg, EnchantmentsRegistry.SCRATCH,           "scratch");
+        enchantInfo(reg, EnchantmentsRegistry.BLAZING,           "blazing");
     }
 
     private static void info(IRecipeRegistration reg, String key, ItemLike... items) {
@@ -80,5 +93,12 @@ public class FangsClawsJeiPlugin implements IModPlugin {
         for (ItemLike item : items) {
             reg.addIngredientInfo(item, desc);
         }
+    }
+
+    private static void enchantInfo(IRecipeRegistration reg, RegistryObject<Enchantment> ench, String langKey) {
+        Enchantment e = ench.get();
+        ItemStack book = new ItemStack(Items.ENCHANTED_BOOK);
+        EnchantedBookItem.addEnchantment(book, new EnchantmentInstance(e, e.getMaxLevel()));
+        reg.addItemStackInfo(book, Component.translatable("jei.fangs_n_claws.enchantment." + langKey));
     }
 }

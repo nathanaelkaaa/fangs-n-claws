@@ -24,6 +24,7 @@ public class IceGolemSnowLayer extends GeoRenderLayer<IceGolemEntity> {
     public void render(PoseStack poseStack, IceGolemEntity animatable, BakedGeoModel bakedModel,
                        @Nullable RenderType renderType, MultiBufferSource bufferSource,
                        @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+        if (animatable.isSnowless()) return;
         RenderType snowType   = RenderType.entityCutoutNoCull(SNOW_TEXTURE);
         VertexConsumer snowBuf = bufferSource.getBuffer(snowType);
         getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable,

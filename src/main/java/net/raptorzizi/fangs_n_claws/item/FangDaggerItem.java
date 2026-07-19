@@ -37,7 +37,7 @@ public class FangDaggerItem extends SwordItem {
     private static final int    BACKSTAB_COOLDOWN_TICKS = 120;
 
     public FangDaggerItem() {
-        super(Tiers.STONE, 2, -0.8f, new Properties());
+        super(Tiers.STONE, 1, -1.1f, new Properties());
     }
 
     public static boolean isBackstab(LivingEntity attacker, LivingEntity target) {
