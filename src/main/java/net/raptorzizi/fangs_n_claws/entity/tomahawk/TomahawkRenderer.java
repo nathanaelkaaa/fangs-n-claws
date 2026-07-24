@@ -32,7 +32,8 @@ public class TomahawkRenderer extends EntityRenderer<TomahawkProjectile> {
         float yRot = -((float) (Mth.atan2(motion.z, motion.x) * (180.0 / Math.PI)) + 90.0F);
         float xRot = -((float) (Mth.atan2(motion.horizontalDistance(), motion.y) * (180.0 / Math.PI)) - 90.0F);
         poseStack.mulPose(Axis.YP.rotationDegrees(yRot));
-        poseStack.mulPose(Axis.XP.rotationDegrees(xRot - (entity.tickCount + partialTick) * SPIN_DEGREES_PER_TICK));
+        float spin = entity.isInGround() ? 0.0F : (entity.tickCount + partialTick) * SPIN_DEGREES_PER_TICK;
+        poseStack.mulPose(Axis.XP.rotationDegrees(xRot - spin));
 
         Minecraft.getInstance().getItemRenderer().renderStatic(
                 item, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, packedLight, OverlayTexture.NO_OVERLAY,

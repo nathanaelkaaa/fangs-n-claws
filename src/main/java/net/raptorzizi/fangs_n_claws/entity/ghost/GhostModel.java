@@ -19,7 +19,7 @@ public class GhostModel extends GeoModel<GhostEntity> {
 
     @Override
     public RenderType getRenderType(GhostEntity animatable, ResourceLocation texture) {
-        return RenderType.entityCutout(texture);
+        return RenderType.entityCutoutNoCull(texture);
     }
 
     @Override

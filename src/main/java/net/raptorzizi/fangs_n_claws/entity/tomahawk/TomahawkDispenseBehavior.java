@@ -1,13 +1,13 @@
 package net.raptorzizi.fangs_n_claws.entity.tomahawk;
 
+import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
-import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 
 public class TomahawkDispenseBehavior extends DefaultDispenseItemBehavior {
 
@@ -21,17 +21,16 @@ public class TomahawkDispenseBehavior extends DefaultDispenseItemBehavior {
         Direction dir = source.getBlockState().getValue(DispenserBlock.FACING);
         Position pos = DispenserBlock.getDispensePosition(source);
 
-        TomahawkProjectile tomahawk = new TomahawkProjectile(EntityRegistry.TOMAHAWK_PROJECTILE.get(), level);
-        tomahawk.setPos(pos.x(), pos.y(), pos.z());
+        ItemStack thrown = stack.copy();
+        thrown.setCount(1);
+
+        TomahawkProjectile tomahawk = new TomahawkProjectile(level, pos.x(), pos.y(), pos.z(), thrown);
         tomahawk.setDamage(THROW_DAMAGE);
+        tomahawk.pickup = AbstractArrow.Pickup.ALLOWED;
         tomahawk.shoot(dir.getStepX(), dir.getStepY() + 0.1F, dir.getStepZ(), POWER, UNCERTAINTY);
         level.addFreshEntity(tomahawk);
 
-        int nextDamage = stack.getDamageValue() + 1;
-        if (nextDamage >= stack.getMaxDamage()) {
-            return ItemStack.EMPTY;
-        }
-        stack.setDamageValue(nextDamage);
+        stack.shrink(1);
         return stack;
     }
 

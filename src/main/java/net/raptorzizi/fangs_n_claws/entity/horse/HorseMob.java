@@ -303,6 +303,8 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
 
     @Override
     public void openCustomInventoryScreen(@NotNull Player player) {
+        if (!this.isTamed()) return;
+        if (this.isVehicle() && !this.hasPassenger(player)) return;
         if (!this.level().isClientSide && player instanceof ServerPlayer serverPlayer) {
             NetworkHooks.openScreen(serverPlayer,
                     new SimpleMenuProvider((id, inv, p) -> new HorseArmorMenu(id, inv, this), this.getDisplayName()),

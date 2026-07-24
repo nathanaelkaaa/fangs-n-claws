@@ -18,7 +18,7 @@ public class FireGhostModel extends GeoModel<FireGhostEntity> {
 
     @Override
     public RenderType getRenderType(FireGhostEntity animatable, ResourceLocation texture) {
-        return RenderType.entityCutout(texture);
+        return RenderType.entityCutoutNoCull(texture);
     }
 
     @Override
