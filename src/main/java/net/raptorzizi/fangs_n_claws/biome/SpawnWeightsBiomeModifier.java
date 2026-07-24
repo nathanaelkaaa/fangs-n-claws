@@ -95,7 +95,7 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         if (phase == Phase.AFTER_EVERYTHING) {
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
 
-            if (biome.is(IS_OVERWORLD)) {
+            if (biome.is(IS_OVERWORLD) && !spawns.getSpawner(MobCategory.MONSTER).isEmpty()) {
                 if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.GOBLIN.get(),          ServerConfigs.GOBLIN_WEIGHT.get(),          1, 4);
                 if (CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get())

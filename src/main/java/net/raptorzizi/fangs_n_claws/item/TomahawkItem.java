@@ -5,7 +5,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Item;
@@ -31,23 +30,28 @@ public class TomahawkItem extends AxeItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (player.getCooldowns().isOnCooldown(stack.getItem())) {
+        Item tomahawkItem = stack.getItem();
+        if (player.getCooldowns().isOnCooldown(tomahawkItem)) {
             return InteractionResultHolder.fail(stack);
         }
 
         if (!level.isClientSide) {
-            TomahawkProjectile tomahawk = new TomahawkProjectile(level, player);
+            ItemStack thrown = stack.copy();
+            thrown.setCount(1);
+
+            TomahawkProjectile tomahawk = new TomahawkProjectile(level, player, thrown);
             tomahawk.setDamage(THROW_DAMAGE);
             tomahawk.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, THROW_VELOCITY, 1.0F);
             level.addFreshEntity(tomahawk);
             level.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.TRIDENT_THROW.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
-            EquipmentSlot slot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-            stack.hurtAndBreak(1, player, slot);
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
         }
 
-        player.getCooldowns().addCooldown(stack.getItem(), COOLDOWN_TICKS);
+        player.getCooldowns().addCooldown(tomahawkItem, COOLDOWN_TICKS);
         player.swing(hand);
         return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }

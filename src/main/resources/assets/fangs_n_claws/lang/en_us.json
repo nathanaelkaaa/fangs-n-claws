@@ -76,6 +76,7 @@
   "item.fangs_n_claws.tomahawk.tooltip1": "§7Right-click to throw",
   "entity.fangs_n_claws.tomahawk_projectile": "Tomahawk",
   "item.fangs_n_claws.silver_sword.tooltip1": "§7The only weapon that can effectively kill a Werewolf",
+  "item.fangs_n_claws.silver_sword.tooltip2": "§b+2 magic damage §7(ignores armor)",
 
   "item.fangs_n_claws.catching_claw": "Catching Claw",
   "item.fangs_n_claws.catching_claw.tooltip1": "§7Hook a target, then retrieve to launch it toward your aim",

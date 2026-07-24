@@ -70,7 +70,8 @@ public class HorseArmorMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return this.container.stillValid(player) && this.horse.isAlive() && player.canInteractWithEntity(this.horse, 4.0);
+        return this.container.stillValid(player) && this.horse.isAlive() && this.horse.isTamed()
+                && player.canInteractWithEntity(this.horse, 4.0);
     }
 
     @Override

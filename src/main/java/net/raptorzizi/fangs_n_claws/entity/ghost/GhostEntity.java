@@ -142,15 +142,17 @@ public class GhostEntity extends Monster implements GeoEntity {
     private void tickMovement() {
         if (this.level().isClientSide) return;
 
-        LivingEntity target = this.getTarget();
+        LivingEntity target  = this.getTarget();
+        boolean      inCombat = target != null && target.isAlive();
 
-        this.noPhysics = target != null && target.isAlive();
+        boolean stuck = !this.level().noCollision(this, this.getBoundingBox().deflate(0.05));
+        this.noPhysics = inCombat || stuck;
         double groundY      = findGroundY();
 
         double bob    = Mth.sin(this.tickCount * 0.08f) * 0.4;
         double hoverY = groundY + HOVER_HEIGHT + bob;
 
-        if (target != null && target.isAlive()) {
+        if (inCombat) {
             double targetY = target.getY() + target.getBbHeight() * 0.5;
 
             flyTarget = new Vec3(target.getX(), targetY, target.getZ());

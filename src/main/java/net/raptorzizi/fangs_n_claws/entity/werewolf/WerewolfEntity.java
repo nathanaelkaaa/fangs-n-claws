@@ -1,9 +1,14 @@
 package net.raptorzizi.fangs_n_claws.entity.werewolf;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.item.Item;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import org.jetbrains.annotations.Nullable;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +37,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.raptorzizi.fangs_n_claws.item.SilverSwordItem;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raptorzizi.fangs_n_claws.entity.goal.BetterPathNavigation;
@@ -137,7 +141,7 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,        25.0)
+                .add(Attributes.MAX_HEALTH,        18.0)
                 .add(Attributes.MOVEMENT_SPEED,     0.2)
                 .add(Attributes.ATTACK_DAMAGE,      4.0)
                 .add(Attributes.FOLLOW_RANGE,       28.0)
@@ -168,12 +172,17 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     // Sound
 
+    public static final TagKey<Item> WEREWOLF_BANE =
+            TagKey.create(Registries.ITEM,
+                    ResourceLocation.fromNamespaceAndPath(
+                            FangsClawsMod.MOD_ID, "werewolf_bane"));
+
     @Override
     public boolean hurt(DamageSource source, float amount) {
         Entity directEntity = source.getDirectEntity();
-        boolean hasSilverSword = directEntity instanceof Player player
-                && player.getMainHandItem().getItem() instanceof SilverSwordItem;
-        if (!hasSilverSword && (directEntity != null || source.getEntity() != null)) {
+        boolean effectiveWeapon = directEntity instanceof LivingEntity attacker
+                && attacker.getMainHandItem().is(WEREWOLF_BANE);
+        if (!effectiveWeapon && (directEntity != null || source.getEntity() != null)) {
             amount = 1.0f;
         }
         return super.hurt(source, amount);
