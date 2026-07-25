@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.raptorzizi.fangs_n_claws.network.PurpleWormPartsPayload;
 import net.raptorzizi.fangs_n_claws.network.TotemFrostPayload;
 import net.raptorzizi.fangs_n_claws.network.OwlFlightPayload;
 import net.raptorzizi.fangs_n_claws.network.OwlFlightSyncPayload;
@@ -109,6 +110,12 @@ public class FangsClawsMod {
                 OwlFlightPayload.TYPE,
                 OwlFlightPayload.STREAM_CODEC,
                 OwlFlightPayload::handleServer
+            );
+
+            registrar.playToServer(
+                PurpleWormPartsPayload.TYPE,
+                PurpleWormPartsPayload.STREAM_CODEC,
+                PurpleWormPartsPayload::handleServer
             );
 
             registrar.playToClient(

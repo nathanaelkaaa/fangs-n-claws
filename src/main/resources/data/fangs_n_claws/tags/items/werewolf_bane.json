@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "fangs_n_claws:silver_sword",
+
+    { "id": "iceandfire:silver_sword", "required": false },
+    { "id": "iceandfire:silver_axe", "required": false },
+    { "id": "iceandfire:silver_pickaxe", "required": false },
+    { "id": "iceandfire:silver_shovel", "required": false },
+    { "id": "iceandfire:silver_hoe", "required": false },
+
+    { "id": "caverns_and_chasms:silver_sword", "required": false },
+    { "id": "caverns_and_chasms:silver_axe", "required": false },
+    { "id": "caverns_and_chasms:silver_pickaxe", "required": false },
+    { "id": "caverns_and_chasms:silver_shovel", "required": false },
+    { "id": "caverns_and_chasms:silver_hoe", "required": false }
+  ]
+}

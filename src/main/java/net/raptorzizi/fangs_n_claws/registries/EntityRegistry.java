@@ -26,6 +26,7 @@ import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity;
 import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
@@ -60,6 +61,21 @@ public class EntityRegistry {
             ENTITIES.register("golem", () -> EntityType.Builder.of(GolemEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 2.6F)
                     .build("golem"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile>> POISON_SPLIT =
+            ENTITIES.register("poison_split", () -> EntityType.Builder
+                    .<net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile>of(
+                            net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile::new, MobCategory.MISC)
+                    .sized(1.5F, 1.5F)
+                    .clientTrackingRange(64)
+                    .build("poison_split"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PurpleWormEntity>> PURPLE_WORM =
+            ENTITIES.register("purple_worm", () -> EntityType.Builder.of(PurpleWormEntity::new, MobCategory.MONSTER)
+                    .sized(3.0F, 5.0F)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build("purple_worm"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<IceGolemEntity>> ICE_GOLEM =
             ENTITIES.register("ice_golem", () -> EntityType.Builder.of(IceGolemEntity::new, MobCategory.MONSTER)

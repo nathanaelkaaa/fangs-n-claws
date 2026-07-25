@@ -2,6 +2,7 @@
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
 
   "item.fangs_n_claws.ghost_spawn_egg": "Ghost Spawn Egg",
+  "item.fangs_n_claws.purple_worm_spawn_egg": "Purple Worm Spawn Egg",
   "item.fangs_n_claws.mimic_spawn_egg": "Mimic Spawn Egg",
   "item.fangs_n_claws.fire_ghost_spawn_egg": "Fire Ghost Spawn Egg",
   "item.fangs_n_claws.evil_bat_spawn_egg": "Evil Bat Spawn Egg",
@@ -134,6 +135,8 @@
   "entity.fangs_n_claws.wild_wolf": "Wild Wolf",
   "item.fangs_n_claws.wild_wolf_spawn_egg": "Wild Wolf Spawn Egg",
   "entity.fangs_n_claws.ghost": "Ghost",
+  "entity.fangs_n_claws.purple_worm": "Purple Worm",
+  "entity.fangs_n_claws.poison_split": "Poison Split",
   "entity.fangs_n_claws.mimic": "Mimic",
   "entity.fangs_n_claws.fire_ghost": "Fire Ghost",
   "entity.fangs_n_claws.desert_scorpion": "Desert Scorpion",

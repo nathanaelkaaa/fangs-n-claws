@@ -335,5 +335,16 @@ public class FangsClawsModClient {
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.TOMAHAWK_PROJECTILE.get(),
                 net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.PURPLE_WORM.get(),
+                net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.POISON_SPLIT.get(),
+                net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitRenderer::new);
+    }
+
+    @SubscribeEvent
+    static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(
+                net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitModel.LAYER,
+                net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitModel::createLayer);
     }
 }
