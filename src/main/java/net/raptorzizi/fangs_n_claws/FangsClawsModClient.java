@@ -337,6 +337,8 @@ public class FangsClawsModClient {
                 net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.PURPLE_WORM.get(),
                 net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.PURPLE_WORM_ARM.get(),
+                net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmRenderer::new);
         event.registerEntityRenderer(EntityRegistry.POISON_SPLIT.get(),
                 net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitRenderer::new);
     }

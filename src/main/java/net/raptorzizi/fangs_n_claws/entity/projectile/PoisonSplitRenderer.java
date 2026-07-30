@@ -34,7 +34,8 @@ public class PoisonSplitRenderer extends EntityRenderer<PoisonSplitProjectile> {
         poseStack.mulPose(Axis.YP.rotationDegrees(lerpYaw - 180.0F));
         float lerpPitch = Mth.lerp(partialTick, entity.xRotO, entity.getXRot());
         poseStack.mulPose(Axis.XP.rotationDegrees(lerpPitch));
-        poseStack.scale(RENDER_SCALE, RENDER_SCALE, RENDER_SCALE);
+        float s = RENDER_SCALE * entity.getScale();
+        poseStack.scale(s, s, s);
         poseStack.translate(0.0, 0.3F, 0.0);
 
         VertexConsumer vc = buffer.getBuffer(this.model.renderType(TEXTURE));

@@ -34,6 +34,18 @@ public class ParticlesRegistry {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ORANGE_SMOKE =
             PARTICLES.register("orange_smoke", () -> new SimpleParticleType(false));
 
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> POISON_SPLASH =
+            PARTICLES.register("poison_splash", () -> new SimpleParticleType(false));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> POISON_CLOUD =
+            PARTICLES.register("poison_cloud", () -> new SimpleParticleType(false));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ACID_BUBBLE =
+            PARTICLES.register("acid_bubble", () -> new SimpleParticleType(false));
+
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ACID_TRAIL =
+            PARTICLES.register("acid_trail", () -> new SimpleParticleType(false));
+
     public static void register(IEventBus eventBus) {
         PARTICLES.register(eventBus);
     }

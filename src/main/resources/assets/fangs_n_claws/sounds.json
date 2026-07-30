@@ -240,5 +240,96 @@
     "sounds": [
       { "name": "fangs_n_claws:mimic/mimic_open"}
     ]
+  },
+  "purple_worm.ambient": {
+    "subtitle": "subtitles.entity.purple_worm.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_idle3", "weight": 1 }
+    ]
+  },
+  "purple_worm.hurt": {
+    "subtitle": "subtitles.entity.purple_worm.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_hurt2", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_hurt3", "weight": 1 }
+    ]
+  },
+  "purple_worm.death": {
+    "subtitle": "subtitles.entity.purple_worm.death",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_death" }
+    ]
+  },
+  "purple_worm.claw": {
+    "subtitle": "subtitles.entity.purple_worm.claw",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_claw" }
+    ]
+  },
+  "purple_worm.bite": {
+    "subtitle": "subtitles.entity.purple_worm.bite",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_bite1", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_bite2", "weight": 1 }
+    ]
+  },
+  "purple_worm.split": {
+    "subtitle": "subtitles.entity.purple_worm.split",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_split1", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_split2", "weight": 1 },
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_split3", "weight": 1 }
+    ]
+  },
+  "purple_worm.split_volley": {
+    "subtitle": "subtitles.entity.purple_worm.split_volley",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_split_volley" }
+    ]
+  },
+  "purple_worm.breath": {
+    "subtitle": "subtitles.entity.purple_worm.breath",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_attack_breath" }
+    ]
+  },
+  "purple_worm.poison_splash": {
+    "subtitle": "subtitles.entity.purple_worm.poison_splash",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/poison_splash" }
+    ]
+  },
+  "purple_worm.poison_puddle": {
+    "subtitle": "subtitles.entity.purple_worm.poison_puddle",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/poison_puddle_loop" }
+    ]
+  },
+  "purple_worm.emerge": {
+    "subtitle": "subtitles.entity.purple_worm.emerge",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_emerge" }
+    ]
+  },
+  "purple_worm.hide": {
+    "subtitle": "subtitles.entity.purple_worm.hide",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/purple_worm_hide" }
+    ]
+  },
+  "purple_worm.arm_emerge": {
+    "subtitle": "subtitles.entity.purple_worm.arm_emerge",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/small_emerge" }
+    ]
+  },
+  "purple_worm.arm_dig": {
+    "subtitle": "subtitles.entity.purple_worm.arm_dig",
+    "sounds": [
+      { "name": "fangs_n_claws:purple_worm/small_dig" }
+    ]
   }
 }

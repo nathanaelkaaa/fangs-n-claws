@@ -9,6 +9,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_eye.EvilEyeProjectile;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity;
 import net.raptorzizi.fangs_n_claws.entity.velocity_arrow.VelocityArrowEntity;
 import net.raptorzizi.fangs_n_claws.entity.projectile.FeatherProjectileEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
@@ -76,6 +78,22 @@ public class EntityRegistry {
                     .clientTrackingRange(10)
                     .fireImmune()
                     .build("purple_worm"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity>> PURPLE_WORM_ARM =
+            ENTITIES.register("purple_worm_arm", () -> EntityType.Builder.of(
+                            PurpleWormArmEntity::new, MobCategory.MONSTER)
+                    .sized(1.5F, 7.0F)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build("purple_worm_arm"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity>> POISON_CLOUD =
+            ENTITIES.register("poison_cloud", () -> EntityType.Builder.of(
+                            PoisonCloudEntity::new, MobCategory.MISC)
+                    .sized(12.0F, 6.0F)
+                    .clientTrackingRange(64)
+                    .fireImmune()
+                    .build("poison_cloud"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<IceGolemEntity>> ICE_GOLEM =
             ENTITIES.register("ice_golem", () -> EntityType.Builder.of(IceGolemEntity::new, MobCategory.MONSTER)

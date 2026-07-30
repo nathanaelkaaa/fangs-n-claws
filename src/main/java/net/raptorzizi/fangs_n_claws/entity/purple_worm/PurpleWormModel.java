@@ -5,9 +5,7 @@ import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.model.GeoModel;
-import software.bernie.geckolib.model.data.EntityModelData;
 
 public class PurpleWormModel extends GeoModel<PurpleWormEntity> {
 
@@ -41,9 +39,9 @@ public class PurpleWormModel extends GeoModel<PurpleWormEntity> {
         GeoBone part5 = getAnimationProcessor().getBone("part5");
         GeoBone part4 = getAnimationProcessor().getBone("part4");
 
-        EntityModelData data = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-        float desired      = data.netHeadYaw();
-        float desiredPitch = data.headPitch();
+        float partialTick  = animationState.getPartialTick();
+        float desired      = entity.getHeadYawOffset(partialTick);
+        float desiredPitch = entity.getHeadPitchOffset(partialTick);
 
         float headYaw  = Mth.clamp(desired, -HEAD_YAW_MAX, HEAD_YAW_MAX);
         float part5Yaw = Mth.clamp(desired - headYaw, -PART5_YAW_MAX, PART5_YAW_MAX);

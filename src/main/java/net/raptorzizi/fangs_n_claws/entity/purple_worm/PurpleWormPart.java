@@ -29,7 +29,7 @@ public class PurpleWormPart extends PartEntity<PurpleWormEntity> {
 
     @Override
     public boolean isPickable() {
-        return true;
+        return !this.parentWorm.isHidden();
     }
 
     @Override
