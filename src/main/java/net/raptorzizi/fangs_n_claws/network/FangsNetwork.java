@@ -29,5 +29,8 @@ public class FangsNetwork {
         CHANNEL.registerMessage(id++, OwlFlightSyncPacket.class,
                 OwlFlightSyncPacket::encode, OwlFlightSyncPacket::decode, OwlFlightSyncPacket::handle,
                 Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        CHANNEL.registerMessage(id++, PurpleWormPartsPayload.class,
+                PurpleWormPartsPayload::encode, PurpleWormPartsPayload::decode, PurpleWormPartsPayload::handle,
+                Optional.of(NetworkDirection.PLAY_TO_SERVER));
     }
 }

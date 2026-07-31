@@ -62,6 +62,38 @@ public class EntityRegistry {
                     .sized(2F, 2.6F)
                     .build("golem"));
 
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile>> POISON_SPLIT =
+            ENTITIES.register("poison_split", () -> EntityType.Builder
+                    .<net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile>of(
+                            net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile::new, MobCategory.MISC)
+                    .sized(1.5F, 1.5F)
+                    .clientTrackingRange(64)
+                    .build("poison_split"));
+
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity>> PURPLE_WORM =
+            ENTITIES.register("purple_worm", () -> EntityType.Builder.of(
+                            net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity::new, MobCategory.MONSTER)
+                    .sized(3.0F, 5.0F)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build("purple_worm"));
+
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity>> PURPLE_WORM_ARM =
+            ENTITIES.register("purple_worm_arm", () -> EntityType.Builder.of(
+                            net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity::new, MobCategory.MONSTER)
+                    .sized(1.5F, 7.0F)
+                    .clientTrackingRange(10)
+                    .fireImmune()
+                    .build("purple_worm_arm"));
+
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity>> POISON_CLOUD =
+            ENTITIES.register("poison_cloud", () -> EntityType.Builder.of(
+                            net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity::new, MobCategory.MISC)
+                    .sized(12.0F, 6.0F)
+                    .clientTrackingRange(64)
+                    .fireImmune()
+                    .build("poison_cloud"));
+
     public static final RegistryObject<EntityType<IceGolemEntity>> ICE_GOLEM =
             ENTITIES.register("ice_golem", () -> EntityType.Builder.of(IceGolemEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 2.6F)

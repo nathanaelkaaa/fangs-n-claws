@@ -34,6 +34,18 @@ public class ParticlesRegistry {
     public static final RegistryObject<SimpleParticleType> FIRE =
             PARTICLES.register("fire", () -> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> POISON_SPLASH =
+            PARTICLES.register("poison_splash", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> POISON_CLOUD =
+            PARTICLES.register("poison_cloud", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> ACID_BUBBLE =
+            PARTICLES.register("acid_bubble", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> ACID_TRAIL =
+            PARTICLES.register("acid_trail", () -> new SimpleParticleType(false));
+
     public static void register(IEventBus eventBus) {
         PARTICLES.register(eventBus);
     }

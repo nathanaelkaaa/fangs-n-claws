@@ -93,6 +93,35 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> MIMIC_DEATH =
             register("mimic.death");
 
+    public static final Supplier<SoundEvent> PURPLE_WORM_AMBIENT =
+            register("purple_worm.ambient");
+    public static final Supplier<SoundEvent> PURPLE_WORM_HURT =
+            register("purple_worm.hurt");
+    public static final Supplier<SoundEvent> PURPLE_WORM_DEATH =
+            register("purple_worm.death");
+    public static final Supplier<SoundEvent> PURPLE_WORM_CLAW =
+            register("purple_worm.claw");
+    public static final Supplier<SoundEvent> PURPLE_WORM_BITE =
+            register("purple_worm.bite");
+    public static final Supplier<SoundEvent> PURPLE_WORM_SPLIT =
+            register("purple_worm.split");
+    public static final Supplier<SoundEvent> PURPLE_WORM_SPLIT_VOLLEY =
+            register("purple_worm.split_volley");
+    public static final Supplier<SoundEvent> PURPLE_WORM_BREATH =
+            register("purple_worm.breath");
+    public static final Supplier<SoundEvent> PURPLE_WORM_POISON_SPLASH =
+            register("purple_worm.poison_splash");
+    public static final Supplier<SoundEvent> PURPLE_WORM_POISON_PUDDLE =
+            register("purple_worm.poison_puddle");
+    public static final Supplier<SoundEvent> PURPLE_WORM_EMERGE =
+            register("purple_worm.emerge");
+    public static final Supplier<SoundEvent> PURPLE_WORM_HIDE =
+            register("purple_worm.hide");
+    public static final Supplier<SoundEvent> PURPLE_WORM_ARM_EMERGE =
+            register("purple_worm.arm_emerge");
+    public static final Supplier<SoundEvent> PURPLE_WORM_ARM_DIG =
+            register("purple_worm.arm_dig");
+
     private static Supplier<SoundEvent> register(String name) {
         return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(FangsClawsMod.id(name)));
     }

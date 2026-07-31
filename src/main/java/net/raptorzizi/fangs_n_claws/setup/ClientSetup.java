@@ -72,6 +72,13 @@ public class ClientSetup {
     }
 
     @SubscribeEvent
+    public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(
+                net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitModel.LAYER,
+                net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitModel::createLayer);
+    }
+
+    @SubscribeEvent
     public static void rendererRegister(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.HORSE_BAT.get(),         HorseMobRenderer::new);
         event.registerEntityRenderer(EntityRegistry.NIGHTMARE_HORSE.get(),   HorseMobRenderer::new);
@@ -115,6 +122,14 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.TOMAHAWK_PROJECTILE.get(),
                 net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.PURPLE_WORM.get(),
+                net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.PURPLE_WORM_ARM.get(),
+                net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.POISON_SPLIT.get(),
+                net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.POISON_CLOUD.get(),
+                net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
 
@@ -127,6 +142,14 @@ public class ClientSetup {
         event.registerSpriteSet(ParticlesRegistry.FIRE_EXPLOSION.get(),   FireExplosionParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.FIRE.get(),            FireParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ORANGE_SMOKE.get(),    OrangeSmokeParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.POISON_SPLASH.get(),
+                net.raptorzizi.fangs_n_claws.particle.PoisonSplashParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.POISON_CLOUD.get(),
+                net.raptorzizi.fangs_n_claws.particle.PoisonCloudParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.ACID_BUBBLE.get(),
+                net.raptorzizi.fangs_n_claws.particle.AcidBubbleParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.ACID_TRAIL.get(),
+                net.raptorzizi.fangs_n_claws.particle.AcidBubbleParticle.TrailProvider::new);
     }
 
     // Forge bus client events (frozen entities render locked in place)

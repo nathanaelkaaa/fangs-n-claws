@@ -91,6 +91,8 @@ public class CommonSetup {
         event.put(EntityRegistry.GOLEM.get(),            GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.ICE_GOLEM.get(),        GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.GHOST.get(),            GhostEntity.prepareAttributes().build());
+        event.put(EntityRegistry.PURPLE_WORM.get(),      net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity.prepareAttributes().build());
+        event.put(EntityRegistry.PURPLE_WORM_ARM.get(),  net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity.prepareAttributes().build());
         event.put(EntityRegistry.MIMIC.get(),            MimicEntity.prepareAttributes().build());
         event.put(EntityRegistry.FIRE_GHOST.get(),       FireGhostEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOBLIN.get(),           GoblinEntity.prepareAttributes().build());
