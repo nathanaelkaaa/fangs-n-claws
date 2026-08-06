@@ -211,7 +211,10 @@ public class FangsClawsMod {
         if (event.loadedFromDisk()) return;
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
 
+        boolean isOverworld = serverLevel.dimension().equals(Level.OVERWORLD);
+
         if (event.getEntity() instanceof SkeletonHorse vanilla) {
+            if (!isOverworld) return;
             if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_SKELETON_HORSE)
                     || CommonConfigs.VANILLA_SKELETON_HORSE.get()) return; // garde le vanilla (gamerule OU config)
             SkeletonHorseMob mob = EntityRegistry.SKELETON_HORSE_MOB.get().create(serverLevel);
@@ -224,6 +227,7 @@ public class FangsClawsMod {
             }
             event.setCanceled(true);
         } else if (event.getEntity() instanceof ZombieHorse vanilla) {
+            if (!isOverworld) return;
             if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_ZOMBIE_HORSE)
                     || CommonConfigs.VANILLA_ZOMBIE_HORSE.get()) return; // garde le vanilla (gamerule OU config)
             ZombieHorseMob mob = EntityRegistry.ZOMBIE_HORSE_MOB.get().create(serverLevel);
