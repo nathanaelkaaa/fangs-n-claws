@@ -156,7 +156,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.BLOCK_PROJECTILE.get(),      BlockProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FEATHER_PROJECTILE.get(),    FeatherProjectileRenderer::new);
-        event.registerEntityRenderer(EntityRegistry.POISON_CLOUD.get(),
+        event.registerEntityRenderer(EntityRegistry.ACID_CLOUD.get(),
                 net.minecraft.client.renderer.entity.NoopRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
@@ -177,10 +177,10 @@ public class ClientSetup {
         event.registerSpriteSet(ParticlesRegistry.FIRE_EXPLOSION.get(),  FireExplosionParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.FIRE.get(),            FireParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ORANGE_SMOKE.get(),    OrangeSmokeParticle.Provider::new);
-        event.registerSpriteSet(ParticlesRegistry.POISON_SPLASH.get(),
-                net.raptorzizi.fangs_n_claws.particle.PoisonSplashParticle.Provider::new);
-        event.registerSpriteSet(ParticlesRegistry.POISON_CLOUD.get(),
-                net.raptorzizi.fangs_n_claws.particle.PoisonCloudParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.ACID_SPLASH.get(),
+                net.raptorzizi.fangs_n_claws.particle.AcidSplashParticle.Provider::new);
+        event.registerSpriteSet(ParticlesRegistry.ACID_CLOUD.get(),
+                net.raptorzizi.fangs_n_claws.particle.AcidCloudParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ACID_BUBBLE.get(),
                 net.raptorzizi.fangs_n_claws.particle.AcidBubbleParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ACID_TRAIL.get(),

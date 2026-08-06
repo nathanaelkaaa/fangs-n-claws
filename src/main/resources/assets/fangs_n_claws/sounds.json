@@ -296,16 +296,16 @@
       { "name": "fangs_n_claws:purple_worm/purple_worm_attack_breath" }
     ]
   },
-  "purple_worm.poison_splash": {
-    "subtitle": "subtitles.entity.purple_worm.poison_splash",
+  "purple_worm.acid_splash": {
+    "subtitle": "subtitles.entity.purple_worm.acid_splash",
     "sounds": [
-      { "name": "fangs_n_claws:purple_worm/poison_splash" }
+      { "name": "fangs_n_claws:purple_worm/acid_splash" }
     ]
   },
-  "purple_worm.poison_puddle": {
-    "subtitle": "subtitles.entity.purple_worm.poison_puddle",
+  "purple_worm.acid_puddle": {
+    "subtitle": "subtitles.entity.purple_worm.acid_puddle",
     "sounds": [
-      { "name": "fangs_n_claws:purple_worm/poison_puddle_loop" }
+      { "name": "fangs_n_claws:purple_worm/acid_puddle_loop" }
     ]
   },
   "purple_worm.emerge": {

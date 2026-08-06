@@ -32,7 +32,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerBossEvent;
 import net.neoforged.neoforge.entity.PartEntity;
-import net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile;
+import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
+import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -96,10 +97,10 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
     private static final int    BREATH_ACID_BUBBLES   = 4;
     private static final int[]  BREATH_CLOUD_TICKS    = { 60, 70, 80, 90 };
     private static final double BREATH_CLOUD_RAYCAST  = 20.0;
-    private static final float  BREATH_DAMAGE         = 4.0f;
+    private static final float  BREATH_DAMAGE         = 5.0f;
     private static final float  BREATH_RANGE          = 14.0f;
     private static final float  BREATH_CONE_COS       = Mth.cos(35.0f * Mth.DEG_TO_RAD);
-    private static final int    BREATH_POISON_TICKS   = 100;
+    private static final int    BREATH_ACID_TICKS   = 100;
     private static final double BREATH_MIN_RANGE      = 5.0;
     private static final double BREATH_MAX_RANGE      = 16.0;
 
@@ -196,6 +197,8 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
 
     private int hideAnimTimer = 0;
     private int awayTimer      = 0;
+    private Double anchorX = null, anchorZ = null;
+
     private int phase          = 1;
 
     private static final float HEAD_EASE = 0.35f;
@@ -356,9 +359,9 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH,               300.0)
-                .add(Attributes.ARMOR,               10.0)
+                .add(Attributes.ARMOR,               20.0)
                 .add(Attributes.MOVEMENT_SPEED,             0.0)
-                .add(Attributes.ATTACK_DAMAGE,             14.0)
+                .add(Attributes.ATTACK_DAMAGE,             16.0)
                 .add(Attributes.FOLLOW_RANGE,              100.0)
                 .add(Attributes.ENTITY_INTERACTION_RANGE,   5.0)
                 .add(Attributes.KNOCKBACK_RESISTANCE,       1.0);
@@ -458,7 +461,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         int half = 1;
         for (int j = -half; j <= half; j++) {
             Vec3 vj = rotateAroundY(v, Math.toRadians(j * SVOLLEY_SPREAD_DEG));
-            PoisonSplitProjectile proj = new PoisonSplitProjectile(this.level(), this);
+            AcidSplitProjectile proj = new AcidSplitProjectile(this.level(), this);
             proj.setPos(muzzle.x, muzzle.y, muzzle.z);
             proj.setDeltaMovement(vj);
             aimRotationFromVelocity(proj, vj);
@@ -478,7 +481,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         return new Vec3(vx, vy, vz);
     }
 
-    private static void aimRotationFromVelocity(PoisonSplitProjectile proj, Vec3 v) {
+    private static void aimRotationFromVelocity(AcidSplitProjectile proj, Vec3 v) {
         double horiz = Math.sqrt(v.x * v.x + v.z * v.z);
         proj.setYRot((float) (Mth.atan2(v.x, v.z) * Mth.RAD_TO_DEG));
         proj.setXRot((float) (Mth.atan2(v.y, horiz) * Mth.RAD_TO_DEG));
@@ -568,7 +571,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         if (active) {
             applyBreathDamage();
             for (int t : BREATH_CLOUD_TICKS) {
-                if (breathDelayTick == t) { spawnPoisonCloud(); break; }
+                if (breathDelayTick == t) { spawnAcidCloud(); break; }
             }
         }
         if (breathDelayTick >= BREATH_TOTAL_TICKS) {
@@ -604,7 +607,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         return new Vec3(-Mth.sin(yawRad), 0.0, Mth.cos(yawRad));
     }
 
-    private void spawnPoisonCloud() {
+    private void spawnAcidCloud() {
         if (!(this.level() instanceof ServerLevel server)) return;
         Vec3 muzzle = breathMuzzle();
         Vec3 dir    = breathLook(muzzle);
@@ -617,8 +620,8 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
                 ? hit.getLocation()
                 : muzzle.add(dir.scale(2.0));
 
-        PoisonCloudEntity cloud = new PoisonCloudEntity(
-                EntityRegistry.POISON_CLOUD.get(), this.level());
+        AcidCloudEntity cloud = new AcidCloudEntity(
+                EntityRegistry.ACID_CLOUD.get(), this.level());
         cloud.setPos(pos.x, pos.y, pos.z);
         this.level().addFreshEntity(cloud);
     }
@@ -639,7 +642,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
             if ((float) look.dot(to.normalize()) < BREATH_CONE_COS) continue;
             victim.hurt(this.damageSources().mobAttack(this), BREATH_DAMAGE);
             if (!victim.isDeadOrDying()) {
-                victim.addEffect(new MobEffectInstance(MobEffects.POISON, BREATH_POISON_TICKS, 0, false, false, true));
+                victim.addEffect(new MobEffectInstance(MobEffectsRegistry.ACID, BREATH_ACID_TICKS, 0, false, false, true));
             }
         }
     }
@@ -649,7 +652,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
             double ang = this.random.nextDouble() * Math.PI * 2.0;
             double rad = BASE_FOG_RADIUS * Math.sqrt(this.random.nextDouble());
             this.level().addParticle(
-                    ParticlesRegistry.POISON_CLOUD.get(),
+                    ParticlesRegistry.ACID_CLOUD.get(),
                     this.getX() + Math.cos(ang) * rad,
                     this.getY() + this.random.nextDouble() * 0.25,
                     this.getZ() + Math.sin(ang) * rad,
@@ -668,7 +671,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
                     this.random.nextDouble() * 2 * a - a,
                     this.random.nextDouble() * 2 * a - a);
             Vec3 vel = look.scale(2.5).add(spread).normalize().scale(0.3 + this.random.nextDouble() * 0.25);
-            this.level().addParticle(ParticlesRegistry.POISON_CLOUD.get(),
+            this.level().addParticle(ParticlesRegistry.ACID_CLOUD.get(),
                     mouth.x + spread.x * 0.4, mouth.y + spread.y * 0.4, mouth.z + spread.z * 0.4,
                     vel.x, vel.y, vel.z);
         }
@@ -820,7 +823,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         int half = count / 2;
         for (int i = -half; i <= half; i++) {
             Vec3 dir = rotateAroundY(baseDir, Math.toRadians(i * SPLIT_SPREAD_DEG)).normalize();
-            PoisonSplitProjectile proj = new PoisonSplitProjectile(this.level(), this);
+            AcidSplitProjectile proj = new AcidSplitProjectile(this.level(), this);
             proj.setScale(scale);
             proj.setPos(muzzle.x, muzzle.y, muzzle.z);
             proj.shoot(dir.x, dir.y, dir.z, SPLIT_VELOCITY, 2.0F);
@@ -858,6 +861,17 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         if (!this.level().isClientSide) {
             Vec3 dm = this.getDeltaMovement();
             this.setDeltaMovement(0.0, dm.y, 0.0);
+
+            // Verrouillage dur de la position horizontale. super.tick() a deja applique le
+            // deplacement : annuler la velocite ne suffit donc pas (une impulsion le decalerait
+            // d'un tick avant d'etre neutralisee). On le replace sur son point d'ancrage.
+            // Y reste libre : gravite et flottaison continuent de fonctionner.
+            if (this.anchorX == null) {
+                this.anchorX = this.getX();
+                this.anchorZ = this.getZ();
+            } else if (this.getX() != this.anchorX || this.getZ() != this.anchorZ) {
+                this.setPos(this.anchorX, this.getY(), this.anchorZ);
+            }
 
             this.tickTurnStateMachine();
 
@@ -1113,7 +1127,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
 
     @Override
     public boolean canBeAffected(@NotNull MobEffectInstance effect) {
-        if (effect.is(MobEffects.POISON)) return false;
+        if (effect.is(MobEffectsRegistry.ACID)) return false;
         return super.canBeAffected(effect);
     }
 
@@ -1129,6 +1143,10 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         super.addAdditionalSaveData(tag);
         tag.putInt("HideState", getHideState());
         tag.putInt("Phase", this.phase);
+        if (this.anchorX != null) {
+            tag.putDouble("AnchorX", this.anchorX);
+            tag.putDouble("AnchorZ", this.anchorZ);
+        }
     }
 
     @Override
@@ -1136,6 +1154,10 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         super.readAdditionalSaveData(tag);
         if (tag.contains("HideState")) setHideState(tag.getInt("HideState"));
         if (tag.contains("Phase"))     this.phase = tag.getInt("Phase");
+        if (tag.contains("AnchorX")) {
+            this.anchorX = tag.getDouble("AnchorX");
+            this.anchorZ = tag.getDouble("AnchorZ");
+        }
     }
 
     // Boss bar
@@ -1166,6 +1188,32 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
     @Override
     public boolean isPushable() {
         return false;
+    }
+
+    // --- Ancrage : le ver est enracine, RIEN ne doit le deplacer de sa position ---
+
+    /** Aucun recul, quelle qu'en soit la source (l'attribut seul ne couvre pas tous les appels). */
+    @Override
+    public void knockback(double strength, double x, double z) {
+        // no-op
+    }
+
+    /** Ignore les poussees de collision (autres entites, mobs qui s'appuient dessus). */
+    @Override
+    public void push(double x, double y, double z) {
+        // no-op
+    }
+
+    /** Les courants d'eau / lave ne l'emportent pas. */
+    @Override
+    public boolean isPushedByFluid() {
+        return false;
+    }
+
+    /** Le souffle des explosions ne l'ejecte pas. */
+    @Override
+    public boolean ignoreExplosion(@NotNull net.minecraft.world.level.Explosion explosion) {
+        return true;
     }
 
     // Death

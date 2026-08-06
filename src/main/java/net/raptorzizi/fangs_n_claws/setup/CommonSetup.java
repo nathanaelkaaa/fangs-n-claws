@@ -382,4 +382,24 @@ public class CommonSetup {
             frozenJumpCounts.put(uuid, count);
         }
     }
+
+    /**
+     * Acide : double l'usure de chaque piece d'armure quand son porteur encaisse des degats.
+     * La reduction d'armure/resistance, elle, passe par les modificateurs d'attributs de l'effet.
+     */
+    @SubscribeEvent
+    public static void onArmorHurt(net.neoforged.neoforge.event.entity.living.ArmorHurtEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity.level().isClientSide()) return;
+        if (!entity.hasEffect(MobEffectsRegistry.ACID)) return;
+
+        for (net.minecraft.world.entity.EquipmentSlot slot
+                : net.minecraft.world.entity.EquipmentSlot.values()) {
+            float damage = event.getNewDamage(slot);
+            if (damage > 0.0f) {
+                event.setNewDamage(slot,
+                        damage * net.raptorzizi.fangs_n_claws.effect.AcidEffect.DURABILITY_MULTIPLIER);
+            }
+        }
+    }
 }

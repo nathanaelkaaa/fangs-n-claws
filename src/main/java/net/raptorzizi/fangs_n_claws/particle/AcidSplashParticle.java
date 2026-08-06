@@ -15,7 +15,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PoisonSplashParticle extends TextureSheetParticle {
+public class AcidSplashParticle extends TextureSheetParticle {
 
     private static final float Y_OFFSET   = 0.05f;
     private static final int   FRAMES     = 12;
@@ -25,7 +25,7 @@ public class PoisonSplashParticle extends TextureSheetParticle {
     private final float cosR;
     private final float sinR;
 
-    protected PoisonSplashParticle(ClientLevel level, double x, double y, double z, float scale, SpriteSet sprites) {
+    protected AcidSplashParticle(ClientLevel level, double x, double y, double z, float scale, SpriteSet sprites) {
         super(level, x, y, z, 0.0, 0.0, 0.0);
         this.xd = this.yd = this.zd = 0.0;
         this.gravity = 0.0f;
@@ -108,7 +108,7 @@ public class PoisonSplashParticle extends TextureSheetParticle {
         public Particle createParticle(SimpleParticleType type, ClientLevel level,
                                        double x, double y, double z, double dx, double dy, double dz) {
             float scale = dx > 0.0 ? (float) dx : 1.0f;
-            return new PoisonSplashParticle(level, x, y, z, scale, this.sprites);
+            return new AcidSplashParticle(level, x, y, z, scale, this.sprites);
         }
     }
 }

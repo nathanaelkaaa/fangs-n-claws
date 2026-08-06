@@ -113,10 +113,10 @@ public class SoundsRegistry {
             register("purple_worm.split_volley");
     public static final Supplier<SoundEvent> PURPLE_WORM_BREATH =
             register("purple_worm.breath");
-    public static final Supplier<SoundEvent> PURPLE_WORM_POISON_SPLASH =
-            register("purple_worm.poison_splash");
-    public static final Supplier<SoundEvent> PURPLE_WORM_POISON_PUDDLE =
-            register("purple_worm.poison_puddle");
+    public static final Supplier<SoundEvent> PURPLE_WORM_ACID_SPLASH =
+            register("purple_worm.acid_splash");
+    public static final Supplier<SoundEvent> PURPLE_WORM_ACID_PUDDLE =
+            register("purple_worm.acid_puddle");
     public static final Supplier<SoundEvent> PURPLE_WORM_EMERGE =
             register("purple_worm.emerge");
     public static final Supplier<SoundEvent> PURPLE_WORM_HIDE =

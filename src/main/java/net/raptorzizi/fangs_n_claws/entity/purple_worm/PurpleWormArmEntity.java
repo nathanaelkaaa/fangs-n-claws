@@ -36,8 +36,8 @@ public class PurpleWormArmEntity extends Monster implements GeoEntity {
     private static final int    ATTACK_HIT_TICK  = 15;
     private static final int    DESPAWN_TICKS    = 20;
     private static final double ATTACK_RANGE     = 6.0;
-    private static final float  ATTACK_DAMAGE    = 8.0f;
-    private static final float  ATTACK_KNOCKBACK = 0.6f;
+    private static final float  ATTACK_DAMAGE    = 12.0f;
+    private static final float  ATTACK_KNOCKBACK = 5.0f;
 
     private static final EntityDataAccessor<Integer> ARM_STATE =
             SynchedEntityData.defineId(PurpleWormArmEntity.class, EntityDataSerializers.INT);
