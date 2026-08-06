@@ -31,6 +31,12 @@ public class EnchantmentsRegistry {
                     return stack.getItem() instanceof FangDaggerItem
                         || stack.getItem() instanceof NetheriteFangDaggerItem;
                 }
+                // canEnchant() alone only gates /enchant, the anvil and loot-table enchanting;
+                // the enchanting table itself calls canApplyAtEnchantingTable() directly and
+                // otherwise falls back to the (much broader) EnchantmentCategory predicate.
+                @Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+                    return canEnchant(stack);
+                }
                 @Override public boolean checkCompatibility(Enchantment other) {
                     return super.checkCompatibility(other) && other != QUICK_KILLER.get();
                 }
@@ -45,6 +51,9 @@ public class EnchantmentsRegistry {
                 @Override public boolean canEnchant(ItemStack stack) {
                     return stack.getItem() instanceof FangDaggerItem
                         || stack.getItem() instanceof NetheriteFangDaggerItem;
+                }
+                @Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+                    return canEnchant(stack);
                 }
                 @Override public boolean checkCompatibility(Enchantment other) {
                     return super.checkCompatibility(other) && other != CRITICAL_BACKSTAB.get();
@@ -61,6 +70,9 @@ public class EnchantmentsRegistry {
                     return stack.getItem() instanceof CatchingClawItem
                         || stack.getItem() instanceof NetheriteClawItem;
                 }
+                @Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+                    return canEnchant(stack);
+                }
             });
 
     public static final RegistryObject<Enchantment> SCRATCH = ENCHANTMENTS.register("scratch",
@@ -73,6 +85,9 @@ public class EnchantmentsRegistry {
                     return stack.getItem() instanceof CatchingClawItem
                         || stack.getItem() instanceof NetheriteClawItem;
                 }
+                @Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+                    return canEnchant(stack);
+                }
             });
 
     public static final RegistryObject<Enchantment> BLAZING = ENCHANTMENTS.register("blazing",
@@ -83,6 +98,9 @@ public class EnchantmentsRegistry {
                 @Override public int getMaxCost(int lvl) { return 25 + (lvl - 1) * 8; }
                 @Override public boolean canEnchant(ItemStack stack) {
                     return stack.getItem() instanceof FirePitchforkItem;
+                }
+                @Override public boolean canApplyAtEnchantingTable(ItemStack stack) {
+                    return canEnchant(stack);
                 }
             });
 
