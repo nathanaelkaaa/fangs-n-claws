@@ -201,7 +201,20 @@ public class FangsClawsMod {
         if (event.loadedFromDisk()) return;
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
 
+        // Le piege a cheval-squelette de vanilla (ServerLevel.tickChunk, foudre + orage) tourne dans
+        // N'IMPORTE QUELLE dimension ou la meteo et le mob spawning sont actifs, meme les dimensions
+        // moddees qui reproduisent un cycle meteo (le Nether/End vanilla n'ont pas de pluie, donc ce
+        // chemin ne s'y declenche jamais en jeu vanilla pur). Sans cette garde, un cheval-squelette
+        // vanilla issu de la foudre dans une dimension moddee etait systematiquement remplace par la
+        // version du mod (apprivoisable, avec son propre systeme de piege persistant), alors que ce
+        // contenu n'a jamais ete concu/teste en dehors de l'Overworld. On restreint donc l'echange
+        // vanilla -> mod a l'Overworld ; les oeufs d'invocation du mod (mod -> partout) ne sont pas
+        // concernes, un joueur peut toujours placer volontairement SkeletonHorseMob/ZombieHorseMob
+        // dans n'importe quelle dimension.
+        boolean isOverworld = serverLevel.dimension().equals(Level.OVERWORLD);
+
         if (event.getEntity() instanceof SkeletonHorse vanilla) {
+            if (!isOverworld) return;
             if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_SKELETON_HORSE)
                     || CommonConfigs.VANILLA_SKELETON_HORSE.get()) return; // garde le vanilla (gamerule OU config)
             SkeletonHorseMob mob = EntityRegistry.SKELETON_HORSE_MOB.get().create(serverLevel);
@@ -214,6 +227,7 @@ public class FangsClawsMod {
             }
             event.setCanceled(true);
         } else if (event.getEntity() instanceof ZombieHorse vanilla) {
+            if (!isOverworld) return;
             if (serverLevel.getGameRules().getBoolean(GameRuleRegistry.VANILLA_ZOMBIE_HORSE)
                     || CommonConfigs.VANILLA_ZOMBIE_HORSE.get()) return; // garde le vanilla (gamerule OU config)
             ZombieHorseMob mob = EntityRegistry.ZOMBIE_HORSE_MOB.get().create(serverLevel);
