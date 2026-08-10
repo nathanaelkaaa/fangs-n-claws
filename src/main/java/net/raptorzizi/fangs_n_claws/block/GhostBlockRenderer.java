@@ -1,11 +1,16 @@
 package net.raptorzizi.fangs_n_claws.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -26,7 +31,14 @@ public class GhostBlockRenderer implements BlockEntityRenderer<GhostBlockEntity>
         BlockState mimic = blockEntity.getMimickedState();
         if (mimic == null) return;
 
-        Minecraft.getInstance().getBlockRenderer()
-                .renderSingleBlock(mimic, poseStack, bufferSource, packedLight, packedOverlay);
+        BlockRenderDispatcher dispatcher = Minecraft.getInstance().getBlockRenderer();
+
+        if (mimic.getRenderShape() == RenderShape.MODEL) {
+            RenderType renderType = ItemBlockRenderTypes.getChunkRenderType(mimic);
+            VertexConsumer buffer = bufferSource.getBuffer(renderType);
+            dispatcher.renderBatched(mimic, blockEntity.getBlockPos(), level, poseStack, buffer, true, level.random);
+        } else {
+            dispatcher.renderSingleBlock(mimic, poseStack, bufferSource, packedLight, packedOverlay);
+        }
     }
 }
