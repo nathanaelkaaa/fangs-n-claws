@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "fangs_n_claws:horse_bat",
+    "fangs_n_claws:nightmare_horse",
+    "fangs_n_claws:skeleton_horse",
+    "fangs_n_claws:zombie_horse",
+    "fangs_n_claws:scorpion",
+    "fangs_n_claws:desert_scorpion",
+    "fangs_n_claws:frost_scorpion",
+    "fangs_n_claws:nether_scorpion"
+  ]
+}

@@ -55,7 +55,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ScorpionEntity extends Spider implements GeoEntity {
+public class ScorpionEntity extends Spider implements GeoEntity, net.minecraft.world.entity.OwnableEntity {
 
     private static final int ATTACK_HIT_TICK      = 9;
     private static final int ATTACK_TOTAL_TICKS   = 15;
@@ -253,6 +253,12 @@ public class ScorpionEntity extends Spider implements GeoEntity {
     public boolean isTamed()                { return ownerUuid != null; }
     public boolean isOwnedBy(Player player) { return ownerUuid != null && ownerUuid.equals(player.getUUID()); }
 
+    @Nullable
+    @Override
+    public UUID getOwnerUUID() {
+        return this.ownerUuid;
+    }
+
     public void setOwner(UUID uuid) {
         this.ownerUuid = uuid;
         this.setPersistenceRequired();
@@ -261,6 +267,15 @@ public class ScorpionEntity extends Spider implements GeoEntity {
     @Override
     public boolean removeWhenFarAway(double distance) {
         return !isTamed() && super.removeWhenFarAway(distance);
+    }
+
+    @Override
+    protected void dropEquipment() {
+        super.dropEquipment();
+        if (this.isSaddled()) {
+            this.spawnAtLocation(new ItemStack(ItemsRegistry.STURDY_SADDLE.get()));
+            this.setSaddled(false);
+        }
     }
 
     // Mount
@@ -309,14 +324,21 @@ public class ScorpionEntity extends Spider implements GeoEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Saddled", isSaddled());
-        if (ownerUuid != null) tag.putUUID("OwnerUUID", ownerUuid);
+        // Cle vanilla "Owner" (l'ancienne "OwnerUUID" a ete abandonnee par vanilla en 1.16).
+        if (ownerUuid != null) tag.putUUID("Owner", ownerUuid);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setSaddled(tag.getBoolean("Saddled"));
-        if (tag.hasUUID("OwnerUUID")) ownerUuid = tag.getUUID("OwnerUUID");
+        // "Owner" est la cle actuelle ; on relit "OwnerUUID" en repli pour ne pas perdre les
+        // scorpions deja apprivoises dans les mondes crees avant ce changement.
+        if (tag.hasUUID("Owner")) {
+            ownerUuid = tag.getUUID("Owner");
+        } else if (tag.hasUUID("OwnerUUID")) {
+            ownerUuid = tag.getUUID("OwnerUUID");
+        }
     }
 
     @Override

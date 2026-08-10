@@ -13,6 +13,7 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.ModifiableBiomeInfo;
 import net.neoforged.neoforge.common.world.MobSpawnSettingsBuilder;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
@@ -26,6 +27,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             MapCodec.unit(new SpawnWeightsBiomeModifier());
 
     // Biome tags
+    private static final TagKey<Biome> NO_NATURAL_SPAWN =
+            TagKey.create(Registries.BIOME, FangsClawsMod.id("no_natural_spawn"));
     private static final TagKey<Biome> IS_OVERWORLD =
             TagKey.create(Registries.BIOME, ResourceLocation.withDefaultNamespace("is_overworld"));
     private static final TagKey<Biome> IS_FOREST =
@@ -93,6 +96,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         }
 
         if (phase == Phase.AFTER_EVERYTHING) {
+            // Biomes explicitement exclus (Mushroom Fields, Deep Dark...) : on n'y ajoute rien,
+            // quoi qu'aient fait les autres mods avant nous.
+            if (biome.is(NO_NATURAL_SPAWN)) return;
+
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
 
             if (biome.is(IS_OVERWORLD) && !spawns.getSpawner(MobCategory.MONSTER).isEmpty()) {
