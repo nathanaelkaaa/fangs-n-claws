@@ -10,14 +10,14 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
-public class PoisonSplitModel extends HierarchicalModel<PoisonSplitProjectile> {
+public class AcidSplitModel extends HierarchicalModel<AcidSplitProjectile> {
 
     public static final ModelLayerLocation LAYER =
-            new ModelLayerLocation(FangsClawsMod.id("poison_split"), "main");
+            new ModelLayerLocation(FangsClawsMod.id("acid_split"), "main");
 
     private final ModelPart root;
 
-    public PoisonSplitModel(ModelPart root) {
+    public AcidSplitModel(ModelPart root) {
         this.root = root;
     }
 
@@ -34,7 +34,7 @@ public class PoisonSplitModel extends HierarchicalModel<PoisonSplitProjectile> {
     }
 
     @Override
-    public void setupAnim(PoisonSplitProjectile entity, float limbSwing, float limbSwingAmount,
+    public void setupAnim(AcidSplitProjectile entity, float limbSwing, float limbSwingAmount,
                           float ageInTicks, float netHeadYaw, float headPitch) {
     }
 

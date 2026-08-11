@@ -92,6 +92,13 @@ public class GhostEntity extends Monster implements GeoEntity {
                 .add(Attributes.FLYING_SPEED,               FLY_SPEED);
     }
 
+    // 1.20.1 : le tag #minecraft:undead ne pilote PAS les potions de soin/Smite (contrairement a la
+    // 1.21) — c'est le MobType code. On declare donc le Ghost comme mort-vivant ici.
+    @Override
+    public net.minecraft.world.entity.MobType getMobType() {
+        return net.minecraft.world.entity.MobType.UNDEAD;
+    }
+
     // AI
 
     @Override

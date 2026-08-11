@@ -28,6 +28,7 @@ import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -318,6 +319,11 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     }
 
     @Override
+    public boolean canBeLeashed(Player player) {
+        return this.isTamed();
+    }
+
+    @Override
     public boolean causeFallDamage(float fallDistance, float multiplier, @NotNull DamageSource source) {
         return false;
     }
@@ -375,6 +381,14 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
                 if (!player.getAbilities().instabuild) stack.shrink(1);
             }
             return InteractionResult.sidedSuccess(this.level().isClientSide);
+        }
+
+        // Laisser passer la laisse : Player#interactOn appelle mobInteract() AVANT
+        // ItemStack#interactLivingEntity (donc avant LeadItem). Le bloc "monter" ci-dessous accepte
+        // n'importe quel item, il consommait donc l'interaction et le joueur montait le cheval au
+        // lieu de l'attacher. On rend la main a LeadItem, qui gere aussi le detachement.
+        if (stack.is(Items.LEAD) && this.canBeLeashed(player)) {
+            return InteractionResult.PASS;
         }
 
         if (!player.isSecondaryUseActive()) {

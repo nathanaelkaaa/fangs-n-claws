@@ -12,12 +12,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class PoisonCloudParticle extends TextureSheetParticle {
+public class AcidCloudParticle extends TextureSheetParticle {
 
     private static final float[] START = { 0.4627f, 0.9451f, 0.3294f };
     private static final float[] END   = { 0.1373f, 0.8314f, 0.2824f };
 
-    protected PoisonCloudParticle(ClientLevel level, double x, double y, double z,
+    protected AcidCloudParticle(ClientLevel level, double x, double y, double z,
                                   double xd, double yd, double zd, SpriteSet sprites) {
         super(level, x, y, z);
         this.scale(7.0F);
@@ -83,7 +83,7 @@ public class PoisonCloudParticle extends TextureSheetParticle {
         public Particle createParticle(SimpleParticleType type, ClientLevel level,
                                        double x, double y, double z,
                                        double dx, double dy, double dz) {
-            return new PoisonCloudParticle(level, x, y, z, dx, dy, dz, this.sprites);
+            return new AcidCloudParticle(level, x, y, z, dx, dy, dz, this.sprites);
         }
     }
 }

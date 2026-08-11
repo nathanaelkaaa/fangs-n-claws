@@ -12,22 +12,22 @@ import net.minecraft.util.Mth;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import org.jetbrains.annotations.NotNull;
 
-public class PoisonSplitRenderer extends EntityRenderer<PoisonSplitProjectile> {
+public class AcidSplitRenderer extends EntityRenderer<AcidSplitProjectile> {
 
     private static final ResourceLocation TEXTURE =
-            FangsClawsMod.id("textures/entity/poison_split.png");
+            FangsClawsMod.id("textures/entity/acid_split.png");
 
     private static final float RENDER_SCALE = 3.0f;
 
-    private final PoisonSplitModel model;
+    private final AcidSplitModel model;
 
-    public PoisonSplitRenderer(EntityRendererProvider.Context ctx) {
+    public AcidSplitRenderer(EntityRendererProvider.Context ctx) {
         super(ctx);
-        this.model = new PoisonSplitModel(ctx.bakeLayer(PoisonSplitModel.LAYER));
+        this.model = new AcidSplitModel(ctx.bakeLayer(AcidSplitModel.LAYER));
     }
 
     @Override
-    public void render(@NotNull PoisonSplitProjectile entity, float yaw, float partialTick,
+    public void render(@NotNull AcidSplitProjectile entity, float yaw, float partialTick,
                        @NotNull PoseStack poseStack, @NotNull MultiBufferSource buffer, int light) {
         poseStack.pushPose();
         float lerpYaw = Mth.lerp(partialTick, entity.yRotO, entity.getYRot());
@@ -46,7 +46,7 @@ public class PoisonSplitRenderer extends EntityRenderer<PoisonSplitProjectile> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull PoisonSplitProjectile entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull AcidSplitProjectile entity) {
         return TEXTURE;
     }
 }

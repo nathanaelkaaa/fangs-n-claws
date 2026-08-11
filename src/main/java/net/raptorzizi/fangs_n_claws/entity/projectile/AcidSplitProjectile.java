@@ -19,32 +19,33 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity;
+import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 
-public class PoisonSplitProjectile extends ThrowableProjectile {
+public class AcidSplitProjectile extends ThrowableProjectile {
 
     private static final int   MAX_LIFETIME  = 160;
 
     private static final float CLOUD_RADIUS       = 2.5f;
     private static final int   CLOUD_DURATION      = 60;
-    private static final int   POISON_TICKS        = 100;
-    private static final float SPLIT_CLOUD_DAMAGE  = 1.0f;
+    private static final int   ACID_TICKS        = 100;
+    private static final float SPLIT_CLOUD_DAMAGE  = 3.0f;
 
     private static final EntityDataAccessor<Float> DATA_SCALE =
-            SynchedEntityData.defineId(PoisonSplitProjectile.class, EntityDataSerializers.FLOAT);
+            SynchedEntityData.defineId(AcidSplitProjectile.class, EntityDataSerializers.FLOAT);
 
-    private float damage = 4.0f;
+    private float damage = 8.0f;
 
-    public PoisonSplitProjectile(EntityType<? extends PoisonSplitProjectile> type, Level level) {
+    public AcidSplitProjectile(EntityType<? extends AcidSplitProjectile> type, Level level) {
         super(type, level);
     }
 
-    public PoisonSplitProjectile(Level level, LivingEntity shooter) {
-        super(EntityRegistry.POISON_SPLIT.get(), shooter, level);
+    public AcidSplitProjectile(Level level, LivingEntity shooter) {
+        super(EntityRegistry.ACID_SPLIT.get(), shooter, level);
     }
 
     public void setDamage(float damage) { this.damage = damage; }
@@ -93,7 +94,7 @@ public class PoisonSplitProjectile extends ThrowableProjectile {
             double oy = (this.random.nextDouble() * 2 - 1) * spread;
             double oz = (this.random.nextDouble() * 2 - 1) * spread;
             this.level().addParticle(
-                    net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry.ACID_TRAIL.get(),
+                    ParticlesRegistry.ACID_TRAIL.get(),
                     this.getX() + ox, this.getY() + 0.1 + oy, this.getZ() + oz,
                     back.x * 0.5 + ox, back.y * 0.5 - 0.02, back.z * 0.5 + oz);
         }
@@ -110,10 +111,10 @@ public class PoisonSplitProjectile extends ThrowableProjectile {
         }
 
         if (!this.level().isClientSide) {
-            this.playSound(SoundsRegistry.PURPLE_WORM_POISON_SPLASH.get(),
+            this.playSound(SoundsRegistry.PURPLE_WORM_ACID_SPLASH.get(),
                     2.0F, 0.95F + this.random.nextFloat() * 0.1F);
             if (this.level() instanceof ServerLevel server) {
-                spawnPoisonCloud(server);
+                spawnAcidCloud(server);
             }
             this.discard();
         }
@@ -137,11 +138,11 @@ public class PoisonSplitProjectile extends ThrowableProjectile {
 
         target.hurt(this.damageSources().thrown(this, owner), this.damage);
         if (target instanceof LivingEntity living && !living.isDeadOrDying()) {
-            living.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_TICKS, 0, false, false, true));
+            living.addEffect(new MobEffectInstance(MobEffectsRegistry.ACID.get(), ACID_TICKS, 0, false, false, true));
         }
     }
 
-    private void spawnPoisonCloud(ServerLevel server) {
+    private void spawnAcidCloud(ServerLevel server) {
         Vec3 from = new Vec3(this.getX(), this.getY() + 0.5, this.getZ());
         Vec3 to   = new Vec3(this.getX(), this.getY() - 4.0, this.getZ());
         BlockHitResult ground = server.clip(new ClipContext(
@@ -150,9 +151,9 @@ public class PoisonSplitProjectile extends ThrowableProjectile {
 
         float scale = getScale();
 
-        PoisonCloudEntity cloud =
-                new PoisonCloudEntity(
-                        EntityRegistry.POISON_CLOUD.get(), server);
+        AcidCloudEntity cloud =
+                new AcidCloudEntity(
+                        EntityRegistry.ACID_CLOUD.get(), server);
         cloud.setPos(this.getX(), groundY, this.getZ());
         cloud.setDimensions(2.0f * CLOUD_RADIUS * scale, 2.0f);
         cloud.setParticlesEnabled(false);
@@ -164,7 +165,7 @@ public class PoisonSplitProjectile extends ThrowableProjectile {
 
 
         double yJitter = this.random.nextDouble() * 0.05;
-        server.sendParticles(ParticlesRegistry.POISON_SPLASH.get(),
+        server.sendParticles(ParticlesRegistry.ACID_SPLASH.get(),
                 this.getX(), groundY + 0.05 + yJitter, this.getZ(), 0, scale, 0.0, 0.0, 1.0);
     }
 

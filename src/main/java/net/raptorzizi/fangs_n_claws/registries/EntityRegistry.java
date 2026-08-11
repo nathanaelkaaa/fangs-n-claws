@@ -62,13 +62,13 @@ public class EntityRegistry {
                     .sized(2F, 2.6F)
                     .build("golem"));
 
-    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile>> POISON_SPLIT =
-            ENTITIES.register("poison_split", () -> EntityType.Builder
-                    .<net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile>of(
-                            net.raptorzizi.fangs_n_claws.entity.projectile.PoisonSplitProjectile::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile>> ACID_SPLIT =
+            ENTITIES.register("acid_split", () -> EntityType.Builder
+                    .<net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile>of(
+                            net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile::new, MobCategory.MISC)
                     .sized(1.5F, 1.5F)
                     .clientTrackingRange(64)
-                    .build("poison_split"));
+                    .build("acid_split"));
 
     public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity>> PURPLE_WORM =
             ENTITIES.register("purple_worm", () -> EntityType.Builder.of(
@@ -86,13 +86,13 @@ public class EntityRegistry {
                     .fireImmune()
                     .build("purple_worm_arm"));
 
-    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity>> POISON_CLOUD =
-            ENTITIES.register("poison_cloud", () -> EntityType.Builder.of(
-                            net.raptorzizi.fangs_n_claws.entity.purple_worm.PoisonCloudEntity::new, MobCategory.MISC)
+    public static final RegistryObject<EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity>> ACID_CLOUD =
+            ENTITIES.register("acid_cloud", () -> EntityType.Builder.of(
+                            net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity::new, MobCategory.MISC)
                     .sized(12.0F, 6.0F)
                     .clientTrackingRange(64)
                     .fireImmune()
-                    .build("poison_cloud"));
+                    .build("acid_cloud"));
 
     public static final RegistryObject<EntityType<IceGolemEntity>> ICE_GOLEM =
             ENTITIES.register("ice_golem", () -> EntityType.Builder.of(IceGolemEntity::new, MobCategory.MONSTER)

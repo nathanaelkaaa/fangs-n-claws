@@ -25,6 +25,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             Codec.unit(new SpawnWeightsBiomeModifier());
 
     // Biome tags
+    private static final TagKey<Biome> NO_NATURAL_SPAWN =
+            TagKey.create(Registries.BIOME, net.raptorzizi.fangs_n_claws.FangsClawsMod.id("no_natural_spawn"));
     private static final TagKey<Biome> IS_OVERWORLD =
             TagKey.create(Registries.BIOME, new ResourceLocation("is_overworld"));
     private static final TagKey<Biome> IS_FOREST =
@@ -92,6 +94,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         }
 
         if (phase == Phase.AFTER_EVERYTHING) {
+            // Biomes explicitement exclus (Mushroom Fields, Deep Dark...) : on n'y ajoute rien,
+            // quoi qu'aient fait les autres mods avant nous.
+            if (biome.is(NO_NATURAL_SPAWN)) return;
+
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
 
             if (biome.is(IS_OVERWORLD) && !spawns.getSpawner(MobCategory.MONSTER).isEmpty()) {

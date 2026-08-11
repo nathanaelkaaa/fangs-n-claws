@@ -7,6 +7,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.raptorzizi.fangs_n_claws.effect.AcidEffect;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.effect.FlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.effect.FrozenEffect;
@@ -40,6 +41,9 @@ public class MobEffectsRegistry {
 
     public static final RegistryObject<FrozenEffect> FROZEN =
             MOB_EFFECTS.register("frozen", FrozenEffect::new);
+
+    public static final RegistryObject<AcidEffect> ACID =
+            MOB_EFFECTS.register("acid", AcidEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

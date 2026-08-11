@@ -34,11 +34,11 @@ public class ParticlesRegistry {
     public static final RegistryObject<SimpleParticleType> FIRE =
             PARTICLES.register("fire", () -> new SimpleParticleType(false));
 
-    public static final RegistryObject<SimpleParticleType> POISON_SPLASH =
-            PARTICLES.register("poison_splash", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> ACID_SPLASH =
+            PARTICLES.register("acid_splash", () -> new SimpleParticleType(false));
 
-    public static final RegistryObject<SimpleParticleType> POISON_CLOUD =
-            PARTICLES.register("poison_cloud", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> ACID_CLOUD =
+            PARTICLES.register("acid_cloud", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<SimpleParticleType> ACID_BUBBLE =
             PARTICLES.register("acid_bubble", () -> new SimpleParticleType(false));

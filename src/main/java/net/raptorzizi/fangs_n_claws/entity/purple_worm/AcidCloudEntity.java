@@ -15,33 +15,34 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 
-public class PoisonCloudEntity extends Entity {
+public class AcidCloudEntity extends Entity {
 
     private static final int   DEFAULT_LIFETIME = 200;
-    private static final int   POISON_INTERVAL  = 20;
-    private static final int   POISON_DURATION  = 120;
+    private static final int   ACID_INTERVAL  = 20;
+    private static final int   ACID_DURATION  = 120;
     private static final int   PARTICLES_PER_TICK = 4;
     private static final int   ACID_BUBBLES_PER_TICK = 3;
     private static final int   PUDDLE_SOUND_INTERVAL = 74;
 
     private static final EntityDataAccessor<Float> DATA_WIDTH =
-            SynchedEntityData.defineId(PoisonCloudEntity.class, EntityDataSerializers.FLOAT);
+            SynchedEntityData.defineId(AcidCloudEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DATA_HEIGHT =
-            SynchedEntityData.defineId(PoisonCloudEntity.class, EntityDataSerializers.FLOAT);
+            SynchedEntityData.defineId(AcidCloudEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> DATA_PARTICLES =
-            SynchedEntityData.defineId(PoisonCloudEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(AcidCloudEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DATA_ACID_POOL =
-            SynchedEntityData.defineId(PoisonCloudEntity.class, EntityDataSerializers.BOOLEAN);
+            SynchedEntityData.defineId(AcidCloudEntity.class, EntityDataSerializers.BOOLEAN);
 
     private int     lifetime   = DEFAULT_LIFETIME;
     private float   tickDamage = 1.0f;
     private boolean loopSound  = false;
 
-    public PoisonCloudEntity(EntityType<? extends PoisonCloudEntity> type, Level level) {
+    public AcidCloudEntity(EntityType<? extends AcidCloudEntity> type, Level level) {
         super(type, level);
         this.noPhysics = true;
     }
@@ -89,9 +90,9 @@ public class PoisonCloudEntity extends Entity {
             return;
         }
         if (loopSound && (this.tickCount - 1) % PUDDLE_SOUND_INTERVAL == 0) {
-            this.playSound(SoundsRegistry.PURPLE_WORM_POISON_PUDDLE.get(), 1.6F, 1.0F);
+            this.playSound(SoundsRegistry.PURPLE_WORM_ACID_PUDDLE.get(), 1.6F, 1.0F);
         }
-        if (this.tickCount % POISON_INTERVAL == 0) {
+        if (this.tickCount % ACID_INTERVAL == 0) {
             applyEffects();
         }
     }
@@ -101,7 +102,7 @@ public class PoisonCloudEntity extends Entity {
             if (victim instanceof Player p && (p.isCreative() || p.isSpectator())) continue;
             if (victim instanceof PurpleWormEntity) continue;
             if (tickDamage > 0.0f) victim.hurt(this.damageSources().magic(), tickDamage);
-            victim.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION, 0, false, false, true));
+            victim.addEffect(new MobEffectInstance(MobEffectsRegistry.ACID.get(), ACID_DURATION, 0, false, false, true));
         }
     }
 
@@ -123,7 +124,7 @@ public class PoisonCloudEntity extends Entity {
             double px = Mth.lerp(this.random.nextDouble(), box.minX, box.maxX);
             double py = Mth.lerp(this.random.nextDouble(), box.minY, box.maxY);
             double pz = Mth.lerp(this.random.nextDouble(), box.minZ, box.maxZ);
-            this.level().addParticle(ParticlesRegistry.POISON_CLOUD.get(), px, py, pz, 0.0, 0.01, 0.0);
+            this.level().addParticle(ParticlesRegistry.ACID_CLOUD.get(), px, py, pz, 0.0, 0.01, 0.0);
         }
     }
 

@@ -74,11 +74,16 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
                 .add(Attributes.KNOCKBACK_RESISTANCE,      0.1);
     }
 
+    // 1.20.1 : le tag #minecraft:undead ne pilote pas Smite/potions de soin ici — c'est le MobType.
+    @Override
+    public net.minecraft.world.entity.MobType getMobType() {
+        return net.minecraft.world.entity.MobType.UNDEAD;
+    }
+
     // AI
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));

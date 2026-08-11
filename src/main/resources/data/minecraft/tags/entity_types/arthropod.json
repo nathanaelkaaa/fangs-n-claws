@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "fangs_n_claws:scorpion",
+    "fangs_n_claws:desert_scorpion",
+    "fangs_n_claws:frost_scorpion",
+    "fangs_n_claws:nether_scorpion",
+    "fangs_n_claws:baby_scorpion"
+  ]
+}

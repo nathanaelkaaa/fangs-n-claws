@@ -39,7 +39,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class BabyScorpionEntity extends Monster implements GeoEntity {
+public class BabyScorpionEntity extends Monster implements GeoEntity, net.minecraft.world.entity.OwnableEntity {
 
     public static final int VARIANT_NORMAL = 0;
     public static final int VARIANT_DESERT = 1;
@@ -99,6 +99,12 @@ public class BabyScorpionEntity extends Monster implements GeoEntity {
         return !isOnHead() && !isPassenger() && super.isPushable();
     }
     public boolean isTamed()           { return ownerUuid != null; }
+
+    @Nullable
+    @Override
+    public UUID getOwnerUUID() {
+        return this.ownerUuid;
+    }
 
     public void setOwner(Player player) {
         this.ownerUuid = player.getUUID();
@@ -253,6 +259,13 @@ public class BabyScorpionEntity extends Monster implements GeoEntity {
         this.discard();
     }
 
+    // 1.20.1 : Fleau des arthropodes passe par le MobType, pas le tag #arthropod (ScorpionEntity
+    // l'herite de Spider ; BabyScorpion etend Monster, il faut donc le declarer ici).
+    @Override
+    public net.minecraft.world.entity.MobType getMobType() {
+        return net.minecraft.world.entity.MobType.ARTHROPOD;
+    }
+
     // AI
 
     @Override
@@ -280,7 +293,8 @@ public class BabyScorpionEntity extends Monster implements GeoEntity {
         tag.putInt("Age", growTimer);
         tag.putBoolean("OnHead", isOnHead());
         if (parentUuid != null) tag.putUUID("ParentUUID", parentUuid);
-        if (ownerUuid  != null) tag.putUUID("OwnerUUID",  ownerUuid);
+        // Cle vanilla "Owner" (l'ancienne "OwnerUUID" a ete abandonnee par vanilla en 1.16).
+        if (ownerUuid  != null) tag.putUUID("Owner",  ownerUuid);
     }
 
     @Override
@@ -290,7 +304,12 @@ public class BabyScorpionEntity extends Monster implements GeoEntity {
         setRideYaw(tag.getFloat("RideYaw"));
         if (tag.contains("Age")) growTimer = tag.getInt("Age");
         if (tag.hasUUID("ParentUUID")) parentUuid = tag.getUUID("ParentUUID");
-        if (tag.hasUUID("OwnerUUID"))  ownerUuid  = tag.getUUID("OwnerUUID");
+        // Repli sur l'ancienne cle pour ne pas perdre les scorpions deja apprivoises.
+        if (tag.hasUUID("Owner")) {
+            ownerUuid = tag.getUUID("Owner");
+        } else if (tag.hasUUID("OwnerUUID")) {
+            ownerUuid = tag.getUUID("OwnerUUID");
+        }
 
         this.setNoGravity(false);
         this.noPhysics = false;

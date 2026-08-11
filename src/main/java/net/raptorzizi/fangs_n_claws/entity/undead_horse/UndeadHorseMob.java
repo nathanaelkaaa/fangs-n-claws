@@ -30,6 +30,12 @@ public abstract class UndeadHorseMob extends HorseMob {
         super(type, level);
     }
 
+    // 1.20.1 : mort-vivant via MobType (le tag #undead ne pilote pas Smite/potions ici).
+    @Override
+    public net.minecraft.world.entity.MobType getMobType() {
+        return net.minecraft.world.entity.MobType.UNDEAD;
+    }
+
     // Goal
 
     @Override
