@@ -31,6 +31,8 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue HORSE_BAT_WEIGHT;
     public static final ModConfigSpec.IntValue NIGHTMARE_HORSE_WEIGHT;
     public static final ModConfigSpec.IntValue WILD_WOLF_WEIGHT;
+    public static final ModConfigSpec.IntValue HYENA_WEIGHT;
+    public static final ModConfigSpec.IntValue CARNIVOROUS_PLANT_WEIGHT;
     public static final ModConfigSpec.IntValue SKELETON_HORSE_WEIGHT;
     public static final ModConfigSpec.IntValue ZOMBIE_HORSE_WEIGHT;
 
@@ -116,6 +118,12 @@ public class ServerConfigs {
         WILD_WOLF_WEIGHT         = BUILDER.comment("Wild Wolf (overworld) — default: 8 (vanilla wolf weight)")
                                         .translation("fangs_n_claws.configuration.spawn_weights.wild_wolf")
                                         .defineInRange("wild_wolf",          8, 0, 500);
+        HYENA_WEIGHT             = BUILDER.comment("Hyena (desert, savanna, badlands, surface only) — default: 20")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.hyena")
+                                        .defineInRange("hyena",             20, 0, 500);
+        CARNIVOROUS_PLANT_WEIGHT = BUILDER.comment("Carnivorous Plant (jungle) — default: 20")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.carnivorous_plant")
+                                        .defineInRange("carnivorous_plant", 20, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

@@ -57,6 +57,7 @@ import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
@@ -178,6 +179,8 @@ public class CommonSetup {
         event.put(EntityRegistry.SKELETON_HORSE_MOB.get(), SkeletonHorseMob.prepareAttributes().build());
         event.put(EntityRegistry.ZOMBIE_HORSE_MOB.get(),   ZombieHorseMob.prepareAttributes().build());
         event.put(EntityRegistry.WILD_WOLF.get(),          WildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.HYENA.get(),              WildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.CARNIVOROUS_PLANT.get(),  CarnivorousPlantEntity.prepareAttributes().build());
         event.put(EntityRegistry.SCORPION.get(),          ScorpionEntity.prepareAttributes().build());
         event.put(EntityRegistry.DESERT_SCORPION.get(),  ScorpionEntity.prepareAttributes().build());
         event.put(EntityRegistry.FROST_SCORPION.get(),   ScorpionEntity.prepareAttributes().build());

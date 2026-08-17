@@ -37,6 +37,8 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_NIGHTMARE_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HYENA;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_CARNIVOROUS_PLANT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_MIMIC;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
@@ -160,6 +162,16 @@ public class CommonConfigs {
                 .comment("Allow Wild Wolves to spawn naturally")
                 .translation("fangs_n_claws.configuration.spawn_toggles.wild_wolf")
                 .define("allow_wild_wolf", true);
+
+        ALLOW_SPAWN_HYENA = BUILDER
+                .comment("Allow Hyenas to spawn naturally (desert, savanna, badlands)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.hyena")
+                .define("allow_hyena", true);
+
+        ALLOW_SPAWN_CARNIVOROUS_PLANT = BUILDER
+                .comment("Allow Carnivorous Plants to spawn naturally (jungle)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.carnivorous_plant")
+                .define("allow_carnivorous_plant", true);
 
         ALLOW_SPAWN_MIMIC = BUILDER
                 .comment("Allow Mimics to replace loot chests in structures (also /gamerule allowSpawnMimic). See mimic_spawn_chance for the rate.")

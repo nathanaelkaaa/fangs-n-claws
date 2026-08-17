@@ -58,15 +58,13 @@ import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
 import net.raptorzizi.fangs_n_claws.entity.shrike.ShrikeEntity;
-import net.raptorzizi.fangs_n_claws.entity.shrike.BabyShrikeEntity;
 import net.raptorzizi.fangs_n_claws.util.DimensionSpawnCap;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
-import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
@@ -150,41 +148,6 @@ public class FangsClawsMod {
         modContainer.registerConfig(ModConfig.Type.COMMON, CommonConfigs.SPEC, String.format("%s-common.toml", FangsClawsMod.MOD_ID));
 
         GameRuleRegistry.init();
-
-        modEventBus.addListener((RegisterSpawnPlacementsEvent event) -> {
-            event.register(EntityRegistry.DESERT_SCORPION.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    ScorpionEntity::checkScorpionSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.FROST_SCORPION.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    ScorpionEntity::checkScorpionSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.NETHER_SCORPION.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    ScorpionEntity::checkScorpionSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.HORSE_BAT.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    SpawnUtils::checkHorseBatSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.NIGHTMARE_HORSE.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    SpawnUtils::checkNightmareHorseSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.WILD_WOLF.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    SpawnUtils::checkWildWolfSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.SKELETON_HORSE_MOB.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    SpawnUtils::checkUndeadHorseSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-            event.register(EntityRegistry.ZOMBIE_HORSE_MOB.get(),
-                    SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                    SpawnUtils::checkUndeadHorseSpawnRules,
-                    RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        });
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
@@ -455,6 +418,8 @@ public class FangsClawsMod {
             else if (event.getEntity() instanceof ScorpionEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))      cancel = true;
             else if (event.getEntity() instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
             else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
+            else if (event.getEntity() instanceof CarnivorousPlantEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CARNIVOROUS_PLANT)) cancel = true;
+            else if (event.getEntity() instanceof HyenaEntity      && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HYENA))       cancel = true;
             else if (event.getEntity() instanceof WildWolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))    cancel = true;
             else if (event.getEntity() instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;
             else if (event.getEntity() instanceof ZombieHorseMob   && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE))   cancel = true;

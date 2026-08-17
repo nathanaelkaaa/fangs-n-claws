@@ -7,11 +7,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -30,6 +32,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
@@ -124,11 +128,20 @@ public class WildWolfEntity extends Monster implements GeoEntity {
 
         if (p.contains("snowy") || p.contains("frozen") || p.contains("ice")
                 || p.equals("grove") || p.contains("glacial")) return VARIANT_WHITE;
-        if (p.equals("dark_forest") || p.equals("old_growth_pine_taiga")
-                || p.equals("old_growth_spruce_taiga")) return VARIANT_DARK_GRAY;
-        if (p.contains("forest")) return VARIANT_BROWN;
-        if (p.equals("meadow") || p.contains("hills") || p.contains("peaks") || p.contains("windswept")) return VARIANT_GRAY;
-        return VARIANT_BLACK;
+        if (p.equals("dark_forest")) return VARIANT_DARK_GRAY;
+        if (p.equals("old_growth_pine_taiga") || p.equals("old_growth_spruce_taiga")) return VARIANT_BLACK;
+        if (p.equals("taiga") || p.contains("birch")
+                || p.contains("windswept") || p.contains("hills")
+                || p.contains("peaks") || p.equals("meadow")) return VARIANT_GRAY;
+        return VARIANT_BROWN;
+    }
+
+    @Override
+    public boolean checkSpawnRules(@NotNull LevelAccessor level, @NotNull MobSpawnType spawnType) {
+        if (level instanceof ServerLevelAccessor sla && sla.getDifficulty() == Difficulty.PEACEFUL) return false;
+        BlockPos pos = this.blockPosition();
+        if (level.getBrightness(LightLayer.SKY, pos) <= 0) return false;
+        return level.getBrightness(LightLayer.BLOCK, pos) <= 7;
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -150,7 +163,13 @@ public class WildWolfEntity extends Monster implements GeoEntity {
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this) {
+            @Override
+            protected void alertOther(@NotNull Mob mob, @NotNull LivingEntity target) {
+                if (mob instanceof WildWolfEntity other && !WildWolfEntity.this.isPackMate(other)) return;
+                super.alertOther(mob, target);
+            }
+        }.setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
             @Override
             protected double getFollowDistance() {return 8.0;}});
@@ -203,6 +222,11 @@ public class WildWolfEntity extends Monster implements GeoEntity {
     }
 
     // Pack
+
+    public boolean isPackMate(WildWolfEntity other) {
+        return other.getType() == this.getType();
+    }
+
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
@@ -225,7 +249,7 @@ public class WildWolfEntity extends Monster implements GeoEntity {
         if (!isPanicking() && target != null && target.isAlive() && this.tickCount % PACK_ALERT_PERIOD == 0) {
             for (WildWolfEntity other : this.level().getEntitiesOfClass(WildWolfEntity.class,
                     this.getBoundingBox().inflate(PACK_ALERT_RADIUS),
-                    w -> w != this && w.isAlive() && w.getTarget() == null)) {
+                    w -> w != this && w.isAlive() && w.getTarget() == null && isPackMate(w))) {
                 other.setTarget(target);
             }
         }
@@ -235,7 +259,7 @@ public class WildWolfEntity extends Monster implements GeoEntity {
 
     private void resolvePackLeader() {
         List<WildWolfEntity> neighbors = this.level().getEntitiesOfClass(WildWolfEntity.class,
-                this.getBoundingBox().inflate(LEADER_RADIUS), w -> w != this && w.isAlive());
+                this.getBoundingBox().inflate(LEADER_RADIUS), w -> w != this && w.isAlive() && isPackMate(w));
 
         WildWolfEntity best = this;
         for (WildWolfEntity w : neighbors) {

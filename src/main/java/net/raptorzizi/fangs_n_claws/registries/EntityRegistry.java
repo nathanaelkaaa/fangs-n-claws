@@ -43,6 +43,8 @@ import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
@@ -345,6 +347,20 @@ public class EntityRegistry {
                     .sized(0.78F, 1.105F)
                     .clientTrackingRange(10)
                     .build("wild_wolf"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<HyenaEntity>> HYENA =
+            ENTITIES.register("hyena", () -> EntityType.Builder
+                    .<HyenaEntity>of((type, level) -> new HyenaEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.78F, 1.105F)
+                    .clientTrackingRange(10)
+                    .build("hyena"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CarnivorousPlantEntity>> CARNIVOROUS_PLANT =
+            ENTITIES.register("carnivorous_plant", () -> EntityType.Builder
+                    .<CarnivorousPlantEntity>of((type, level) -> new CarnivorousPlantEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.9F, 1.6F)
+                    .clientTrackingRange(8)
+                    .build("carnivorous_plant"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FrozenBoxEntity>> FROZEN_BOX =
             ENTITIES.register("frozen_box", () -> EntityType.Builder

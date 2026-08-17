@@ -6,6 +6,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
 
@@ -115,5 +116,65 @@ public class SpawnSetup {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SpawnUtils::checkGhostSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.DESERT_SCORPION.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ScorpionEntity::checkScorpionSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.FROST_SCORPION.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ScorpionEntity::checkScorpionSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.NETHER_SCORPION.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ScorpionEntity::checkScorpionSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.HORSE_BAT.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkHorseBatSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.NIGHTMARE_HORSE.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkNightmareHorseSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.WILD_WOLF.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkWildWolfSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.HYENA.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkWildWolfSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.CARNIVOROUS_PLANT.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkCarnivorousPlantSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.SKELETON_HORSE_MOB.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkUndeadHorseSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.ZOMBIE_HORSE_MOB.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkUndeadHorseSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

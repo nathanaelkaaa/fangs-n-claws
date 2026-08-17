@@ -41,6 +41,8 @@ import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseMobRenderer;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantRenderer;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaRenderer;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonRenderer;
@@ -127,6 +129,8 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.SKELETON_HORSE_MOB.get(), HorseMobRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ZOMBIE_HORSE_MOB.get(),   HorseMobRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WILD_WOLF.get(),         WildWolfRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.HYENA.get(),             HyenaRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.CARNIVOROUS_PLANT.get(), CarnivorousPlantRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_BAT.get(),         EvilBatRenderer::new);
         event.registerEntityRenderer(EntityRegistry.OGRE.get(),            OgreRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CAVE_OGRE.get(),       CaveOgreRenderer::new);

@@ -17,7 +17,6 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.config.CommonConfigs;
 import net.raptorzizi.fangs_n_claws.config.ServerConfigs;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
-import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 
 import java.util.Set;
 
@@ -86,7 +85,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.NIGHTMARE_HORSE.get(),
                     EntityRegistry.SKELETON_HORSE_MOB.get(),
                     EntityRegistry.ZOMBIE_HORSE_MOB.get(),
-                    EntityRegistry.WILD_WOLF.get()
+                    EntityRegistry.WILD_WOLF.get(),
+                    EntityRegistry.HYENA.get(),
+                    EntityRegistry.CARNIVOROUS_PLANT.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -96,8 +97,6 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         }
 
         if (phase == Phase.AFTER_EVERYTHING) {
-            // Biomes explicitement exclus (Mushroom Fields, Deep Dark...) : on n'y ajoute rien,
-            // quoi qu'aient fait les autres mods avant nous.
             if (biome.is(NO_NATURAL_SPAWN)) return;
 
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
@@ -125,10 +124,6 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.SKELETON_HORSE_MOB.get(), ServerConfigs.SKELETON_HORSE_WEIGHT.get(), 1, 1);
                 if (CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.ZOMBIE_HORSE_MOB.get(),   ServerConfigs.ZOMBIE_HORSE_WEIGHT.get(),   1, 1);
-                if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get()
-                        && !biome.is(IS_DESERT) && !biome.is(IS_JUNGLE)
-                        && !biome.is(IS_SAVANNA) && !biome.is(IS_BADLANDS))
-                    add(spawns, MobCategory.MONSTER,  EntityRegistry.WILD_WOLF.get(),       ServerConfigs.WILD_WOLF_WEIGHT.get(),       1, 4);
                 if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
                     add(spawns, MobCategory.MONSTER,  EntityRegistry.WEREWOLF.get(),        ServerConfigs.WEREWOLF_WEIGHT.get(),        1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_SCORPION.get() && !biome.is(IS_DESERT) && !biome.is(IS_SNOWY))
@@ -150,12 +145,24 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER, EntityRegistry.DESERT_SCORPION.get(), ServerConfigs.DESERT_SCORPION_WEIGHT.get(), 1, 2);
             }
 
+            if ((biome.is(IS_DESERT) || biome.is(IS_SAVANNA) || biome.is(IS_BADLANDS))) {
+                if (CommonConfigs.ALLOW_SPAWN_HYENA.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.HYENA.get(), ServerConfigs.HYENA_WEIGHT.get(), 1, 4);
+            }
+
+            if (biome.is(IS_JUNGLE)) {
+                if (CommonConfigs.ALLOW_SPAWN_CARNIVOROUS_PLANT.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.CARNIVOROUS_PLANT.get(), ServerConfigs.CARNIVOROUS_PLANT_WEIGHT.get(), 1, 1);
+            }
+
             if (biome.is(IS_PLAINS) && !biome.is(SNOWY_PLAINS)) {
                 if (CommonConfigs.ALLOW_SPAWN_GOLEM.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.GOLEM.get(),   ServerConfigs.GOLEM_WEIGHT.get(),   1, 1);
             }
 
             if (biome.is(IS_FOREST) || biome.is(IS_TAIGA)) {
+                if (CommonConfigs.ALLOW_SPAWN_WILD_WOLF.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.WILD_WOLF.get(), ServerConfigs.WILD_WOLF_WEIGHT.get(), 1, 4);
                 if (CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
             }

@@ -21,6 +21,7 @@ import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -176,10 +177,12 @@ public class SpawnUtils {
 
     public static boolean checkWildWolfSpawnRules(EntityType<? extends WildWolfEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (!level.canSeeSky(pos)) return false;
-        if (level.getMaxLocalRawBrightness(pos) > 7) return false;
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+        return level.getDifficulty() != Difficulty.PEACEFUL;
+    }
+
+    public static boolean checkCarnivorousPlantSpawnRules(EntityType<? extends CarnivorousPlantEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public static boolean checkHorseBatSpawnRules(EntityType<? extends HorseBatEntity> type,
