@@ -217,7 +217,8 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void onFrozenEffectAdded(MobEffectEvent.Added event) {
-        if (!(event.getEffectInstance().getEffect().value() instanceof FrozenEffect)) return;
+        MobEffectInstance instance = event.getEffectInstance();
+        if (instance == null || !(instance.getEffect().value() instanceof FrozenEffect)) return;
         LivingEntity entity = event.getEntity();
         if (entity.level().isClientSide()) return;
 
@@ -249,7 +250,10 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void onFrozenEffectExpired(MobEffectEvent.Expired event) {
-        if (!(event.getEffectInstance().getEffect().value() instanceof FrozenEffect)) return;
+        // getEffectInstance() est @Nullable chez NeoForge (le champ de MobEffectEvent l'est) :
+        // le crash 1.2.4 « Ticking player » venait de ce dereferencement non garde.
+        MobEffectInstance instance = event.getEffectInstance();
+        if (instance == null || !(instance.getEffect().value() instanceof FrozenEffect)) return;
         onUnfreeze(event.getEntity());
     }
 

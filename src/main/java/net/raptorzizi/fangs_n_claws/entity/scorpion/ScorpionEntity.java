@@ -29,7 +29,9 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -46,6 +48,7 @@ import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import java.util.List;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.Animation;
@@ -109,17 +112,35 @@ public class ScorpionEntity extends Spider implements GeoEntity, net.minecraft.w
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
-        if (level instanceof ServerLevel serverLevel
-                && serverLevel.random.nextInt(100) == 0) {
-            Skeleton skeleton = EntityType.SKELETON.create(serverLevel);
-            if (skeleton != null) {
-                skeleton.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                skeleton.finalizeSpawn(serverLevel, difficulty, MobSpawnType.MOB_SUMMONED, null);
-                serverLevel.addFreshEntity(skeleton);
-                skeleton.startRiding(this);
+
+        for (Entity passenger : List.copyOf(this.getPassengers())) {
+            if (passenger instanceof AbstractSkeleton) {
+                passenger.stopRiding();
+                passenger.discard();
+            }
+        }
+
+        if (level instanceof ServerLevel serverLevel && serverLevel.random.nextInt(100) == 0) {
+            Mob jockey = this.jockeyType().create(serverLevel);
+            if (jockey != null && !(burnsInSunlight(jockey) && isSunlitHere(serverLevel))) {
+                jockey.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                jockey.finalizeSpawn(serverLevel, difficulty, MobSpawnType.JOCKEY, null);
+                jockey.startRiding(this);
             }
         }
         return data;
+    }
+
+    protected EntityType<? extends Mob> jockeyType() {
+        return EntityType.SKELETON;
+    }
+
+    private static boolean burnsInSunlight(Mob mob) {
+        return mob instanceof AbstractSkeleton && !(mob instanceof WitherSkeleton);
+    }
+
+    private boolean isSunlitHere(ServerLevel level) {
+        return level.isDay() && level.canSeeSky(this.blockPosition());
     }
 
     // Goal
@@ -324,7 +345,6 @@ public class ScorpionEntity extends Spider implements GeoEntity, net.minecraft.w
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Saddled", isSaddled());
-        // Cle vanilla "Owner" (l'ancienne "OwnerUUID" a ete abandonnee par vanilla en 1.16).
         if (ownerUuid != null) tag.putUUID("Owner", ownerUuid);
     }
 
@@ -332,8 +352,6 @@ public class ScorpionEntity extends Spider implements GeoEntity, net.minecraft.w
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setSaddled(tag.getBoolean("Saddled"));
-        // "Owner" est la cle actuelle ; on relit "OwnerUUID" en repli pour ne pas perdre les
-        // scorpions deja apprivoises dans les mondes crees avant ce changement.
         if (tag.hasUUID("Owner")) {
             ownerUuid = tag.getUUID("Owner");
         } else if (tag.hasUUID("OwnerUUID")) {

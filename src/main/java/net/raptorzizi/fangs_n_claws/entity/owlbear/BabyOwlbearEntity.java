@@ -193,8 +193,8 @@ public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
         registrar.add(new AnimationController<>(this, "movement", 5, state -> {
-            if (this.isSleepPose()) return state.setAndContinue(SLEEP_ANIM);
             if (state.isMoving())   return state.setAndContinue(WALK_ANIM);
+            if (this.isSleepPose()) return state.setAndContinue(SLEEP_ANIM);
             return state.setAndContinue(IDLE_ANIM);
         }));
     }

@@ -69,6 +69,8 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
+import net.minecraft.world.entity.animal.IronGolem;
+import org.jetbrains.annotations.Nullable;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
@@ -377,6 +379,13 @@ public class FangsClawsMod {
                 && FurArmorItem.hasFurHelmet(player)) {
             event.setCanceled(true);
         }
+
+        if (event.getEntity() instanceof IronGolem && isTamedScorpion(event.getNewAboutToBeSetTarget())) {
+            event.setCanceled(true);
+        }
+        if (isTamedScorpion(event.getEntity()) && event.getNewAboutToBeSetTarget() instanceof IronGolem) {
+            event.setCanceled(true);
+        }
         if (event.getNewAboutToBeSetTarget() != null
                 && event.getEntity() instanceof PathfinderMob mob
                 && mob.hasEffect(MobEffectsRegistry.VENOM)) {
@@ -483,7 +492,6 @@ public class FangsClawsMod {
                                 MobSpawnType.MOB_SUMMONED, null);
                         baby.setParent(scorpionParent);
                         baby.setRideYaw(serverLevel.random.nextFloat() * 360f);
-                        serverLevel.addFreshEntity(baby);
                         baby.startRiding(scorpionParent, false);
                     }
                 }
@@ -505,6 +513,12 @@ public class FangsClawsMod {
                 goblin.startRiding(wolf, true);
             }
         }
+    }
+
+    private static boolean isTamedScorpion(@Nullable Entity entity) {
+        if (entity instanceof ScorpionEntity scorpion)  return scorpion.isTamed();
+        if (entity instanceof BabyScorpionEntity baby)  return baby.isTamed();
+        return false;
     }
 
     public static ResourceLocation id(@NotNull String path) {

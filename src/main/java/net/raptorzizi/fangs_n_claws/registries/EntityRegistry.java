@@ -316,6 +316,8 @@ public class EntityRegistry {
             ENTITIES.register("horse_bat", () -> EntityType.Builder
                     .<HorseBatEntity>of((type, level) -> new HorseBatEntity(type, level), MobCategory.MONSTER)
                     .sized(1.4F, 1.6F)
+                    .eyeHeight(1.52F)
+                    .passengerAttachments(1.35F)
                     .clientTrackingRange(8)
                     .build("horse_bat"));
 
@@ -323,6 +325,8 @@ public class EntityRegistry {
             ENTITIES.register("nightmare_horse", () -> EntityType.Builder
                     .<NightmareHorseEntity>of((type, level) -> new NightmareHorseEntity(type, level), MobCategory.MONSTER)
                     .sized(1.4F, 1.6F)
+                    .eyeHeight(1.52F)
+                    .passengerAttachments(1.35F)
                     .fireImmune()
                     .clientTrackingRange(8)
                     .build("nightmare_horse"));
@@ -331,6 +335,8 @@ public class EntityRegistry {
             ENTITIES.register("skeleton_horse", () -> EntityType.Builder
                     .of(SkeletonHorseMob::new, MobCategory.MONSTER)
                     .sized(1.4F, 1.6F)
+                    .eyeHeight(1.52F)
+                    .passengerAttachments(1.35F)
                     .clientTrackingRange(10)
                     .build("skeleton_horse"));
 
@@ -338,6 +344,8 @@ public class EntityRegistry {
             ENTITIES.register("zombie_horse", () -> EntityType.Builder
                     .of(ZombieHorseMob::new, MobCategory.MONSTER)
                     .sized(1.4F, 1.6F)
+                    .eyeHeight(1.52F)
+                    .passengerAttachments(1.35F)
                     .clientTrackingRange(10)
                     .build("zombie_horse"));
 

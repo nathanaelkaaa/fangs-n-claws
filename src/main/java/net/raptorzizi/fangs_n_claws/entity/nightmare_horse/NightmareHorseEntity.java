@@ -65,6 +65,9 @@ public class NightmareHorseEntity extends HorseMob {
     private static final float BOOST_MULT       = 1.5f;
     private static final float STAMINA_DRAIN    = 0.0125f;
     private static final float STAMINA_RECHARGE = 0.0062f;
+    private static final int   STAMINA_REGEN_DELAY = 40;
+
+    private int staminaRegenDelay = 0;
 
     private static final EntityDataAccessor<Integer> VARIANT =
             SynchedEntityData.defineId(NightmareHorseEntity.class, EntityDataSerializers.INT);
@@ -230,9 +233,16 @@ public class NightmareHorseEntity extends HorseMob {
             boolean sprinting = this.getControllingPassenger() instanceof Player p && p.isSprinting();
             if (sprinting && this.getStamina() > 0.0F) {
                 this.setStamina(this.getStamina() - STAMINA_DRAIN);
+                this.staminaRegenDelay = STAMINA_REGEN_DELAY;
                 this.spawnLegFire();
                 this.applyBoostHits();
-            } else if (!sprinting) {
+            } else if (this.staminaRegenDelay > 0) {
+                // Delai avant que la recharge ne s'amorce : s'arreter une demi-seconde ne
+                // suffit plus a recuperer.
+                this.staminaRegenDelay--;
+            } else {
+                // La recharge n'est plus conditionnee au fait que le joueur bouge ou non :
+                // une fois le delai ecoule elle tourne en continu, sprint mis a part.
                 this.setStamina(this.getStamina() + STAMINA_RECHARGE);
             }
         }

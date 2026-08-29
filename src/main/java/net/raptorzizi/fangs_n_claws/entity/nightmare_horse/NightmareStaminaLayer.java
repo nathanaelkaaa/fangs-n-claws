@@ -10,6 +10,8 @@ public class NightmareStaminaLayer implements LayeredDraw.Layer {
     private static final int BAR_WIDTH  = 182;
     private static final int BAR_HEIGHT = 3;
 
+    private static final int Y_ABOVE_JUMP_BAR = 34;
+
     @Override
     public void render(GuiGraphics gui, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
@@ -18,7 +20,7 @@ public class NightmareStaminaLayer implements LayeredDraw.Layer {
 
         float stamina = horse.getStamina();
         int x = (gui.guiWidth() - BAR_WIDTH) / 2;
-        int y = gui.guiHeight() - 31 + BAR_HEIGHT;
+        int y = gui.guiHeight() - Y_ABOVE_JUMP_BAR;
 
         gui.fill(x - 1, y - 1, x + BAR_WIDTH + 1, y + BAR_HEIGHT + 1, 0xFF000000);
         gui.fill(x, y, x + BAR_WIDTH, y + BAR_HEIGHT, 0xFF40200C);

@@ -16,6 +16,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.minecraft.world.entity.Mob;
 
 public class DesertScorpionEntity extends ScorpionEntity {
 
@@ -48,5 +49,10 @@ public class DesertScorpionEntity extends ScorpionEntity {
     @Override
     public EyeStyle eyeStyle() {
         return EyeStyle.NONE;
+    }
+
+    @Override
+    protected EntityType<? extends Mob> jockeyType() {
+        return EntityType.HUSK;
     }
 }

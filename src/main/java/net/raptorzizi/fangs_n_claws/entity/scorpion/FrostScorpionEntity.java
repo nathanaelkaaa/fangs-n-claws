@@ -14,6 +14,8 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
+import net.minecraft.world.entity.Mob;
+
 public class FrostScorpionEntity extends ScorpionEntity {
 
     public FrostScorpionEntity(EntityType<?> entityType, Level level) {
@@ -39,5 +41,10 @@ public class FrostScorpionEntity extends ScorpionEntity {
     @Override
     public EyeStyle eyeStyle() {
         return EyeStyle.NONE;
+    }
+
+    @Override
+    protected EntityType<? extends Mob> jockeyType() {
+        return EntityType.STRAY;
     }
 }

@@ -7,6 +7,8 @@ import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.level.Level;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
+import net.minecraft.world.entity.Mob;
+
 public class NetherScorpionEntity extends ScorpionEntity {
 
     public NetherScorpionEntity(EntityType<?> entityType, Level level) {
@@ -31,5 +33,10 @@ public class NetherScorpionEntity extends ScorpionEntity {
     @Override
     public EyeStyle eyeStyle() {
         return EyeStyle.EMISSIVE;
+    }
+
+    @Override
+    protected EntityType<? extends Mob> jockeyType() {
+        return EntityType.WITHER_SKELETON;
     }
 }

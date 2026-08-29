@@ -12,6 +12,7 @@ import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseArmorScreen;
 import net.raptorzizi.fangs_n_claws.registries.MenuTypeRegistry;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareStaminaLayer;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
@@ -167,7 +168,8 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
-        event.registerAboveAll(
+        event.registerBelow(
+                VanillaGuiLayers.JUMP_METER,
                 ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, "nightmare_stamina"),
                 new NightmareStaminaLayer());
     }
