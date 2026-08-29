@@ -51,6 +51,7 @@ public class AcidCloudEntity extends Entity {
     public void setTickDamage(float damage)    { this.tickDamage = damage; }
     public void setParticlesEnabled(boolean b) { this.entityData.set(DATA_PARTICLES, b); }
     public void setAcidPool(boolean b)         { this.entityData.set(DATA_ACID_POOL, b); }
+    public boolean isAcidPool()                { return this.entityData.get(DATA_ACID_POOL); }
     public void setLoopSound(boolean b)        { this.loopSound = b; }
     public void setDimensions(float width, float height) {
         this.entityData.set(DATA_WIDTH, width);

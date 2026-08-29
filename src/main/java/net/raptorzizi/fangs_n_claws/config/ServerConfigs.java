@@ -33,6 +33,9 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue WILD_WOLF_WEIGHT;
     public static final ModConfigSpec.IntValue HYENA_WEIGHT;
     public static final ModConfigSpec.IntValue CARNIVOROUS_PLANT_WEIGHT;
+    public static final ModConfigSpec.IntValue FIRE_SKULL_WEIGHT;
+    public static final ModConfigSpec.IntValue FIRE_SKULL_NETHER_WEIGHT;
+    public static final ModConfigSpec.IntValue ACID_SKULL_WEIGHT;
     public static final ModConfigSpec.IntValue SKELETON_HORSE_WEIGHT;
     public static final ModConfigSpec.IntValue ZOMBIE_HORSE_WEIGHT;
 
@@ -124,6 +127,15 @@ public class ServerConfigs {
         CARNIVOROUS_PLANT_WEIGHT = BUILDER.comment("Carnivorous Plant (jungle) — default: 20")
                                         .translation("fangs_n_claws.configuration.spawn_weights.carnivorous_plant")
                                         .defineInRange("carnivorous_plant", 20, 0, 500);
+        FIRE_SKULL_WEIGHT        = BUILDER.comment("Fire Skull (overworld, above lava) — default: 12")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.fire_skull")
+                                        .defineInRange("fire_skull",        12, 0, 500);
+        FIRE_SKULL_NETHER_WEIGHT = BUILDER.comment("Fire Skull (nether, above lava) — default: 4, lower on purpose since lava is everywhere there")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.fire_skull_nether")
+                                        .defineInRange("fire_skull_nether",  4, 0, 500);
+        ACID_SKULL_WEIGHT        = BUILDER.comment("Acid Skull (swamps) — default: 15")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.acid_skull")
+                                        .defineInRange("acid_skull",        15, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

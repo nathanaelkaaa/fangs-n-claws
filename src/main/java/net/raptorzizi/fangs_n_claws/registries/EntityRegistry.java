@@ -45,6 +45,8 @@ import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
@@ -369,6 +371,22 @@ public class EntityRegistry {
                     .sized(0.9F, 1.6F)
                     .clientTrackingRange(8)
                     .build("carnivorous_plant"));
+
+
+    public static final DeferredHolder<EntityType<?>, EntityType<FireSkullEntity>> FIRE_SKULL =
+            ENTITIES.register("fire_skull", () -> EntityType.Builder
+                    .<FireSkullEntity>of((type, level) -> new FireSkullEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F)
+                    .fireImmune()
+                    .clientTrackingRange(8)
+                    .build("fire_skull"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<AcidSkullEntity>> ACID_SKULL =
+            ENTITIES.register("acid_skull", () -> EntityType.Builder
+                    .<AcidSkullEntity>of((type, level) -> new AcidSkullEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F)
+                    .clientTrackingRange(8)
+                    .build("acid_skull"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FrozenBoxEntity>> FROZEN_BOX =
             ENTITIES.register("frozen_box", () -> EntityType.Builder

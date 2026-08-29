@@ -63,6 +63,8 @@ import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
@@ -428,6 +430,8 @@ public class FangsClawsMod {
             else if (event.getEntity() instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
             else if (event.getEntity() instanceof HorseBatEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))     cancel = true;
             else if (event.getEntity() instanceof CarnivorousPlantEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CARNIVOROUS_PLANT)) cancel = true;
+            else if (event.getEntity() instanceof FireSkullEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FIRE_SKULL))   cancel = true;
+            else if (event.getEntity() instanceof AcidSkullEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ACID_SKULL))   cancel = true;
             else if (event.getEntity() instanceof HyenaEntity      && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HYENA))       cancel = true;
             else if (event.getEntity() instanceof WildWolfEntity   && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))    cancel = true;
             else if (event.getEntity() instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;

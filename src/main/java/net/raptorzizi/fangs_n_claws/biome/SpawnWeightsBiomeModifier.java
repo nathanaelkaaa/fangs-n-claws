@@ -54,6 +54,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_taiga"));
     private static final TagKey<Biome> IS_SAVANNA =
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_savanna"));
+    private static final TagKey<Biome> IS_SWAMP =
+            TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_swamp"));
     private static final TagKey<Biome> IS_BADLANDS =
             TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_badlands"));
 
@@ -87,7 +89,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.ZOMBIE_HORSE_MOB.get(),
                     EntityRegistry.WILD_WOLF.get(),
                     EntityRegistry.HYENA.get(),
-                    EntityRegistry.CARNIVOROUS_PLANT.get()
+                    EntityRegistry.CARNIVOROUS_PLANT.get(),
+                    EntityRegistry.FIRE_SKULL.get(),
+                    EntityRegistry.ACID_SKULL.get()
             );
             MobSpawnSettingsBuilder spawns = builder.getMobSpawnSettings();
             for (MobCategory category : MobCategory.values()) {
@@ -150,6 +154,16 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER, EntityRegistry.HYENA.get(), ServerConfigs.HYENA_WEIGHT.get(), 1, 4);
             }
 
+            if (biome.is(IS_OVERWORLD) && !spawns.getSpawner(MobCategory.MONSTER).isEmpty()) {
+                if (CommonConfigs.ALLOW_SPAWN_FIRE_SKULL.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FIRE_SKULL.get(), ServerConfigs.FIRE_SKULL_WEIGHT.get(), 1, 1);
+            }
+
+            if (biome.is(IS_SWAMP)) {
+                if (CommonConfigs.ALLOW_SPAWN_ACID_SKULL.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.ACID_SKULL.get(), ServerConfigs.ACID_SKULL_WEIGHT.get(), 1, 1);
+            }
+
             if (biome.is(IS_JUNGLE)) {
                 if (CommonConfigs.ALLOW_SPAWN_CARNIVOROUS_PLANT.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.CARNIVOROUS_PLANT.get(), ServerConfigs.CARNIVOROUS_PLANT_WEIGHT.get(), 1, 1);
@@ -186,6 +200,9 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     add(spawns, MobCategory.MONSTER, EntityRegistry.HELL_OGRE.get(), ServerConfigs.HELL_OGRE_WEIGHT.get(), 1, 1);
                 if (CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.NIGHTMARE_HORSE.get(), ServerConfigs.NIGHTMARE_HORSE_WEIGHT.get(), 1, 1);
+                // Poids nether reduit : la lave y est partout, la condition de spawn n'y filtre rien.
+                if (CommonConfigs.ALLOW_SPAWN_FIRE_SKULL.get())
+                    add(spawns, MobCategory.MONSTER, EntityRegistry.FIRE_SKULL.get(), ServerConfigs.FIRE_SKULL_NETHER_WEIGHT.get(), 1, 2);
             }
 
             if (biome.is(SOUL_SAND_VALLEY)) {

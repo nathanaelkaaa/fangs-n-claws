@@ -85,6 +85,12 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> CARNIVOROUS_PLANT_SPAWN_EGG = ITEMS.register("carnivorous_plant_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.CARNIVOROUS_PLANT, 0x4C7A2E, 0xA83B5C, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<DeferredSpawnEggItem> FIRE_SKULL_SPAWN_EGG = ITEMS.register("fire_skull_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.FIRE_SKULL, 0xE3DED0, 0xD2540B, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> ACID_SKULL_SPAWN_EGG = ITEMS.register("acid_skull_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.ACID_SKULL, 0xE3DED0, 0x4C7A2E, new Item.Properties().stacksTo(64)));
+
     public static final Supplier<DeferredSpawnEggItem> NIGHTMARE_HORSE_SPAWN_EGG = ITEMS.register("nightmare_horse_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.NIGHTMARE_HORSE, 0x84412d, 0x947c6d, new Item.Properties().stacksTo(64)));
 

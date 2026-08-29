@@ -39,6 +39,8 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_HYENA;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_CARNIVOROUS_PLANT;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FIRE_SKULL;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_ACID_SKULL;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_MIMIC;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
@@ -172,6 +174,16 @@ public class CommonConfigs {
                 .comment("Allow Carnivorous Plants to spawn naturally (jungle)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.carnivorous_plant")
                 .define("allow_carnivorous_plant", true);
+
+        ALLOW_SPAWN_FIRE_SKULL = BUILDER
+                .comment("Allow Fire Skulls to spawn naturally (above lava, overworld and nether)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.fire_skull")
+                .define("allow_fire_skull", true);
+
+        ALLOW_SPAWN_ACID_SKULL = BUILDER
+                .comment("Allow Acid Skulls to spawn naturally (swamps)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.acid_skull")
+                .define("allow_acid_skull", true);
 
         ALLOW_SPAWN_MIMIC = BUILDER
                 .comment("Allow Mimics to replace loot chests in structures (also /gamerule allowSpawnMimic). See mimic_spawn_chance for the rate.")

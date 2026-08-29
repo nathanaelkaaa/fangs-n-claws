@@ -40,6 +40,8 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.WILD_WOLF_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.HYENA_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.CARNIVOROUS_PLANT_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.FIRE_SKULL_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.ACID_SKULL_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.DART_GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.IMP_SPAWN_EGG.get());

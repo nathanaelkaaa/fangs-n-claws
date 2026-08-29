@@ -11,6 +11,9 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.AABB;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity;
+
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
@@ -40,12 +43,26 @@ public class AcidSplashParticle extends TextureSheetParticle {
         this.pickSprite(sprites);
     }
 
+    private static final int ORPHAN_GRACE  = 10;
+    private static final int ORPHAN_PERIOD = 5;
+
+    private boolean isOrphaned() {
+        AABB box = new AABB(this.x - 1.0, this.y - 1.0, this.z - 1.0,
+                            this.x + 1.0, this.y + 1.0, this.z + 1.0);
+        return this.level.getEntitiesOfClass(AcidCloudEntity.class, box, AcidCloudEntity::isAcidPool).isEmpty();
+    }
+
     @Override
     public void tick() {
         this.xo = this.x;
         this.yo = this.y;
         this.zo = this.z;
         if (this.age++ >= this.lifetime) {
+            this.remove();
+            return;
+        }
+
+        if (this.age < ANIM_TICKS - ORPHAN_GRACE && this.age % ORPHAN_PERIOD == 0 && isOrphaned()) {
             this.remove();
             return;
         }

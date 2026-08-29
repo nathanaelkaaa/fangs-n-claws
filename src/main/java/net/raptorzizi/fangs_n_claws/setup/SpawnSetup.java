@@ -159,6 +159,18 @@ public class SpawnSetup {
                 SpawnUtils::checkWildWolfSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
 
+        event.register(EntityRegistry.FIRE_SKULL.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkFireSkullSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.ACID_SKULL.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkAcidSkullSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+
         event.register(EntityRegistry.CARNIVOROUS_PLANT.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,

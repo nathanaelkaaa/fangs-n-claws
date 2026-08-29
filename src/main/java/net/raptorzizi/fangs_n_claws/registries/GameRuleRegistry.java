@@ -76,6 +76,12 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_CARNIVOROUS_PLANT =
             GameRules.register("allowSpawnCarnivorousPlant", GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_FIRE_SKULL =
+            GameRules.register("allowSpawnFireSkull",       GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_ACID_SKULL =
+            GameRules.register("allowSpawnAcidSkull",       GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_MIMIC =
             GameRules.register("allowSpawnMimic",           GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
