@@ -52,6 +52,11 @@ import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 
 import java.util.List;
+import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitModel;
+import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitRenderer;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmRenderer;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormRenderer;
+import net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer;
 
 
 @Mod(value = FangsClawsMod.MOD_ID, dist = Dist.CLIENT)
@@ -334,19 +339,19 @@ public class FangsClawsModClient {
         event.registerEntityRenderer(EntityRegistry.CATCHING_CLAW_HOOK.get(), CatchingClawHookRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.TOMAHAWK_PROJECTILE.get(),
-                net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer::new);
+                TomahawkRenderer::new);
         event.registerEntityRenderer(EntityRegistry.PURPLE_WORM.get(),
-                net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormRenderer::new);
+                PurpleWormRenderer::new);
         event.registerEntityRenderer(EntityRegistry.PURPLE_WORM_ARM.get(),
-                net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmRenderer::new);
+                PurpleWormArmRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ACID_SPLIT.get(),
-                net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitRenderer::new);
+                AcidSplitRenderer::new);
     }
 
     @SubscribeEvent
     static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(
-                net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitModel.LAYER,
-                net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitModel::createLayer);
+                AcidSplitModel.LAYER,
+                AcidSplitModel::createLayer);
     }
 }

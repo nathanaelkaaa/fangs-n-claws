@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 
 import java.util.EnumSet;
 
@@ -126,7 +127,8 @@ public class ShrikeBlizzardGoal extends Goal {
 
         Vec3 right = new Vec3(-wind.z, 0.0, wind.x);
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class,
-                shrike.getBoundingBox().inflate(BOX_LENGTH), e -> e != shrike)) {
+                shrike.getBoundingBox().inflate(BOX_LENGTH),
+                e -> e != shrike && !FangsClawsMod.isFriendlyFire(shrike, e))) {
             double rx = e.getX() - shrike.getX();
             double ry = e.getY() - shrike.getY();
             double rz = e.getZ() - shrike.getZ();

@@ -1,0 +1,92 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Leg0",
+					"pivot": [-2.5, 4, 2],
+					"cubes": [
+						{"origin": [-3.4, 0, 1], "size": [2, 4, 2], "uv": [30, 0]}
+					]
+				},
+				{
+					"name": "Leg1",
+					"pivot": [0.5, 4, 2],
+					"cubes": [
+						{"origin": [-0.6, 0, 1], "size": [2, 4, 2], "uv": [30, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "Leg2",
+					"pivot": [-2.5, 4, -5],
+					"cubes": [
+						{"origin": [-3.5, 0, -6], "size": [2, 5, 2], "uv": [30, 0]}
+					]
+				},
+				{
+					"name": "Leg3",
+					"pivot": [0.5, 4, -5],
+					"cubes": [
+						{"origin": [-0.5, 0, -6], "size": [2, 5, 2], "uv": [30, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "Body",
+					"pivot": [-0.75, 5.625, 1.25]
+				},
+				{
+					"name": "Head",
+					"parent": "Body",
+					"pivot": [-1, 7.5, -7],
+					"cubes": [
+						{"origin": [-3.5, 5.5, -10], "size": [5, 5, 4], "uv": [1, 24]},
+						{"origin": [-4, 9.5, -8], "size": [2, 3, 1], "uv": [33, 21]},
+						{"origin": [0, 9.5, -8], "size": [2, 3, 1], "uv": [33, 21], "mirror": true},
+						{"origin": [-3, 5.51563, -12], "size": [4, 2, 2], "uv": [25, 15]}
+					]
+				},
+				{
+					"name": "Lower Jaw",
+					"parent": "Head",
+					"pivot": [-1, 7.5, -7]
+				},
+				{
+					"name": "LowerBody",
+					"parent": "Body",
+					"pivot": [-1, 5, 2],
+					"rotation": [82.5, 0, 0],
+					"cubes": [
+						{"origin": [-3.5, 3.63782, -0.42807], "size": [5, 5, 4], "pivot": [0, -1, 0], "rotation": [-7.5, 0, 0], "uv": [2, 15]}
+					]
+				},
+				{
+					"name": "UpperBody",
+					"parent": "Body",
+					"pivot": [-1, 7, -3],
+					"rotation": [77.5, 0, 0],
+					"cubes": [
+						{"origin": [-4, 3.68564, -5.87039], "size": [6, 7, 6], "uv": [2, 1]}
+					]
+				},
+				{
+					"name": "Tail",
+					"parent": "Body",
+					"pivot": [-1, 5, 4],
+					"rotation": [67.5, 0, 0],
+					"cubes": [
+						{"origin": [-2, 0.57358, 2.81916], "size": [2, 5, 2], "uv": [24, 20]}
+					]
+				}
+			]
+		}
+	]
+}

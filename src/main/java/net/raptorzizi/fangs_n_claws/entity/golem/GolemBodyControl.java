@@ -36,7 +36,7 @@ public class GolemBodyControl extends BodyRotationControl {
         double dz    = delta(histPosZ);
         double distSq = dx * dx + dz * dz;
 
-        boolean inCombat = entity instanceof net.minecraft.world.entity.Mob mob
+        boolean inCombat = entity instanceof Mob mob
                 && mob.getTarget() != null;
 
         if (distSq > 2.5e-7 && !inCombat) {

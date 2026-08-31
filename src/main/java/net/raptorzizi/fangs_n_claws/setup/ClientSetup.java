@@ -46,6 +46,7 @@ import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantRen
 import net.raptorzizi.fangs_n_claws.entity.skull.SkullRenderer;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaRenderer;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfRenderer;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonRenderer;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfRenderer;
@@ -64,6 +65,10 @@ import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.client.renderer.entity.NoopRenderer;
+import net.raptorzizi.fangs_n_claws.particle.AcidBubbleParticle;
+import net.raptorzizi.fangs_n_claws.particle.AcidCloudParticle;
+import net.raptorzizi.fangs_n_claws.particle.AcidSplashParticle;
 
 @EventBusSubscriber(
         modid = FangsClawsMod.MOD_ID,
@@ -132,6 +137,8 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.ZOMBIE_HORSE_MOB.get(),   HorseMobRenderer::new);
         event.registerEntityRenderer(EntityRegistry.WILD_WOLF.get(),         WildWolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.HYENA.get(),             HyenaRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BABY_WILD_WOLF.get(),    BabyWildWolfRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BABY_HYENA.get(),        BabyWildWolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CARNIVOROUS_PLANT.get(), CarnivorousPlantRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FIRE_SKULL.get(),        SkullRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ACID_SKULL.get(),        SkullRenderer::new);
@@ -165,7 +172,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.VELOCITY_ARROW_ENTITY.get(), VelocityArrowRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FEATHER_PROJECTILE.get(),    FeatherProjectileRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ACID_CLOUD.get(),
-                net.minecraft.client.renderer.entity.NoopRenderer::new);
+                NoopRenderer::new);
         event.registerBlockEntityRenderer(BlockEntityRegistry.GHOST_BLOCK_ENTITY.get(), GhostBlockRenderer::new);
     }
 
@@ -187,12 +194,12 @@ public class ClientSetup {
         event.registerSpriteSet(ParticlesRegistry.FIRE.get(),            FireParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ORANGE_SMOKE.get(),    OrangeSmokeParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ACID_SPLASH.get(),
-                net.raptorzizi.fangs_n_claws.particle.AcidSplashParticle.Provider::new);
+                AcidSplashParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ACID_CLOUD.get(),
-                net.raptorzizi.fangs_n_claws.particle.AcidCloudParticle.Provider::new);
+                AcidCloudParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ACID_BUBBLE.get(),
-                net.raptorzizi.fangs_n_claws.particle.AcidBubbleParticle.Provider::new);
+                AcidBubbleParticle.Provider::new);
         event.registerSpriteSet(ParticlesRegistry.ACID_TRAIL.get(),
-                net.raptorzizi.fangs_n_claws.particle.AcidBubbleParticle.TrailProvider::new);
+                AcidBubbleParticle.TrailProvider::new);
     }
 }

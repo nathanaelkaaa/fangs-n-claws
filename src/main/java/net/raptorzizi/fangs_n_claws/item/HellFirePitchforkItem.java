@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.raptorzizi.fangs_n_claws.effect.HellFlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.minecraft.sounds.SoundEvents;
 
 public class HellFirePitchforkItem extends FirePitchforkItem {
 
@@ -76,7 +77,7 @@ public class HellFirePitchforkItem extends FirePitchforkItem {
             level.addFreshEntity(thrown);
 
             var soundHolder = EnchantmentHelper.pickHighestLevel(stack, EnchantmentEffectComponents.TRIDENT_SOUND)
-                    .orElse(net.minecraft.sounds.SoundEvents.TRIDENT_THROW);
+                    .orElse(SoundEvents.TRIDENT_THROW);
             level.playSound(null, thrown, soundHolder.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
 
             if (!player.hasInfiniteMaterials()) {

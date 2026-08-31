@@ -21,6 +21,9 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
 public final class FncAdvancementTriggers {
@@ -77,7 +80,7 @@ public final class FncAdvancementTriggers {
                 FncAdvancements.grant(player, "taming/desert_rider");
             }
 
-            if (vehicle instanceof net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity nh
+            if (vehicle instanceof NightmareHorseEntity nh
                     && player.level().dimension() == Level.NETHER
                     && player.isSprinting()
                     && nh.getStamina() > 0.0F) {
@@ -102,10 +105,10 @@ public final class FncAdvancementTriggers {
 
     private static boolean isAtLeastBlocksAboveGround(Player player, int minBlocks) {
         Level level = player.level();
-        net.minecraft.core.BlockPos.MutableBlockPos pos = new net.minecraft.core.BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
         int x = player.getBlockX();
         int z = player.getBlockZ();
-        int feetY = net.minecraft.util.Mth.floor(player.getY());
+        int feetY = Mth.floor(player.getY());
         for (int i = 1; i <= minBlocks; i++) {
             pos.set(x, feetY - i, z);
             if (level.getBlockState(pos).blocksMotion()) return false;

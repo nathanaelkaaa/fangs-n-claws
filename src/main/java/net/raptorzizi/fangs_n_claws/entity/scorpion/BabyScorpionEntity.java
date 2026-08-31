@@ -38,8 +38,9 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
+import net.minecraft.world.entity.OwnableEntity;
 
-public class BabyScorpionEntity extends Monster implements GeoEntity, net.minecraft.world.entity.OwnableEntity {
+public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEntity {
 
     public static final int VARIANT_NORMAL = 0;
     public static final int VARIANT_DESERT = 1;

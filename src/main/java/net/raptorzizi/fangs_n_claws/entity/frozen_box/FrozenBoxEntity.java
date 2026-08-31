@@ -16,6 +16,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
+import net.minecraft.server.level.ServerLevel;
 
 public class FrozenBoxEntity extends Entity implements GeoEntity {
 
@@ -65,7 +66,7 @@ public class FrozenBoxEntity extends Entity implements GeoEntity {
         }
 
         if (!level().isClientSide() && targetUUID != null && entityData.get(TARGET_ID) < 0) {
-            if (level() instanceof net.minecraft.server.level.ServerLevel sl) {
+            if (level() instanceof ServerLevel sl) {
                 Entity found = sl.getEntity(targetUUID);
                 if (found != null) entityData.set(TARGET_ID, found.getId());
             }

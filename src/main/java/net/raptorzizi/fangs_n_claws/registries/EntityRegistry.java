@@ -45,6 +45,8 @@ import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.BabyHyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
@@ -53,6 +55,8 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
+import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile;
+import net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile;
 
 public class EntityRegistry {
 
@@ -68,10 +72,10 @@ public class EntityRegistry {
                     .sized(1.95F, 2.6F)
                     .build("golem"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile>> ACID_SPLIT =
+    public static final DeferredHolder<EntityType<?>, EntityType<AcidSplitProjectile>> ACID_SPLIT =
             ENTITIES.register("acid_split", () -> EntityType.Builder
-                    .<net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile>of(
-                            net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitProjectile::new, MobCategory.MISC)
+                    .<AcidSplitProjectile>of(
+                            AcidSplitProjectile::new, MobCategory.MISC)
                     .sized(1.5F, 1.5F)
                     .clientTrackingRange(64)
                     .build("acid_split"));
@@ -83,7 +87,7 @@ public class EntityRegistry {
                     .fireImmune()
                     .build("purple_worm"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity>> PURPLE_WORM_ARM =
+    public static final DeferredHolder<EntityType<?>, EntityType<PurpleWormArmEntity>> PURPLE_WORM_ARM =
             ENTITIES.register("purple_worm_arm", () -> EntityType.Builder.of(
                             PurpleWormArmEntity::new, MobCategory.MONSTER)
                     .sized(1.5F, 7.0F)
@@ -91,7 +95,7 @@ public class EntityRegistry {
                     .fireImmune()
                     .build("purple_worm_arm"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity>> ACID_CLOUD =
+    public static final DeferredHolder<EntityType<?>, EntityType<AcidCloudEntity>> ACID_CLOUD =
             ENTITIES.register("acid_cloud", () -> EntityType.Builder.of(
                             AcidCloudEntity::new, MobCategory.MISC)
                     .sized(12.0F, 6.0F)
@@ -247,10 +251,10 @@ public class EntityRegistry {
                     .clientTrackingRange(64)
                     .build("evil_eye_projectile"));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile>> TOMAHAWK_PROJECTILE =
+    public static final DeferredHolder<EntityType<?>, EntityType<TomahawkProjectile>> TOMAHAWK_PROJECTILE =
             ENTITIES.register("tomahawk_projectile", () -> EntityType.Builder
-                    .<net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile>of(
-                            net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkProjectile::new, MobCategory.MISC)
+                    .<TomahawkProjectile>of(
+                            TomahawkProjectile::new, MobCategory.MISC)
                     .sized(0.5F, 0.5F)
                     .clientTrackingRange(64)
                     .build("tomahawk_projectile"));
@@ -364,6 +368,20 @@ public class EntityRegistry {
                     .sized(0.78F, 1.105F)
                     .clientTrackingRange(10)
                     .build("hyena"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BabyWildWolfEntity>> BABY_WILD_WOLF =
+            ENTITIES.register("baby_wild_wolf", () -> EntityType.Builder
+                    .<BabyWildWolfEntity>of((type, level) -> new BabyWildWolfEntity(type, level), MobCategory.CREATURE)
+                    .sized(0.5F, 0.7F)
+                    .clientTrackingRange(10)
+                    .build("baby_wild_wolf"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BabyHyenaEntity>> BABY_HYENA =
+            ENTITIES.register("baby_hyena", () -> EntityType.Builder
+                    .<BabyHyenaEntity>of((type, level) -> new BabyHyenaEntity(type, level), MobCategory.CREATURE)
+                    .sized(0.5F, 0.7F)
+                    .clientTrackingRange(10)
+                    .build("baby_hyena"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CarnivorousPlantEntity>> CARNIVOROUS_PLANT =
             ENTITIES.register("carnivorous_plant", () -> EntityType.Builder

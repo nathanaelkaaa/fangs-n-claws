@@ -17,6 +17,7 @@ import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 
 public class PoisonousDartEntity extends AbstractArrow {
 
@@ -47,7 +48,7 @@ public class PoisonousDartEntity extends AbstractArrow {
 
     public PoisonousDartEntity(Level level, LivingEntity shooter,
             ItemStack pickupItem, @Nullable ItemStack firedFromWeapon) {
-        super(net.raptorzizi.fangs_n_claws.registries.EntityRegistry.POISONOUS_DART.get(),
+        super(EntityRegistry.POISONOUS_DART.get(),
                 shooter, level, pickupItem, firedFromWeapon);
         this.pickup = Pickup.ALLOWED;
     }

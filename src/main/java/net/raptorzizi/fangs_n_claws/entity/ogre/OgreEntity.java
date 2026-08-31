@@ -36,6 +36,7 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.*;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class OgreEntity extends Monster implements GeoEntity {
 
@@ -146,12 +147,12 @@ public class OgreEntity extends Monster implements GeoEntity {
     // Sound
 
     @Override protected SoundEvent getAmbientSound()                                        { return SoundsRegistry.OGRE_AMBIENT.get(); }
-    @Override protected SoundEvent getHurtSound(net.minecraft.world.damagesource.DamageSource src) { return SoundsRegistry.OGRE_HURT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.OGRE_HURT.get(); }
     @Override protected SoundEvent getDeathSound()                                          { return SoundsRegistry.OGRE_DEATH.get(); }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(net.minecraft.sounds.SoundEvents.WARDEN_STEP, 10.0F, 0.9F + this.random.nextFloat() * 0.2F);
+        this.playSound(SoundEvents.WARDEN_STEP, 10.0F, 0.9F + this.random.nextFloat() * 0.2F);
     }
 
     // Combat

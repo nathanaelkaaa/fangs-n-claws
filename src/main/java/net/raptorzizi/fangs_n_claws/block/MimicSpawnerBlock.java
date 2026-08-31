@@ -15,6 +15,7 @@ import net.raptorzizi.fangs_n_claws.entity.mimic.MimicEntity;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
+import net.minecraft.world.entity.MobSpawnType;
 
 public class MimicSpawnerBlock extends Block {
 
@@ -66,7 +67,7 @@ public class MimicSpawnerBlock extends Block {
         if (mimic == null) return;
         mimic.setPos(chestPos.getX() + 0.5, chestPos.getY(), chestPos.getZ() + 0.5);
         mimic.finalizeSpawn(level, level.getCurrentDifficultyAt(chestPos),
-                net.minecraft.world.entity.MobSpawnType.STRUCTURE, null);
+                MobSpawnType.STRUCTURE, null);
         level.addFreshEntity(mimic);
         mimic.consumeChest(chestPos);
     }

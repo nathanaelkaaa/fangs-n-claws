@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import org.jetbrains.annotations.Nullable;
+import net.minecraft.world.level.block.Block;
 
 public class GhostBlock extends BaseEntityBlock {
 
@@ -60,7 +61,7 @@ public class GhostBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<net.minecraft.world.level.block.Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HAS_MIMIC);
     }
 

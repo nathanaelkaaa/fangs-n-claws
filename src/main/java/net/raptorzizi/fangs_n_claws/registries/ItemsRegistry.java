@@ -27,6 +27,9 @@ import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
 import java.util.function.Supplier;
+import net.minecraft.ChatFormatting;
+import net.minecraft.world.food.FoodProperties;
+import net.raptorzizi.fangs_n_claws.item.TomahawkItem;
 
 public class ItemsRegistry {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(FangsClawsMod.MOD_ID);
@@ -150,22 +153,22 @@ public class ItemsRegistry {
 
     public static final Supplier<Item> OWLBEAR_MEAT = ITEMS.register("owlbear_meat",
             () -> new Item(new Item.Properties().food(
-                    new net.minecraft.world.food.FoodProperties.Builder()
+                    new FoodProperties.Builder()
                             .nutrition(4).saturationModifier(0.4f).build())));
 
     public static final Supplier<Item> COOKED_OWLBEAR_MEAT = ITEMS.register("cooked_owlbear_meat",
             () -> new Item(new Item.Properties().food(
-                    new net.minecraft.world.food.FoodProperties.Builder()
+                    new FoodProperties.Builder()
                             .nutrition(10).saturationModifier(1.0f).build())));
 
     public static final Supplier<SmithingTemplateItem> SHRIKE_UPGRADE_SMITHING_TEMPLATE =
             ITEMS.register("shrike_upgrade_smithing_template", () -> new SmithingTemplateItem(
                     Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.applies_to")
-                            .withStyle(net.minecraft.ChatFormatting.BLUE),
+                            .withStyle(ChatFormatting.BLUE),
                     Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.ingredients")
-                            .withStyle(net.minecraft.ChatFormatting.BLUE),
+                            .withStyle(ChatFormatting.BLUE),
                     Component.translatable("upgrade.fangs_n_claws.shrike_upgrade")
-                            .withStyle(net.minecraft.ChatFormatting.GRAY),
+                            .withStyle(ChatFormatting.GRAY),
                     Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.base_slot_description"),
                     Component.translatable("item.fangs_n_claws.shrike_upgrade_smithing_template.additions_slot_description"),
                     java.util.List.of(
@@ -198,7 +201,7 @@ public class ItemsRegistry {
     public static final Supplier<SilverSwordItem>       SILVER_SWORD       = ITEMS.register("silver_sword",       SilverSwordItem::new);
     public static final Supplier<FirePitchforkItem>     FIRE_PITCHFORK     = ITEMS.register("fire_pitchfork",    FirePitchforkItem::new);
     public static final Supplier<HellFirePitchforkItem> HELLFIRE_PITCHFORK = ITEMS.register("hellfire_pitchfork", HellFirePitchforkItem::new);
-    public static final Supplier<net.raptorzizi.fangs_n_claws.item.TomahawkItem> TOMAHAWK = ITEMS.register("tomahawk", net.raptorzizi.fangs_n_claws.item.TomahawkItem::new);
+    public static final Supplier<TomahawkItem> TOMAHAWK = ITEMS.register("tomahawk", TomahawkItem::new);
 
     /**
      * Armor

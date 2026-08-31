@@ -57,8 +57,9 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
+import net.minecraft.world.entity.OwnableEntity;
 
-public class ScorpionEntity extends Spider implements GeoEntity, net.minecraft.world.entity.OwnableEntity {
+public class ScorpionEntity extends Spider implements GeoEntity, OwnableEntity {
 
     private static final int ATTACK_HIT_TICK      = 9;
     private static final int ATTACK_TOTAL_TICKS   = 15;

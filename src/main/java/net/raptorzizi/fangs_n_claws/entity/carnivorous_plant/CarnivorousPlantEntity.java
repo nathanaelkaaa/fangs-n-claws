@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -241,7 +242,7 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    public boolean doHurtTarget(@NotNull net.minecraft.world.entity.Entity target) {
+    public boolean doHurtTarget(@NotNull Entity target) {
         return false;
     }
 

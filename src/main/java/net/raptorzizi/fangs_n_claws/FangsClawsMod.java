@@ -66,6 +66,7 @@ import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEnt
 import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
@@ -96,11 +97,15 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import java.util.List;
+import net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkDispenseBehavior;
 
 @Mod(FangsClawsMod.MOD_ID)
 public class FangsClawsMod {
     public static final String MOD_ID = "fangs_n_claws";
     public static final Logger LOGGER = LogUtils.getLogger();
+
+    /** Part des loups et hyenes qui apparaissent sous forme de petit. */
+    private static final float PUP_SPAWN_CHANCE = 0.10F;
 
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
@@ -159,7 +164,7 @@ public class FangsClawsMod {
             DispenserBlock.registerBehavior(ItemsRegistry.POISONOUS_DART.get(),
                     new ProjectileDispenseBehavior(ItemsRegistry.POISONOUS_DART.get()));
             DispenserBlock.registerBehavior(ItemsRegistry.TOMAHAWK.get(),
-                    new net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkDispenseBehavior());
+                    new TomahawkDispenseBehavior());
         });
     }
 
@@ -260,6 +265,12 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onIncomingDamage(LivingIncomingDamageEvent event) {
+        if (isFriendlyFire(event.getSource().getEntity(), event.getEntity())
+                || isFriendlyFire(event.getSource().getDirectEntity(), event.getEntity())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (event.getSource().getDirectEntity() instanceof Player player
                 && player.getMainHandItem().getItem() instanceof CatchingClawItem) {
             event.setAmount(1.0f);
@@ -373,6 +384,11 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onLivingChangeTarget(LivingChangeTargetEvent event) {
+        if (isFriendlyFire(event.getEntity(), event.getNewAboutToBeSetTarget())) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (event.getEntity() instanceof Zombie && event.getNewAboutToBeSetTarget() instanceof WerevillagerEntity) {
             event.setCanceled(true);
         }
@@ -480,6 +496,18 @@ public class FangsClawsMod {
                 }
             }
 
+            if (event.getEntity() instanceof WildWolfEntity wolf && !event.isSpawnCancelled()
+                    && serverLevel.random.nextFloat() < PUP_SPAWN_CHANCE) {
+                BabyWildWolfEntity pup = wolf.babyType().create(serverLevel);
+                if (pup != null) {
+                    pup.moveTo(wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getYRot(), 0f);
+                    pup.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pup.blockPosition()),
+                            MobSpawnType.NATURAL, null);
+                    serverLevel.addFreshEntity(pup);
+                    event.setSpawnCancelled(true);
+                }
+            }
+
             if (event.getEntity() instanceof ScorpionEntity scorpionParent && !event.isSpawnCancelled()) {
                 float roll = serverLevel.random.nextFloat();
                 int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
@@ -517,6 +545,27 @@ public class FangsClawsMod {
                 goblin.startRiding(wolf, true);
             }
         }
+    }
+
+    /**
+     * Vrai si l'attaquant est une creature apprivoisee et que la cible est son maitre ou une
+     * autre creature du meme maitre. On passe par OwnableEntity, que toutes nos betes
+     * apprivoisables implementent — directement pour celles qui heritent de Monster, via
+     * TamableAnimal pour les petits.
+     */
+    public static boolean isFriendlyFire(@Nullable Entity attacker, @Nullable Entity victim) {
+        if (attacker == null || victim == null || attacker == victim) return false;
+
+        java.util.UUID owner = ownerOf(attacker);
+        if (owner == null) return false;
+
+        if (owner.equals(victim.getUUID())) return true;   // le maitre lui-meme
+        return owner.equals(ownerOf(victim));              // une bete du meme maitre
+    }
+
+    @Nullable
+    private static java.util.UUID ownerOf(Entity entity) {
+        return entity instanceof OwnableEntity owned ? owned.getOwnerUUID() : null;
     }
 
     private static boolean isTamedScorpion(@Nullable Entity entity) {

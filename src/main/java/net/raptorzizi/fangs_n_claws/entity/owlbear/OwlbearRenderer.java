@@ -19,6 +19,9 @@ public class OwlbearRenderer extends GeoEntityRenderer<OwlbearEntity> {
     private static final ResourceLocation EYES =
             FangsClawsMod.id("textures/entity/glowing_eyes/owlbear_eyes.png");
 
+    private static final ResourceLocation COLLAR =
+            FangsClawsMod.id("textures/entity/owlbear_collar.png");
+
     public OwlbearRenderer(EntityRendererProvider.Context context) {
         super(context, new OwlbearModel());
         this.shadowRadius = 0.8f;
@@ -27,13 +30,26 @@ public class OwlbearRenderer extends GeoEntityRenderer<OwlbearEntity> {
             public void render(PoseStack poseStack, OwlbearEntity animatable, BakedGeoModel bakedModel,
                                @Nullable RenderType renderType, MultiBufferSource bufferSource,
                                @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-                if (animatable.isSleeping()) return;
+                if (animatable.isSleepPose()) return;
                 RenderType eyesType = RenderType.eyes(animatable.eyesTexture());
                 getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, eyesType,
                         bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, -1);
             }
         });
-    }
+    
+        this.addRenderLayer(new GeoRenderLayer<>(this) {
+            @Override
+            public void render(PoseStack poseStack, OwlbearEntity animatable, BakedGeoModel bakedModel,
+                               @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                               @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                if (!animatable.isTamed() || animatable.isInvisible()) return;
+                RenderType collarType = RenderType.entityCutoutNoCull(COLLAR);
+                getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, collarType,
+                        bufferSource.getBuffer(collarType), partialTick, packedLight, packedOverlay,
+                        animatable.getCollarColor().getTextureDiffuseColor());
+            }
+        });
+}
 
     @Override
     public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack,

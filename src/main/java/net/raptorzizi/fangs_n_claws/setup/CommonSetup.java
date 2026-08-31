@@ -62,6 +62,8 @@ import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.skull.SkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.minecraft.core.component.DataComponents;
@@ -81,6 +83,11 @@ import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.PotionsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.neoforged.neoforge.event.entity.living.ArmorHurtEvent;
+import net.raptorzizi.fangs_n_claws.effect.AcidEffect;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity;
 
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
 public class CommonSetup {
@@ -260,6 +267,38 @@ public class CommonSetup {
     }
 
     @SubscribeEvent
+    public static void onWolfEggBaby(PlayerInteractEvent.EntityInteract event) {
+        if (!(event.getTarget() instanceof WildWolfEntity adult)) return;
+
+        ItemStack stack = event.getItemStack();
+        EntityType<? extends BabyWildWolfEntity> babyType;
+        if (adult instanceof HyenaEntity) {
+            if (!stack.is(ItemsRegistry.HYENA_SPAWN_EGG.get())) return;
+            babyType = EntityRegistry.BABY_HYENA.get();
+        } else {
+            if (!stack.is(ItemsRegistry.WILD_WOLF_SPAWN_EGG.get())) return;
+            babyType = EntityRegistry.BABY_WILD_WOLF.get();
+        }
+
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            BabyWildWolfEntity baby = babyType.create(serverLevel);
+            if (baby != null) {
+                baby.moveTo(adult.getX(), adult.getY(), adult.getZ(), adult.getYRot(), 0f);
+                baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                        MobSpawnType.SPAWN_EGG, null);
+                baby.setVariant(adult.getVariant());
+                baby.setParent(adult);
+                serverLevel.addFreshEntity(baby);
+                if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+            }
+        }
+
+        event.getEntity().swing(event.getHand());
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+    }
+
+    @SubscribeEvent
     public static void onScorpionEggBaby(PlayerInteractEvent.EntityInteract event) {
         if (!(event.getTarget() instanceof ScorpionEntity scorpion)) return;
 
@@ -312,8 +351,8 @@ public class CommonSetup {
         event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.ICE_GOLEM.get(),       GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.GHOST.get(),           GhostEntity.prepareAttributes().build());
-        event.put(EntityRegistry.PURPLE_WORM.get(),     net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity.prepareAttributes().build());
-        event.put(EntityRegistry.PURPLE_WORM_ARM.get(), net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmEntity.prepareAttributes().build());
+        event.put(EntityRegistry.PURPLE_WORM.get(),     PurpleWormEntity.prepareAttributes().build());
+        event.put(EntityRegistry.PURPLE_WORM_ARM.get(), PurpleWormArmEntity.prepareAttributes().build());
         event.put(EntityRegistry.MIMIC.get(),           MimicEntity.prepareAttributes().build());
         event.put(EntityRegistry.FIRE_GHOST.get(),      FireGhostEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOBLIN.get(),          GoblinEntity.prepareAttributes().build());
@@ -327,6 +366,8 @@ public class CommonSetup {
         event.put(EntityRegistry.ZOMBIE_HORSE_MOB.get(),   ZombieHorseMob.prepareAttributes().build());
         event.put(EntityRegistry.WILD_WOLF.get(),          WildWolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.HYENA.get(),              WildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_WILD_WOLF.get(),     BabyWildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_HYENA.get(),         BabyWildWolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.CARNIVOROUS_PLANT.get(),  CarnivorousPlantEntity.prepareAttributes().build());
         event.put(EntityRegistry.FIRE_SKULL.get(),         SkullEntity.prepareAttributes().build());
         event.put(EntityRegistry.ACID_SKULL.get(),         SkullEntity.prepareAttributes().build());
@@ -544,17 +585,17 @@ public class CommonSetup {
      * La reduction d'armure/resistance, elle, passe par les modificateurs d'attributs de l'effet.
      */
     @SubscribeEvent
-    public static void onArmorHurt(net.neoforged.neoforge.event.entity.living.ArmorHurtEvent event) {
+    public static void onArmorHurt(ArmorHurtEvent event) {
         LivingEntity entity = event.getEntity();
         if (entity.level().isClientSide()) return;
         if (!entity.hasEffect(MobEffectsRegistry.ACID)) return;
 
-        for (net.minecraft.world.entity.EquipmentSlot slot
-                : net.minecraft.world.entity.EquipmentSlot.values()) {
+        for (EquipmentSlot slot
+                : EquipmentSlot.values()) {
             float damage = event.getNewDamage(slot);
             if (damage > 0.0f) {
                 event.setNewDamage(slot,
-                        damage * net.raptorzizi.fangs_n_claws.effect.AcidEffect.DURABILITY_MULTIPLIER);
+                        damage * AcidEffect.DURABILITY_MULTIPLIER);
             }
         }
     }

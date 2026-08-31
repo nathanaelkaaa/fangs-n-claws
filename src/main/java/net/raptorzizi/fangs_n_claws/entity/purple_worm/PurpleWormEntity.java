@@ -50,6 +50,8 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Explosion;
 
 public class PurpleWormEntity extends Monster implements GeoEntity {
 
@@ -510,17 +512,17 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         }
     }
 
-    private Double findGroundY(net.minecraft.server.level.ServerLevel server, double x, double z, double startY) {
+    private Double findGroundY(ServerLevel server, double x, double z, double startY) {
         Vec3 from = new Vec3(x, startY, z);
         Vec3 to   = new Vec3(x, server.getMinBuildHeight(), z);
-        net.minecraft.world.phys.BlockHitResult hit = server.clip(new net.minecraft.world.level.ClipContext(
-                from, to, net.minecraft.world.level.ClipContext.Block.COLLIDER,
-                net.minecraft.world.level.ClipContext.Fluid.NONE, this));
-        return hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK ? hit.getLocation().y : null;
+        BlockHitResult hit = server.clip(new ClipContext(
+                from, to, ClipContext.Block.COLLIDER,
+                ClipContext.Fluid.NONE, this));
+        return hit.getType() == HitResult.Type.BLOCK ? hit.getLocation().y : null;
     }
 
     private void spawnArm(LivingEntity target) {
-        if (!(this.level() instanceof net.minecraft.server.level.ServerLevel server)) return;
+        if (!(this.level() instanceof ServerLevel server)) return;
 
         double ax = target.getX(), az = target.getZ();
         Double gy = null;
@@ -682,7 +684,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
                     this.random.nextDouble() * 2 * a - a,
                     this.random.nextDouble() * 2 * a - a);
             Vec3 vel = look.scale(3.0).add(spread).normalize().scale(0.55 + this.random.nextDouble() * 0.35);
-            this.level().addParticle(net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry.ACID_BUBBLE.get(),
+            this.level().addParticle(ParticlesRegistry.ACID_BUBBLE.get(),
                     mouth.x + spread.x * 0.3, mouth.y + spread.y * 0.3, mouth.z + spread.z * 0.3,
                     vel.x, vel.y, vel.z);
         }
@@ -1175,7 +1177,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
     }
 
     @Override
-    public void setCustomName(net.minecraft.network.chat.Component name) {
+    public void setCustomName(Component name) {
         super.setCustomName(name);
         this.bossEvent.setName(this.getDisplayName());
     }
@@ -1212,7 +1214,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
 
     /** Le souffle des explosions ne l'ejecte pas. */
     @Override
-    public boolean ignoreExplosion(@NotNull net.minecraft.world.level.Explosion explosion) {
+    public boolean ignoreExplosion(@NotNull Explosion explosion) {
         return true;
     }
 

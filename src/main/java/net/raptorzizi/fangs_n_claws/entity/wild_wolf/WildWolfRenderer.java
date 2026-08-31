@@ -17,6 +17,10 @@ public class WildWolfRenderer extends GeoEntityRenderer<WildWolfEntity> {
 
     private static final ResourceLocation EYES =
             FangsClawsMod.id("textures/entity/glowing_eyes/wild_wolf_eyes.png");
+    private static final ResourceLocation TAME_EYES =
+            FangsClawsMod.id("textures/entity/glowing_eyes/wild_wolf_tame_eyes.png");
+    private static final ResourceLocation COLLAR =
+            FangsClawsMod.id("textures/entity/wild_wolf_collar.png");
 
     public WildWolfRenderer(EntityRendererProvider.Context context) {
         super(context, new WildWolfModel());
@@ -27,12 +31,29 @@ public class WildWolfRenderer extends GeoEntityRenderer<WildWolfEntity> {
             public void render(PoseStack poseStack, WildWolfEntity animatable, BakedGeoModel bakedModel,
                                @Nullable RenderType renderType, MultiBufferSource bufferSource,
                                @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-                RenderType eyesType = RenderType.eyes(EYES);
+                boolean tamed = animatable.isTamed();
+                RenderType eyesType = tamed
+                        ? RenderType.entityCutoutNoCull(TAME_EYES)
+                        : RenderType.eyes(EYES);
                 getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, eyesType,
-                        bufferSource.getBuffer(eyesType), partialTick, LightTexture.FULL_SKY, packedOverlay, -1);
+                        bufferSource.getBuffer(eyesType), partialTick,
+                        tamed ? packedLight : LightTexture.FULL_SKY, packedOverlay, -1);
             }
         });
-    }
+    
+        this.addRenderLayer(new GeoRenderLayer<>(this) {
+            @Override
+            public void render(PoseStack poseStack, WildWolfEntity animatable, BakedGeoModel bakedModel,
+                               @Nullable RenderType renderType, MultiBufferSource bufferSource,
+                               @Nullable VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
+                if (!animatable.isTamed() || animatable.isInvisible()) return;
+                RenderType collarType = RenderType.entityCutoutNoCull(COLLAR);
+                getRenderer().reRender(bakedModel, poseStack, bufferSource, animatable, collarType,
+                        bufferSource.getBuffer(collarType), partialTick, packedLight, packedOverlay,
+                        animatable.getCollarColor().getTextureDiffuseColor());
+            }
+        });
+}
 
     @Override
     public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack,

@@ -22,6 +22,8 @@ import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
 import net.raptorzizi.fangs_n_claws.registries.EnchantmentsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 public class CatchingClawHookEntity extends ThrowableProjectile {
 
@@ -86,7 +88,7 @@ public class CatchingClawHookEntity extends ThrowableProjectile {
         return ItemStack.EMPTY;
     }
 
-    private int getEnchLevel(net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.Enchantment> key) {
+    private int getEnchLevel(ResourceKey<Enchantment> key) {
         ItemStack weapon = getWeaponStack();
         if (weapon.isEmpty()) return 0;
         return EnchantmentsRegistry.getLevel(weapon, this.level(), key);
