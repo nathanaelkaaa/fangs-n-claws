@@ -12,6 +12,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FirePitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.HellFirePitchforkItem;
+import net.raptorzizi.fangs_n_claws.item.CarnivorousPlantSproutItem;
 import net.raptorzizi.fangs_n_claws.item.CatchingClawItem;
 import net.raptorzizi.fangs_n_claws.item.EvilEyeItem;
 import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
@@ -85,8 +86,11 @@ public class ItemsRegistry {
     public static final Supplier<DeferredSpawnEggItem> HYENA_SPAWN_EGG = ITEMS.register("hyena_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.HYENA, 0xB49A6E, 0x4C4034, new Item.Properties().stacksTo(64)));
 
+    public static final Supplier<Item> CARNIVOROUS_PLANT_SPROUT = ITEMS.register("carnivorous_plant_sprout",
+            () -> new CarnivorousPlantSproutItem(new Item.Properties().stacksTo(16)));
+
     public static final Supplier<DeferredSpawnEggItem> CARNIVOROUS_PLANT_SPAWN_EGG = ITEMS.register("carnivorous_plant_spawn_egg",
-            () -> new DeferredSpawnEggItem(EntityRegistry.CARNIVOROUS_PLANT, 0x4C7A2E, 0xA83B5C, new Item.Properties().stacksTo(64)));
+            () -> new DeferredSpawnEggItem(EntityRegistry.CARNIVOROUS_PLANT, 0x25a619, 0x441325, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> FIRE_SKULL_SPAWN_EGG = ITEMS.register("fire_skull_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.FIRE_SKULL, 0xE3DED0, 0xD2540B, new Item.Properties().stacksTo(64)));

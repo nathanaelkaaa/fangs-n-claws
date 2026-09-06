@@ -43,6 +43,7 @@ import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantSproutEntity;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.BabyHyenaEntity;
@@ -390,6 +391,13 @@ public class EntityRegistry {
                     .clientTrackingRange(8)
                     .build("carnivorous_plant"));
 
+
+    public static final DeferredHolder<EntityType<?>, EntityType<CarnivorousPlantSproutEntity>> CARNIVOROUS_PLANT_SPROUT =
+            ENTITIES.register("carnivorous_plant_sprout", () -> EntityType.Builder
+                    .<CarnivorousPlantSproutEntity>of((type, level) -> new CarnivorousPlantSproutEntity(type, level), MobCategory.MISC)
+                    .sized(0.8F, 0.4F)
+                    .clientTrackingRange(8)
+                    .build("carnivorous_plant_sprout"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<FireSkullEntity>> FIRE_SKULL =
             ENTITIES.register("fire_skull", () -> EntityType.Builder

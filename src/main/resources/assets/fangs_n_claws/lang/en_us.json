@@ -138,6 +138,8 @@
   "entity.fangs_n_claws.nightmare_horse": "Nightmare Horse",
   "item.fangs_n_claws.nightmare_horse_spawn_egg": "Nightmare Horse Spawn Egg",
   "item.fangs_n_claws.sturdy_saddle": "Sturdy Saddle",
+  "entity.fangs_n_claws.carnivorous_plant_sprout": "Carnivorous Plant Sprout",
+  "item.fangs_n_claws.carnivorous_plant_sprout": "Carnivorous Plant Sprout",
   "entity.fangs_n_claws.wild_wolf": "Wild Wolf",
   "item.fangs_n_claws.wild_wolf_spawn_egg": "Wild Wolf Spawn Egg",
   "entity.fangs_n_claws.hyena": "Hyena",
@@ -220,6 +222,8 @@
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",
 
+  "death.attack.carnivorous_plant": "%1$s was devoured by a carnivorous plant",
+  "death.attack.carnivorous_plant.player": "%1$s was devoured by a carnivorous plant whilst fighting %2$s",
   "death.attack.bear_trap": "%1$s was caught in a bear trap",
   "death.attack.bear_trap.player": "%1$s was caught in a bear trap whilst fighting %2$s",
 

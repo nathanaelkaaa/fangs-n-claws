@@ -18,6 +18,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -25,6 +26,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import java.util.function.Predicate;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -98,10 +100,19 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
                 .add(Attributes.KNOCKBACK_RESISTANCE,  1.0);
     }
 
+    private static final Predicate<LivingEntity> PREY = entity ->
+            !(entity instanceof CarnivorousPlantEntity)
+                    && !(entity instanceof CarnivorousPlantSproutEntity)
+                    && !(entity instanceof ArmorStand);
+
     @Override
     protected void registerGoals() {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true) {
+            @Override
+            protected double getFollowDistance() { return LOOK_RANGE; }
+        });
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, PREY) {
             @Override
             protected double getFollowDistance() { return LOOK_RANGE; }
         });

@@ -59,6 +59,7 @@ import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantSproutEntity;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.skull.SkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
@@ -369,6 +370,7 @@ public class CommonSetup {
         event.put(EntityRegistry.BABY_WILD_WOLF.get(),     BabyWildWolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.BABY_HYENA.get(),         BabyWildWolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.CARNIVOROUS_PLANT.get(),  CarnivorousPlantEntity.prepareAttributes().build());
+        event.put(EntityRegistry.CARNIVOROUS_PLANT_SPROUT.get(), CarnivorousPlantSproutEntity.prepareAttributes().build());
         event.put(EntityRegistry.FIRE_SKULL.get(),         SkullEntity.prepareAttributes().build());
         event.put(EntityRegistry.ACID_SKULL.get(),         SkullEntity.prepareAttributes().build());
         event.put(EntityRegistry.SCORPION.get(),          ScorpionEntity.prepareAttributes().build());

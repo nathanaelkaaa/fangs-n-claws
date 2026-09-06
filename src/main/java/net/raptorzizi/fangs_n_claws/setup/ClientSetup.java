@@ -42,6 +42,7 @@ import net.raptorzizi.fangs_n_claws.entity.owlbear.OwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearRenderer;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionRenderer;
 import net.raptorzizi.fangs_n_claws.entity.horse.HorseMobRenderer;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantSproutRenderer;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantRenderer;
 import net.raptorzizi.fangs_n_claws.entity.skull.SkullRenderer;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaRenderer;
@@ -140,6 +141,7 @@ public class ClientSetup {
         event.registerEntityRenderer(EntityRegistry.BABY_WILD_WOLF.get(),    BabyWildWolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.BABY_HYENA.get(),        BabyWildWolfRenderer::new);
         event.registerEntityRenderer(EntityRegistry.CARNIVOROUS_PLANT.get(), CarnivorousPlantRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.CARNIVOROUS_PLANT_SPROUT.get(), CarnivorousPlantSproutRenderer::new);
         event.registerEntityRenderer(EntityRegistry.FIRE_SKULL.get(),        SkullRenderer::new);
         event.registerEntityRenderer(EntityRegistry.ACID_SKULL.get(),        SkullRenderer::new);
         event.registerEntityRenderer(EntityRegistry.EVIL_BAT.get(),         EvilBatRenderer::new);

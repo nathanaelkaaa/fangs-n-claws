@@ -1,4 +1,20 @@
 {
   "type": "minecraft:entity",
-  "pools": []
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:carnivorous_plant_sprout",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 1.0, "max": 2.0, "type": "minecraft:uniform" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
