@@ -241,6 +241,72 @@
       { "name": "fangs_n_claws:mimic/mimic_open"}
     ]
   },
+  "carnivorous_plant.open": {
+    "subtitle": "subtitles.entity.carnivorous_plant.open",
+    "sounds": [
+      { "name": "fangs_n_claws:carnivorous_plant/carnivorous_plant_open" }
+    ]
+  },
+  "carnivorous_plant.close": {
+    "subtitle": "subtitles.entity.carnivorous_plant.close",
+    "sounds": [
+      { "name": "fangs_n_claws:carnivorous_plant/carnivorous_plant_close" }
+    ]
+  },
+  "carnivorous_plant.bite": {
+    "subtitle": "subtitles.entity.carnivorous_plant.bite",
+    "sounds": [
+      { "name": "fangs_n_claws:carnivorous_plant/carnivorous_plant_bite" }
+    ]
+  },
+  "hyena.ambient": {
+    "subtitle": "subtitles.entity.hyena.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:hyena/hyena_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:hyena/hyena_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:hyena/hyena_idle3", "weight": 1 }
+    ]
+  },
+  "hyena.hurt": {
+    "subtitle": "subtitles.entity.hyena.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:hyena/hyena_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:hyena/hyena_hurt2", "weight": 1 }
+    ]
+  },
+  "hyena.death": {
+    "subtitle": "subtitles.entity.hyena.death",
+    "sounds": [
+      { "name": "fangs_n_claws:hyena/hyena_death" }
+    ]
+  },
+  "wild_wolf.growl": {
+    "subtitle": "subtitles.entity.wild_wolf.growl",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle3", "weight": 1 }
+    ]
+  },
+  "wild_wolf.howl": {
+    "subtitle": "subtitles.entity.wild_wolf.howl",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle4" }
+    ]
+  },
+  "wild_wolf.hurt": {
+    "subtitle": "subtitles.entity.wild_wolf.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_hurt2", "weight": 1 }
+    ]
+  },
+  "wild_wolf.death": {
+    "subtitle": "subtitles.entity.wild_wolf.death",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_death" }
+    ]
+  },
   "purple_worm.ambient": {
     "subtitle": "subtitles.entity.purple_worm.ambient",
     "sounds": [

@@ -37,7 +37,9 @@ import net.raptorzizi.fangs_n_claws.entity.tame.MonsterFollowOwnerGoal;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterOwnerHurtByTargetGoal;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterOwnerHurtTargetGoal;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterSitGoal;
-import net.raptorzizi.fangs_n_claws.entity.tame.OwnedMonster;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamableCreature;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedData;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +51,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.Optional;
 import java.util.UUID;
 
-public class OwlbearEntity extends Monster implements GeoEntity, OwnedMonster {
+public class OwlbearEntity extends Monster implements GeoEntity, TamableCreature {
 
     // Constants
 
@@ -208,8 +210,13 @@ public class OwlbearEntity extends Monster implements GeoEntity, OwnedMonster {
     public void setCollarColor(DyeColor colour) { this.entityData.set(COLLAR_COLOR, colour.getId()); }
 
     @Override
+    public boolean isPreventingPlayerRest(@NotNull Player player) {
+        return TamedRules.preventsPlayerRest(this) && super.isPreventingPlayerRest(player);
+    }
+
+    @Override
     public boolean removeWhenFarAway(double distance) {
-        return !isTamed() && super.removeWhenFarAway(distance);
+        return TamedRules.allowsDespawn(this) && super.removeWhenFarAway(distance);
     }
 
     // Interaction
@@ -444,17 +451,15 @@ public class OwlbearEntity extends Monster implements GeoEntity, OwnedMonster {
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if (getOwnerUUID() != null) tag.putUUID("Owner", getOwnerUUID());
+        TamedData.save(tag, this);
         tag.putByte("CollarColor", (byte) getCollarColor().getId());
-        tag.putBoolean("Sitting", isOrderedToSit());
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.hasUUID("Owner")) setOwnerUUID(tag.getUUID("Owner"));
+        TamedData.load(tag, this);
         if (tag.contains("CollarColor")) setCollarColor(DyeColor.byId(tag.getByte("CollarColor")));
-        setOrderedToSit(tag.getBoolean("Sitting"));
     }
 
     // Animation

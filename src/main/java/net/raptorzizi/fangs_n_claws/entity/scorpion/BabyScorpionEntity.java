@@ -37,10 +37,13 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import net.raptorzizi.fangs_n_claws.entity.tame.TamableCreature;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedData;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
+import java.util.Optional;
 import java.util.UUID;
-import net.minecraft.world.entity.OwnableEntity;
 
-public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEntity {
+public class BabyScorpionEntity extends Monster implements GeoEntity, TamableCreature {
 
     public static final int VARIANT_NORMAL = 0;
     public static final int VARIANT_DESERT = 1;
@@ -60,7 +63,8 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
 
     private UUID parentUuid;
     private ScorpionEntity parentCache;
-    private UUID ownerUuid;
+    private static final EntityDataAccessor<Optional<UUID>> OWNER =
+            SynchedEntityData.defineId(BabyScorpionEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private int growTimer = GROW_TICKS;
     private boolean pendingRemount = false;
     public BabyScorpionEntity(EntityType<? extends Monster> type, Level level) {
@@ -81,6 +85,7 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
         builder.define(VARIANT, VARIANT_NORMAL);
         builder.define(RIDE_YAW, 0.0f);
         builder.define(HEAD_OWNER_ID, -1);
+        builder.define(OWNER, Optional.empty());
     }
 
     public int  getVariant()            { return this.entityData.get(VARIANT); }
@@ -104,16 +109,22 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
     public boolean isPushable() {
         return !isOnHead() && !isPassenger() && super.isPushable();
     }
-    public boolean isTamed()           { return ownerUuid != null; }
+    @Override
+    public boolean isTamed() { return getOwnerUUID() != null; }
 
     @Nullable
     @Override
     public UUID getOwnerUUID() {
-        return this.ownerUuid;
+        return this.entityData.get(OWNER).orElse(null);
     }
 
     public void setOwner(Player player) {
-        this.ownerUuid = player.getUUID();
+        this.setOwnerUUID(player.getUUID());
+    }
+
+    @Override
+    public void setOwnerUUID(@Nullable UUID uuid) {
+        this.entityData.set(OWNER, Optional.ofNullable(uuid));
         this.setPersistenceRequired();
     }
 
@@ -174,8 +185,13 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
     }
 
     @Override
+    public boolean isPreventingPlayerRest(Player player) {
+        return TamedRules.preventsPlayerRest(this) && super.isPreventingPlayerRest(player);
+    }
+
+    @Override
     public boolean removeWhenFarAway(double distance) {
-        return !isTamed();
+        return TamedRules.allowsDespawn(this);
     }
 
     @Override
@@ -183,8 +199,8 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
         super.tick();
 
         if (!this.level().isClientSide) {
-            if (pendingRemount && ownerUuid != null) {
-                Player owner = this.level().getPlayerByUUID(ownerUuid);
+            if (pendingRemount && getOwnerUUID() != null) {
+                Player owner = this.level().getPlayerByUUID(getOwnerUUID());
                 if (owner != null) {
                     mountHead(owner);
                     pendingRemount = false;
@@ -260,7 +276,7 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
         adult.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
         adult.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(adult.blockPosition()),
                 MobSpawnType.CONVERSION, null);
-        if (this.ownerUuid != null) adult.setOwner(this.ownerUuid);
+        if (getOwnerUUID() != null) adult.setOwnerUUID(getOwnerUUID());
         serverLevel.addFreshEntity(adult);
         this.discard();
     }
@@ -292,8 +308,7 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
         tag.putInt("Age", growTimer);
         tag.putBoolean("OnHead", isOnHead());
         if (parentUuid != null) tag.putUUID("ParentUUID", parentUuid);
-        // Cle vanilla "Owner" (l'ancienne "OwnerUUID" a ete abandonnee par vanilla en 1.16).
-        if (ownerUuid  != null) tag.putUUID("Owner",  ownerUuid);
+        TamedData.save(tag, this);
     }
 
     @Override
@@ -303,12 +318,7 @@ public class BabyScorpionEntity extends Monster implements GeoEntity, OwnableEnt
         setRideYaw(tag.getFloat("RideYaw"));
         if (tag.contains("Age")) growTimer = tag.getInt("Age");
         if (tag.hasUUID("ParentUUID")) parentUuid = tag.getUUID("ParentUUID");
-        // Repli sur l'ancienne cle pour ne pas perdre les scorpions deja apprivoises.
-        if (tag.hasUUID("Owner")) {
-            ownerUuid = tag.getUUID("Owner");
-        } else if (tag.hasUUID("OwnerUUID")) {
-            ownerUuid = tag.getUUID("OwnerUUID");
-        }
+        TamedData.load(tag, this);
 
         this.setNoGravity(false);
         this.noPhysics = false;

@@ -47,11 +47,14 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterFollowOwnerGoal;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterOwnerHurtByTargetGoal;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterOwnerHurtTargetGoal;
 import net.raptorzizi.fangs_n_claws.entity.tame.MonsterSitGoal;
-import net.raptorzizi.fangs_n_claws.entity.tame.OwnedMonster;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamableCreature;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedData;
 import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,7 +71,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
+public class WildWolfEntity extends Monster implements GeoEntity, TamableCreature {
 
     // Constants
 
@@ -78,6 +81,9 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
 
     private static final double PACK_ALERT_RADIUS  = 16.0;
     private static final int    PACK_ALERT_PERIOD  = 20;
+    private static final int    HOWL_COOLDOWN      = 300;
+
+    private static final float  VOICE_PITCH        = 0.9F;
 
     private static final double LEADER_RADIUS         = 16.0;
     private static final int    LEADER_RESOLVE_PERIOD = 20;
@@ -121,6 +127,7 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
     private int            inLoveTicks         = 0;
     private int            breedCooldown       = 0;
     private int            panicCooldown       = 0;
+    private int            howlCooldown        = 0;
 
     // Setup
 
@@ -211,8 +218,13 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
     public void setCollarColor(DyeColor colour) { this.entityData.set(COLLAR_COLOR, colour.getId()); }
 
     @Override
+    public boolean isPreventingPlayerRest(@NotNull Player player) {
+        return TamedRules.preventsPlayerRest(this) && super.isPreventingPlayerRest(player);
+    }
+
+    @Override
     public boolean removeWhenFarAway(double distance) {
-        return !isTamed() && super.removeWhenFarAway(distance);
+        return TamedRules.allowsDespawn(this) && super.removeWhenFarAway(distance);
     }
 
     // Breeding
@@ -322,9 +334,21 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
 
     // Sound
 
-    @Override protected SoundEvent getAmbientSound()              { return SoundEvents.WOLF_GROWL; }
-    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.WOLF_HURT; }
-    @Override protected SoundEvent getDeathSound()                { return SoundEvents.WOLF_DEATH; }
+    @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.WILD_WOLF_GROWL.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.WILD_WOLF_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.WILD_WOLF_DEATH.get(); }
+
+    protected SoundEvent getAttackSound() { return SoundsRegistry.WILD_WOLF_GROWL.get(); }
+
+    protected float basePitch() { return VOICE_PITCH; }
+
+    @Override
+    public float getVoicePitch() {
+        return (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + this.basePitch();
+    }
+
+    @Nullable
+    protected SoundEvent getPackHowlSound() { return SoundsRegistry.WILD_WOLF_HOWL.get(); }
 
     @Override
     protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
@@ -339,7 +363,7 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
     public boolean doHurtTarget(@NotNull Entity target) {
         if (attackDelayTick > 0) return true;
         this.triggerAnim("attack_controller", "attack");
-        this.playSound(SoundEvents.WOLF_GROWL, 1.0F, 0.9F + this.random.nextFloat() * 0.2F);
+        this.playSound(this.getAttackSound(), 1.0F, this.getVoicePitch());
         this.pendingAttackTarget = target;
         this.attackDelayTick = 1;
         return true;
@@ -397,6 +421,8 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
     private void setLeaderFlag(boolean v) { this.entityData.set(IS_LEADER, v); }
 
     private void tickPack() {
+        if (howlCooldown > 0) howlCooldown--;
+
         if (isTamed()) {
             if (packLeader != null || isLeader()) {
                 packLeader = null;
@@ -415,10 +441,19 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
 
         LivingEntity target = this.getTarget();
         if (!isPanicking() && target != null && target.isAlive() && this.tickCount % PACK_ALERT_PERIOD == 0) {
+            boolean alerted = false;
             for (WildWolfEntity other : this.level().getEntitiesOfClass(WildWolfEntity.class,
                     this.getBoundingBox().inflate(PACK_ALERT_RADIUS),
                     w -> w != this && w.isAlive() && w.getTarget() == null && isPackMate(w))) {
                 other.setTarget(target);
+                alerted = true;
+            }
+            if (alerted && isLeader() && howlCooldown <= 0) {
+                SoundEvent howl = this.getPackHowlSound();
+                if (howl != null) {
+                    this.playSound(howl, 3.0F, 0.95F + this.random.nextFloat() * 0.1F);
+                    howlCooldown = HOWL_COOLDOWN;
+                }
             }
         }
     }
@@ -451,9 +486,8 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
     public void addAdditionalSaveData(@NotNull CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("Variant", this.getVariant());
-        if (getOwnerUUID() != null) tag.putUUID("Owner", getOwnerUUID());
+        TamedData.save(tag, this);
         tag.putByte("CollarColor", (byte) getCollarColor().getId());
-        tag.putBoolean("Sitting", isOrderedToSit());
         tag.putInt("InLove", inLoveTicks);
         tag.putInt("BreedCooldown", breedCooldown);
     }
@@ -462,9 +496,8 @@ public class WildWolfEntity extends Monster implements GeoEntity, OwnedMonster {
     public void readAdditionalSaveData(@NotNull CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.setVariant(tag.getInt("Variant"));
-        if (tag.hasUUID("Owner")) setOwnerUUID(tag.getUUID("Owner"));
+        TamedData.load(tag, this);
         if (tag.contains("CollarColor")) setCollarColor(DyeColor.byId(tag.getByte("CollarColor")));
-        setOrderedToSit(tag.getBoolean("Sitting"));
         inLoveTicks   = tag.getInt("InLove");
         breedCooldown = tag.getInt("BreedCooldown");
     }

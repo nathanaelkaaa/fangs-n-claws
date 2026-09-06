@@ -92,6 +92,29 @@ public class SoundsRegistry {
     public static final Supplier<SoundEvent> WEREWOLF_DEATH =
             register("werewolf.death");
 
+    public static final Supplier<SoundEvent> HYENA_AMBIENT =
+            register("hyena.ambient");
+    public static final Supplier<SoundEvent> HYENA_HURT =
+            register("hyena.hurt");
+    public static final Supplier<SoundEvent> HYENA_DEATH =
+            register("hyena.death");
+
+    public static final Supplier<SoundEvent> WILD_WOLF_GROWL =
+            register("wild_wolf.growl");
+    public static final Supplier<SoundEvent> WILD_WOLF_HOWL =
+            register("wild_wolf.howl");
+    public static final Supplier<SoundEvent> WILD_WOLF_HURT =
+            register("wild_wolf.hurt");
+    public static final Supplier<SoundEvent> WILD_WOLF_DEATH =
+            register("wild_wolf.death");
+
+    public static final Supplier<SoundEvent> CARNIVOROUS_PLANT_OPEN =
+            register("carnivorous_plant.open");
+    public static final Supplier<SoundEvent> CARNIVOROUS_PLANT_CLOSE =
+            register("carnivorous_plant.close");
+    public static final Supplier<SoundEvent> CARNIVOROUS_PLANT_BITE =
+            register("carnivorous_plant.bite");
+
     public static final Supplier<SoundEvent> MIMIC_OPEN =
             register("mimic.open");
     public static final Supplier<SoundEvent> MIMIC_DEATH =

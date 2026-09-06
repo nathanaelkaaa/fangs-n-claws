@@ -29,6 +29,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.raptorzizi.fangs_n_claws.advancement.FncAdvancements;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamableCreature;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +41,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity {
+public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity, TamableCreature {
 
     // Constants
 
@@ -121,6 +123,8 @@ public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity {
     }
 
     // Taming
+    @Override
+    public boolean isTamed() { return this.isTame(); }
 
     @Override
     public boolean isFood(ItemStack stack) {
@@ -196,6 +200,13 @@ public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+    }
+
+    // Despawn
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
+        return TamedRules.allowsDespawn(this);
     }
 
     // Sound

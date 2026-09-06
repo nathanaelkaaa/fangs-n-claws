@@ -5,7 +5,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 
-public class MonsterOwnerHurtTargetGoal<T extends PathfinderMob & OwnedMonster> extends TargetGoal {
+public class MonsterOwnerHurtTargetGoal<T extends PathfinderMob & TamableCreature> extends TargetGoal {
 
     private final T mob;
     private LivingEntity victim;

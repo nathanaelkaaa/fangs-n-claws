@@ -57,9 +57,12 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import net.minecraft.world.entity.OwnableEntity;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamableCreature;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedData;
+import java.util.Optional;
 
-public class ScorpionEntity extends Spider implements GeoEntity, OwnableEntity {
+public class ScorpionEntity extends Spider implements GeoEntity, TamableCreature {
 
     private static final int ATTACK_HIT_TICK      = 9;
     private static final int ATTACK_TOTAL_TICKS   = 15;
@@ -76,7 +79,8 @@ public class ScorpionEntity extends Spider implements GeoEntity, OwnableEntity {
 
     private static final EntityDataAccessor<Boolean> SADDLED =
             SynchedEntityData.defineId(ScorpionEntity.class, EntityDataSerializers.BOOLEAN);
-    private UUID ownerUuid;
+    private static final EntityDataAccessor<Optional<UUID>> OWNER =
+            SynchedEntityData.defineId(ScorpionEntity.class, EntityDataSerializers.OPTIONAL_UUID);
 
     private static final RawAnimation IDLE_ANIM           = RawAnimation.begin().thenLoop("idle");
     private static final RawAnimation WALK_ANIM           = RawAnimation.begin().thenLoop("walk");
@@ -96,6 +100,7 @@ public class ScorpionEntity extends Spider implements GeoEntity, OwnableEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(SADDLED, false);
+        builder.define(OWNER, Optional.empty());
     }
 
     public static AttributeSupplier.Builder prepareAttributes() {
@@ -272,23 +277,29 @@ public class ScorpionEntity extends Spider implements GeoEntity, OwnableEntity {
     public boolean isSaddled()              { return this.entityData.get(SADDLED); }
     public void    setSaddled(boolean s)    { this.entityData.set(SADDLED, s); }
 
-    public boolean isTamed()                { return ownerUuid != null; }
-    public boolean isOwnedBy(Player player) { return ownerUuid != null && ownerUuid.equals(player.getUUID()); }
+    @Override
+    public boolean isTamed() { return getOwnerUUID() != null; }
 
     @Nullable
     @Override
     public UUID getOwnerUUID() {
-        return this.ownerUuid;
+        return this.entityData.get(OWNER).orElse(null);
     }
 
-    public void setOwner(UUID uuid) {
-        this.ownerUuid = uuid;
+    @Override
+    public void setOwnerUUID(@Nullable UUID uuid) {
+        this.entityData.set(OWNER, Optional.ofNullable(uuid));
         this.setPersistenceRequired();
     }
 
     @Override
+    public boolean isPreventingPlayerRest(@NotNull Player player) {
+        return TamedRules.preventsPlayerRest(this) && super.isPreventingPlayerRest(player);
+    }
+
+    @Override
     public boolean removeWhenFarAway(double distance) {
-        return !isTamed() && super.removeWhenFarAway(distance);
+        return TamedRules.allowsDespawn(this) && super.removeWhenFarAway(distance);
     }
 
     @Override
@@ -346,18 +357,14 @@ public class ScorpionEntity extends Spider implements GeoEntity, OwnableEntity {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("Saddled", isSaddled());
-        if (ownerUuid != null) tag.putUUID("Owner", ownerUuid);
+        TamedData.save(tag, this);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         setSaddled(tag.getBoolean("Saddled"));
-        if (tag.hasUUID("Owner")) {
-            ownerUuid = tag.getUUID("Owner");
-        } else if (tag.hasUUID("OwnerUUID")) {
-            ownerUuid = tag.getUUID("OwnerUUID");
-        }
+        TamedData.load(tag, this);
     }
 
     @Override

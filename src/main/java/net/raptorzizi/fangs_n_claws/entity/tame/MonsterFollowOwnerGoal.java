@@ -11,7 +11,7 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 import java.util.EnumSet;
 
-public class MonsterFollowOwnerGoal<T extends PathfinderMob & OwnedMonster> extends Goal {
+public class MonsterFollowOwnerGoal<T extends PathfinderMob & TamableCreature> extends Goal {
 
     private static final int REPATH = 10;
 

@@ -72,7 +72,6 @@ import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.NetherScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
-import net.minecraft.world.entity.animal.IronGolem;
 import org.jetbrains.annotations.Nullable;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
@@ -103,8 +102,6 @@ import net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkDispenseBehavior;
 public class FangsClawsMod {
     public static final String MOD_ID = "fangs_n_claws";
     public static final Logger LOGGER = LogUtils.getLogger();
-
-    /** Part des loups et hyenes qui apparaissent sous forme de petit. */
     private static final float PUP_SPAWN_CHANCE = 0.10F;
 
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
@@ -265,12 +262,6 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onIncomingDamage(LivingIncomingDamageEvent event) {
-        if (isFriendlyFire(event.getSource().getEntity(), event.getEntity())
-                || isFriendlyFire(event.getSource().getDirectEntity(), event.getEntity())) {
-            event.setCanceled(true);
-            return;
-        }
-
         if (event.getSource().getDirectEntity() instanceof Player player
                 && player.getMainHandItem().getItem() instanceof CatchingClawItem) {
             event.setAmount(1.0f);
@@ -384,11 +375,6 @@ public class FangsClawsMod {
 
     @SubscribeEvent
     public void onLivingChangeTarget(LivingChangeTargetEvent event) {
-        if (isFriendlyFire(event.getEntity(), event.getNewAboutToBeSetTarget())) {
-            event.setCanceled(true);
-            return;
-        }
-
         if (event.getEntity() instanceof Zombie && event.getNewAboutToBeSetTarget() instanceof WerevillagerEntity) {
             event.setCanceled(true);
         }
@@ -398,12 +384,6 @@ public class FangsClawsMod {
             event.setCanceled(true);
         }
 
-        if (event.getEntity() instanceof IronGolem && isTamedScorpion(event.getNewAboutToBeSetTarget())) {
-            event.setCanceled(true);
-        }
-        if (isTamedScorpion(event.getEntity()) && event.getNewAboutToBeSetTarget() instanceof IronGolem) {
-            event.setCanceled(true);
-        }
         if (event.getNewAboutToBeSetTarget() != null
                 && event.getEntity() instanceof PathfinderMob mob
                 && mob.hasEffect(MobEffectsRegistry.VENOM)) {
@@ -547,32 +527,6 @@ public class FangsClawsMod {
         }
     }
 
-    /**
-     * Vrai si l'attaquant est une creature apprivoisee et que la cible est son maitre ou une
-     * autre creature du meme maitre. On passe par OwnableEntity, que toutes nos betes
-     * apprivoisables implementent — directement pour celles qui heritent de Monster, via
-     * TamableAnimal pour les petits.
-     */
-    public static boolean isFriendlyFire(@Nullable Entity attacker, @Nullable Entity victim) {
-        if (attacker == null || victim == null || attacker == victim) return false;
-
-        java.util.UUID owner = ownerOf(attacker);
-        if (owner == null) return false;
-
-        if (owner.equals(victim.getUUID())) return true;   // le maitre lui-meme
-        return owner.equals(ownerOf(victim));              // une bete du meme maitre
-    }
-
-    @Nullable
-    private static java.util.UUID ownerOf(Entity entity) {
-        return entity instanceof OwnableEntity owned ? owned.getOwnerUUID() : null;
-    }
-
-    private static boolean isTamedScorpion(@Nullable Entity entity) {
-        if (entity instanceof ScorpionEntity scorpion)  return scorpion.isTamed();
-        if (entity instanceof BabyScorpionEntity baby)  return baby.isTamed();
-        return false;
-    }
 
     public static ResourceLocation id(@NotNull String path) {
         return ResourceLocation.fromNamespaceAndPath(FangsClawsMod.MOD_ID, path);

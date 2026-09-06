@@ -5,7 +5,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-public class MonsterSitGoal<T extends PathfinderMob & OwnedMonster> extends Goal {
+public class MonsterSitGoal<T extends PathfinderMob & TamableCreature> extends Goal {
 
     private final T mob;
 

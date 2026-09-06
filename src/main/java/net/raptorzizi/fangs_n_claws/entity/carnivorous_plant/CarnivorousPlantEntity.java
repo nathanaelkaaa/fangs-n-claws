@@ -25,6 +25,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -193,6 +194,7 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
                 if (preyWithin(ATTACK_RANGE)) {
                     setState(STATE_REVEALING);
                     animTimer = 0;
+                    this.playSound(SoundsRegistry.CARNIVOROUS_PLANT_OPEN.get(), 1.0F, randomPitch());
                 }
             }
             case STATE_REVEALING -> {
@@ -204,6 +206,7 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
                 } else if (++awayTimer >= HIDE_DELAY_TICKS && attackTimer == 0) {
                     setState(STATE_HIDING);
                     animTimer = 0;
+                    this.playSound(SoundsRegistry.CARNIVOROUS_PLANT_CLOSE.get(), 1.0F, randomPitch());
                 }
             }
             case STATE_HIDING -> {
@@ -216,6 +219,12 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
         }
     }
 
+    // Sound
+
+    private float randomPitch() {
+        return 0.9F + this.random.nextFloat() * 0.2F;
+    }
+
     // Attack
 
     public boolean isAttacking() { return attackTimer > 0; }
@@ -224,6 +233,7 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
         if (attackTimer > 0) {
             attackTimer++;
             if (attackTimer == ATTACK_HIT_TICK) {
+                this.playSound(SoundsRegistry.CARNIVOROUS_PLANT_BITE.get(), 1.0F, randomPitch());
                 LivingEntity target = this.getTarget();
                 if (target != null && target.isAlive() && this.distanceTo(target) <= HIT_RANGE) {
                     super.doHurtTarget(target);

@@ -10,6 +10,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -18,6 +20,8 @@ import net.minecraft.world.level.Level;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
+import org.jetbrains.annotations.Nullable;
 
 public class HyenaEntity extends WildWolfEntity {
 
@@ -64,6 +68,19 @@ public class HyenaEntity extends WildWolfEntity {
 
         this.goalSelector.addGoal(4, new HyenaScavengeGoal(this));
     }
+
+    // Sound
+
+    @Override protected SoundEvent getAmbientSound()              { return SoundsRegistry.HYENA_AMBIENT.get(); }
+    @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundsRegistry.HYENA_HURT.get(); }
+    @Override protected SoundEvent getDeathSound()                { return SoundsRegistry.HYENA_DEATH.get(); }
+
+    @Override protected SoundEvent getAttackSound()   { return SoundsRegistry.HYENA_AMBIENT.get(); }
+
+    @Override protected float basePitch() { return 1.0F; }
+
+    @Nullable
+    @Override protected SoundEvent getPackHowlSound() { return null; }
 
     // Tick
 

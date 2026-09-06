@@ -48,7 +48,10 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy {
+import net.raptorzizi.fangs_n_claws.entity.tame.TamableCreature;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
+
+public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy, TamableCreature {
 
     protected static final int    REJECT_HIT_TICK    = 12;
     protected static final int    REJECT_TOTAL_TICKS = 20;
@@ -309,6 +312,13 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
     @Override
     public boolean dismountsUnderwater() {
         return true;
+    }
+
+    // Despawn
+
+    @Override
+    public boolean removeWhenFarAway(double distance) {
+        return TamedRules.allowsDespawn(this);
     }
 
     @Override
