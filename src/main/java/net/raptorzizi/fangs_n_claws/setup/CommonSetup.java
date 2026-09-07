@@ -26,6 +26,22 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import java.util.List;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.SkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
+import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+import net.raptorzizi.fangs_n_claws.registries.PotionsRegistry;
 import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.minecraftforge.network.PacketDistributor;
@@ -57,7 +73,11 @@ import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantSproutEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.DesertScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.FrostScorpionEntity;
@@ -109,6 +129,13 @@ public class CommonSetup {
         event.put(EntityRegistry.SKELETON_HORSE_MOB.get(), SkeletonHorseMob.prepareAttributes().build());
         event.put(EntityRegistry.ZOMBIE_HORSE_MOB.get(),   ZombieHorseMob.prepareAttributes().build());
         event.put(EntityRegistry.WILD_WOLF.get(),        WildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.HYENA.get(),              WildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_WILD_WOLF.get(),     BabyWildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BABY_HYENA.get(),         BabyWildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.CARNIVOROUS_PLANT.get(),  CarnivorousPlantEntity.prepareAttributes().build());
+        event.put(EntityRegistry.CARNIVOROUS_PLANT_SPROUT.get(), CarnivorousPlantSproutEntity.prepareAttributes().build());
+        event.put(EntityRegistry.FIRE_SKULL.get(),         SkullEntity.prepareAttributes().build());
+        event.put(EntityRegistry.ACID_SKULL.get(),         SkullEntity.prepareAttributes().build());
     }
 
     // Forge bus events (game events)
@@ -166,6 +193,167 @@ public class CommonSetup {
             event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
         }
 
+        private static final float ACID_SPLASH_WIDTH    = 2.0f * 2.5f;
+        private static final float ACID_SPLASH_HEIGHT   = 2.0f;
+        private static final int   ACID_SPLASH_LIFETIME = 60;
+        private static final float ACID_SPLASH_DAMAGE   = 3.0f;
+
+        private static final float ACID_FOG_WIDTH    = 6.0f;
+        private static final float ACID_FOG_HEIGHT   = 2.0f;
+        private static final int   ACID_FOG_LIFETIME = 200;
+        private static final float ACID_FOG_DAMAGE   = 1.0f;
+
+        @SubscribeEvent
+        public static void onBottleAcidSkull(PlayerInteractEvent.EntityInteract event) {
+            if (!(event.getTarget() instanceof AcidSkullEntity skull)) return;
+
+            ItemStack stack = event.getItemStack();
+            if (!stack.is(Items.GLASS_BOTTLE)) return;
+            if (skull.isHarvested()) return;
+
+            Player player = event.getEntity();
+            if (!event.getLevel().isClientSide) {
+                skull.setHarvested(true);
+                player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0F, 1.0F);
+                player.playSound(SoundEvents.SLIME_SQUISH, 0.8F, 1.1F);
+                ItemStack filled = PotionUtils.setPotion(new ItemStack(Items.POTION), PotionsRegistry.ACID.get());
+                player.setItemInHand(event.getHand(), ItemUtils.createFilledResult(stack, player, filled));
+            }
+
+            player.swing(event.getHand());
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+        }
+
+        private static final double ACID_BOTTLE_RANGE = 2.0;
+
+        @SubscribeEvent
+        public static void onBottleAcidPuddleItem(PlayerInteractEvent.RightClickItem event) {
+            if (tryBottleAcidPuddle(event.getEntity(), event.getHand(), event.getItemStack())) {
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+            }
+        }
+
+        @SubscribeEvent
+        public static void onBottleAcidPuddleBlock(PlayerInteractEvent.RightClickBlock event) {
+            if (tryBottleAcidPuddle(event.getEntity(), event.getHand(), event.getItemStack())) {
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+            }
+        }
+
+        private static boolean tryBottleAcidPuddle(Player player, InteractionHand hand, ItemStack stack) {
+            if (!stack.is(Items.GLASS_BOTTLE)) return false;
+
+            List<AcidCloudEntity> puddles = player.level().getEntitiesOfClass(AcidCloudEntity.class,
+                    player.getBoundingBox().inflate(ACID_BOTTLE_RANGE),
+                    cloud -> cloud.isAlive() && cloud.isAcidPool());
+            if (puddles.isEmpty()) return false;
+
+            if (!player.level().isClientSide) {
+                puddles.get(0).discard();
+                player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0F, 1.0F);
+                player.playSound(SoundEvents.SLIME_SQUISH, 0.8F, 1.1F);
+                ItemStack filled = PotionUtils.setPotion(new ItemStack(Items.POTION), PotionsRegistry.ACID.get());
+                player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
+            }
+            player.swing(hand);
+            return true;
+        }
+
+        @SubscribeEvent
+        public static void onAcidPotionImpact(ProjectileImpactEvent event) {
+            if (!(event.getProjectile() instanceof ThrownPotion potion)) return;
+            if (!(potion.level() instanceof ServerLevel server)) return;
+
+            ItemStack stack = potion.getItem();
+            boolean splash    = stack.is(Items.SPLASH_POTION);
+            boolean lingering = stack.is(Items.LINGERING_POTION);
+            if (!splash && !lingering) return;
+
+            boolean isAcid = false;
+            for (MobEffectInstance effect : PotionUtils.getMobEffects(stack)) {
+                if (effect.getEffect() == MobEffectsRegistry.ACID.get()) { isAcid = true; break; }
+            }
+            if (!isAcid) return;
+
+            Vec3 hit = event.getRayTraceResult().getLocation();
+
+            if (splash) {
+                spawnAcidPuddle(server, hit);
+                return;
+            }
+
+            event.setCanceled(true);
+            server.levelEvent(2002, potion.blockPosition(), PotionUtils.getColor(stack));
+            spawnAcidFog(server, hit);
+            potion.discard();
+        }
+
+        private static void spawnAcidFog(ServerLevel server, Vec3 pos) {
+            AcidCloudEntity cloud = new AcidCloudEntity(EntityRegistry.ACID_CLOUD.get(), server);
+            cloud.setPos(pos.x, pos.y, pos.z);
+            cloud.setDimensions(ACID_FOG_WIDTH, ACID_FOG_HEIGHT);
+            cloud.setParticlesEnabled(true);
+            cloud.setAcidPool(false);
+            cloud.setLifetime(ACID_FOG_LIFETIME);
+            cloud.setTickDamage(ACID_FOG_DAMAGE);
+            server.addFreshEntity(cloud);
+        }
+
+        private static void spawnAcidPuddle(ServerLevel server, Vec3 hit) {
+            BlockHitResult ground = server.clip(new ClipContext(
+                    hit.add(0.0, 0.5, 0.0), hit.add(0.0, -4.0, 0.0),
+                    ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, (Entity) null));
+            double groundY = ground.getType() == HitResult.Type.BLOCK ? ground.getLocation().y : hit.y;
+
+            AcidCloudEntity puddle = new AcidCloudEntity(EntityRegistry.ACID_CLOUD.get(), server);
+            puddle.setPos(hit.x, groundY, hit.z);
+            puddle.setDimensions(ACID_SPLASH_WIDTH, ACID_SPLASH_HEIGHT);
+            puddle.setParticlesEnabled(false);
+            puddle.setAcidPool(true);
+            puddle.setLoopSound(true);
+            puddle.setLifetime(ACID_SPLASH_LIFETIME);
+            puddle.setTickDamage(ACID_SPLASH_DAMAGE);
+            server.addFreshEntity(puddle);
+
+            server.sendParticles(ParticlesRegistry.ACID_SPLASH.get(),
+                    hit.x, groundY + 0.05, hit.z, 0, 1.0, 0.0, 0.0, 1.0);
+        }
+
+        @SubscribeEvent
+        public static void onWolfEggBaby(PlayerInteractEvent.EntityInteract event) {
+            if (!(event.getTarget() instanceof WildWolfEntity adult)) return;
+
+            ItemStack stack = event.getItemStack();
+            EntityType<? extends BabyWildWolfEntity> babyType;
+            if (adult instanceof HyenaEntity) {
+                if (!stack.is(ItemsRegistry.HYENA_SPAWN_EGG.get())) return;
+                babyType = EntityRegistry.BABY_HYENA.get();
+            } else {
+                if (!stack.is(ItemsRegistry.WILD_WOLF_SPAWN_EGG.get())) return;
+                babyType = EntityRegistry.BABY_WILD_WOLF.get();
+            }
+
+            if (event.getLevel() instanceof ServerLevel serverLevel) {
+                BabyWildWolfEntity baby = babyType.create(serverLevel);
+                if (baby != null) {
+                    baby.moveTo(adult.getX(), adult.getY(), adult.getZ(), adult.getYRot(), 0f);
+                    baby.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(baby.blockPosition()),
+                            MobSpawnType.SPAWN_EGG, null, null);
+                    baby.setVariant(adult.getVariant());
+                    baby.setParent(adult);
+                    serverLevel.addFreshEntity(baby);
+                    if (!event.getEntity().getAbilities().instabuild) stack.shrink(1);
+                }
+            }
+
+            event.getEntity().swing(event.getHand());
+            event.setCanceled(true);
+            event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
+        }
+
         @SubscribeEvent
         public static void onScorpionEggBaby(PlayerInteractEvent.EntityInteract event) {
             if (!(event.getTarget() instanceof ScorpionEntity scorpion)) return;
@@ -213,7 +401,8 @@ public class CommonSetup {
 
         @SubscribeEvent
         public static void onFrozenEffectAdded(MobEffectEvent.Added event) {
-            if (!(event.getEffectInstance().getEffect() instanceof FrozenEffect)) return;
+            MobEffectInstance instance = event.getEffectInstance();
+            if (instance == null || !(instance.getEffect() instanceof FrozenEffect)) return;
             LivingEntity entity = event.getEntity();
             if (entity.level().isClientSide()) return;
 

@@ -43,6 +43,10 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SKELETON_HORSE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.ZOMBIE_HORSE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.WILD_WOLF_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.HYENA_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.CARNIVOROUS_PLANT_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.FIRE_SKULL_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.ACID_SKULL_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.DART_GOBLIN_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.IMP_SPAWN_EGG.get());
@@ -63,6 +67,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.FIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.HELLFIRE_PITCHFORK.get());
                         entries.accept(ItemsRegistry.BLACK_HORN.get());
+                        entries.accept(ItemsRegistry.CARNIVOROUS_PLANT_SPROUT.get());
                         entries.accept(ItemsRegistry.STURDY_SADDLE.get());
                         entries.accept(ItemsRegistry.HORSE_BLANKET.get());
                         entries.accept(ItemsRegistry.SCORPION_STING.get());

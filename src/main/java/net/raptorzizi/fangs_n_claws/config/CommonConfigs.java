@@ -36,6 +36,10 @@ public class CommonConfigs {
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_NETHER_SCORPION;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HORSE_BAT;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_WILD_WOLF;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_HYENA;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_CARNIVOROUS_PLANT;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_FIRE_SKULL;
+    public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_ACID_SKULL;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_NIGHTMARE_HORSE;
     public static final ForgeConfigSpec.BooleanValue ALLOW_SPAWN_MIMIC;
 
@@ -155,6 +159,26 @@ public class CommonConfigs {
                 .comment("Allow Wild Wolves to spawn naturally")
                 .translation("fangs_n_claws.configuration.spawn_toggles.wild_wolf")
                 .define("allow_wild_wolf", true);
+
+        ALLOW_SPAWN_HYENA = BUILDER
+                .comment("Allow Hyenas to spawn naturally (desert, savanna, badlands)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.hyena")
+                .define("allow_hyena", true);
+
+        ALLOW_SPAWN_CARNIVOROUS_PLANT = BUILDER
+                .comment("Allow Carnivorous Plants to spawn naturally (jungle)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.carnivorous_plant")
+                .define("allow_carnivorous_plant", true);
+
+        ALLOW_SPAWN_FIRE_SKULL = BUILDER
+                .comment("Allow Fire Skulls to spawn naturally (above lava, overworld and nether)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.fire_skull")
+                .define("allow_fire_skull", true);
+
+        ALLOW_SPAWN_ACID_SKULL = BUILDER
+                .comment("Allow Acid Skulls to spawn naturally (swamps)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.acid_skull")
+                .define("allow_acid_skull", true);
 
         ALLOW_SPAWN_NIGHTMARE_HORSE = BUILDER
                 .comment("Allow Nightmare Horses to spawn naturally (Nether)")

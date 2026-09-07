@@ -40,4 +40,9 @@ public class FrostScorpionEntity extends ScorpionEntity {
     public EyeStyle eyeStyle() {
         return EyeStyle.NONE;
     }
+
+    @Override
+    protected EntityType<? extends net.minecraft.world.entity.Mob> jockeyType() {
+        return EntityType.STRAY;
+    }
 }

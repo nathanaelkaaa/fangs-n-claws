@@ -40,6 +40,13 @@ import net.raptorzizi.fangs_n_claws.entity.silver_skeleton.SilverSkeletonEntity;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantSproutEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.BabyHyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
@@ -249,6 +256,56 @@ public class EntityRegistry {
                     .sized(0.78F, 1.105F)
                     .clientTrackingRange(10)
                     .build("wild_wolf"));
+
+    public static final RegistryObject<EntityType<HyenaEntity>> HYENA =
+            ENTITIES.register("hyena", () -> EntityType.Builder
+                    .<HyenaEntity>of((type, level) -> new HyenaEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.78F, 1.105F)
+                    .clientTrackingRange(10)
+                    .build("hyena"));
+
+    public static final RegistryObject<EntityType<BabyWildWolfEntity>> BABY_WILD_WOLF =
+            ENTITIES.register("baby_wild_wolf", () -> EntityType.Builder
+                    .<BabyWildWolfEntity>of((type, level) -> new BabyWildWolfEntity(type, level), MobCategory.CREATURE)
+                    .sized(0.5F, 0.7F)
+                    .clientTrackingRange(10)
+                    .build("baby_wild_wolf"));
+
+    public static final RegistryObject<EntityType<BabyHyenaEntity>> BABY_HYENA =
+            ENTITIES.register("baby_hyena", () -> EntityType.Builder
+                    .<BabyHyenaEntity>of((type, level) -> new BabyHyenaEntity(type, level), MobCategory.CREATURE)
+                    .sized(0.5F, 0.7F)
+                    .clientTrackingRange(10)
+                    .build("baby_hyena"));
+
+    public static final RegistryObject<EntityType<CarnivorousPlantEntity>> CARNIVOROUS_PLANT =
+            ENTITIES.register("carnivorous_plant", () -> EntityType.Builder
+                    .<CarnivorousPlantEntity>of((type, level) -> new CarnivorousPlantEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.9F, 1.6F)
+                    .clientTrackingRange(8)
+                    .build("carnivorous_plant"));
+
+    public static final RegistryObject<EntityType<CarnivorousPlantSproutEntity>> CARNIVOROUS_PLANT_SPROUT =
+            ENTITIES.register("carnivorous_plant_sprout", () -> EntityType.Builder
+                    .<CarnivorousPlantSproutEntity>of((type, level) -> new CarnivorousPlantSproutEntity(type, level), MobCategory.MISC)
+                    .sized(0.8F, 0.4F)
+                    .clientTrackingRange(8)
+                    .build("carnivorous_plant_sprout"));
+
+    public static final RegistryObject<EntityType<FireSkullEntity>> FIRE_SKULL =
+            ENTITIES.register("fire_skull", () -> EntityType.Builder
+                    .<FireSkullEntity>of((type, level) -> new FireSkullEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F)
+                    .fireImmune()
+                    .clientTrackingRange(8)
+                    .build("fire_skull"));
+
+    public static final RegistryObject<EntityType<AcidSkullEntity>> ACID_SKULL =
+            ENTITIES.register("acid_skull", () -> EntityType.Builder
+                    .<AcidSkullEntity>of((type, level) -> new AcidSkullEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.6F, 0.6F)
+                    .clientTrackingRange(8)
+                    .build("acid_skull"));
 
     public static final RegistryObject<EntityType<NightmareHorseEntity>> NIGHTMARE_HORSE =
             ENTITIES.register("nightmare_horse", () -> EntityType.Builder

@@ -67,6 +67,18 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_WILD_WOLF =
             GameRules.register("allowSpawnWildWolf",        GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_HYENA =
+            GameRules.register("allowSpawnHyena",           GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_CARNIVOROUS_PLANT =
+            GameRules.register("allowSpawnCarnivorousPlant", GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_FIRE_SKULL =
+            GameRules.register("allowSpawnFireSkull",       GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_ACID_SKULL =
+            GameRules.register("allowSpawnAcidSkull",       GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_MIMIC =
             GameRules.register("allowSpawnMimic",           GameRules.Category.MOBS, GameRules.BooleanValue.create(true));
 

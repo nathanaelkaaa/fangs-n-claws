@@ -87,6 +87,32 @@ public abstract class HorseMob extends AbstractHorse implements GeoEntity, Enemy
         super(type, level);
     }
 
+    // Hauteur d'assise UNIFORME quel que soit le passager (joueur, skeleton, wither skeleton...) :
+    // la vanilla ajoute passenger.getMyRidingOffset() (variable selon l'entite) -> hauteurs
+    // incoherentes. On place tout le monde a mountY + RIDER_Y_OFFSET, et on reproduit le decalage
+    // vanilla vers le haut+arriere pendant le cabrage/saut (standAnim). Un seul reglage a ajuster.
+    private static final double RIDER_Y_OFFSET = 0.6;
+
+    @Override
+    protected void positionRider(Entity passenger, Entity.MoveFunction callback) {
+        if (!this.hasPassenger(passenger)) return;
+        double baseY = this.getY() + RIDER_Y_OFFSET;
+        float stand = this.getStandAnim(1.0F);
+        if (stand > 0.0F) {
+            // Cabrage (charge du saut) : on decale le cavalier vers le haut et l'arriere, comme la vanilla.
+            float sin  = net.minecraft.util.Mth.sin(this.yBodyRot * net.minecraft.util.Mth.DEG_TO_RAD);
+            float cos  = net.minecraft.util.Mth.cos(this.yBodyRot * net.minecraft.util.Mth.DEG_TO_RAD);
+            float back = 0.7F * stand;
+            float up   = 0.15F * stand;
+            callback.accept(passenger, this.getX() + back * sin, baseY + up, this.getZ() - back * cos);
+        } else {
+            callback.accept(passenger, this.getX(), baseY, this.getZ());
+        }
+        if (passenger instanceof LivingEntity living) {
+            living.yBodyRot = this.yBodyRot;
+        }
+    }
+
     // Sync data
 
     @Override

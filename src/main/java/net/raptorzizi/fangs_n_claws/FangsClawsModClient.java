@@ -54,7 +54,7 @@ public class FangsClawsModClient {
 
     @SubscribeEvent
     static void registerOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("nightmare_stamina", new NightmareStaminaLayer());
+        event.registerBelow(VanillaGuiOverlay.JUMP_BAR.id(), "nightmare_stamina", new NightmareStaminaLayer());
     }
 
     static void onRenderGui(RenderGuiOverlayEvent.Pre event) {

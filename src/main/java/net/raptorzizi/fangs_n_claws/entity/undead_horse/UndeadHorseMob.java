@@ -79,7 +79,7 @@ public abstract class UndeadHorseMob extends HorseMob {
     public void registerControllers(AnimatableManager.ControllerRegistrar registrar) {
         this.addAttackController(registrar);
 
-        registrar.add(new AnimationController<>(this, "movement", 5, state -> {
+        registrar.add(new AnimationController<>(this, "movement", 10, state -> {
             if (this.isEating()) return state.setAndContinue(EATING_GRASS_ANIM);
             if (this.isJumping()) return state.setAndContinue(REAR_ANIM);
 

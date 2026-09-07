@@ -10,6 +10,8 @@ public class NightmareStaminaLayer implements IGuiOverlay {
     private static final int BAR_WIDTH  = 182;
     private static final int BAR_HEIGHT = 3;
 
+    private static final int Y_ABOVE_JUMP_BAR = 34;
+
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Minecraft mc = Minecraft.getInstance();
@@ -18,7 +20,7 @@ public class NightmareStaminaLayer implements IGuiOverlay {
 
         float stamina = horse.getStamina();
         int x = (screenWidth - BAR_WIDTH) / 2;
-        int y = screenHeight - 31 + BAR_HEIGHT;
+        int y = screenHeight - Y_ABOVE_JUMP_BAR;
 
         guiGraphics.fill(x - 1, y - 1, x + BAR_WIDTH + 1, y + BAR_HEIGHT + 1, 0xFF000000);
         guiGraphics.fill(x, y, x + BAR_WIDTH, y + BAR_HEIGHT, 0xFF40200C);

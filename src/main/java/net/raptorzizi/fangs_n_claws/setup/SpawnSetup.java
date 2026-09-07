@@ -141,6 +141,30 @@ public class SpawnSetup {
                 SpawnUtils::checkWildWolfSpawnRules,
                 SpawnPlacementRegisterEvent.Operation.REPLACE);
 
+        event.register(EntityRegistry.HYENA.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkWildWolfSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.FIRE_SKULL.get(),
+                SpawnPlacements.Type.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkFireSkullSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.ACID_SKULL.get(),
+                SpawnPlacements.Type.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkAcidSkullSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
+        event.register(EntityRegistry.CARNIVOROUS_PLANT.get(),
+                SpawnPlacements.Type.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SpawnUtils::checkCarnivorousPlantSpawnRules,
+                SpawnPlacementRegisterEvent.Operation.REPLACE);
+
         event.register(EntityRegistry.NIGHTMARE_HORSE.get(),
                 SpawnPlacements.Type.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,

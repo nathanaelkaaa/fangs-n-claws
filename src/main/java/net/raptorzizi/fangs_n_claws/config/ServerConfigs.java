@@ -30,6 +30,11 @@ public class ServerConfigs {
     public static final ForgeConfigSpec.IntValue NETHER_SCORPION_WEIGHT;
     public static final ForgeConfigSpec.IntValue HORSE_BAT_WEIGHT;
     public static final ForgeConfigSpec.IntValue WILD_WOLF_WEIGHT;
+    public static final ForgeConfigSpec.IntValue HYENA_WEIGHT;
+    public static final ForgeConfigSpec.IntValue CARNIVOROUS_PLANT_WEIGHT;
+    public static final ForgeConfigSpec.IntValue FIRE_SKULL_WEIGHT;
+    public static final ForgeConfigSpec.IntValue FIRE_SKULL_NETHER_WEIGHT;
+    public static final ForgeConfigSpec.IntValue ACID_SKULL_WEIGHT;
     public static final ForgeConfigSpec.IntValue NIGHTMARE_HORSE_WEIGHT;
     public static final ForgeConfigSpec.IntValue SKELETON_HORSE_WEIGHT;
     public static final ForgeConfigSpec.IntValue ZOMBIE_HORSE_WEIGHT;
@@ -108,6 +113,21 @@ public class ServerConfigs {
         WILD_WOLF_WEIGHT         = BUILDER.comment("Wild Wolf (overworld) — default: 8 (vanilla wolf weight)")
                                         .translation("fangs_n_claws.configuration.spawn_weights.wild_wolf")
                                         .defineInRange("wild_wolf",          8, 0, 500);
+        HYENA_WEIGHT             = BUILDER.comment("Hyena (desert, savanna, badlands, surface only) — default: 20")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.hyena")
+                                        .defineInRange("hyena",             20, 0, 500);
+        CARNIVOROUS_PLANT_WEIGHT = BUILDER.comment("Carnivorous Plant (jungle) — default: 20")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.carnivorous_plant")
+                                        .defineInRange("carnivorous_plant", 20, 0, 500);
+        FIRE_SKULL_WEIGHT        = BUILDER.comment("Fire Skull (overworld, above lava) — default: 12")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.fire_skull")
+                                        .defineInRange("fire_skull",        12, 0, 500);
+        FIRE_SKULL_NETHER_WEIGHT = BUILDER.comment("Fire Skull (nether, above lava) — default: 4, lower on purpose since lava is everywhere there")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.fire_skull_nether")
+                                        .defineInRange("fire_skull_nether",  4, 0, 500);
+        ACID_SKULL_WEIGHT        = BUILDER.comment("Acid Skull (swamps) — default: 15")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.acid_skull")
+                                        .defineInRange("acid_skull",        15, 0, 500);
         NIGHTMARE_HORSE_WEIGHT   = BUILDER.comment("Nightmare Horse (Nether) — default: 8")
                                         .translation("fangs_n_claws.configuration.spawn_weights.nightmare_horse")
                                         .defineInRange("nightmare_horse",    8, 0, 500);

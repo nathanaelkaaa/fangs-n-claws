@@ -75,6 +75,11 @@ import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
+import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.BabyScorpionEntity;
@@ -97,13 +102,16 @@ import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.PotionsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
+import net.minecraft.world.entity.animal.IronGolem;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 @Mod(FangsClawsMod.MOD_ID)
 public class FangsClawsMod {
     public static final String MOD_ID = "fangs_n_claws";
     public static final Logger LOGGER = LogUtils.getLogger();
+    private static final float PUP_SPAWN_CHANCE = 0.10F;
 
     public FangsClawsMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -404,6 +412,12 @@ public class FangsClawsMod {
                 && FurArmorItem.hasFurHelmet(player)) {
             event.setCanceled(true);
         }
+        if (event.getEntity() instanceof IronGolem && isTamedScorpion(event.getNewTarget())) {
+            event.setCanceled(true);
+        }
+        if (isTamedScorpion(event.getEntity()) && event.getNewTarget() instanceof IronGolem) {
+            event.setCanceled(true);
+        }
         if (event.getNewTarget() != null
                 && event.getEntity() instanceof PathfinderMob mob
                 && mob.hasEffect(MobEffectsRegistry.VENOM.get())) {
@@ -449,6 +463,10 @@ public class FangsClawsMod {
         else if (entity instanceof ScorpionEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_SCORPION))       cancel = true;
         else if (entity instanceof NightmareHorseEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_NIGHTMARE_HORSE)) cancel = true;
         else if (entity instanceof HorseBatEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HORSE_BAT))      cancel = true;
+        else if (entity instanceof CarnivorousPlantEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_CARNIVOROUS_PLANT)) cancel = true;
+        else if (entity instanceof FireSkullEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_FIRE_SKULL))    cancel = true;
+        else if (entity instanceof AcidSkullEntity && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_ACID_SKULL))    cancel = true;
+        else if (entity instanceof HyenaEntity     && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_HYENA))         cancel = true;
         else if (entity instanceof WildWolfEntity  && !rules.getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF))      cancel = true;
         else if (entity instanceof SkeletonHorseMob && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_SKELETON_HORSE)) cancel = true;
         else if (entity instanceof ZombieHorseMob   && !rules.getBoolean(GameRuleRegistry.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE))   cancel = true;
@@ -496,6 +514,18 @@ public class FangsClawsMod {
             }
         }
 
+        if (entity instanceof WildWolfEntity wolf && !event.isSpawnCancelled()
+                && serverLevel.random.nextFloat() < PUP_SPAWN_CHANCE) {
+            BabyWildWolfEntity pup = wolf.babyType().create(serverLevel);
+            if (pup != null) {
+                pup.moveTo(wolf.getX(), wolf.getY(), wolf.getZ(), wolf.getYRot(), 0f);
+                pup.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pup.blockPosition()),
+                        MobSpawnType.NATURAL, null, null);
+                serverLevel.addFreshEntity(pup);
+                event.setSpawnCancelled(true);
+            }
+        }
+
         if (entity instanceof ScorpionEntity scorpionParent && !event.isSpawnCancelled()) {
             float roll = serverLevel.random.nextFloat();
             int babies = roll < 0.05f ? 2 : (roll < 0.35f ? 1 : 0);
@@ -512,7 +542,6 @@ public class FangsClawsMod {
                             MobSpawnType.MOB_SUMMONED, null, null);
                     baby.setParent(scorpionParent);
                     baby.setRideYaw(serverLevel.random.nextFloat() * 360f);
-                    serverLevel.addFreshEntity(baby);
                     baby.startRiding(scorpionParent, false);
                 }
             }
@@ -534,6 +563,12 @@ public class FangsClawsMod {
                 goblin.startRiding(wolf, true);
             }
         }
+    }
+
+    private static boolean isTamedScorpion(@Nullable Entity entity) {
+        if (entity instanceof ScorpionEntity scorpion)  return scorpion.isTamed();
+        if (entity instanceof BabyScorpionEntity baby)  return baby.isTamed();
+        return false;
     }
 
     public static ResourceLocation id(@NotNull String path) {

@@ -22,6 +22,7 @@ public class WildWolfPackFollowGoal extends Goal {
 
     @Override
     public boolean canUse() {
+        if (wolf.isTamed()) return false;
         if (wolf.getTarget() != null) return false;
         WildWolfEntity l = wolf.getPackLeader();
         if (!isValidLeader(l)) return false;
@@ -31,6 +32,7 @@ public class WildWolfPackFollowGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
+        if (wolf.isTamed()) return false;
         if (wolf.getTarget() != null) return false;
         if (!isValidLeader(leader)) return false;
         if (wolf.getPackLeader() != leader) return false;

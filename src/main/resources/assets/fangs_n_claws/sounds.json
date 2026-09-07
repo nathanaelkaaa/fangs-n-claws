@@ -68,6 +68,36 @@
       { "name": "fangs_n_claws:golem/golem_death"}
     ]
   },
+  "scorpion.hurt": {
+    "subtitle": "subtitles.entity.scorpion.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_hurt" }
+    ]
+  },
+  "scorpion.death": {
+    "subtitle": "subtitles.entity.scorpion.death",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_death" }
+    ]
+  },
+  "scorpion.stinger": {
+    "subtitle": "subtitles.entity.scorpion.stinger",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_stinger" }
+    ]
+  },
+  "scorpion.claw1": {
+    "subtitle": "subtitles.entity.scorpion.attack",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_claw1" }
+    ]
+  },
+  "scorpion.claw2": {
+    "subtitle": "subtitles.entity.scorpion.attack",
+    "sounds": [
+      { "name": "fangs_n_claws:scorpion/scorpion_claw2" }
+    ]
+  },
   "goblin.ambient": {
     "subtitle": "subtitles.entity.goblin.ambient",
     "sounds": [
@@ -126,6 +156,24 @@
       { "name": "fangs_n_claws:owlbear/owlbear_flap_3", "weight": 1 }
     ]
   },
+  "owlbear.hurt": {
+    "subtitle": "subtitles.entity.owlbear.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/owlbear_hurt" }
+    ]
+  },
+  "baby.owlbear.death": {
+    "subtitle": "subtitles.entity.baby.owlbear.death",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/baby_owlbear_death" }
+    ]
+  },
+  "baby.owlbear.hurt": {
+    "subtitle": "subtitles.entity.baby.owlbear.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:owlbear/baby_owlbear_hurt" }
+    ]
+  },
   "generic.heavy_impact": {
     "subtitle": "subtitles.entity.generic.heavy_impact",
     "sounds": [
@@ -142,12 +190,6 @@
     "subtitle": "subtitles.entity.generic.rock_impact",
     "sounds": [
       { "name": "fangs_n_claws:rock_impact" }
-    ]
-  },
-  "owlbear.hurt": {
-    "subtitle": "subtitles.entity.owlbear.hurt",
-    "sounds": [
-      { "name": "fangs_n_claws:owlbear/owlbear_hurt" }
     ]
   },
   "werewolf.ambient": {
@@ -187,58 +229,82 @@
       { "name": "fangs_n_claws:werewolf/werewolf_death2", "weight": 1 }
     ]
   },
-  "scorpion.hurt": {
-    "subtitle": "subtitles.entity.scorpion.hurt",
-    "sounds": [
-      { "name": "fangs_n_claws:scorpion/scorpion_hurt" }
-    ]
-  },
-  "scorpion.death": {
-    "subtitle": "subtitles.entity.scorpion.death",
-    "sounds": [
-      { "name": "fangs_n_claws:scorpion/scorpion_death" }
-    ]
-  },
-  "scorpion.stinger": {
-    "subtitle": "subtitles.entity.scorpion.stinger",
-    "sounds": [
-      { "name": "fangs_n_claws:scorpion/scorpion_stinger" }
-    ]
-  },
-  "scorpion.claw1": {
-    "subtitle": "subtitles.entity.scorpion.attack",
-    "sounds": [
-      { "name": "fangs_n_claws:scorpion/scorpion_claw1" }
-    ]
-  },
-  "scorpion.claw2": {
-    "subtitle": "subtitles.entity.scorpion.attack",
-    "sounds": [
-      { "name": "fangs_n_claws:scorpion/scorpion_claw2" }
-    ]
-  },
-  "baby.owlbear.death": {
-    "subtitle": "subtitles.entity.baby.owlbear.death",
-    "sounds": [
-      { "name": "fangs_n_claws:owlbear/baby_owlbear_death" }
-    ]
-  },
-  "baby.owlbear.hurt": {
-    "subtitle": "subtitles.entity.baby.owlbear.hurt",
-    "sounds": [
-      { "name": "fangs_n_claws:owlbear/baby_owlbear_hurt" }
-    ]
-  },
   "mimic.death": {
     "subtitle": "subtitles.entity.mimic.death",
     "sounds": [
-      { "name": "fangs_n_claws:mimic/mimic_death" }
+      { "name": "fangs_n_claws:mimic/mimic_death"}
     ]
   },
   "mimic.open": {
     "subtitle": "subtitles.entity.mimic.open",
     "sounds": [
-      { "name": "fangs_n_claws:mimic/mimic_open" }
+      { "name": "fangs_n_claws:mimic/mimic_open"}
+    ]
+  },
+  "carnivorous_plant.open": {
+    "subtitle": "subtitles.entity.carnivorous_plant.open",
+    "sounds": [
+      { "name": "fangs_n_claws:carnivorous_plant/carnivorous_plant_open" }
+    ]
+  },
+  "carnivorous_plant.close": {
+    "subtitle": "subtitles.entity.carnivorous_plant.close",
+    "sounds": [
+      { "name": "fangs_n_claws:carnivorous_plant/carnivorous_plant_close" }
+    ]
+  },
+  "carnivorous_plant.bite": {
+    "subtitle": "subtitles.entity.carnivorous_plant.bite",
+    "sounds": [
+      { "name": "fangs_n_claws:carnivorous_plant/carnivorous_plant_bite" }
+    ]
+  },
+  "hyena.ambient": {
+    "subtitle": "subtitles.entity.hyena.ambient",
+    "sounds": [
+      { "name": "fangs_n_claws:hyena/hyena_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:hyena/hyena_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:hyena/hyena_idle3", "weight": 1 }
+    ]
+  },
+  "hyena.hurt": {
+    "subtitle": "subtitles.entity.hyena.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:hyena/hyena_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:hyena/hyena_hurt2", "weight": 1 }
+    ]
+  },
+  "hyena.death": {
+    "subtitle": "subtitles.entity.hyena.death",
+    "sounds": [
+      { "name": "fangs_n_claws:hyena/hyena_death" }
+    ]
+  },
+  "wild_wolf.growl": {
+    "subtitle": "subtitles.entity.wild_wolf.growl",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle1", "weight": 1 },
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle2", "weight": 1 },
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle3", "weight": 1 }
+    ]
+  },
+  "wild_wolf.howl": {
+    "subtitle": "subtitles.entity.wild_wolf.howl",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_idle4" }
+    ]
+  },
+  "wild_wolf.hurt": {
+    "subtitle": "subtitles.entity.wild_wolf.hurt",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_hurt1", "weight": 1 },
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_hurt2", "weight": 1 }
+    ]
+  },
+  "wild_wolf.death": {
+    "subtitle": "subtitles.entity.wild_wolf.death",
+    "sounds": [
+      { "name": "fangs_n_claws:wild_wolf/wild_wolf_death" }
     ]
   },
   "purple_worm.ambient": {

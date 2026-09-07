@@ -42,6 +42,10 @@ public class PotionsRegistry {
                     () -> new Potion("venom",
                             new MobEffectInstance(MobEffectsRegistry.VENOM.get(), 1800, 0)));
 
+    public static final RegistryObject<Potion> ACID =
+            POTIONS.register("acid",
+                    () -> new Potion(new MobEffectInstance(MobEffectsRegistry.ACID.get(), 600, 0)));
+
     public static void register(IEventBus eventBus) {
         POTIONS.register(eventBus);
     }

@@ -7,9 +7,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -25,6 +28,14 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
     private static final int   LIFETIME_TICKS    = 60;
     private static final float EFFECT_RADIUS     = 4.0f;
     private static final int   BLINDNESS_DURATION = 100;
+
+    // Volatiles tués d'un coup (phantom, evil bat, fire/acid skull...) — data-driven.
+    private static final TagKey<EntityType<?>> FLYING_PEST =
+            TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("fangs_n_claws", "flying_pest"));
+
+    private static boolean isFlyingPest(Entity e) {
+        return e.getType().is(FLYING_PEST);
+    }
 
     public EvilEyeProjectile(EntityType<? extends ThrowableItemProjectile> type, Level level) {
         super(type, level);
@@ -59,7 +70,7 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
 
         AABB proximity = this.getBoundingBox().inflate(PROXIMITY_RADIUS);
         boolean nearFlyer = !this.level().getEntitiesOfClass(LivingEntity.class, proximity,
-                e -> e != this.getOwner() && (e instanceof Phantom || e instanceof EvilBatEntity))
+                e -> e != this.getOwner() && isFlyingPest(e))
                 .isEmpty();
 
         if (nearFlyer) {
@@ -90,7 +101,7 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
         this.level().getEntitiesOfClass(LivingEntity.class, area,
                 e -> e.distanceTo(this) <= EFFECT_RADIUS && e != this.getOwner())
             .forEach(e -> {
-                if (e instanceof Phantom || e instanceof EvilBatEntity) {
+                if (isFlyingPest(e)) {
                     e.hurt(source, Float.MAX_VALUE);
                 } else {
                     e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, BLINDNESS_DURATION, 0));

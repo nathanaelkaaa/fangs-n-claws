@@ -1,0 +1,139 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 4.5,
+				"visible_bounds_offset": [0, 1.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Base",
+					"pivot": [0, 0, 0],
+					"cubes": [
+						{
+							"origin": [0, -3, -3.5],
+							"size": [9, 3, 7],
+							"pivot": [0, 0, 0],
+							"rotation": [0, 0, -25],
+							"uv": {
+								"west": {"uv": [10, 26], "uv_size": [7, 3]},
+								"up": {"uv": [0, 22], "uv_size": [9, 7]}
+							}
+						},
+						{
+							"origin": [0, -3, -3.5],
+							"size": [9, 3, 7],
+							"pivot": [0, 0, 0],
+							"rotation": [180, 0, -155],
+							"uv": {
+								"west": {"uv": [10, 26], "uv_size": [7, 3]},
+								"up": {"uv": [0, 22], "uv_size": [9, 7]}
+							}
+						},
+						{
+							"origin": [0, -3, -3.5],
+							"size": [9, 3, 7],
+							"pivot": [0, 0, 0],
+							"rotation": [-90, 65, -90],
+							"uv": {
+								"west": {"uv": [10, 26], "uv_size": [7, 3]},
+								"up": {"uv": [0, 22], "uv_size": [9, 7]}
+							}
+						},
+						{
+							"origin": [0, -3, -3.5],
+							"size": [9, 3, 7],
+							"pivot": [0, 0, 0],
+							"rotation": [90, -65, -90],
+							"uv": {
+								"west": {"uv": [10, 26], "uv_size": [7, 3]},
+								"up": {"uv": [0, 22], "uv_size": [9, 7]}
+							}
+						}
+					]
+				},
+				{
+					"name": "Body",
+					"pivot": [0, 0, -1]
+				},
+				{
+					"name": "Part1",
+					"parent": "Body",
+					"pivot": [0, 0, -1]
+				},
+				{
+					"name": "Part2",
+					"parent": "Part1",
+					"pivot": [0, 16, 0]
+				},
+				{
+					"name": "Head",
+					"parent": "Body",
+					"pivot": [-1, 0, 0],
+					"rotation": [0, 0, 90]
+				},
+				{
+					"name": "Upper Jaw",
+					"parent": "Head",
+					"pivot": [-1, 0, 0],
+					"cubes": [
+						{
+							"origin": [-8, -1, -5],
+							"size": [7, 6, 10],
+							"uv": {
+								"north": {"uv": [10, 8], "uv_size": [7, -6]},
+								"east": {"uv": [0, 8], "uv_size": [10, -6]},
+								"south": {"uv": [17, 29], "uv_size": [7, -6]},
+								"west": {"uv": [17, 8], "uv_size": [10, -6]},
+								"up": {"uv": [14, 8], "uv_size": [7, 10]},
+								"down": {"uv": [21, 18], "uv_size": [7, -10]}
+							}
+						},
+						{
+							"origin": [-8, -3, -5],
+							"size": [7, 2, 10],
+							"uv": {
+								"north": {"uv": [10, 2], "uv_size": [7, -2]},
+								"east": {"uv": [0, 2], "uv_size": [10, -2]},
+								"south": {"uv": [17, 23], "uv_size": [7, -2]}
+							}
+						}
+					]
+				},
+				{
+					"name": "Lower Jaw",
+					"parent": "Head",
+					"pivot": [-1, 0, 1],
+					"cubes": [
+						{
+							"origin": [-8.01, -3, -5.01],
+							"size": [7.02, 2, 10.02],
+							"uv": {
+								"north": {"uv": [10, 20], "uv_size": [7, 2]},
+								"east": {"uv": [0, 20], "uv_size": [10, 2]},
+								"south": {"uv": [10, 24], "uv_size": [7, 2]},
+								"west": {"uv": [17, 18], "uv_size": [10, 2]},
+								"up": {"uv": [7, 8], "uv_size": [7, 10]},
+								"down": {"uv": [0, 18], "uv_size": [7, -10]}
+							}
+						},
+						{
+							"origin": [-8.01, -1, -5.01],
+							"size": [7.02, 2, 10.02],
+							"uv": {
+								"north": {"uv": [10, 18], "uv_size": [7, 2]},
+								"east": {"uv": [0, 18], "uv_size": [10, 2]},
+								"south": {"uv": [10, 22], "uv_size": [7, 2]}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
+}

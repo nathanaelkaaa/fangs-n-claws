@@ -11,6 +11,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.level.block.state.BlockState;
+import net.raptorzizi.fangs_n_claws.entity.skull.FireSkullEntity;
+import net.raptorzizi.fangs_n_claws.entity.skull.AcidSkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
@@ -21,6 +26,7 @@ import net.raptorzizi.fangs_n_claws.entity.hell_ogre.HellOgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.horse_bat.HorseBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.nightmare_horse.NightmareHorseEntity;
+import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
@@ -213,10 +219,38 @@ public class SpawnUtils {
 
     public static boolean checkWildWolfSpawnRules(EntityType<? extends WildWolfEntity> type,
             ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL;
+    }
+
+    private static final int LAVA_SCAN_DEPTH = 5;
+
+    public static boolean checkFireSkullSpawnRules(EntityType<? extends FireSkullEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
         if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
-        if (!level.canSeeSky(pos)) return false;
-        if (level.getMaxLocalRawBrightness(pos) > 7) return false;
-        return Mob.checkMobSpawnRules(type, level, spawnType, pos, random);
+        if (level.getLevel().isDay()) return false;
+        if (!level.getBlockState(pos).isAir()) return false;
+
+        BlockPos.MutableBlockPos cursor = pos.mutable();
+        for (int i = 0; i < LAVA_SCAN_DEPTH; i++) {
+            cursor.move(Direction.DOWN);
+            BlockState state = level.getBlockState(cursor);
+            if (state.getFluidState().is(FluidTags.LAVA)) return true;
+            if (state.blocksMotion()) return false;
+        }
+        return false;
+    }
+
+    public static boolean checkAcidSkullSpawnRules(EntityType<? extends AcidSkullEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) return false;
+        if (level.getLevel().isDay()) return false;
+        if (!level.getBlockState(pos).isAir()) return false;
+        return level.getBrightness(LightLayer.BLOCK, pos) <= 7;
+    }
+
+    public static boolean checkCarnivorousPlantSpawnRules(EntityType<? extends CarnivorousPlantEntity> type,
+            ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL;
     }
 
     public static boolean checkNightmareHorseSpawnRules(EntityType<? extends NightmareHorseEntity> type,

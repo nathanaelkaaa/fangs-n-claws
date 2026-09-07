@@ -21,6 +21,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
+import java.util.List;
 import java.util.UUID;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -39,8 +40,10 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Skeleton;
+import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -107,17 +110,35 @@ public class ScorpionEntity extends Spider implements GeoEntity, net.minecraft.w
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty,
             @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag dataTag) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData, dataTag);
-        if (level instanceof ServerLevel serverLevel
-                && serverLevel.random.nextInt(100) == 0) {
-            Skeleton skeleton = EntityType.SKELETON.create(serverLevel);
-            if (skeleton != null) {
-                skeleton.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
-                skeleton.finalizeSpawn(serverLevel, difficulty, MobSpawnType.MOB_SUMMONED, null, null);
-                serverLevel.addFreshEntity(skeleton);
-                skeleton.startRiding(this);
+
+        for (Entity passenger : List.copyOf(this.getPassengers())) {
+            if (passenger instanceof AbstractSkeleton) {
+                passenger.stopRiding();
+                passenger.discard();
+            }
+        }
+
+        if (level instanceof ServerLevel serverLevel && serverLevel.random.nextInt(100) == 0) {
+            Mob jockey = this.jockeyType().create(serverLevel);
+            if (jockey != null && !(burnsInSunlight(jockey) && isSunlitHere(serverLevel))) {
+                jockey.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
+                jockey.finalizeSpawn(serverLevel, difficulty, MobSpawnType.JOCKEY, null, null);
+                jockey.startRiding(this);
             }
         }
         return data;
+    }
+
+    protected EntityType<? extends Mob> jockeyType() {
+        return EntityType.SKELETON;
+    }
+
+    private static boolean burnsInSunlight(Mob mob) {
+        return mob instanceof AbstractSkeleton && !(mob instanceof WitherSkeleton);
+    }
+
+    private boolean isSunlitHere(ServerLevel level) {
+        return level.isDay() && level.canSeeSky(this.blockPosition());
     }
 
     // Goal

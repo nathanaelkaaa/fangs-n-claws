@@ -138,6 +138,10 @@ public class FangsConfigScreen extends Screen {
                 new FangsToggleListScreen.Entry("Nether Scorpion", CommonConfigs.ALLOW_SPAWN_NETHER_SCORPION, true),
                 new FangsToggleListScreen.Entry("Horse Bat",       CommonConfigs.ALLOW_SPAWN_HORSE_BAT,       true),
                 new FangsToggleListScreen.Entry("Wild Wolf",       CommonConfigs.ALLOW_SPAWN_WILD_WOLF,       true),
+                new FangsToggleListScreen.Entry("Hyena",           CommonConfigs.ALLOW_SPAWN_HYENA,           true),
+                new FangsToggleListScreen.Entry("Carnivorous Plant", CommonConfigs.ALLOW_SPAWN_CARNIVOROUS_PLANT, true),
+                new FangsToggleListScreen.Entry("Fire Skull",      CommonConfigs.ALLOW_SPAWN_FIRE_SKULL,      true),
+                new FangsToggleListScreen.Entry("Acid Skull",      CommonConfigs.ALLOW_SPAWN_ACID_SKULL,      true),
                 new FangsToggleListScreen.Entry("Nightmare Horse", CommonConfigs.ALLOW_SPAWN_NIGHTMARE_HORSE, true),
                 new FangsToggleListScreen.Entry("Mimic",           CommonConfigs.ALLOW_SPAWN_MIMIC,           true)
         );
@@ -201,6 +205,11 @@ public class FangsConfigScreen extends Screen {
                 new FangsWeightListScreen.Entry("Nether Scorpion",    ServerConfigs.NETHER_SCORPION_WEIGHT, 15),
                 new FangsWeightListScreen.Entry("Horse Bat",          ServerConfigs.HORSE_BAT_WEIGHT,        3),
                 new FangsWeightListScreen.Entry("Wild Wolf",          ServerConfigs.WILD_WOLF_WEIGHT,        8),
+                new FangsWeightListScreen.Entry("Hyena",              ServerConfigs.HYENA_WEIGHT,           20),
+                new FangsWeightListScreen.Entry("Carnivorous Plant",  ServerConfigs.CARNIVOROUS_PLANT_WEIGHT,20),
+                new FangsWeightListScreen.Entry("Fire Skull",         ServerConfigs.FIRE_SKULL_WEIGHT,      12),
+                new FangsWeightListScreen.Entry("Fire Skull (Nether)",ServerConfigs.FIRE_SKULL_NETHER_WEIGHT, 4),
+                new FangsWeightListScreen.Entry("Acid Skull",         ServerConfigs.ACID_SKULL_WEIGHT,      15),
                 new FangsWeightListScreen.Entry("Nightmare Horse",    ServerConfigs.NIGHTMARE_HORSE_WEIGHT,  8),
                 new FangsWeightListScreen.Entry("Skeleton Horse",     ServerConfigs.SKELETON_HORSE_WEIGHT,   3),
                 new FangsWeightListScreen.Entry("Zombie Horse",       ServerConfigs.ZOMBIE_HORSE_WEIGHT,     3)

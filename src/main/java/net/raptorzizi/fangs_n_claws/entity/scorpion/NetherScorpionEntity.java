@@ -32,4 +32,9 @@ public class NetherScorpionEntity extends ScorpionEntity {
     public EyeStyle eyeStyle() {
         return EyeStyle.EMISSIVE;
     }
+
+    @Override
+    protected EntityType<? extends net.minecraft.world.entity.Mob> jockeyType() {
+        return EntityType.WITHER_SKELETON;
+    }
 }
