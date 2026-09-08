@@ -127,6 +127,11 @@ public class CarnivorousPlantSproutEntity extends PathfinderMob implements GeoEn
     @Override public boolean isPushedByFluid()                             { return false; }
     @Override public boolean ignoreExplosion(@NotNull Explosion explosion) { return true; }
 
+    // Targeting
+
+    @Override public boolean isPickable()       { return false; }
+    @Override public boolean canBeSeenAsEnemy() { return false; }
+
     // Despawn
 
     @Override
@@ -146,6 +151,12 @@ public class CarnivorousPlantSproutEntity extends PathfinderMob implements GeoEn
             this.anchorZ = this.getZ();
         } else if (this.getX() != this.anchorX || this.getZ() != this.anchorZ) {
             this.setPos(this.anchorX, this.getY(), this.anchorZ);
+        }
+
+        if (this.getState() != STATE_CLOSED) {
+            for (LivingEntity victim : this.preyOnTop()) {
+                victim.makeStuckInBlock(Blocks.AIR.defaultBlockState(), STUCK_SPEED);
+            }
         }
 
         if (this.level().isClientSide) return;
@@ -172,10 +183,6 @@ public class CarnivorousPlantSproutEntity extends PathfinderMob implements GeoEn
         if (this.getState() != STATE_ATTACK) {
             this.setState(STATE_ATTACK);
             this.damageTimer = 0;
-        }
-
-        for (LivingEntity victim : prey) {
-            victim.makeStuckInBlock(Blocks.AIR.defaultBlockState(), STUCK_SPEED);
         }
 
         if (++this.damageTimer < DAMAGE_INTERVAL) return;

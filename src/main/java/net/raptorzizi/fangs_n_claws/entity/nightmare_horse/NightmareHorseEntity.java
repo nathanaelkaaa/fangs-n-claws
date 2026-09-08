@@ -87,7 +87,7 @@ public class NightmareHorseEntity extends HorseMob {
 
     public NightmareHorseEntity(EntityType<?> type, Level level) {
         super((EntityType<? extends AbstractHorse>) type, level);
-        if (this.charge == null) this.charge = createCharge(); // côté client, registerGoals() n'a pas tourné
+        if (this.charge == null) this.charge = createCharge();
         this.moveControl = new HorseChargeMoveControl(this, this.charge);
     }
 
@@ -237,12 +237,8 @@ public class NightmareHorseEntity extends HorseMob {
                 this.spawnLegFire();
                 this.applyBoostHits();
             } else if (this.staminaRegenDelay > 0) {
-                // Delai avant que la recharge ne s'amorce : s'arreter une demi-seconde ne
-                // suffit plus a recuperer.
                 this.staminaRegenDelay--;
             } else {
-                // La recharge n'est plus conditionnee au fait que le joueur bouge ou non :
-                // une fois le delai ecoule elle tourne en continu, sprint mis a part.
                 this.setStamina(this.getStamina() + STAMINA_RECHARGE);
             }
         }

@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -26,7 +27,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import java.util.function.Predicate;
+import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.GameRuleRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,12 +62,16 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
     private static final double LOOK_RANGE = 8.0;
     private static final float  BODY_EASE  = 0.2f;
 
+    private static final float SPROUT_SPAWN_CHANCE = 0.20f;
+
     private static final EntityDataAccessor<Integer> STATE =
             SynchedEntityData.defineId(CarnivorousPlantEntity.class, EntityDataSerializers.INT);
 
     private int animTimer   = 0;
     private int awayTimer   = 0;
     private int attackTimer = 0;
+
+    private boolean pendingSprout = false;
 
     private float lockedYaw = 0.0f;
     private Double anchorX = null, anchorZ = null;
@@ -100,11 +106,6 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
                 .add(Attributes.KNOCKBACK_RESISTANCE,  1.0);
     }
 
-    private static final Predicate<LivingEntity> PREY = entity ->
-            !(entity instanceof CarnivorousPlantEntity)
-                    && !(entity instanceof CarnivorousPlantSproutEntity)
-                    && !(entity instanceof ArmorStand);
-
     @Override
     protected void registerGoals() {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -112,7 +113,7 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
             @Override
             protected double getFollowDistance() { return LOOK_RANGE; }
         });
-        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, PREY) {
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, this::isPrey) {
             @Override
             protected double getFollowDistance() { return LOOK_RANGE; }
         });
@@ -136,7 +137,35 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
             @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData) {
         this.lockedYaw = Math.round(this.getYRot() / 90.0f) * 90.0f;
         this.applyLockedYaw();
+        if (isNaturalSpawn(spawnType) && this.random.nextFloat() < SPROUT_SPAWN_CHANCE) {
+            this.pendingSprout = true;
+        }
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+    }
+
+    private static boolean isNaturalSpawn(MobSpawnType type) {
+        return type == MobSpawnType.NATURAL
+                || type == MobSpawnType.CHUNK_GENERATION
+                || type == MobSpawnType.SPAWNER;
+    }
+
+    private void spawnAsSprout() {
+        if (!(this.level() instanceof ServerLevel server)) return;
+        if (!server.getGameRules().getBoolean(GameRuleRegistry.ALLOW_SPAWN_CARNIVOROUS_PLANT)) return;
+
+        CarnivorousPlantSproutEntity sprout = EntityRegistry.CARNIVOROUS_PLANT_SPROUT.get().create(server);
+        if (sprout == null) return;
+
+        sprout.moveTo(this.getX(), this.getY(), this.getZ(), this.lockedYaw, 0.0F);
+        sprout.lockYaw(this.lockedYaw);
+        sprout.finalizeSpawn(server, server.getCurrentDifficultyAt(sprout.blockPosition()),
+                MobSpawnType.CONVERSION, null);
+        if (this.hasCustomName()) {
+            sprout.setCustomName(this.getCustomName());
+            sprout.setCustomNameVisible(this.isCustomNameVisible());
+        }
+        server.addFreshEntity(sprout);
+        this.discard();
     }
 
     private void applyLockedYaw() {
@@ -160,6 +189,12 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
 
     @Override
     public void tick() {
+        if (!this.level().isClientSide && this.pendingSprout) {
+            this.pendingSprout = false;
+            this.spawnAsSprout();
+            return;
+        }
+
         super.tick();
         this.applyLockedYaw();
 
@@ -187,16 +222,33 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
 
     // Hide / reveal
 
+    private boolean isPrey(LivingEntity e) {
+        if (e == this || !e.isAlive()) return false;
+        if (e instanceof CarnivorousPlantEntity || e instanceof CarnivorousPlantSproutEntity
+                || e instanceof ArmorStand) return false;
+        if (e instanceof Player p && (p.isCreative() || p.isSpectator())) return false;
+        return true;
+    }
+
+    @Nullable
+    private LivingEntity nearestPrey(double range) {
+        LivingEntity best = null;
+        double bestSq = range * range;
+        for (LivingEntity e : this.level().getEntitiesOfClass(LivingEntity.class,
+                this.getBoundingBox().inflate(range), this::isPrey)) {
+            double d = this.distanceToSqr(e);
+            if (d < bestSq) { bestSq = d; best = e; }
+        }
+        return best;
+    }
+
     @Nullable
     private LivingEntity getLookTarget() {
-        LivingEntity t = this.getTarget();
-        if (t != null && t.isAlive()) return t;
-        return this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), LOOK_RANGE, false);
+        return nearestPrey(LOOK_RANGE);
     }
 
     private boolean preyWithin(double range) {
-        LivingEntity t = this.getLookTarget();
-        return t != null && t.isAlive() && this.distanceTo(t) <= range;
+        return nearestPrey(range) != null;
     }
 
     private void tickStateMachine() {
@@ -244,27 +296,29 @@ public class CarnivorousPlantEntity extends Monster implements GeoEntity {
         if (attackTimer > 0) {
             attackTimer++;
             if (attackTimer == ATTACK_HIT_TICK) {
-                this.playSound(SoundsRegistry.CARNIVOROUS_PLANT_BITE.get(), 1.0F, randomPitch());
-                LivingEntity target = this.getTarget();
-                if (target != null && target.isAlive() && this.distanceTo(target) <= HIT_RANGE) {
-                    super.doHurtTarget(target);
-                }
+                LivingEntity target = nearestPrey(HIT_RANGE);
+                if (target != null) super.doHurtTarget(target);
             }
             if (attackTimer > ATTACK_TOTAL_TICKS) attackTimer = 0;
             return;
         }
 
         if (getState() != STATE_ACTIVE) return;
-        LivingEntity target = this.getTarget();
-        if (target == null || !target.isAlive() || this.distanceTo(target) > ATTACK_RANGE) return;
+        if (nearestPrey(ATTACK_RANGE) == null) return;
 
         this.triggerAnim("attack_controller", "attack");
+        this.playSound(SoundsRegistry.CARNIVOROUS_PLANT_BITE.get(), 1.0F, randomPitch());
         attackTimer = 1;
     }
 
     @Override
     public boolean doHurtTarget(@NotNull Entity target) {
         return false;
+    }
+
+    @Override
+    public boolean canBeSeenAsEnemy() {
+        return getState() != STATE_HIDDEN && super.canBeSeenAsEnemy();
     }
 
     // Body Tracking

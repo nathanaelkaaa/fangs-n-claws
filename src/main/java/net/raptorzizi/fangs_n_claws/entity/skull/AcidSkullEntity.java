@@ -5,6 +5,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 
 public class AcidSkullEntity extends SkullEntity {
 
@@ -30,6 +32,9 @@ public class AcidSkullEntity extends SkullEntity {
     public AcidSkullEntity(EntityType<? extends Monster> type, Level level) {
         super(type, level);
     }
+
+    @Override
+    protected SoundEvent breathSound() { return SoundsRegistry.PURPLE_WORM_ACID_PUDDLE.get(); }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder) {

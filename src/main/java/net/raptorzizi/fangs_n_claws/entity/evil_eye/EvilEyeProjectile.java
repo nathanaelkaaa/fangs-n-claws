@@ -1,22 +1,24 @@
 package net.raptorzizi.fangs_n_claws.entity.evil_eye;
 
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 
@@ -59,13 +61,20 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
 
         AABB proximity = this.getBoundingBox().inflate(PROXIMITY_RADIUS);
         boolean nearFlyer = !this.level().getEntitiesOfClass(LivingEntity.class, proximity,
-                e -> e != this.getOwner() && (e instanceof Phantom || e instanceof EvilBatEntity))
+                e -> e != this.getOwner() && isFlyingPest(e))
                 .isEmpty();
 
         if (nearFlyer) {
             explode();
             this.discard();
         }
+    }
+
+    private static final TagKey<EntityType<?>> FLYING_PEST =
+            TagKey.create(Registries.ENTITY_TYPE, FangsClawsMod.id("flying_pest"));
+
+    private static boolean isFlyingPest(Entity e) {
+        return e.getType().is(FLYING_PEST);
     }
 
     // Collision
@@ -90,7 +99,7 @@ public class EvilEyeProjectile extends ThrowableItemProjectile {
         this.level().getEntitiesOfClass(LivingEntity.class, area,
                 e -> e.distanceTo(this) <= EFFECT_RADIUS && e != this.getOwner())
             .forEach(e -> {
-                if (e instanceof Phantom || e instanceof EvilBatEntity) {
+                if (isFlyingPest(e)) {
                     e.hurt(source, Float.MAX_VALUE);
                 } else {
                     e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, BLINDNESS_DURATION, 0));

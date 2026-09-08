@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "fangs_n_claws:silver_skeleton",
-    "fangs_n_claws:skeleton_horse"
+    "fangs_n_claws:skeleton_horse",
+    "fangs_n_claws:fire_skull",
+    "fangs_n_claws:acid_skull"
   ]
 }

@@ -44,6 +44,10 @@ public abstract class SkullEntity extends Monster implements GeoEntity {
     private static final int    RUSH_MAX_TICKS      = 20;
     private static final int    ATTACK_COOLDOWN_MAX = 40;
 
+    private static final int    BREATH_INTERVAL     = 10;
+    private static final float  BREATH_VOLUME       = 0.1F;
+    private static final float  BREATH_PITCH        = 0.7F;
+
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     private Vec3 flyTarget      = null;
@@ -108,7 +112,11 @@ public abstract class SkullEntity extends Monster implements GeoEntity {
 
     // Sons
 
-    @Override protected SoundEvent getAmbientSound()              { return SoundEvents.SKELETON_AMBIENT; }
+    @Nullable
+    protected SoundEvent breathSound() { return null; }
+
+    @Nullable
+    @Override protected SoundEvent getAmbientSound()              { return null; }
     @Override protected SoundEvent getHurtSound(DamageSource src) { return SoundEvents.SKELETON_HURT; }
     @Override protected SoundEvent getDeathSound()                { return SoundEvents.SKELETON_DEATH; }
     @Override protected float getSoundVolume()                    { return 0.4F; }
@@ -165,6 +173,11 @@ public abstract class SkullEntity extends Monster implements GeoEntity {
         if (this.level().isClientSide) {
             this.spawnAmbientParticles();
             return;
+        }
+
+        SoundEvent breath = this.breathSound();
+        if (breath != null && this.tickCount % BREATH_INTERVAL == 0) {
+            this.playSound(breath, BREATH_VOLUME, BREATH_PITCH);
         }
 
         if (attackCooldown > 0) attackCooldown--;

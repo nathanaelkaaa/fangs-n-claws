@@ -160,6 +160,7 @@ public class CommonSetup {
         if (!event.getLevel().isClientSide) {
             skull.setHarvested(true);
             player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0F, 1.0F);
+            player.playSound(SoundEvents.SLIME_SQUISH, 0.8F, 1.1F);
             ItemStack filled = PotionContents.createItemStack(Items.POTION, PotionsRegistry.ACID);
             player.setItemInHand(event.getHand(), ItemUtils.createFilledResult(stack, player, filled));
         }
@@ -198,6 +199,7 @@ public class CommonSetup {
         if (!player.level().isClientSide) {
             puddles.get(0).discard();
             player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0F, 1.0F);
+            player.playSound(SoundEvents.SLIME_SQUISH, 0.8F, 1.1F);
             ItemStack filled = PotionContents.createItemStack(Items.POTION, PotionsRegistry.ACID);
             player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
         }
