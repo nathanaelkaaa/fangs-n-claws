@@ -14,7 +14,7 @@ public class OgreAttackGoal extends Goal {
     public static final double MIN_ATTACK_RANGE = 3;
     public static final double MAX_ATTACK_RANGE = 5;
     private static final double CHASE_SPEED     = 1.4;
-    private static final int    ATTACK_INTERVAL       = 35;
+    private static final int    ATTACK_INTERVAL       = 25;
     private static final double SLAM_RANGE            = 6.0;
     private static final int    STUCK_TICK_THRESHOLD  = 40;
     private static final int    SLAM_COOLDOWN         = 120;

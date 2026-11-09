@@ -84,7 +84,7 @@ public class ServerConfigs {
                                         .defineInRange("imp",             10, 0, 500);
         HELL_OGRE_WEIGHT       = BUILDER.comment("Hell Ogre (nether, all biomes) — default: 10")
                                         .translation("fangs_n_claws.configuration.spawn_weights.hell_ogre")
-                                        .defineInRange("hell_ogre",       10, 0, 500);
+                                        .defineInRange("hell_ogre",        6, 0, 500);
         SCORPION_WEIGHT        = BUILDER.comment("Scorpion (overworld, any biome) — default: 25")
                                         .translation("fangs_n_claws.configuration.spawn_weights.scorpion")
                                         .defineInRange("scorpion",        25, 0, 500);
@@ -135,7 +135,7 @@ public class ServerConfigs {
                                         .defineInRange("fire_skull_nether",  4, 0, 500);
         ACID_SKULL_WEIGHT        = BUILDER.comment("Acid Skull (swamps) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.acid_skull")
-                                        .defineInRange("acid_skull",        15, 0, 500);
+                                        .defineInRange("acid_skull",         8, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

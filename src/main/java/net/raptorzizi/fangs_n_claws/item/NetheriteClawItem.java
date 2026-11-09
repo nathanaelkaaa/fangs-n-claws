@@ -12,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -59,6 +60,9 @@ public class NetheriteClawItem extends Item {
         lines.add(Component.translatable("item.fangs_n_claws.catching_claw.tooltip1"));
     }
 
+    private static final int RETRIEVE_COST = 1;
+    private static final int HOOKED_COST   = 3;
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -74,7 +78,9 @@ public class NetheriteClawItem extends Item {
             if (existingUUID != null && level instanceof ServerLevel serverLevel) {
                 Entity entity = serverLevel.getEntity(existingUUID);
                 if (entity instanceof NetheriteClawHookEntity hook && hook.isAlive()) {
+                    int cost = hook.isHooked() ? HOOKED_COST : RETRIEVE_COST;
                     hook.retrieve(player);
+                    stack.hurtAndBreak(cost, player, LivingEntity.getSlotForHand(hand));
                 }
                 setHookUUID(stack, null);
                 return InteractionResultHolder.success(stack);

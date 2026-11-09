@@ -27,7 +27,7 @@ public class FireGhostEntity extends GhostEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,                8.0)
+                .add(Attributes.MAX_HEALTH,               18.0)
                 .add(Attributes.MOVEMENT_SPEED,             0.0)
                 .add(Attributes.ATTACK_DAMAGE,              3.0)
                 .add(Attributes.FOLLOW_RANGE,              20.0)

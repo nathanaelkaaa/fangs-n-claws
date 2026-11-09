@@ -295,7 +295,7 @@ public class OwlbearEntity extends Monster implements GeoEntity, TamableCreature
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.WARDEN_STEP, 4.0F, 1.1F + this.random.nextFloat() * 0.2F);
+        this.playSound(SoundEvents.WARDEN_STEP, 1.0F, 1.1F + this.random.nextFloat() * 0.2F);
     }
 
     // Combat
@@ -306,7 +306,7 @@ public class OwlbearEntity extends Monster implements GeoEntity, TamableCreature
     public void triggerHowl() {
         this.triggerAnim("attack_controller", "howl");
         this.howlDelayTick = 1;
-        this.playSound(SoundsRegistry.OWLBEAR_HOWL.get(), 5.0F, 0.85F + this.random.nextFloat() * 0.2F);
+        this.playSound(SoundsRegistry.OWLBEAR_HOWL.get(), 2.0F, 0.85F + this.random.nextFloat() * 0.2F);
     }
 
     protected boolean useAttack1Melee() {

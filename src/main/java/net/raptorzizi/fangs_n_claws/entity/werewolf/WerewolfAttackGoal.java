@@ -13,7 +13,7 @@ public class WerewolfAttackGoal extends Goal {
 
     public static final double MIN_ATTACK_RANGE = 2.0;
     public static final double MAX_ATTACK_RANGE = 4.0;
-    private static final double CHASE_SPEED     = 2.5;
+    private static final double CHASE_SPEED     = 2.0;
     private static final int ATTACK_INTERVAL    = 15;
 
     private static final int BITE_COMBAT_DELAY = 40;

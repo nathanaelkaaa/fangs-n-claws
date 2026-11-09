@@ -22,6 +22,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
@@ -90,6 +91,9 @@ public class WildWolfEntity extends Monster implements GeoEntity, TamableCreatur
     private static final int    PANIC_DURATION        = 80;
 
     private static final float  HEAL_AMOUNT = 10.0F;
+
+    private static final double WILD_HEALTH  = 20.0;
+    private static final double TAMED_HEALTH = 50.0;
     private static final int    LOVE_DURATION   = 600;
     private static final int    BREED_COOLDOWN  = 6000;
     private static final int    LOVE_HEART_PERIOD = 10;
@@ -137,7 +141,7 @@ public class WildWolfEntity extends Monster implements GeoEntity, TamableCreatur
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,           50.0)
+                .add(Attributes.MAX_HEALTH,           WILD_HEALTH)
                 .add(Attributes.MOVEMENT_SPEED,        0.32)
                 .add(Attributes.ATTACK_DAMAGE,         4.0)
                 .add(Attributes.FOLLOW_RANGE,         20.0)
@@ -205,6 +209,9 @@ public class WildWolfEntity extends Monster implements GeoEntity, TamableCreatur
     public void setOwnerUUID(@Nullable UUID uuid) {
         this.entityData.set(OWNER, Optional.ofNullable(uuid));
         this.entityData.set(TAMED, uuid != null);
+
+        AttributeInstance maxHealth = this.getAttribute(Attributes.MAX_HEALTH);
+        if (maxHealth != null) maxHealth.setBaseValue(uuid != null ? TAMED_HEALTH : WILD_HEALTH);
     }
 
     @Override

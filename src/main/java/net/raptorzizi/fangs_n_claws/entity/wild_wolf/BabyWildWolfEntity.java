@@ -282,7 +282,11 @@ public class BabyWildWolfEntity extends TamableAnimal implements GeoEntity, Tama
         adult.finalizeSpawn(server, server.getCurrentDifficultyAt(adult.blockPosition()),
                 MobSpawnType.CONVERSION, null);
         adult.setVariant(this.getVariant());
-        if (this.isTame()) adult.setOwnerUUID(this.getOwnerUUID());
+        if (this.isTame()) {
+            adult.setOwnerUUID(this.getOwnerUUID());
+            adult.setOrderedToSit(this.isOrderedToSit());
+            adult.setHealth(adult.getMaxHealth());
+        }
         if (this.hasCustomName()) {
             adult.setCustomName(this.getCustomName());
             adult.setCustomNameVisible(this.isCustomNameVisible());
