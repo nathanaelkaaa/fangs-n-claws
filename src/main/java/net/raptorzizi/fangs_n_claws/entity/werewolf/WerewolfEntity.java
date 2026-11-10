@@ -175,6 +175,8 @@ public class WerewolfEntity extends Monster implements GeoEntity {
 
     // Sound
 
+    private static final float NON_SILVER_DAMAGE_FACTOR = 0.5f;
+
     public static final TagKey<Item> WEREWOLF_BANE =
             TagKey.create(Registries.ITEM, new ResourceLocation(FangsClawsMod.MOD_ID, "werewolf_bane"));
 
@@ -182,12 +184,12 @@ public class WerewolfEntity extends Monster implements GeoEntity {
     public boolean hurt(DamageSource source, float amount) {
         Entity directEntity = source.getDirectEntity();
         // Weapons tagged #fangs_n_claws:werewolf_bane (silver weapons, incl. Ice&Fire /
-        // Caverns&Chasms compat) deal full damage; everything else is capped at 1.
+        // Caverns&Chasms compat) deal full damage; everything else is halved.
         boolean effectiveWeapon = directEntity instanceof LivingEntity attacker
                 && attacker.getMainHandItem().is(WEREWOLF_BANE);
 
         if (!effectiveWeapon && (directEntity != null || source.getEntity() != null)) {
-            amount = 1.0f;
+            amount *= NON_SILVER_DAMAGE_FACTOR;
         }
         return super.hurt(source, amount);
     }

@@ -85,7 +85,7 @@ public class GhostEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return PathfinderMob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,                8.0)
+                .add(Attributes.MAX_HEALTH,               16.0)
                 .add(Attributes.MOVEMENT_SPEED,             0.0)
                 .add(Attributes.ATTACK_DAMAGE,              2.0)
                 .add(Attributes.FOLLOW_RANGE,              20.0)

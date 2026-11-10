@@ -272,6 +272,10 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         return false;
     }
 
+    private static int halved(int weight) {
+        return weight <= 0 ? 0 : Math.max(1, weight / 2);
+    }
+
     private static void addTwilightForestSpawns(Holder<Biome> biome, MobSpawnSettingsBuilder spawns) {
         if (biome.is(TF_DENSE_FOREST) && CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
             add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
@@ -298,37 +302,19 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
         }
 
         if (biome.is(TF_SPOOKY_FOREST)) {
-            if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_WEIGHT.get(), 1, 2);
             if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
                 add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
-            if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
-            if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.WEREWOLF.get(), ServerConfigs.WEREWOLF_WEIGHT.get(), 1, 1);
             if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
                 add(spawns, MobCategory.MONSTER, EntityRegistry.HORSE_BAT.get(), ServerConfigs.HORSE_BAT_WEIGHT.get(), 1, 1);
             if (CommonConfigs.ALLOW_NATURAL_SPAWN_SKELETON_HORSE.get())
                 add(spawns, MobCategory.MONSTER, EntityRegistry.SKELETON_HORSE_MOB.get(), ServerConfigs.SKELETON_HORSE_WEIGHT.get(), 1, 1);
-            if (CommonConfigs.ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.ZOMBIE_HORSE_MOB.get(), ServerConfigs.ZOMBIE_HORSE_WEIGHT.get(), 1, 1);
         }
 
         if (biome.is(TF_DARK_FOREST)) {
-            if (CommonConfigs.ALLOW_SPAWN_GOBLIN.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.GOBLIN.get(), ServerConfigs.GOBLIN_WEIGHT.get(), 1, 4);
-            if (CommonConfigs.ALLOW_SPAWN_DART_GOBLIN.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.DART_GOBLIN.get(), ServerConfigs.DART_GOBLIN_WEIGHT.get(), 1, 1);
-            if (CommonConfigs.ALLOW_SPAWN_WEREWOLF.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.WEREWOLF.get(), ServerConfigs.WEREWOLF_WEIGHT.get(), 1, 1);
-            if (CommonConfigs.ALLOW_SPAWN_SILVER_SKELETON.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.SILVER_SKELETON.get(), ServerConfigs.SILVER_SKELETON_WEIGHT.get(), 1, 1);
             if (CommonConfigs.ALLOW_SPAWN_GHOST.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), ServerConfigs.GHOST_WEIGHT.get(), 1, 2);
-            if (CommonConfigs.ALLOW_SPAWN_HORSE_BAT.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.HORSE_BAT.get(), ServerConfigs.HORSE_BAT_WEIGHT.get(), 1, 1);
+                add(spawns, MobCategory.MONSTER, EntityRegistry.GHOST.get(), halved(ServerConfigs.GHOST_WEIGHT.get()), 1, 2);
             if (CommonConfigs.ALLOW_SPAWN_EVIL_BAT.get())
-                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), ServerConfigs.EVIL_BAT_WEIGHT.get(), 1, 3);
+                add(spawns, MobCategory.MONSTER, EntityRegistry.EVIL_BAT.get(), halved(ServerConfigs.EVIL_BAT_WEIGHT.get()), 1, 3);
         }
 
         if (biome.is(TF_DARK_FOREST_CENTER)) {

@@ -237,7 +237,10 @@ public class BabyOwlbearEntity extends TamableAnimal implements GeoEntity, Tamab
         adult.moveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), this.getXRot());
         adult.finalizeSpawn(server, server.getCurrentDifficultyAt(adult.blockPosition()),
                 MobSpawnType.CONVERSION, null, null);
-        if (this.isTame()) adult.setOwnerUUID(this.getOwnerUUID());
+        if (this.isTame()) {
+            adult.setOwnerUUID(this.getOwnerUUID());
+            adult.setOrderedToSit(this.isOrderedToSit());
+        }
         if (this.hasCustomName()) {
             adult.setCustomName(this.getCustomName());
             adult.setCustomNameVisible(this.isCustomNameVisible());

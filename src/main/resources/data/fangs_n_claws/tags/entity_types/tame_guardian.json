@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:iron_golem",
+    "minecraft:snow_golem",
+    {
+      "id": "twilightforest:carminite_golem",
+      "required": false
+    },
+    {
+      "id": "tombstone:grave_guardian",
+      "required": false
+    }
+  ]
+}

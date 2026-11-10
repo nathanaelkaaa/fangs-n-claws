@@ -195,7 +195,7 @@ public class FangsConfigScreen extends Screen {
                 new FangsWeightListScreen.Entry("Werewolf",           ServerConfigs.WEREWOLF_WEIGHT,        25),
                 new FangsWeightListScreen.Entry("Dart Goblin",        ServerConfigs.DART_GOBLIN_WEIGHT,      5),
                 new FangsWeightListScreen.Entry("Imp",                ServerConfigs.IMP_WEIGHT,             10),
-                new FangsWeightListScreen.Entry("Hell Ogre",          ServerConfigs.HELL_OGRE_WEIGHT,       10),
+                new FangsWeightListScreen.Entry("Hell Ogre",          ServerConfigs.HELL_OGRE_WEIGHT,        6),
                 new FangsWeightListScreen.Entry("Scorpion",           ServerConfigs.SCORPION_WEIGHT,        25),
                 new FangsWeightListScreen.Entry("Ice Golem",          ServerConfigs.ICE_GOLEM_WEIGHT,        5),
                 new FangsWeightListScreen.Entry("Fire Ghost",         ServerConfigs.FIRE_GHOST_WEIGHT,      10),
@@ -209,7 +209,7 @@ public class FangsConfigScreen extends Screen {
                 new FangsWeightListScreen.Entry("Carnivorous Plant",  ServerConfigs.CARNIVOROUS_PLANT_WEIGHT,20),
                 new FangsWeightListScreen.Entry("Fire Skull",         ServerConfigs.FIRE_SKULL_WEIGHT,      12),
                 new FangsWeightListScreen.Entry("Fire Skull (Nether)",ServerConfigs.FIRE_SKULL_NETHER_WEIGHT, 4),
-                new FangsWeightListScreen.Entry("Acid Skull",         ServerConfigs.ACID_SKULL_WEIGHT,      15),
+                new FangsWeightListScreen.Entry("Acid Skull",         ServerConfigs.ACID_SKULL_WEIGHT,       8),
                 new FangsWeightListScreen.Entry("Nightmare Horse",    ServerConfigs.NIGHTMARE_HORSE_WEIGHT,  8),
                 new FangsWeightListScreen.Entry("Skeleton Horse",     ServerConfigs.SKELETON_HORSE_WEIGHT,   3),
                 new FangsWeightListScreen.Entry("Zombie Horse",       ServerConfigs.ZOMBIE_HORSE_WEIGHT,     3)

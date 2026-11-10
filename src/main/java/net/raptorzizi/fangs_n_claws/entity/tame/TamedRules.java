@@ -1,8 +1,11 @@
 package net.raptorzizi.fangs_n_claws.entity.tame;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.animal.IronGolem;
+import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -30,9 +33,16 @@ public final class TamedRules {
         return owner.equals(ownerOf(victim));
     }
 
+    public static final TagKey<EntityType<?>> GUARDIANS =
+            TagKey.create(Registries.ENTITY_TYPE, FangsClawsMod.id("tame_guardian"));
+
+    private static boolean isGuardian(@Nullable Entity entity) {
+        return entity != null && entity.getType().is(GUARDIANS);
+    }
+
     public static boolean isGuardianTruce(@Nullable Entity attacker, @Nullable Entity victim) {
-        return (attacker instanceof IronGolem && isTamed(victim))
-                || (isTamed(attacker) && victim instanceof IronGolem);
+        return (isGuardian(attacker) && isTamed(victim))
+                || (isTamed(attacker) && isGuardian(victim));
     }
 
     public static boolean allowsDespawn(TamableCreature creature) {

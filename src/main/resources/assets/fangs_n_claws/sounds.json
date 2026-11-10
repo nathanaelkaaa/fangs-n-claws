@@ -270,8 +270,7 @@
   "hyena.hurt": {
     "subtitle": "subtitles.entity.hyena.hurt",
     "sounds": [
-      { "name": "fangs_n_claws:hyena/hyena_hurt1", "weight": 1 },
-      { "name": "fangs_n_claws:hyena/hyena_hurt2", "weight": 1 }
+      { "name": "fangs_n_claws:hyena/hyena_hurt1" }
     ]
   },
   "hyena.death": {

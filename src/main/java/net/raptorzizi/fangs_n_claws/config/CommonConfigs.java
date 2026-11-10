@@ -238,7 +238,7 @@ public class CommonConfigs {
         defineDimensionCap("minecraft:the_nether",  "the_nether",  20);
 
         if (ModList.get().isLoaded("twilightforest")) {
-            defineDimensionCap("twilightforest:twilight_forest", "twilight_forest", 15);
+            defineDimensionCap("twilightforest:twilight_forest", "twilight_forest", 8);
         }
 
         BUILDER.pop();

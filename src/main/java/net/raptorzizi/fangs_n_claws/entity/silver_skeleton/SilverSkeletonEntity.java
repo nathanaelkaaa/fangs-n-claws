@@ -67,7 +67,8 @@ public class SilverSkeletonEntity extends Monster implements GeoEntity {
 
     public static AttributeSupplier.Builder prepareAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH,               25.0)
+                .add(Attributes.MAX_HEALTH,               20.0)
+                .add(Attributes.ARMOR,                     6.0)
                 .add(Attributes.MOVEMENT_SPEED,            0.30)
                 .add(Attributes.ATTACK_DAMAGE,             5.0)
                 .add(Attributes.FOLLOW_RANGE,              24.0)

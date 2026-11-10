@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " SB",
+    " BS",
+    "B  "
+  ],
+  "key": {
+    "B": { "item": "minecraft:bamboo" },
+    "S": { "item": "minecraft:string" }
+  },
+  "result": {
+    "item": "fangs_n_claws:blowgun",
+    "count": 1
+  }
+}

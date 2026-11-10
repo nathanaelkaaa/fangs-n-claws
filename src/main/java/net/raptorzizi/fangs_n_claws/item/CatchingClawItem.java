@@ -65,6 +65,9 @@ public class CatchingClawItem extends Item {
         lines.add(Component.translatable("item.fangs_n_claws.catching_claw.tooltip1"));
     }
 
+    private static final int RETRIEVE_COST = 1;
+    private static final int HOOKED_COST   = 3;
+
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -80,7 +83,9 @@ public class CatchingClawItem extends Item {
             if (existingUUID != null && level instanceof ServerLevel serverLevel) {
                 Entity entity = serverLevel.getEntity(existingUUID);
                 if (entity instanceof CatchingClawHookEntity hook && hook.isAlive()) {
+                    int cost = hook.isHooked() ? HOOKED_COST : RETRIEVE_COST;
                     hook.retrieve(player);
+                    stack.hurtAndBreak(cost, player, p -> p.broadcastBreakEvent(hand));
                 }
                 setHookUUID(stack, null);
                 return InteractionResultHolder.success(stack);
