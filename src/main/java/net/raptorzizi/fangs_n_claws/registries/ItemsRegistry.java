@@ -3,6 +3,8 @@ package net.raptorzizi.fangs_n_claws.registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SmithingTemplateItem;
 import net.neoforged.bus.api.IEventBus;
@@ -70,6 +72,9 @@ public class ItemsRegistry {
 
     public static final Supplier<DeferredSpawnEggItem> GHOST_SPAWN_EGG = ITEMS.register("ghost_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.GHOST, 0xe8e9ed, 0x98989d, new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<DeferredSpawnEggItem> PURPLE_GRUB_SPAWN_EGG = ITEMS.register("purple_grub_spawn_egg",
+            () -> new DeferredSpawnEggItem(EntityRegistry.PURPLE_GRUB, 0x6B2D7A, 0xC9A0D6, new Item.Properties().stacksTo(64)));
 
     public static final Supplier<DeferredSpawnEggItem> PURPLE_WORM_SPAWN_EGG = ITEMS.register("purple_worm_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityRegistry.PURPLE_WORM, 0x5a2d82, 0x9b59b6, new Item.Properties().stacksTo(64)));
@@ -271,6 +276,20 @@ public class ItemsRegistry {
 
     public static final Supplier<BlockItem> BEAR_TRAP = ITEMS.register("beartrap",
             () -> new BlockItem(BlocksRegistry.BEAR_TRAP.get(), new Item.Properties()));
+
+    public static final Supplier<BlockItem> PURPLE_WORM_EGG = ITEMS.register("purple_worm_egg",
+            () -> new BlockItem(BlocksRegistry.PURPLE_WORM_EGG.get(), new Item.Properties()));
+
+    public static final Supplier<BlockItem> VERMICITE = ITEMS.register("vermicite",
+            () -> new BlockItem(BlocksRegistry.VERMICITE.get(), new Item.Properties()));
+
+    public static final Supplier<BlockItem> POINTED_VERMICITE = ITEMS.register("pointed_vermicite",
+            () -> new BlockItem(BlocksRegistry.POINTED_VERMICITE.get(), new Item.Properties()));
+
+    public static final Supplier<BucketItem> ACID_BUCKET = ITEMS.register("acid_bucket",
+            () -> new BucketItem(FluidRegistry.ACID.get(), new Item.Properties()
+                    .craftRemainder(Items.BUCKET)
+                    .stacksTo(1)));
 
     public static final Supplier<BlockItem> VILE_LANTERN  = ITEMS.register("vile_lantern",
             () -> new BlockItem(BlocksRegistry.VILE_LANTERN.get(), new Item.Properties()));

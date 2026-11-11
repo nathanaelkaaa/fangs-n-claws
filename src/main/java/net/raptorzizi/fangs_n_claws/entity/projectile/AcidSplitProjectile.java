@@ -12,6 +12,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -19,8 +20,11 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.raptorzizi.fangs_n_claws.util.AcidImmunity;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.AcidCloudEntity;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleGrubEntity;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -120,9 +124,18 @@ public class AcidSplitProjectile extends ThrowableProjectile {
         }
     }
 
+    private boolean sparesAllies() {
+        return this.getOwner() instanceof PurpleGrubEntity grub && grub.isTamed();
+    }
+
+    private boolean isAlly(Entity entity) {
+        return sparesAllies() && (entity instanceof Player || TamedRules.isTamed(entity));
+    }
+
     @Override
     protected boolean canHitEntity(Entity entity) {
         if (!super.canHitEntity(entity)) return false;
+        if (isAlly(entity)) return false;
         Entity owner = this.getOwner();
         return owner == null || !entity.is(owner);
     }
@@ -135,6 +148,7 @@ public class AcidSplitProjectile extends ThrowableProjectile {
         Entity target = result.getEntity();
         Entity owner   = this.getOwner();
         if (owner != null && target.is(owner)) return;
+        if (isAlly(target) || AcidImmunity.isImmune(target)) return;
 
         target.hurt(this.damageSources().thrown(this, owner), this.damage);
         if (target instanceof LivingEntity living && !living.isDeadOrDying()) {
@@ -161,6 +175,7 @@ public class AcidSplitProjectile extends ThrowableProjectile {
         cloud.setLoopSound(true);
         cloud.setLifetime(CLOUD_DURATION);
         cloud.setTickDamage(SPLIT_CLOUD_DAMAGE);
+        cloud.setSparesAllies(sparesAllies());
         server.addFreshEntity(cloud);
 
 

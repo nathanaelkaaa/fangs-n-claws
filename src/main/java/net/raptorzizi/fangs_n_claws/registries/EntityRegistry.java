@@ -28,6 +28,7 @@ import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleGrubEntity;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity;
 import net.raptorzizi.fangs_n_claws.entity.ice_golem.IceGolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.cave_ogre.CaveOgreEntity;
@@ -391,6 +392,13 @@ public class EntityRegistry {
                     .clientTrackingRange(8)
                     .build("carnivorous_plant"));
 
+
+    public static final DeferredHolder<EntityType<?>, EntityType<PurpleGrubEntity>> PURPLE_GRUB =
+            ENTITIES.register("purple_grub", () -> EntityType.Builder
+                    .<PurpleGrubEntity>of((type, level) -> new PurpleGrubEntity(type, level), MobCategory.MONSTER)
+                    .sized(0.9F, 1.2F)
+                    .clientTrackingRange(8)
+                    .build("purple_grub"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<CarnivorousPlantSproutEntity>> CARNIVOROUS_PLANT_SPROUT =
             ENTITIES.register("carnivorous_plant_sprout", () -> EntityType.Builder

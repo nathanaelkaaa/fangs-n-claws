@@ -30,6 +30,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.ICE_GOLEM_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.EVIL_BAT_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GHOST_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.PURPLE_GRUB_SPAWN_EGG.get());
                         // entries.accept(ItemsRegistry.PURPLE_WORM_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.MIMIC_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.FIRE_GHOST_SPAWN_EGG.get());
@@ -95,6 +96,10 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.GHOST_BLOCK.get());
                         entries.accept(ItemsRegistry.VILE_LANTERN.get());
                         entries.accept(ItemsRegistry.BEAR_TRAP.get());
+                        entries.accept(ItemsRegistry.PURPLE_WORM_EGG.get());
+                        entries.accept(ItemsRegistry.VERMICITE.get());
+                        entries.accept(ItemsRegistry.POINTED_VERMICITE.get());
+                        entries.accept(ItemsRegistry.ACID_BUCKET.get());
                         entries.accept(ItemsRegistry.STURDY_SADDLE.get());
                         entries.accept(ItemsRegistry.HORSE_BLANKET.get());
                         entries.accept(ItemsRegistry.TOTEM_OF_FROST.get());

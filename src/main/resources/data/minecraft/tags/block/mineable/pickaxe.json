@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
+    "fangs_n_claws:pointed_vermicite",
+    "fangs_n_claws:vermicite",
     "fangs_n_claws:vile_lantern"
   ]
 }

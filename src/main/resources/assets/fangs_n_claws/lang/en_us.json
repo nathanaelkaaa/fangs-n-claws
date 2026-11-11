@@ -1,7 +1,10 @@
 {
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
 
+  "item.fangs_n_claws.acid_bucket": "Acid Bucket",
   "item.fangs_n_claws.ghost_spawn_egg": "Ghost Spawn Egg",
+  "item.fangs_n_claws.purple_grub_spawn_egg": "Purple Grub Spawn Egg",
+  "block.fangs_n_claws.purple_worm_egg": "Purple Worm Egg",
   "item.fangs_n_claws.purple_worm_spawn_egg": "Purple Worm Spawn Egg",
   "item.fangs_n_claws.mimic_spawn_egg": "Mimic Spawn Egg",
   "item.fangs_n_claws.fire_ghost_spawn_egg": "Fire Ghost Spawn Egg",
@@ -131,6 +134,9 @@
 
   "block.fangs_n_claws.ghost_block": "Ghost Block",
   "block.fangs_n_claws.beartrap": "Bear Trap",
+  "block.fangs_n_claws.acid": "Acid",
+  "block.fangs_n_claws.pointed_vermicite": "Pointed Vermicite",
+  "block.fangs_n_claws.vermicite": "Vermicite",
   "block.fangs_n_claws.vile_lantern": "Vile Lantern",
 
   "entity.fangs_n_claws.horse_bat": "Horse Bat",
@@ -153,6 +159,7 @@
   "entity.fangs_n_claws.acid_skull": "Acid Skull",
   "item.fangs_n_claws.acid_skull_spawn_egg": "Acid Skull Spawn Egg",
   "entity.fangs_n_claws.ghost": "Ghost",
+  "entity.fangs_n_claws.purple_grub": "Purple Grub",
   "entity.fangs_n_claws.purple_worm": "Purple Worm",
   "entity.fangs_n_claws.acid_split": "Poison Split",
   "entity.fangs_n_claws.acid_cloud": "Poison Cloud",
@@ -221,6 +228,8 @@
   "effect.fangs_n_claws.hellfire_flamebrand": "Hellfire Flamebrand",
   "effect.fangs_n_claws.stunned": "Stunned",
 
+  "death.attack.acid": "%1$s dissolved in acid",
+  "death.attack.acid.player": "%1$s dissolved in acid whilst fighting %2$s",
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",
 

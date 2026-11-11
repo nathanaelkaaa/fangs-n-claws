@@ -27,6 +27,7 @@ import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.MovementInputUpdateEvent;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -48,6 +49,7 @@ import net.raptorzizi.fangs_n_claws.item.FangDaggerItem;
 import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
+import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 
@@ -55,6 +57,7 @@ import java.util.List;
 import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitModel;
 import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitRenderer;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmRenderer;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleGrubRenderer;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormRenderer;
 import net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer;
 
@@ -62,6 +65,10 @@ import net.raptorzizi.fangs_n_claws.entity.tomahawk.TomahawkRenderer;
 @Mod(value = FangsClawsMod.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID, value = Dist.CLIENT)
 public class FangsClawsModClient {
+
+    // Acid
+    private static final ResourceLocation ACID_STILL = FangsClawsMod.id("block/acid_still");
+    private static final ResourceLocation ACID_FLOWING = FangsClawsMod.id("block/acid_flow");
     public FangsClawsModClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
@@ -327,6 +334,18 @@ public class FangsClawsModClient {
                 return this.renderer;
             }
         }, ItemsRegistry.HELLFIRE_PITCHFORK.get());
+
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            @Override
+            public ResourceLocation getStillTexture() {
+                return ACID_STILL;
+            }
+
+            @Override
+            public ResourceLocation getFlowingTexture() {
+                return ACID_FLOWING;
+            }
+        }, FluidRegistry.ACID_TYPE.get());
     }
 
     @SubscribeEvent
@@ -340,6 +359,7 @@ public class FangsClawsModClient {
         event.registerEntityRenderer(EntityRegistry.EVIL_EYE_PROJECTILE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(EntityRegistry.TOMAHAWK_PROJECTILE.get(),
                 TomahawkRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.PURPLE_GRUB.get(), PurpleGrubRenderer::new);
         event.registerEntityRenderer(EntityRegistry.PURPLE_WORM.get(),
                 PurpleWormRenderer::new);
         event.registerEntityRenderer(EntityRegistry.PURPLE_WORM_ARM.get(),

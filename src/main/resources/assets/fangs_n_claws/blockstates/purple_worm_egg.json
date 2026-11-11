@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "hatch=0": {
+      "model": "fangs_n_claws:block/purple_worm_egg_not_cracked"
+    },
+    "hatch=1": {
+      "model": "fangs_n_claws:block/purple_worm_egg_slightly_cracked"
+    },
+    "hatch=2": {
+      "model": "fangs_n_claws:block/purple_worm_egg_very_cracked"
+    }
+  }
+}

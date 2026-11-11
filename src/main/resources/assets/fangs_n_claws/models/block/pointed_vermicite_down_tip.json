@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/pointed_dripstone",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "cross": "fangs_n_claws:block/pointed_vermicite/pointed_vermicite_down_tip"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "parent": "fangs_n_claws:block/purple_worm_egg",
+  "textures": {
+    "bottom": "fangs_n_claws:block/purple_worm_egg/purple_worm_egg_very_cracked_bottom",
+    "east": "fangs_n_claws:block/purple_worm_egg/purple_worm_egg_very_cracked_east",
+    "north": "fangs_n_claws:block/purple_worm_egg/purple_worm_egg_very_cracked_north",
+    "south": "fangs_n_claws:block/purple_worm_egg/purple_worm_egg_very_cracked_south",
+    "top": "fangs_n_claws:block/purple_worm_egg/purple_worm_egg_very_cracked_top",
+    "west": "fangs_n_claws:block/purple_worm_egg/purple_worm_egg_very_cracked_west"
+  }
+}

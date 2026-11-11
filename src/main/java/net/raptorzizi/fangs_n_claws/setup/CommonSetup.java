@@ -1,12 +1,18 @@
 package net.raptorzizi.fangs_n_claws.setup;
 
 import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
@@ -40,7 +46,9 @@ import net.raptorzizi.fangs_n_claws.entity.projectile.BlockProjectile;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import net.raptorzizi.fangs_n_claws.util.AcidImmunity;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
 import net.raptorzizi.fangs_n_claws.entity.ghost.GhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.mimic.MimicEntity;
@@ -61,13 +69,13 @@ import net.raptorzizi.fangs_n_claws.entity.undead_horse.SkeletonHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantSproutEntity;
 import net.raptorzizi.fangs_n_claws.entity.carnivorous_plant.CarnivorousPlantEntity;
+import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleGrubEntity;
 import net.raptorzizi.fangs_n_claws.entity.skull.SkullEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.WildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.wild_wolf.BabyWildWolfEntity;
 import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -92,6 +100,13 @@ import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity;
 
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
 public class CommonSetup {
+
+    private static final int ACID_FLUID_INTERVAL = 3;
+    private static final float ACID_FLUID_DAMAGE = 0.5F;
+    private static final int ACID_FLUID_EFFECT_DURATION = 120;
+    private static final float ACID_ITEM_DAMAGE = 4.0F;
+    private static final ResourceKey<DamageType> ACID_DAMAGE_TYPE =
+            ResourceKey.create(Registries.DAMAGE_TYPE, FangsClawsMod.id("acid"));
 
     private static final float OWL_FEATHER_PER_PIECE = 0.12f;
     private static final float OWL_FEATHER_MAX       = 0.8f;
@@ -371,6 +386,7 @@ public class CommonSetup {
         event.put(EntityRegistry.HYENA.get(),              WildWolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.BABY_WILD_WOLF.get(),     BabyWildWolfEntity.prepareAttributes().build());
         event.put(EntityRegistry.BABY_HYENA.get(),         BabyWildWolfEntity.prepareAttributes().build());
+        event.put(EntityRegistry.PURPLE_GRUB.get(),        PurpleGrubEntity.prepareAttributes().build());
         event.put(EntityRegistry.CARNIVOROUS_PLANT.get(),  CarnivorousPlantEntity.prepareAttributes().build());
         event.put(EntityRegistry.CARNIVOROUS_PLANT_SPROUT.get(), CarnivorousPlantSproutEntity.prepareAttributes().build());
         event.put(EntityRegistry.FIRE_SKULL.get(),         SkullEntity.prepareAttributes().build());
@@ -518,6 +534,36 @@ public class CommonSetup {
             entity.addEffect(new MobEffectInstance(MobEffectsRegistry.FROZEN, 100, 0, false, false));
             entity.setTicksFrozen(0);
         }
+    }
+
+    @SubscribeEvent
+    public static void onAcidFluidTick(EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof LivingEntity entity)) return;
+        if (!(entity.level() instanceof ServerLevel level)) return;
+        if (entity.tickCount % ACID_FLUID_INTERVAL != 0) return;
+        if (!entity.isInFluidType(FluidRegistry.ACID_TYPE.get())) return;
+        if (AcidImmunity.isImmune(entity)) return;
+
+        entity.hurt(acidDamage(level), ACID_FLUID_DAMAGE);
+        entity.addEffect(new MobEffectInstance(
+                MobEffectsRegistry.ACID, ACID_FLUID_EFFECT_DURATION, 0, false, false, true));
+    }
+
+    @SubscribeEvent
+    public static void onAcidItemTick(EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof ItemEntity item)) return;
+        if (!(item.level() instanceof ServerLevel level)) return;
+        if (!item.isInFluidType(FluidRegistry.ACID_TYPE.get())) return;
+        if (item.getItem().has(DataComponents.FIRE_RESISTANT)) return;
+        if (AcidImmunity.isImmune(item)) return;
+
+        item.hurt(acidDamage(level), ACID_ITEM_DAMAGE);
+    }
+
+    private static DamageSource acidDamage(ServerLevel level) {
+        return new DamageSource(level.registryAccess()
+                .registryOrThrow(Registries.DAMAGE_TYPE)
+                .getHolderOrThrow(ACID_DAMAGE_TYPE));
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

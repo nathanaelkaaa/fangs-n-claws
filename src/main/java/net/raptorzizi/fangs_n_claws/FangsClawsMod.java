@@ -80,6 +80,7 @@ import net.raptorzizi.fangs_n_claws.entity.undead_horse.ZombieHorseMob;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
+import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
@@ -145,6 +146,7 @@ public class FangsClawsMod {
         MobEffectsRegistry.register(modEventBus);
         PotionsRegistry.register(modEventBus);
         BlocksRegistry.register(modEventBus);
+        FluidRegistry.register(modEventBus);
         BlockEntityRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
         MenuTypeRegistry.register(modEventBus);

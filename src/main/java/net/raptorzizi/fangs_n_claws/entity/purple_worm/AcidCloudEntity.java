@@ -15,6 +15,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.raptorzizi.fangs_n_claws.entity.tame.TamedRules;
+import net.raptorzizi.fangs_n_claws.util.AcidImmunity;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ParticlesRegistry;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
@@ -38,9 +40,10 @@ public class AcidCloudEntity extends Entity {
     private static final EntityDataAccessor<Boolean> DATA_ACID_POOL =
             SynchedEntityData.defineId(AcidCloudEntity.class, EntityDataSerializers.BOOLEAN);
 
-    private int     lifetime   = DEFAULT_LIFETIME;
-    private float   tickDamage = 1.0f;
-    private boolean loopSound  = false;
+    private int     lifetime     = DEFAULT_LIFETIME;
+    private float   tickDamage   = 1.0f;
+    private boolean loopSound    = false;
+    private boolean sparesAllies = false;
 
     public AcidCloudEntity(EntityType<? extends AcidCloudEntity> type, Level level) {
         super(type, level);
@@ -53,6 +56,7 @@ public class AcidCloudEntity extends Entity {
     public void setAcidPool(boolean b)         { this.entityData.set(DATA_ACID_POOL, b); }
     public boolean isAcidPool()                { return this.entityData.get(DATA_ACID_POOL); }
     public void setLoopSound(boolean b)        { this.loopSound = b; }
+    public void setSparesAllies(boolean b)     { this.sparesAllies = b; }
     public void setDimensions(float width, float height) {
         this.entityData.set(DATA_WIDTH, width);
         this.entityData.set(DATA_HEIGHT, height);
@@ -101,7 +105,8 @@ public class AcidCloudEntity extends Entity {
     private void applyEffects() {
         for (LivingEntity victim : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
             if (victim instanceof Player p && (p.isCreative() || p.isSpectator())) continue;
-            if (victim instanceof PurpleWormEntity) continue;
+            if (AcidImmunity.isImmune(victim)) continue;
+            if (sparesAllies && (victim instanceof Player || TamedRules.isTamed(victim))) continue;
             if (tickDamage > 0.0f) victim.hurt(this.damageSources().magic(), tickDamage);
             victim.addEffect(new MobEffectInstance(MobEffectsRegistry.ACID, ACID_DURATION, 0, false, false, true));
         }
@@ -133,12 +138,14 @@ public class AcidCloudEntity extends Entity {
     protected void readAdditionalSaveData(@NotNull CompoundTag tag) {
         if (tag.contains("Lifetime")) this.lifetime = tag.getInt("Lifetime");
         if (tag.contains("TickDamage")) this.tickDamage = tag.getFloat("TickDamage");
+        this.sparesAllies = tag.getBoolean("SparesAllies");
     }
 
     @Override
     protected void addAdditionalSaveData(@NotNull CompoundTag tag) {
         tag.putInt("Lifetime", this.lifetime);
         tag.putFloat("TickDamage", this.tickDamage);
+        if (this.sparesAllies) tag.putBoolean("SparesAllies", true);
     }
 
     @Override public boolean isPickable()   { return false; }
