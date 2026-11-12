@@ -1,0 +1,37 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "fangs_n_claws:shrike",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:baby_shrike",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:evil_bat",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:horse_bat",
+      "required": false
+    },
+    {
+      "id": "minecraft:parrot",
+      "required": false
+    },
+    {
+      "id": "minecraft:bat",
+      "required": false
+    },
+    {
+      "id": "minecraft:bee",
+      "required": false
+    },
+    {
+      "id": "minecraft:allay",
+      "required": false
+    }
+  ]
+}

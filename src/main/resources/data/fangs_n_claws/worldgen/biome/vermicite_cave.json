@@ -5,8 +5,8 @@
   "effects": {
     "fog_color": 3809101,
     "sky_color": 3809101,
-    "water_color": 6044272,
-    "water_fog_color": 2560058,
+    "water_color": 6058042,
+    "water_fog_color": 2570768,
     "mood_sound": {
       "block_search_extent": 8,
       "offset": 2.0,
@@ -22,8 +22,6 @@
   },
   "carvers": {
     "air": [
-      "fangs_n_claws:vermicite_cave",
-      "fangs_n_claws:vermicite_canyon",
       "minecraft:cave",
       "minecraft:cave_extra_underground",
       "minecraft:canyon"
@@ -64,7 +62,8 @@
     ],
     [
       "fangs_n_claws:vermicite_cluster",
-      "fangs_n_claws:pointed_vermicite"
+      "fangs_n_claws:pointed_vermicite",
+      "fangs_n_claws:ore_jade"
     ],
     [
       "minecraft:spring_water",

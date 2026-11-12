@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "SAS",
+    " B "
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "S": {
+      "item": "minecraft:prismarine_shard"
+    },
+    "B": {
+      "item": "minecraft:cod"
+    },
+    "A": {
+      "item": "fangs_n_claws:amulet_base"
+    }
+  },
+  "result": {
+    "id": "fangs_n_claws:fin_amulet",
+    "count": 1
+  }
+}

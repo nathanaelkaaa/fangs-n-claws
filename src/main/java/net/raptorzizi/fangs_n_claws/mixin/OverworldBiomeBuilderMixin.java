@@ -21,10 +21,10 @@ public class OverworldBiomeBuilderMixin {
     private static final Climate.Parameter HUMIDITY = Climate.Parameter.span(-1.0F, 1.0F);
     private static final Climate.Parameter CONTINENTALNESS = Climate.Parameter.span(-0.11F, 1.0F);
     private static final Climate.Parameter EROSION = Climate.Parameter.span(0.55F, 1.0F);
-    private static final float OFFSET = 0.0F;
 
-    // Deepslate level
-    private static final Climate.Parameter DEPTH = Climate.Parameter.span(1.0F, 1.5F);
+    private static final float OFFSET = 3.0F;
+
+    private static final Climate.Parameter DEPTH = Climate.Parameter.span(0.8F, 0.9F);
 
     @Inject(method = "addMidSlice(Ljava/util/function/Consumer;Lnet/minecraft/world/level/biome/Climate$Parameter;)V",
             at = @At("TAIL"))

@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "fangs_n_claws:purple_worm",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:carnivorous_plant",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:carnivorous_plant_sprout",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:mimic",
+      "required": false
+    },
+    {
+      "id": "minecraft:ender_dragon",
+      "required": false
+    },
+    {
+      "id": "minecraft:wither",
+      "required": false
+    },
+    {
+      "id": "minecraft:warden",
+      "required": false
+    }
+  ]
+}

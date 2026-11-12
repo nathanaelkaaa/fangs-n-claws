@@ -47,6 +47,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
 import net.raptorzizi.fangs_n_claws.util.AcidImmunity;
 import net.raptorzizi.fangs_n_claws.entity.evil_bat.EvilBatEntity;
@@ -77,10 +78,13 @@ import net.raptorzizi.fangs_n_claws.entity.hyena.HyenaEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.entity.werevillager.WerevillagerEntity;
 import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.entity.projectile.ThrownPotion;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -101,10 +105,13 @@ import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity;
 @EventBusSubscriber(modid = FangsClawsMod.MOD_ID)
 public class CommonSetup {
 
-    private static final int ACID_FLUID_INTERVAL = 3;
+    private static final int ACID_FLUID_INTERVAL = 5;
     private static final float ACID_FLUID_DAMAGE = 0.5F;
     private static final int ACID_FLUID_EFFECT_DURATION = 120;
     private static final float ACID_ITEM_DAMAGE = 4.0F;
+    private static final float ACID_ITEM_VOLUME = 0.5F;
+    private static final float ACID_ITEM_PITCH_BASE = 0.9F;
+    private static final float ACID_ITEM_PITCH_SPREAD = 0.15F;
     private static final ResourceKey<DamageType> ACID_DAMAGE_TYPE =
             ResourceKey.create(Registries.DAMAGE_TYPE, FangsClawsMod.id("acid"));
 
@@ -189,7 +196,7 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void onBottleAcidPuddleItem(PlayerInteractEvent.RightClickItem event) {
-        if (tryBottleAcidPuddle(event.getEntity(), event.getHand(), event.getItemStack())) {
+        if (tryBottleAcid(event.getEntity(), event.getHand(), event.getItemStack())) {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
         }
@@ -197,10 +204,36 @@ public class CommonSetup {
 
     @SubscribeEvent
     public static void onBottleAcidPuddleBlock(PlayerInteractEvent.RightClickBlock event) {
-        if (tryBottleAcidPuddle(event.getEntity(), event.getHand(), event.getItemStack())) {
+        if (tryBottleAcid(event.getEntity(), event.getHand(), event.getItemStack())) {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.sidedSuccess(event.getLevel().isClientSide));
         }
+    }
+
+    private static boolean tryBottleAcid(Player player, InteractionHand hand, ItemStack stack) {
+        return tryBottleAcidPuddle(player, hand, stack) || tryBottleAcidSource(player, hand, stack);
+    }
+
+    private static boolean tryBottleAcidSource(Player player, InteractionHand hand, ItemStack stack) {
+        if (!stack.is(Items.GLASS_BOTTLE)) return false;
+
+        Level level = player.level();
+        BlockHitResult hit = Item.getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (hit.getType() != HitResult.Type.BLOCK) return false;
+
+        BlockPos pos = hit.getBlockPos();
+        if (!level.mayInteract(player, pos)) return false;
+        if (level.getFluidState(pos).getFluidType() != FluidRegistry.ACID_TYPE.get()) return false;
+
+        if (!level.isClientSide) {
+            player.playSound(SoundEvents.BOTTLE_FILL_DRAGONBREATH, 1.0F, 1.0F);
+            player.playSound(SoundEvents.SLIME_SQUISH, 0.8F, 1.1F);
+            ItemStack filled = PotionContents.createItemStack(Items.POTION, PotionsRegistry.ACID);
+            player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, filled));
+        }
+
+        player.swing(hand);
+        return true;
     }
 
     private static boolean tryBottleAcidPuddle(Player player, InteractionHand hand, ItemStack stack) {
@@ -558,6 +591,12 @@ public class CommonSetup {
         if (AcidImmunity.isImmune(item)) return;
 
         item.hurt(acidDamage(level), ACID_ITEM_DAMAGE);
+        if (!item.isRemoved()) return;
+
+        level.playSound(null, item.getX(), item.getY(), item.getZ(),
+                SoundsRegistry.PURPLE_WORM_ACID_PUDDLE.get(), SoundSource.BLOCKS,
+                ACID_ITEM_VOLUME,
+                ACID_ITEM_PITCH_BASE + level.random.nextFloat() * ACID_ITEM_PITCH_SPREAD);
     }
 
     private static DamageSource acidDamage(ServerLevel level) {

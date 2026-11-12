@@ -1,7 +1,9 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -16,12 +18,19 @@ import net.raptorzizi.fangs_n_claws.block.GhostBlock;
 import net.raptorzizi.fangs_n_claws.block.MimicSpawnerBlock;
 import net.raptorzizi.fangs_n_claws.block.PointedVermiciteBlock;
 import net.raptorzizi.fangs_n_claws.block.PurpleWormEggBlock;
+import net.raptorzizi.fangs_n_claws.block.PurpleWormSpawnerBlock;
 import net.raptorzizi.fangs_n_claws.block.VileLanternBlock;
 
 public class BlocksRegistry {
 
+    private static final int JADE_XP_MIN = 2;
+    private static final int JADE_XP_MAX = 5;
+    private static final float JADE_ORE_DESTROY_TIME = 3.0F;
+    private static final float JADE_ORE_RESISTANCE = 3.0F;
+
     private static final int ACID_LIGHT_LEVEL = 15;
     private static final float ACID_DESTROY_TIME = 100.0F;
+    private static final float PURPLE_WORM_SPAWNER_STRENGTH = 5.0F;
 
     private static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(Registries.BLOCK, FangsClawsMod.MOD_ID);
@@ -38,6 +47,15 @@ public class BlocksRegistry {
     public static final DeferredHolder<Block, PurpleWormEggBlock> PURPLE_WORM_EGG =
             BLOCKS.register("purple_worm_egg", PurpleWormEggBlock::new);
 
+    public static final DeferredHolder<Block, PurpleWormSpawnerBlock> PURPLE_WORM_SPAWNER =
+            BLOCKS.register("purple_worm_spawner", () -> new PurpleWormSpawnerBlock(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .sound(SoundType.STONE)
+                            .noLootTable()
+                            .noOcclusion()
+                            .strength(PURPLE_WORM_SPAWNER_STRENGTH)));
+
     public static final DeferredHolder<Block, MimicSpawnerBlock> MIMIC_SPAWNER =
             BLOCKS.register("mimic_spawner", () -> new MimicSpawnerBlock(
                     BlockBehaviour.Properties.of()
@@ -48,6 +66,15 @@ public class BlocksRegistry {
                             .strength(0.0f)
                             .sound(SoundType.WOOD)));
 
+
+    public static final DeferredHolder<Block, DropExperienceBlock> JADE_ORE =
+            BLOCKS.register("jade_ore", () -> new DropExperienceBlock(
+                    UniformInt.of(JADE_XP_MIN, JADE_XP_MAX),
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .sound(SoundType.CALCITE)
+                            .requiresCorrectToolForDrops()
+                            .strength(JADE_ORE_DESTROY_TIME, JADE_ORE_RESISTANCE)));
 
     public static final DeferredHolder<Block, Block> VERMICITE =
             BLOCKS.register("vermicite", () -> new Block(

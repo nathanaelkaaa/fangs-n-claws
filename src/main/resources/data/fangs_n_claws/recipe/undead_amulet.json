@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "SAS",
+    " B "
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:skeleton_skull"
+    },
+    "S": {
+      "item": "minecraft:bone"
+    },
+    "B": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "A": {
+      "item": "fangs_n_claws:amulet_base"
+    }
+  },
+  "result": {
+    "id": "fangs_n_claws:undead_amulet",
+    "count": 1
+  }
+}

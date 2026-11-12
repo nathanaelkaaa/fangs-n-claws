@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "top": "fangs_n_claws:block/purple_worm_spawner_top",
+    "side": "fangs_n_claws:block/purple_worm_spawner_side",
+    "bottom": "fangs_n_claws:block/purple_worm_spawner_bottom"
+  }
+}

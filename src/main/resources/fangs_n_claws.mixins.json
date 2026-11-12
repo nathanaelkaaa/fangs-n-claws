@@ -6,6 +6,7 @@
   "mixins": [
     "StructurePieceMixin",
     "FeatureMixin",
+    "MultiNoiseBiomeSourceMixin",
     "OverworldBiomeBuilderMixin",
     "VanillaRegistriesMixin"
   ],

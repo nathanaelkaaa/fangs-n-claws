@@ -1,6 +1,15 @@
 package net.raptorzizi.fangs_n_claws;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import net.raptorzizi.fangs_n_claws.util.AcidImmunity;
+import net.minecraft.world.entity.Entity;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Camera;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.FogRenderer;
+import com.mojang.blaze3d.shaders.FogShape;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3f;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
@@ -51,9 +60,11 @@ import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
 import net.raptorzizi.fangs_n_claws.registries.ItemsRegistry;
+import net.raptorzizi.fangs_n_claws.item.amulet.AmuletItem;
 import net.raptorzizi.fangs_n_claws.registries.MobEffectsRegistry;
 
 import java.util.List;
+import java.util.function.Supplier;
 import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitModel;
 import net.raptorzizi.fangs_n_claws.entity.projectile.AcidSplitRenderer;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormArmRenderer;
@@ -69,6 +80,16 @@ public class FangsClawsModClient {
     // Acid
     private static final ResourceLocation ACID_STILL = FangsClawsMod.id("block/acid_still");
     private static final ResourceLocation ACID_FLOWING = FangsClawsMod.id("block/acid_flow");
+
+    private static final float ACID_FOG_RED = 0.09F;
+    private static final float ACID_FOG_GREEN = 0.42F;
+    private static final float ACID_FOG_BLUE = 0.12F;
+    private static final float ACID_FOG_START = 0.25F;
+    private static final float ACID_FOG_END = 1.0F;
+    private static final float ACID_FOG_IMMUNE_START = 0.0F;
+    private static final float ACID_FOG_IMMUNE_END = 5.0F;
+    private static final float ACID_FOG_SPECTATOR_START = -8.0F;
+    private static final float ACID_FOG_SPECTATOR_SCALE = 0.5F;
     public FangsClawsModClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         NeoForge.EVENT_BUS.addListener(FangsClawsModClient::onRenderGui);
@@ -249,6 +270,12 @@ public class FangsClawsModClient {
     @SubscribeEvent
     static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            // Amulet
+            for (Supplier<AmuletItem> amulet : ItemsRegistry.AMULETS) {
+                ItemProperties.register(amulet.get(), FangsClawsMod.id("familiar"),
+                        (stack, level, entity, seed) -> AmuletItem.modelState(stack));
+            }
+
             ItemProperties.register(ItemsRegistry.FANG_DAGGER.get(),
                 FangsClawsMod.id("backstab"),
                 (stack, level, entity, seed) -> {
@@ -344,6 +371,35 @@ public class FangsClawsModClient {
             @Override
             public ResourceLocation getFlowingTexture() {
                 return ACID_FLOWING;
+            }
+
+            @Override
+            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera, float partialTick,
+                                                    @NotNull ClientLevel level, int renderDistance,
+                                                    float darkenWorldAmount,
+                                                    @NotNull Vector3f fluidFogColor) {
+                return new Vector3f(ACID_FOG_RED, ACID_FOG_GREEN, ACID_FOG_BLUE);
+            }
+
+            @Override
+            public void modifyFogRender(@NotNull Camera camera, @NotNull FogRenderer.FogMode mode,
+                                        float renderDistance, float partialTick,
+                                        float nearDistance, float farDistance,
+                                        @NotNull FogShape shape) {
+                Entity viewer = camera.getEntity();
+
+                if (viewer.isSpectator()) {
+                    RenderSystem.setShaderFogStart(ACID_FOG_SPECTATOR_START);
+                    RenderSystem.setShaderFogEnd(renderDistance * ACID_FOG_SPECTATOR_SCALE);
+                } else if (AcidImmunity.isImmune(viewer)) {
+                    RenderSystem.setShaderFogStart(ACID_FOG_IMMUNE_START);
+                    RenderSystem.setShaderFogEnd(ACID_FOG_IMMUNE_END);
+                } else {
+                    RenderSystem.setShaderFogStart(ACID_FOG_START);
+                    RenderSystem.setShaderFogEnd(ACID_FOG_END);
+                }
+
+                RenderSystem.setShaderFogShape(FogShape.SPHERE);
             }
         }, FluidRegistry.ACID_TYPE.get());
     }

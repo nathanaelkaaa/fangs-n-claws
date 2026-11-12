@@ -1,0 +1,45 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "fangs_n_claws:scorpion",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:baby_scorpion",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:desert_scorpion",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:frost_scorpion",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:nether_scorpion",
+      "required": false
+    },
+    {
+      "id": "fangs_n_claws:purple_grub",
+      "required": false
+    },
+    {
+      "id": "minecraft:spider",
+      "required": false
+    },
+    {
+      "id": "minecraft:cave_spider",
+      "required": false
+    },
+    {
+      "id": "minecraft:silverfish",
+      "required": false
+    },
+    {
+      "id": "minecraft:endermite",
+      "required": false
+    }
+  ]
+}

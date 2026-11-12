@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.block.GhostBlockEntity;
 import net.raptorzizi.fangs_n_claws.block.PurpleWormEggBlockEntity;
+import net.raptorzizi.fangs_n_claws.block.PurpleWormSpawnerBlockEntity;
 
 public class BlockEntityRegistry {
 
@@ -24,6 +25,12 @@ public class BlockEntityRegistry {
             BLOCK_ENTITIES.register("purple_worm_egg",
                     () -> BlockEntityType.Builder
                             .of(PurpleWormEggBlockEntity::new, BlocksRegistry.PURPLE_WORM_EGG.get())
+                            .build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PurpleWormSpawnerBlockEntity>> PURPLE_WORM_SPAWNER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("purple_worm_spawner",
+                    () -> BlockEntityType.Builder
+                            .of(PurpleWormSpawnerBlockEntity::new, BlocksRegistry.PURPLE_WORM_SPAWNER.get())
                             .build(null));
 
     public static void register(IEventBus eventBus) {

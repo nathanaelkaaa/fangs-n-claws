@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "fangs_n_claws:raw_jade"
+  },
+  "result": {
+    "id": "fangs_n_claws:jade",
+    "count": 1
+  }
+}

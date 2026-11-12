@@ -3,12 +3,14 @@ package net.raptorzizi.fangs_n_claws.registries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.DripstoneClusterConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.LargeDripstoneConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.PointedDripstoneConfiguration;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.biome.feature.JadeOreFeature;
 import net.raptorzizi.fangs_n_claws.biome.feature.LargeVermiciteFeature;
 import net.raptorzizi.fangs_n_claws.biome.feature.PointedVermiciteFeature;
 import net.raptorzizi.fangs_n_claws.biome.feature.VermiciteClusterFeature;
@@ -30,6 +32,11 @@ public class FeatureRegistry {
     public static final DeferredHolder<Feature<?>, PointedVermiciteFeature> POINTED_VERMICITE =
             FEATURES.register("pointed_vermicite",
                     () -> new PointedVermiciteFeature(PointedDripstoneConfiguration.CODEC));
+
+    // Jade
+    public static final DeferredHolder<Feature<?>, JadeOreFeature> ORE_JADE =
+            FEATURES.register("ore_jade",
+                    () -> new JadeOreFeature(NoneFeatureConfiguration.CODEC));
 
     public static void register(IEventBus eventBus) {
         FEATURES.register(eventBus);

@@ -1,6 +1,5 @@
 {
   "itemGroup.fangs_n_claws.creative_tab": "Fangs 'n Claws",
-
   "item.fangs_n_claws.acid_bucket": "Acid Bucket",
   "item.fangs_n_claws.ghost_spawn_egg": "Ghost Spawn Egg",
   "item.fangs_n_claws.purple_grub_spawn_egg": "Purple Grub Spawn Egg",
@@ -26,7 +25,6 @@
   "entity.fangs_n_claws.werevillager": "Werevillager",
   "item.fangs_n_claws.scorpion_spawn_egg": "Scorpion Spawn Egg",
   "entity.fangs_n_claws.scorpion": "Scorpion",
-
   "item.fangs_n_claws.horse_blanket": "Horse Blanket",
   "entity.fangs_n_claws.skeleton_horse": "Skeleton Horse",
   "entity.fangs_n_claws.zombie_horse": "Zombie Horse",
@@ -70,10 +68,8 @@
   "item.fangs_n_claws.spectral_essence": "Spectral Essence",
   "item.fangs_n_claws.fang_dagger": "Fang Dagger",
   "item.fangs_n_claws.fang_dagger.tooltip1": "§7Attacking from behind inflicts Bleeding",
-
   "item.fangs_n_claws.blowgun": "Blowgun",
   "item.fangs_n_claws.blowgun.tooltip1": "§7Fires Poisonous Darts. Hold to charge, release to shoot",
-
   "item.fangs_n_claws.fire_pitchfork": "Fire Pitchfork",
   "item.fangs_n_claws.hellfire_pitchfork": "Hellfire Pitchfork",
   "item.fangs_n_claws.silver_sword": "Silver Sword",
@@ -82,23 +78,18 @@
   "entity.fangs_n_claws.tomahawk_projectile": "Tomahawk",
   "item.fangs_n_claws.silver_sword.tooltip1": "§7The only weapon that can effectively kill a Werewolf",
   "item.fangs_n_claws.silver_sword.tooltip2": "§b+2 magic damage §7(ignores armor)",
-
   "item.fangs_n_claws.catching_claw": "Catching Claw",
   "item.fangs_n_claws.catching_claw.tooltip1": "§7Hook a target, then retrieve to launch it toward your aim",
   "item.fangs_n_claws.catching_claw_netherite": "Netherite Catching Claw",
-
   "item.fangs_n_claws.netherite_dagger": "Netherite Dagger",
   "item.fangs_n_claws.netherite_dagger.tooltip1": "§7Attacking from behind inflicts Bleeding II",
-
   "item.fangs_n_claws.evil_eye": "Evil Eye",
   "item.fangs_n_claws.velocity_arrow": "Velocity Arrow",
   "item.fangs_n_claws.evil_eye.tooltip1": "§7Blinds all nearby enemies on impact, instant kill flying pest",
-
   "item.minecraft.potion.effect.fangs_n_claws.nausea": "Potion of Nausea",
   "item.minecraft.splash_potion.effect.fangs_n_claws.nausea": "Splash Potion of Nausea",
   "item.minecraft.lingering_potion.effect.fangs_n_claws.nausea": "Lingering Potion of Nausea",
   "item.minecraft.tipped_arrow.effect.fangs_n_claws.nausea": "Arrow of Nausea",
-
   "item.minecraft.potion.effect.blindness": "Potion of Blindness",
   "item.minecraft.splash_potion.effect.blindness": "Splash Potion of Blindness",
   "item.minecraft.lingering_potion.effect.blindness": "Lingering Potion of Blindness",
@@ -107,12 +98,10 @@
   "item.minecraft.splash_potion.effect.long_blindness": "Splash Potion of Blindness",
   "item.minecraft.lingering_potion.effect.lingering_potion_of_blindness": "Lingering Potion of Blindness",
   "item.minecraft.tipped_arrow.effect.long_blindness": "Arrow of Blindness",
-
-  "item.minecraft.potion.effect.acid": "Potion of Acid",
-  "item.minecraft.splash_potion.effect.acid": "Splash Potion of Acid",
-  "item.minecraft.lingering_potion.effect.acid": "Lingering Potion of Acid",
+  "item.minecraft.potion.effect.acid": "Bottle of Acid",
+  "item.minecraft.splash_potion.effect.acid": "Splash Bottle of Acid",
+  "item.minecraft.lingering_potion.effect.acid": "Lingering Bottle of Acid",
   "item.minecraft.tipped_arrow.effect.acid": "Arrow of Acid",
-
   "item.minecraft.potion.effect.venom": "Potion of Venom",
   "item.minecraft.splash_potion.effect.venom": "Splash Potion of Venom",
   "item.minecraft.lingering_potion.effect.venom": "Lingering Potion of Venom",
@@ -121,7 +110,6 @@
   "item.minecraft.splash_potion.effect.long_venom": "Splash Potion of Venom",
   "item.minecraft.lingering_potion.effect.lingering_potion_of_venom": "Lingering Potion of Venom",
   "item.minecraft.tipped_arrow.effect.long_venom": "Arrow of Venom",
-
   "item.minecraft.potion.effect.nausea": "Potion of Nausea",
   "item.minecraft.splash_potion.effect.nausea": "Splash Potion of Nausea",
   "item.minecraft.lingering_potion.effect.nausea": "Lingering Potion of Nausea",
@@ -130,16 +118,30 @@
   "item.minecraft.splash_potion.effect.long_nausea": "Splash Potion of Nausea",
   "item.minecraft.lingering_potion.effect.lingering_potion_of_nausea": "Lingering Potion of Nausea",
   "item.minecraft.tipped_arrow.effect.long_nausea": "Arrow of Nausea",
-
-
   "block.fangs_n_claws.ghost_block": "Ghost Block",
   "block.fangs_n_claws.beartrap": "Bear Trap",
   "biome.fangs_n_claws.vermicite_cave": "Vermicite Cave",
   "block.fangs_n_claws.acid": "Acid",
+  "block.fangs_n_claws.purple_worm_spawner": "Purple Worm Spawner",
   "block.fangs_n_claws.pointed_vermicite": "Pointed Vermicite",
   "block.fangs_n_claws.vermicite": "Vermicite",
+  "block.fangs_n_claws.jade_ore": "Jade Ore",
+  "item.fangs_n_claws.raw_jade": "Raw Jade",
+  "item.fangs_n_claws.jade": "Jade",
+  "item.fangs_n_claws.amulet_base": "Amulet Base",
+  "item.fangs_n_claws.fang_amulet": "Fang Amulet",
+  "item.fangs_n_claws.fang_jade_amulet": "Jade Fang Amulet",
+  "item.fangs_n_claws.wing_amulet": "Wing Amulet",
+  "item.fangs_n_claws.wing_jade_amulet": "Jade Wing Amulet",
+  "item.fangs_n_claws.fin_amulet": "Fin Amulet",
+  "item.fangs_n_claws.fin_jade_amulet": "Jade Fin Amulet",
+  "item.fangs_n_claws.chitin_amulet": "Chitin Amulet",
+  "item.fangs_n_claws.chitin_jade_amulet": "Jade Chitin Amulet",
+  "item.fangs_n_claws.hoof_amulet": "Hoof Amulet",
+  "item.fangs_n_claws.hoof_jade_amulet": "Jade Hoof Amulet",
+  "item.fangs_n_claws.undead_amulet": "Undead Amulet",
+  "item.fangs_n_claws.undead_jade_amulet": "Jade Undead Amulet",
   "block.fangs_n_claws.vile_lantern": "Vile Lantern",
-
   "entity.fangs_n_claws.horse_bat": "Horse Bat",
   "item.fangs_n_claws.horse_bat_spawn_egg": "Horse Bat Spawn Egg",
   "entity.fangs_n_claws.nightmare_horse": "Nightmare Horse",
@@ -213,7 +215,6 @@
   "entity.fangs_n_claws.dart_goblin": "Dart Goblin",
   "entity.fangs_n_claws.imp": "Imp",
   "item.fangs_n_claws.poisonous_dart": "Poisonous Dart",
-
   "enchantment.fangs_n_claws.critical_backstab": "Critical Backstab",
   "enchantment.fangs_n_claws.quick_killer": "Quick Killer",
   "enchantment.fangs_n_claws.item_catcher": "Item Catcher",
@@ -222,23 +223,19 @@
   "item.fangs_n_claws.black_horn": "Black Horn",
   "item.fangs_n_claws.fire_pitchfork.tooltip1": "§7Inflicts Flamebrand on hit — explodes in flames on the 3rd effect",
   "item.fangs_n_claws.hellfire_pitchfork.tooltip1": "§7Inflicts Hellfire Flamebrand on hit — explodes in flames on the 3rd effect",
-
   "effect.fangs_n_claws.bleeding": "Bleeding",
   "effect.fangs_n_claws.venom": "Venom",
   "effect.fangs_n_claws.flamebrand": "Flamebrand",
   "effect.fangs_n_claws.hellfire_flamebrand": "Hellfire Flamebrand",
   "effect.fangs_n_claws.stunned": "Stunned",
-
   "death.attack.acid": "%1$s dissolved in acid",
   "death.attack.acid.player": "%1$s dissolved in acid whilst fighting %2$s",
   "death.attack.bleeding": "%1$s bled to death",
   "death.attack.bleeding.player": "%1$s bled to death whilst fighting %2$s",
-
   "death.attack.carnivorous_plant": "%1$s was devoured by a carnivorous plant",
   "death.attack.carnivorous_plant.player": "%1$s was devoured by a carnivorous plant whilst fighting %2$s",
   "death.attack.bear_trap": "%1$s was caught in a bear trap",
   "death.attack.bear_trap.player": "%1$s was caught in a bear trap whilst fighting %2$s",
-
   "fangs_n_claws.configuration.spawn_toggles": "Spawn Toggles",
   "fangs_n_claws.configuration.spawn_toggles.goblin": "Allow Goblin Spawning",
   "fangs_n_claws.configuration.spawn_toggles.goblin.tooltip": "If false, Goblins will never spawn naturally. Also controllable per-world via /gamerule allowSpawnGoblin.",
@@ -298,7 +295,6 @@
   "fangs_n_claws.configuration.behavior.allow_natural_spawn_skeleton_horse.tooltip": "If false, Skeleton Horses won't spawn naturally at night (trap still works). Applies to either version. Also /gamerule allowNaturalSpawnSkeletonHorse.",
   "fangs_n_claws.configuration.behavior.allow_natural_spawn_zombie_horse": "Allow Zombie Horse Natural Spawning",
   "fangs_n_claws.configuration.behavior.allow_natural_spawn_zombie_horse.tooltip": "If false, Zombie Horses won't spawn naturally at night. Applies to either version. Also /gamerule allowNaturalSpawnZombieHorse.",
-
   "fangs_n_claws.configuration.behavior": "Behaviors",
   "fangs_n_claws.configuration.behavior.vanilla_skeleton_horse": "Vanilla Skeleton Horse",
   "fangs_n_claws.configuration.behavior.vanilla_skeleton_horse.tooltip": "If true, keeps the vanilla Skeleton Horse instead of the mod's tamable version. Also /gamerule vanillaSkeletonHorse.",
@@ -306,7 +302,6 @@
   "fangs_n_claws.configuration.behavior.vanilla_zombie_horse.tooltip": "If true, keeps the vanilla Zombie Horse instead of the mod's tamable version. Also /gamerule vanillaZombieHorse.",
   "fangs_n_claws.configuration.behavior.allow_goblin_stealing": "Allow Goblin Stealing",
   "fangs_n_claws.configuration.behavior.allow_goblin_stealing.tooltip": "If false, Goblins won't steal items from players. Also /gamerule allowGoblinStealing.",
-
   "fangs_n_claws.configuration.spawn_weights": "Spawn Weights",
   "fangs_n_claws.configuration.spawn_weights.goblin": "Goblin",
   "fangs_n_claws.configuration.spawn_weights.goblin.tooltip": "Spawn weight for Goblins (overworld, night only). 0 = disabled.",
@@ -377,33 +372,27 @@
   "fangs_n_claws.configuration.spawn_limits.the_nether.tooltip": "Max Fangs 'n Claws mob density in the Nether. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
   "fangs_n_claws.configuration.spawn_limits.twilight_forest": "Twilight Forest",
   "fangs_n_claws.configuration.spawn_limits.twilight_forest.tooltip": "Max Fangs 'n Claws mob density in the Twilight Forest. -1 = unlimited, 0 = no F&C spawns, N = density cap (scaled by loaded chunks / 289, like the vanilla mob cap).",
-
   "fangs_n_claws.configuration.behavior.mimic_spawn_chance": "Structure Mimic Chance (1/x)",
   "fangs_n_claws.configuration.behavior.mimic_spawn_chance.tooltip": "A loot chest generated in a structure has a 1/x chance of being replaced by a Mimic that steals its loot. Higher = fewer mimics. 1 = every structure chest. Set very high to disable.",
-
   "item.fangs_n_claws.totem_of_frost": "Totem of Frost",
   "item.fangs_n_claws.totem_of_frost.tooltip1": "§7When held, activates at ≤25% health: fully heals and freezes all nearby enemies",
-
   "jei.fangs_n_claws.owlbear": "The Owlbear roams forests and taigas (surface only). Feed a baby Owlbear salmon to tame it; a tamed baby behaves like a cat, sitting down to sleep. Each piece of Owlbear armor grants hidden Feather Falling, and the chestplate lets you flap and glide.",
   "jei.fangs_n_claws.shrike": "A frost-touched Owlbear that spawns in snowy forests and snowy taigas. It fights mostly at range, loosing volleys of feathers and unleashing a freezing blizzard that pushes, slows and freezes. Shrikes drop Snow Duvet, used to upgrade Owl armor into Shrike armor.",
   "jei.fangs_n_claws.scorpion": "Scorpions spawn across the Overworld. Right-click a baby Scorpion to tame it; it then rides on your head (sneak to dismount). A baby raised while tamed grows into an adult you can ride with a Sturdy Saddle: it has no jump but climbs walls. Heal a tamed Scorpion with Chitin.",
   "jei.fangs_n_claws.desert_scorpion": "The Desert Scorpion spawns in desert biomes during the day. Like all scorpions, a tamed one can be ridden with a Sturdy Saddle and healed with Chitin.",
   "jei.fangs_n_claws.frost_scorpion": "The Frost Scorpion spawns in snowy biomes. Like all scorpions, a tamed one can be ridden with a Sturdy Saddle and healed with Chitin.",
   "jei.fangs_n_claws.nether_scorpion": "The Nether Scorpion spawns in the Crimson Forest and Nether Wastes. Like all scorpions, a tamed one can be ridden with a Sturdy Saddle and healed with Chitin.",
-
   "jei.fangs_n_claws.giant_feather": "Dropped by Owlbears. Used to craft the Owl armor set and Velocity Arrows.",
   "jei.fangs_n_claws.snow_duvet": "Dropped by Shrikes. Combined with the Shrike Upgrade Smithing Template to turn Owl armor into Shrike armor. The chestplate is upgraded with an Elytra instead of Snow Duvet.",
   "jei.fangs_n_claws.chitin": "Dropped by Scorpions. Used to craft Scorpion armor and to heal tamed Scorpions.",
   "jei.fangs_n_claws.fur": "Dropped by Wild Wolves. Used to craft the Fur armor set, which protects against cold.",
   "jei.fangs_n_claws.shrike_upgrade_template": "Smithing template that upgrades Owl armor into Shrike armor. Helmet, leggings and boots are upgraded with Snow Duvet; the chestplate with an Elytra. Craft the template from Snow Duvet and Diamond.",
-
   "jei.fangs_n_claws.heavy_claw": "Dropped by Owlbears, Shrikes and Werewolves. Used to craft the Catching Claw.",
   "jei.fangs_n_claws.long_fang": "Dropped by Werewolves. Used to craft the Fang Dagger and the Bear Trap.",
   "jei.fangs_n_claws.scorpion_sting": "Dropped by Scorpions. Used to craft Poisonous Darts.",
   "jei.fangs_n_claws.black_horn": "Dropped by Hell Ogres. Used to craft the Hellfire Pitchfork.",
   "jei.fangs_n_claws.spectral_essence": "Dropped by Ghosts and Fire Ghosts. Used to craft the Ghost Block.",
   "jei.fangs_n_claws.vile_fat": "Dropped by Ogres. Smelts into a Slime Ball, can be used as furnace fuel, and is used to craft the Vile Lantern.",
-
   "jei.fangs_n_claws.blowgun": "Fires Poisonous Darts. Hold to charge, release to shoot — a longer charge sends the dart faster and farther.",
   "jei.fangs_n_claws.poisonous_dart": "Ammunition for the Blowgun. Applies Venom to whatever it hits. Crafted from Scorpion Sting.",
   "jei.fangs_n_claws.fang_dagger": "A fast, light blade. Striking a target from behind inflicts Bleeding. Crafted from Long Fang.",
@@ -412,7 +401,6 @@
   "jei.fangs_n_claws.catching_claw_netherite": "Upgraded Catching Claw: fire-resistant and more durable, with the same hook-and-launch mechanic.",
   "jei.fangs_n_claws.silver_sword": "The only weapon that can effectively kill a Werewolf.",
   "jei.fangs_n_claws.tomahawk": "A throwing axe. Melee stats are 1 damage below an iron axe. Right-click to throw it (5s cooldown) - the axe stays in your inventory but each throw costs 1 durability. It spins in flight, damages the first target, then vanishes. Can also be fired from a dispenser.",
-
   "jei.fangs_n_claws.enchantment.critical_backstab": "Fang Dagger / Netherite Dagger only. Backstabs deal bonus damage, increasing with level.",
   "jei.fangs_n_claws.enchantment.quick_killer": "Fang Dagger / Netherite Dagger only. Shortens the backstab cooldown and grants a burst of Speed after a successful backstab.",
   "jei.fangs_n_claws.enchantment.item_catcher": "Catching Claw / Netherite Catching Claw only. The hook can grab dropped items and reel them back to you.",
@@ -422,20 +410,16 @@
   "jei.fangs_n_claws.hellfire_pitchfork": "Upgraded, fire-resistant pitchfork. Inflicts Hellfire Flamebrand; the target explodes in flames on the 3rd stack. Crafted with Black Horn.",
   "jei.fangs_n_claws.evil_eye": "Thrown item. Blinds all nearby enemies on impact and instantly kills flying pests.",
   "jei.fangs_n_claws.velocity_arrow": "A special arrow fired 20% faster than normal that violently launches whatever it strikes.",
-
   "jei.fangs_n_claws.ghost_block": "A phantom block with no collision — you walk straight through it. Place a block inside it and the Ghost Block takes on that block's texture. Standing inside it blurs your vision. Crafted from Spectral Essence.",
   "jei.fangs_n_claws.vile_lantern": "A bright light source (light level 15) that sits on the ground or hangs, like a lantern. It repels hostile mobs within about 6 blocks, shoving them away. Crafted from Vile Fat.",
   "jei.fangs_n_claws.bear_trap": "A hidden trap. When a creature steps on it, it snaps shut, dealing 8 damage and inflicting Bleeding II for 10 seconds. Crafted with Long Fang.",
-
   "jei.fangs_n_claws.sturdy_saddle": "A reinforced saddle used to ride a tamed adult Scorpion as well as any of the mod's horse mobs (Horse Bat, Nightmare Horse, Zombie Horse, Skeleton Horse). A ridden Scorpion cannot jump but can climb walls.",
   "jei.fangs_n_claws.horse_blanket": "Armor for the mod's horses (Nightmare, Skeleton, Zombie Horse and Horse Bat). Equip it in their armor slot for extra protection; it also stops the horse from burning in sunlight.",
   "jei.fangs_n_claws.totem_of_frost": "When held, it activates automatically at 25% health or below: it fully heals you and freezes every nearby enemy.",
-
   "jei.fangs_n_claws.scorpion_armor": "Scorpion armor. Each piece grants immunity to one effect: helmet negates Nausea, chestplate negates Poison, leggings negate Venom, boots negate Hunger. Crafted from Chitin.",
   "jei.fangs_n_claws.fur_armor": "Fur armor, warm gear. Wearing Fur reduces freezing in powder snow — a full set makes you immune. The helmet makes Wild Wolves ignore you; the boots keep you from sinking into powder snow. Crafted from Fur.",
   "jei.fangs_n_claws.owl_armor": "Owl armor. Every piece grants hidden Feather Falling. The chestplate lets you flap upward (tap jump in mid-air) and glide (hold jump). Crafted from Giant Feather.",
   "jei.fangs_n_claws.shrike_armor": "Shrike armor, an upgrade of Owl armor. Hidden Feather Falling on every piece plus +20% jump and fall-cushion stats. The chestplate works as an Elytra with an upward-and-forward flap boost. Made by upgrading Owl armor with the Shrike Upgrade Smithing Template.",
-
   "advancements.fangs_n_claws.root.title": "Fangs 'n Claws",
   "advancements.fangs_n_claws.root.description": "The fangs and claws of countless beasts await",
   "advancements.fangs_n_claws.progression.root.title": "First Spoils",
@@ -511,5 +495,8 @@
   "advancements.fangs_n_claws.forge.chameleon.title": "Chameleon",
   "advancements.fangs_n_claws.forge.chameleon.description": "Give a block's texture to a Ghost Block",
   "advancements.fangs_n_claws.progression.recycler.title": "Recycler",
-  "advancements.fangs_n_claws.progression.recycler.description": "Obtain Vile Fat - it burns nicely as fuel"
+  "advancements.fangs_n_claws.progression.recycler.description": "Obtain Vile Fat - it burns nicely as fuel",
+  "tooltip.fangs_n_claws.amulet.holding": "Resting inside",
+  "tooltip.fangs_n_claws.amulet.bound": "Bound, roaming free",
+  "tooltip.fangs_n_claws.amulet.dead": "Lost"
 }

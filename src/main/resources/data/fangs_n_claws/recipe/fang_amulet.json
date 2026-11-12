@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "SAS",
+    " B "
+  ],
+  "key": {
+    "T": {
+      "item": "fangs_n_claws:heavy_claw"
+    },
+    "S": {
+      "item": "fangs_n_claws:long_fang"
+    },
+    "B": {
+      "item": "fangs_n_claws:fur"
+    },
+    "A": {
+      "item": "fangs_n_claws:amulet_base"
+    }
+  },
+  "result": {
+    "id": "fangs_n_claws:fang_amulet",
+    "count": 1
+  }
+}

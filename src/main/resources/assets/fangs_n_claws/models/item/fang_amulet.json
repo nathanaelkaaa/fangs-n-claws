@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "fangs_n_claws:item/amulet/fang_amulet"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "fangs_n_claws:familiar": 1
+      },
+      "model": "fangs_n_claws:item/fang_amulet_full"
+    }
+  ]
+}

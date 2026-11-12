@@ -11,6 +11,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.item.amulet.AmuletCategory;
+import net.raptorzizi.fangs_n_claws.item.amulet.AmuletItem;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
 import net.raptorzizi.fangs_n_claws.item.FirePitchforkItem;
 import net.raptorzizi.fangs_n_claws.item.HellFirePitchforkItem;
@@ -29,6 +31,7 @@ import net.raptorzizi.fangs_n_claws.item.armor.FurArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.OwlArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ShrikeArmorItem;
 import net.raptorzizi.fangs_n_claws.item.armor.ScorpionArmorItem;
+import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.food.FoodProperties;
@@ -279,6 +282,71 @@ public class ItemsRegistry {
 
     public static final Supplier<BlockItem> PURPLE_WORM_EGG = ITEMS.register("purple_worm_egg",
             () -> new BlockItem(BlocksRegistry.PURPLE_WORM_EGG.get(), new Item.Properties()));
+
+    public static final Supplier<BlockItem> PURPLE_WORM_SPAWNER = ITEMS.register("purple_worm_spawner",
+            () -> new BlockItem(BlocksRegistry.PURPLE_WORM_SPAWNER.get(), new Item.Properties()));
+
+    public static final Supplier<AmuletItem> FANG_AMULET = ITEMS.register("fang_amulet",
+            () -> new AmuletItem(AmuletCategory.FANG, false));
+
+    public static final Supplier<AmuletItem> WING_AMULET = ITEMS.register("wing_amulet",
+            () -> new AmuletItem(AmuletCategory.WING, false));
+
+    public static final Supplier<AmuletItem> FIN_AMULET = ITEMS.register("fin_amulet",
+            () -> new AmuletItem(AmuletCategory.FIN, false));
+
+    public static final Supplier<AmuletItem> CHITIN_AMULET = ITEMS.register("chitin_amulet",
+            () -> new AmuletItem(AmuletCategory.CHITIN, false));
+
+    public static final Supplier<AmuletItem> HOOF_AMULET = ITEMS.register("hoof_amulet",
+            () -> new AmuletItem(AmuletCategory.HOOF, false));
+
+    public static final Supplier<AmuletItem> UNDEAD_AMULET = ITEMS.register("undead_amulet",
+            () -> new AmuletItem(AmuletCategory.UNDEAD, false));
+
+    public static final Supplier<AmuletItem> FANG_JADE_AMULET = ITEMS.register("fang_jade_amulet",
+            () -> new AmuletItem(AmuletCategory.FANG, true));
+
+    public static final Supplier<AmuletItem> WING_JADE_AMULET = ITEMS.register("wing_jade_amulet",
+            () -> new AmuletItem(AmuletCategory.WING, true));
+
+    public static final Supplier<AmuletItem> FIN_JADE_AMULET = ITEMS.register("fin_jade_amulet",
+            () -> new AmuletItem(AmuletCategory.FIN, true));
+
+    public static final Supplier<AmuletItem> CHITIN_JADE_AMULET = ITEMS.register("chitin_jade_amulet",
+            () -> new AmuletItem(AmuletCategory.CHITIN, true));
+
+    public static final Supplier<AmuletItem> HOOF_JADE_AMULET = ITEMS.register("hoof_jade_amulet",
+            () -> new AmuletItem(AmuletCategory.HOOF, true));
+
+    public static final Supplier<AmuletItem> UNDEAD_JADE_AMULET = ITEMS.register("undead_jade_amulet",
+            () -> new AmuletItem(AmuletCategory.UNDEAD, true));
+
+    public static final List<Supplier<AmuletItem>> AMULETS = List.of(
+            FANG_AMULET,
+            WING_AMULET,
+            FIN_AMULET,
+            CHITIN_AMULET,
+            HOOF_AMULET,
+            UNDEAD_AMULET,
+            FANG_JADE_AMULET,
+            WING_JADE_AMULET,
+            FIN_JADE_AMULET,
+            CHITIN_JADE_AMULET,
+            HOOF_JADE_AMULET,
+            UNDEAD_JADE_AMULET);
+
+    public static final Supplier<BlockItem> JADE_ORE = ITEMS.register("jade_ore",
+            () -> new BlockItem(BlocksRegistry.JADE_ORE.get(), new Item.Properties()));
+
+    public static final Supplier<Item> RAW_JADE = ITEMS.register("raw_jade",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<Item> JADE = ITEMS.register("jade",
+            () -> new Item(new Item.Properties().stacksTo(64)));
+
+    public static final Supplier<Item> AMULET_BASE = ITEMS.register("amulet_base",
+            () -> new Item(new Item.Properties().stacksTo(64)));
 
     public static final Supplier<BlockItem> VERMICITE = ITEMS.register("vermicite",
             () -> new BlockItem(BlocksRegistry.VERMICITE.get(), new Item.Properties()));

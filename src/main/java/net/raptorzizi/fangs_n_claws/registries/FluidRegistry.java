@@ -1,15 +1,22 @@
 package net.raptorzizi.fangs_n_claws.registries;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidInteractionRegistry;
+import net.neoforged.neoforge.fluids.FluidInteractionRegistry.InteractionInformation;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -91,5 +98,21 @@ public class FluidRegistry {
     public static void register(IEventBus eventBus) {
         FLUID_TYPES.register(eventBus);
         FLUIDS.register(eventBus);
+    }
+
+    public static void registerInteractions() {
+        FluidInteractionRegistry.addInteraction(ACID_TYPE.get(), new InteractionInformation(
+                touches(NeoForgeMod.WATER_TYPE.value()),
+                Blocks.DEEPSLATE.defaultBlockState()));
+
+        FluidInteractionRegistry.addInteraction(ACID_TYPE.get(), new InteractionInformation(
+                touches(NeoForgeMod.LAVA_TYPE.value()),
+                BlocksRegistry.VERMICITE.get().defaultBlockState()));
+    }
+
+    private static FluidInteractionRegistry.HasFluidInteraction touches(FluidType type) {
+        return (Level level, BlockPos acidPos, BlockPos neighbour, FluidState acid) ->
+                level.getFluidState(neighbour).getFluidType() == type
+                        || level.getFluidState(acidPos.below()).getFluidType() == type;
     }
 }

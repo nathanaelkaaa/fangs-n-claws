@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "SAS",
+    " B "
+  ],
+  "key": {
+    "T": {
+      "item": "fangs_n_claws:scorpion_sting"
+    },
+    "S": {
+      "item": "fangs_n_claws:chitin"
+    },
+    "B": {
+      "item": "minecraft:spider_eye"
+    },
+    "A": {
+      "item": "fangs_n_claws:amulet_base"
+    }
+  },
+  "result": {
+    "id": "fangs_n_claws:chitin_amulet",
+    "count": 1
+  }
+}

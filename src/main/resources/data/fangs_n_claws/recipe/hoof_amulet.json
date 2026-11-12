@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " T ",
+    "SAS",
+    " B "
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:saddle"
+    },
+    "S": {
+      "item": "minecraft:leather"
+    },
+    "B": {
+      "item": "minecraft:lead"
+    },
+    "A": {
+      "item": "fangs_n_claws:amulet_base"
+    }
+  },
+  "result": {
+    "id": "fangs_n_claws:hoof_amulet",
+    "count": 1
+  }
+}

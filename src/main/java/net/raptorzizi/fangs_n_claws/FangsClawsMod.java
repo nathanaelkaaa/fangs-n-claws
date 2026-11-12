@@ -82,6 +82,7 @@ import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.raptorzizi.fangs_n_claws.entity.werewolf.WerewolfEntity;
 import net.raptorzizi.fangs_n_claws.registries.FeatureRegistry;
 import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
+import net.raptorzizi.fangs_n_claws.registries.IngredientRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
@@ -149,6 +150,7 @@ public class FangsClawsMod {
         BlocksRegistry.register(modEventBus);
         FluidRegistry.register(modEventBus);
         FeatureRegistry.register(modEventBus);
+        IngredientRegistry.register(modEventBus);
         BlockEntityRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
         MenuTypeRegistry.register(modEventBus);
@@ -166,6 +168,7 @@ public class FangsClawsMod {
                     new ProjectileDispenseBehavior(ItemsRegistry.POISONOUS_DART.get()));
             DispenserBlock.registerBehavior(ItemsRegistry.TOMAHAWK.get(),
                     new TomahawkDispenseBehavior());
+            FluidRegistry.registerInteractions();
         });
     }
 
