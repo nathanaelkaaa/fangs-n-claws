@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "StructurePieceMixin",
-    "FeatureMixin"
+    "FeatureMixin",
+    "OverworldBiomeBuilderMixin",
+    "VanillaRegistriesMixin"
   ],
   "client": [
     "client.PlayerModelMixin"

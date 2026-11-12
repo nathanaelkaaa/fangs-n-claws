@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:lake",
+  "config": {
+    "barrier": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "fangs_n_claws:vermicite"
+      }
+    },
+    "fluid": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "fangs_n_claws:acid",
+        "Properties": {
+          "level": "0"
+        }
+      }
+    }
+  }
+}

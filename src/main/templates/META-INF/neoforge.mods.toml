@@ -88,6 +88,16 @@ config="fangs_n_claws.mixins.json"
     ordering="NONE"
     side="BOTH"
 
+# GeckoLib backs every animated model in the mod: without it FangsClawsMod cannot even be
+# instantiated (NoClassDefFoundError on GeoEntity). Declared required so a missing GeckoLib
+# shows FML's dependency screen instead of crashing during mod construction.
+[[dependencies.${mod_id}]]
+    modId="geckolib"
+    type="required"
+    versionRange="[4.7,5)"
+    ordering="AFTER"
+    side="BOTH"
+
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
 # stop your mod loading on the server for example.
