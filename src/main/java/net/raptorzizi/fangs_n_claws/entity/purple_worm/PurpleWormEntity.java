@@ -166,6 +166,11 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
             SynchedEntityData.defineId(PurpleWormEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> BITE_ACTIVE =
             SynchedEntityData.defineId(PurpleWormEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> LOOK_TARGET_ID =
+            SynchedEntityData.defineId(PurpleWormEntity.class, EntityDataSerializers.INT);
+
+    private static final int NO_LOOK_TARGET = 0;
+
     private static final EntityDataAccessor<Boolean> IS_BREATHING =
             SynchedEntityData.defineId(PurpleWormEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -343,6 +348,7 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         builder.define(BITE_AIMING, false);
         builder.define(BITE_ACTIVE, false);
         builder.define(IS_BREATHING, false);
+        builder.define(LOOK_TARGET_ID, NO_LOOK_TARGET);
         builder.define(HIDE_STATE, HIDE_HIDDEN);
     }
 
@@ -907,9 +913,22 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
     }
 
     private LivingEntity getLookTarget() {
-        LivingEntity t = this.getTarget();
-        if (t != null && t.isAlive()) return t;
-        return this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), LOOK_RANGE, false);
+        if (this.level().isClientSide()) {
+            int id = this.entityData.get(LOOK_TARGET_ID);
+            return id != NO_LOOK_TARGET && this.level().getEntity(id) instanceof LivingEntity looked
+                    ? looked
+                    : null;
+        }
+
+        LivingEntity target = this.getTarget();
+        if (target == null || !target.isAlive()) {
+            target = this.level().getNearestPlayer(
+                    this.getX(), this.getY(), this.getZ(), LOOK_RANGE, false);
+        }
+
+        this.entityData.set(LOOK_TARGET_ID,
+                target == null ? NO_LOOK_TARGET : target.getId());
+        return target;
     }
 
     private void tickTurnStateMachine() {
@@ -1016,13 +1035,19 @@ public class PurpleWormEntity extends Monster implements GeoEntity {
         return Mth.lerp(partialTick, this.headPitchO, this.headPitch);
     }
 
-    private boolean playerWithinRevealRange() {
+    private boolean threatWithinRevealRange() {
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive()
+                && target.distanceToSqr(this) <= REVEAL_RANGE * REVEAL_RANGE) {
+            return true;
+        }
+
         return this.level().getNearestPlayer(this.getX(), this.getY(), this.getZ(), REVEAL_RANGE, false) != null;
     }
 
     private void tickHideState() {
         int st = getHideState();
-        boolean near = playerWithinRevealRange();
+        boolean near = threatWithinRevealRange();
         switch (st) {
             case HIDE_HIDDEN -> {
                 if (this.getHealth() < this.getMaxHealth()) this.heal(HIDE_HEAL_PER_TICK);

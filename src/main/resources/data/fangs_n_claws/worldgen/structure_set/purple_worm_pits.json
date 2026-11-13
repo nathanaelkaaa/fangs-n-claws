@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "triangular",
+    "spacing": 16,
+    "separation": 12,
+    "salt": 48729163
+  },
+  "structures": [
+    {
+      "structure": "fangs_n_claws:purple_worm_pit",
+      "weight": 1
+    }
+  ]
+}

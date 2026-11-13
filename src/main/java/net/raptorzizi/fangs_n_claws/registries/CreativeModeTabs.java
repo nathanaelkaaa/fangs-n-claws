@@ -110,6 +110,7 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.CHITIN_JADE_AMULET.get());
                         entries.accept(ItemsRegistry.HOOF_JADE_AMULET.get());
                         entries.accept(ItemsRegistry.UNDEAD_JADE_AMULET.get());
+                        entries.accept(ItemsRegistry.PURPLE_WORM_PIT_MAP.get());
                         entries.accept(ItemsRegistry.JADE_ORE.get());
                         entries.accept(ItemsRegistry.RAW_JADE.get());
                         entries.accept(ItemsRegistry.JADE.get());

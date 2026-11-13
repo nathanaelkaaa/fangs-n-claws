@@ -1,0 +1,14 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:purple_worm_pit/purple_worm_pit",
+        "processors": "fangs_n_claws:purple_worm_pit_jade",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ]
+}

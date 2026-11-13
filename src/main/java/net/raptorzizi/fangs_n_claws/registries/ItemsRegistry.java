@@ -11,6 +11,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.item.PurpleWormPitMapItem;
 import net.raptorzizi.fangs_n_claws.item.amulet.AmuletCategory;
 import net.raptorzizi.fangs_n_claws.item.amulet.AmuletItem;
 import net.raptorzizi.fangs_n_claws.item.BlowgunItem;
@@ -335,6 +336,9 @@ public class ItemsRegistry {
             CHITIN_JADE_AMULET,
             HOOF_JADE_AMULET,
             UNDEAD_JADE_AMULET);
+
+    public static final Supplier<PurpleWormPitMapItem> PURPLE_WORM_PIT_MAP =
+            ITEMS.register("purple_worm_pit_map", PurpleWormPitMapItem::new);
 
     public static final Supplier<BlockItem> JADE_ORE = ITEMS.register("jade_ore",
             () -> new BlockItem(BlocksRegistry.JADE_ORE.get(), new Item.Properties()));

@@ -498,5 +498,8 @@
   "advancements.fangs_n_claws.progression.recycler.description": "Obtain Vile Fat - it burns nicely as fuel",
   "tooltip.fangs_n_claws.amulet.holding": "Resting inside",
   "tooltip.fangs_n_claws.amulet.bound": "Bound, roaming free",
-  "tooltip.fangs_n_claws.amulet.dead": "Lost"
+  "tooltip.fangs_n_claws.amulet.dead": "Lost",
+  "item.fangs_n_claws.purple_worm_pit_map": "Purple Worm Pit Map",
+  "item.fangs_n_claws.purple_worm_pit_map.not_found": "No Purple Worm Pit within reach",
+  "filled_map.fangs_n_claws.purple_worm_pit": "Purple Worm Pit Map"
 }
