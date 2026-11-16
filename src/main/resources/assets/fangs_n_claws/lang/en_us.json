@@ -499,7 +499,7 @@
   "tooltip.fangs_n_claws.amulet.holding": "Resting inside",
   "tooltip.fangs_n_claws.amulet.bound": "Bound, roaming free",
   "tooltip.fangs_n_claws.amulet.dead": "Lost",
-  "item.fangs_n_claws.purple_worm_pit_map": "Purple Worm Pit Map",
+  "item.fangs_n_claws.purple_worm_pit_map": "Purple Worm Pit Explorer Map",
   "item.fangs_n_claws.purple_worm_pit_map.not_found": "No Purple Worm Pit within reach",
-  "filled_map.fangs_n_claws.purple_worm_pit": "Purple Worm Pit Map"
+  "filled_map.fangs_n_claws.purple_worm_pit": "Purple Worm Pit Explorer Map"
 }

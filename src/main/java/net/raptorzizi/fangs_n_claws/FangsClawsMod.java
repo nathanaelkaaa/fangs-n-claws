@@ -84,6 +84,7 @@ import net.raptorzizi.fangs_n_claws.registries.FeatureRegistry;
 import net.raptorzizi.fangs_n_claws.registries.FluidRegistry;
 import net.raptorzizi.fangs_n_claws.registries.IngredientRegistry;
 import net.raptorzizi.fangs_n_claws.registries.MapDecorationRegistry;
+import net.raptorzizi.fangs_n_claws.registries.StructureProcessorRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BiomeModifierRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlockEntityRegistry;
 import net.raptorzizi.fangs_n_claws.registries.BlocksRegistry;
@@ -153,6 +154,7 @@ public class FangsClawsMod {
         FeatureRegistry.register(modEventBus);
         IngredientRegistry.register(modEventBus);
         MapDecorationRegistry.register(modEventBus);
+        StructureProcessorRegistry.register(modEventBus);
         BlockEntityRegistry.register(modEventBus);
         CreativeModeTabs.register(modEventBus);
         MenuTypeRegistry.register(modEventBus);
