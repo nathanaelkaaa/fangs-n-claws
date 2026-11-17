@@ -109,6 +109,10 @@ public class FangsClawsMod {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final float PUP_SPAWN_CHANCE = 0.10F;
 
+    // Goblin jockey
+    private static final int JOCKEY_CHANCE_NATURAL = 20;
+    private static final int JOCKEY_CHANCE_STRUCTURE = 10;
+
     public FangsClawsMod(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
@@ -525,7 +529,7 @@ public class FangsClawsMod {
                 && !event.isSpawnCancelled()
                 && !goblin.isPassenger()
                 && serverLevel.getGameRules().getBoolean(GameRuleRegistry.ALLOW_SPAWN_WILD_WOLF)
-                && serverLevel.random.nextInt(20) == 0) { // goblin jockey : 1/20
+                && serverLevel.random.nextInt(jockeyChance(type)) == 0) {
 
             WildWolfEntity wolf = EntityRegistry.WILD_WOLF.get().create(serverLevel);
             if (wolf != null) {
@@ -536,6 +540,10 @@ public class FangsClawsMod {
                 goblin.startRiding(wolf, true);
             }
         }
+    }
+
+    private static int jockeyChance(MobSpawnType type) {
+        return type == MobSpawnType.STRUCTURE ? JOCKEY_CHANCE_STRUCTURE : JOCKEY_CHANCE_NATURAL;
     }
 
 

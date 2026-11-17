@@ -1,0 +1,19 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "linear",
+    "spacing": 34,
+    "separation": 11,
+    "salt": 1947302,
+    "exclusion_zone": {
+      "other_set": "minecraft:villages",
+      "chunk_count": 8
+    }
+  },
+  "structures": [
+    {
+      "structure": "fangs_n_claws:goblin_camp",
+      "weight": 1
+    }
+  ]
+}
