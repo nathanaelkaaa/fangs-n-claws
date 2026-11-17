@@ -11,12 +11,14 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -28,6 +30,11 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class PurpleWormArmEntity extends Monster implements GeoEntity {
+
+    // Facing
+    private static final double WORM_SEARCH_RANGE = 24.0;
+    private static final double LOOK_RANGE = 40.0;
+
 
     private static final int ARM_SPAWN = 0, ARM_ATTACK_L = 1, ARM_ATTACK_R = 2, ARM_DESPAWN = 3;
 
@@ -81,7 +88,7 @@ public class PurpleWormArmEntity extends Monster implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
-        this.faceNearestPlayer();
+        this.faceThreat();
         if (this.level().isClientSide) return;
 
         switch (getArmState()) {
@@ -115,11 +122,11 @@ public class PurpleWormArmEntity extends Monster implements GeoEntity {
         }
     }
 
-    private void faceNearestPlayer() {
-        Player p = this.level().getNearestPlayer(this, 40.0);
-        if (p == null) return;
-        double dx = p.getX() - this.getX();
-        double dz = p.getZ() - this.getZ();
+    private void faceThreat() {
+        LivingEntity threat = this.threat();
+        if (threat == null) return;
+        double dx = threat.getX() - this.getX();
+        double dz = threat.getZ() - this.getZ();
         if (dx * dx + dz * dz < 1.0e-4) return;
         float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0F;
         this.setYRot(yaw);
@@ -127,6 +134,18 @@ public class PurpleWormArmEntity extends Monster implements GeoEntity {
         this.yBodyRot = this.yBodyRotO = yaw;
         this.yHeadRot = this.yHeadRotO = yaw;
         this.setXRot(0.0F);
+    }
+
+    @Nullable
+    private LivingEntity threat() {
+        AABB around = this.getBoundingBox().inflate(WORM_SEARCH_RANGE);
+
+        for (PurpleWormEntity worm : this.level().getEntitiesOfClass(PurpleWormEntity.class, around)) {
+            LivingEntity target = worm.getTarget();
+            if (target != null && target.isAlive()) return target;
+        }
+
+        return this.level().getNearestPlayer(this, LOOK_RANGE);
     }
 
     private void clawHit() {

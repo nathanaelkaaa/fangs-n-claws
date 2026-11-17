@@ -1,5 +1,6 @@
 package net.raptorzizi.fangs_n_claws.entity.golem;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import java.util.EnumSet;
@@ -24,6 +25,9 @@ public class GolemSleepGoal extends Goal {
     @Override
     public boolean canContinueToUse() {
         if (!golem.isSleeping()) return false;
+
+        LivingEntity target = golem.getTarget();
+        if (target != null && target.isAlive()) return false;
 
         Player nearby = golem.level().getNearestPlayer(golem, WAKE_RADIUS);
         if (nearby != null && !nearby.isSpectator() && !nearby.isCreative()) {

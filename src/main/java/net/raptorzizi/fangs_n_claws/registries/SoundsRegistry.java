@@ -122,6 +122,15 @@ public class SoundsRegistry {
 
     public static final Supplier<SoundEvent> PURPLE_WORM_AMBIENT =
             register("purple_worm.ambient");
+    public static final Supplier<SoundEvent> PURPLE_GRUB_AMBIENT =
+            register("purple_grub.ambient");
+    public static final Supplier<SoundEvent> PURPLE_GRUB_HURT =
+            register("purple_grub.hurt");
+    public static final Supplier<SoundEvent> PURPLE_GRUB_DEATH =
+            register("purple_grub.death");
+    public static final Supplier<SoundEvent> PURPLE_GRUB_SPLIT =
+            register("purple_grub.split");
+
     public static final Supplier<SoundEvent> PURPLE_WORM_HURT =
             register("purple_worm.hurt");
     public static final Supplier<SoundEvent> PURPLE_WORM_DEATH =

@@ -1,5 +1,11 @@
 package net.raptorzizi.fangs_n_claws.entity.purple_worm;
 
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
+import net.raptorzizi.fangs_n_claws.registries.SoundsRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -49,6 +55,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class PurpleGrubEntity extends Monster implements GeoEntity, RangedAttackMob, TamableCreature {
+
+    // Step sound
+    private static final float STEP_VOLUME = 0.15F;
+    private static final float STEP_PITCH = 1.0F;
+
+    // Spit sound
+    private static final float SPIT_VOLUME = 1.0F;
+    private static final float SPIT_PITCH_BASE = 0.95F;
+    private static final float SPIT_PITCH_SPREAD = 0.1F;
 
     // Constants
 
@@ -205,6 +220,28 @@ public class PurpleGrubEntity extends Monster implements GeoEntity, RangedAttack
                 6, this.getBbWidth() * 0.5, 0.3, this.getBbWidth() * 0.5, 0.02);
     }
 
+    // Sound
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundsRegistry.PURPLE_GRUB_AMBIENT.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return SoundsRegistry.PURPLE_GRUB_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundsRegistry.PURPLE_GRUB_DEATH.get();
+    }
+
+    @Override
+    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state) {
+        this.playSound(SoundEvents.SPIDER_STEP, STEP_VOLUME, STEP_PITCH);
+    }
+
     // AI
 
     @Override
@@ -270,6 +307,9 @@ public class PurpleGrubEntity extends Monster implements GeoEntity, RangedAttack
         spit.setPos(muzzle.x, muzzle.y, muzzle.z);
         spit.shoot(aim.x, aim.y, aim.z, SPIT_VELOCITY, SPIT_SPREAD);
         this.level().addFreshEntity(spit);
+
+        this.playSound(SoundsRegistry.PURPLE_GRUB_SPLIT.get(), SPIT_VOLUME,
+                SPIT_PITCH_BASE + this.random.nextFloat() * SPIT_PITCH_SPREAD);
     }
 
     private Vec3 aimAt(Vec3 muzzle, LivingEntity target) {
