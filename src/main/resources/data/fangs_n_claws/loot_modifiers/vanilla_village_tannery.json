@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_table",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_tannery"
+    }
+  ],
+  "table": "fangs_n_claws:chests/vanilla/village_tannery"
+}

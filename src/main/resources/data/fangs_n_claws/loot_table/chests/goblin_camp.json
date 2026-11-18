@@ -2,7 +2,11 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": { "type": "minecraft:uniform", "min": 3, "max": 6 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3,
+        "max": 6
+      },
       "entries": [
         {
           "type": "minecraft:item",
@@ -11,7 +15,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 4 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
             }
           ]
         },
@@ -22,7 +30,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 5 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 5
+              }
             }
           ]
         },
@@ -33,7 +45,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 4 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
             }
           ]
         },
@@ -44,7 +60,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 2, "max": 7 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 7
+              }
             }
           ]
         },
@@ -55,7 +75,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 2, "max": 6 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
             }
           ]
         },
@@ -66,7 +90,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 3 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
             }
           ]
         },
@@ -77,7 +105,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 3 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
             }
           ]
         },
@@ -88,7 +120,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 2, "max": 6 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 6
+              }
             }
           ]
         },
@@ -99,7 +135,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 2 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
             }
           ]
         },
@@ -110,7 +150,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 2, "max": 8 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 8
+              }
             }
           ]
         },
@@ -121,7 +165,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 4 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 4
+              }
             }
           ]
         },
@@ -132,7 +180,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 2 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
             }
           ]
         },
@@ -143,7 +195,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 2 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
             }
           ]
         },
@@ -154,7 +210,11 @@
           "functions": [
             {
               "function": "minecraft:set_damage",
-              "damage": { "type": "minecraft:uniform", "min": 0.35, "max": 0.85 }
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.35,
+                "max": 0.85
+              }
             }
           ]
         },
@@ -165,7 +225,11 @@
           "functions": [
             {
               "function": "minecraft:set_damage",
-              "damage": { "type": "minecraft:uniform", "min": 0.35, "max": 0.85 }
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.35,
+                "max": 0.85
+              }
             }
           ]
         },
@@ -176,7 +240,11 @@
           "functions": [
             {
               "function": "minecraft:set_damage",
-              "damage": { "type": "minecraft:uniform", "min": 0.35, "max": 0.85 }
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.35,
+                "max": 0.85
+              }
             }
           ]
         },
@@ -187,7 +255,11 @@
           "functions": [
             {
               "function": "minecraft:set_damage",
-              "damage": { "type": "minecraft:uniform", "min": 0.35, "max": 0.85 }
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.35,
+                "max": 0.85
+              }
             }
           ]
         },
@@ -198,7 +270,11 @@
           "functions": [
             {
               "function": "minecraft:set_damage",
-              "damage": { "type": "minecraft:uniform", "min": 0.35, "max": 0.85 }
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.35,
+                "max": 0.85
+              }
             }
           ]
         },
@@ -209,7 +285,11 @@
           "functions": [
             {
               "function": "minecraft:set_damage",
-              "damage": { "type": "minecraft:uniform", "min": 0.35, "max": 0.85 }
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.35,
+                "max": 0.85
+              }
             }
           ]
         },
@@ -221,6 +301,36 @@
         {
           "type": "minecraft:empty",
           "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:velocity_arrow",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:giant_feather",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
         }
       ]
     },
@@ -230,33 +340,51 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:gold_ingot",
-          "weight": 6,
+          "weight": 24,
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 3 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 3
+              }
             }
           ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:emerald",
-          "weight": 4,
+          "weight": 16,
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": { "type": "minecraft:uniform", "min": 1, "max": 2 }
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1,
+                "max": 2
+              }
             }
           ]
         },
         {
           "type": "minecraft:item",
           "name": "minecraft:saddle",
-          "weight": 2
+          "weight": 8
         },
         {
           "type": "minecraft:empty",
-          "weight": 12
+          "weight": 48
+        },
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:sturdy_saddle",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:horse_blanket",
+          "weight": 1
         }
       ]
     }

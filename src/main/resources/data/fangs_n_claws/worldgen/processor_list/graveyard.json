@@ -1,0 +1,7 @@
+{
+  "processors": [
+    {
+      "processor_type": "fangs_n_claws:fluid_drain"
+    }
+  ]
+}

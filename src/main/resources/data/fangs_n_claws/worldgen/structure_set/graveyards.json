@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "linear",
+    "spacing": 30,
+    "separation": 10,
+    "salt": 27740153
+  },
+  "structures": [
+    {
+      "structure": "fangs_n_claws:graveyard",
+      "weight": 1
+    }
+  ]
+}

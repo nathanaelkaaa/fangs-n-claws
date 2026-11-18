@@ -1,0 +1,32 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:ogre_cave/deepslate/01",
+        "processors": "fangs_n_claws:ogre_cave",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:ogre_cave/deepslate/02",
+        "processors": "fangs_n_claws:ogre_cave",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:ogre_cave/deepslate/03",
+        "processors": "fangs_n_claws:ogre_cave",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ]
+}

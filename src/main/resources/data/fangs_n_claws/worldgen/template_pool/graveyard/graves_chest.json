@@ -1,0 +1,59 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/grave_with_chest/01",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/grave_with_chest/02",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/grave_with_chest/03",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/grave_with_chest/04",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/grave_with_chest/05",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/grave_with_chest/06",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#fangs_n_claws:has_feature/scorpion_monster_room",
+  "features": [
+    "fangs_n_claws:scorpion_monster_room",
+    "fangs_n_claws:scorpion_monster_room_deep"
+  ],
+  "step": "underground_structures"
+}

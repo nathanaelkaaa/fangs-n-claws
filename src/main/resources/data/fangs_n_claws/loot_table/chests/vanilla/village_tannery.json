@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:chest",
+  "random_sequence": "fangs_n_claws:chests/vanilla/village_tannery",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.025
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "fangs_n_claws:horse_blanket"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "element": {
+        "element_type": "fangs_n_claws:grounded_single_pool_element",
+        "location": "fangs_n_claws:graveyard/main/01",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid",
+        "ground_y": 2
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "fangs_n_claws:grounded_single_pool_element",
+        "location": "fangs_n_claws:graveyard/main/02",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid",
+        "ground_y": 2
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "fangs_n_claws:grounded_single_pool_element",
+        "location": "fangs_n_claws:graveyard/main/03",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid",
+        "ground_y": 3
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "fangs_n_claws:grounded_single_pool_element",
+        "location": "fangs_n_claws:graveyard/main/04",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid",
+        "ground_y": 3
+      },
+      "weight": 1
+    }
+  ]
+}

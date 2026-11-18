@@ -1,0 +1,19 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "linear",
+    "spacing": 12,
+    "separation": 5,
+    "salt": 60518273
+  },
+  "structures": [
+    {
+      "structure": "fangs_n_claws:stone_ogre_cave",
+      "weight": 2
+    },
+    {
+      "structure": "fangs_n_claws:deepslate_ogre_cave",
+      "weight": 1
+    }
+  ]
+}

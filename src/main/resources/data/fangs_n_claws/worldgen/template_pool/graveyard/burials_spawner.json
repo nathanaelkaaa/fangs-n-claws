@@ -1,0 +1,23 @@
+{
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/burial/ghost_spawner_1",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 17
+    },
+    {
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "location": "fangs_n_claws:graveyard/burial/fire_ghost_spawner_1",
+        "processors": "fangs_n_claws:graveyard",
+        "projection": "rigid"
+      },
+      "weight": 3
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "processors": [
+    {
+      "processor_type": "fangs_n_claws:cave_shell",
+      "blocks": [
+        "minecraft:stone",
+        "minecraft:deepslate"
+      ]
+    },
+    {
+      "processor_type": "fangs_n_claws:fluid_drain"
+    }
+  ]
+}

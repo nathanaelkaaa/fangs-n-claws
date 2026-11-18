@@ -1,0 +1,6 @@
+{
+  "type": "fangs_n_claws:monster_room_template",
+  "config": {
+    "template": "fangs_n_claws:monster_room/scorpion"
+  }
+}

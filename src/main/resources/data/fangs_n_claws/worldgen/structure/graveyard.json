@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#fangs_n_claws:has_structure/graveyard",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "start_pool": "fangs_n_claws:graveyard/main",
+  "size": 2,
+  "max_distance_from_center": 32,
+  "start_height": {
+    "absolute": 0
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "use_expansion_hack": false,
+  "liquid_settings": "ignore_waterlogging"
+}
