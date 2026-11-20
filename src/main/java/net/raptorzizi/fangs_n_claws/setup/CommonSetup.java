@@ -57,6 +57,7 @@ import net.raptorzizi.fangs_n_claws.entity.fire_ghost.FireGhostEntity;
 import net.raptorzizi.fangs_n_claws.entity.dart_goblin.DartGoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
+import net.raptorzizi.fangs_n_claws.entity.ent.EntEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.ogre.OgreEntity;
 import net.raptorzizi.fangs_n_claws.entity.owlbear.BabyOwlbearEntity;
@@ -400,6 +401,8 @@ public class CommonSetup {
         event.put(EntityRegistry.BABY_SCORPION.get(),  BabyScorpionEntity.prepareAttributes().build());
         event.put(EntityRegistry.SILVER_SKELETON.get(), SilverSkeletonEntity.prepareAttributes().build());
         event.put(EntityRegistry.GOLEM.get(),           GolemEntity.prepareAttributes().build());
+        event.put(EntityRegistry.ENT.get(),             EntEntity.prepareAttributes().build());
+        event.put(EntityRegistry.BIRCH_ENT.get(),       EntEntity.prepareAttributes().build());
         event.put(EntityRegistry.ICE_GOLEM.get(),       GolemEntity.prepareAttributes().build());
         event.put(EntityRegistry.GHOST.get(),           GhostEntity.prepareAttributes().build());
         event.put(EntityRegistry.PURPLE_WORM.get(),     PurpleWormEntity.prepareAttributes().build());

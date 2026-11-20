@@ -41,6 +41,8 @@ public class CommonConfigs {
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_CARNIVOROUS_PLANT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_FIRE_SKULL;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_ACID_SKULL;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_ENT;
+    public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_BIRCH_ENT;
     public static final ModConfigSpec.BooleanValue ALLOW_SPAWN_MIMIC;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_SKELETON_HORSE;
     public static final ModConfigSpec.BooleanValue ALLOW_NATURAL_SPAWN_ZOMBIE_HORSE;
@@ -184,6 +186,16 @@ public class CommonConfigs {
                 .comment("Allow Acid Skulls to spawn naturally (swamps)")
                 .translation("fangs_n_claws.configuration.spawn_toggles.acid_skull")
                 .define("allow_acid_skull", true);
+
+        ALLOW_SPAWN_ENT = BUILDER
+                .comment("Allow Ents to spawn naturally (forests)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.ent")
+                .define("allow_ent", true);
+
+        ALLOW_SPAWN_BIRCH_ENT = BUILDER
+                .comment("Allow Birch Ents to spawn naturally (birch forests and mixed forests)")
+                .translation("fangs_n_claws.configuration.spawn_toggles.birch_ent")
+                .define("allow_birch_ent", true);
 
         ALLOW_SPAWN_MIMIC = BUILDER
                 .comment("Allow Mimics to replace loot chests in structures (also /gamerule allowSpawnMimic). See mimic_spawn_chance for the rate.")

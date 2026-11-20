@@ -6,6 +6,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.raptorzizi.fangs_n_claws.FangsClawsMod;
+import net.raptorzizi.fangs_n_claws.entity.ent.EntEntity;
 import net.raptorzizi.fangs_n_claws.entity.scorpion.ScorpionEntity;
 import net.raptorzizi.fangs_n_claws.registries.EntityRegistry;
 import net.raptorzizi.fangs_n_claws.util.SpawnUtils;
@@ -61,6 +62,18 @@ public class SpawnSetup {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SpawnUtils::checkGolemSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.ENT.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                EntEntity::checkEntSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.OR);
+
+        event.register(EntityRegistry.BIRCH_ENT.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                EntEntity::checkEntSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.OR);
 
         event.register(EntityRegistry.OWLBEAR.get(),

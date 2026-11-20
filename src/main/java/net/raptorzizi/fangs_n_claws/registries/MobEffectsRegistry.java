@@ -10,6 +10,7 @@ import net.raptorzizi.fangs_n_claws.FangsClawsMod;
 import net.raptorzizi.fangs_n_claws.effect.AcidEffect;
 import net.raptorzizi.fangs_n_claws.effect.BleedingEffect;
 import net.raptorzizi.fangs_n_claws.effect.FlamebrandEffect;
+import net.raptorzizi.fangs_n_claws.effect.ForestBlessingEffect;
 import net.raptorzizi.fangs_n_claws.effect.FrozenEffect;
 import net.raptorzizi.fangs_n_claws.effect.HellFlamebrandEffect;
 import net.raptorzizi.fangs_n_claws.effect.MithridaticEffect;
@@ -44,6 +45,9 @@ public class MobEffectsRegistry {
 
     public static final DeferredHolder<MobEffect, AcidEffect> ACID =
             MOB_EFFECTS.register("acid", AcidEffect::new);
+
+    public static final DeferredHolder<MobEffect, ForestBlessingEffect> FOREST_BLESSING =
+            MOB_EFFECTS.register("forest_blessing", ForestBlessingEffect::new);
 
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);

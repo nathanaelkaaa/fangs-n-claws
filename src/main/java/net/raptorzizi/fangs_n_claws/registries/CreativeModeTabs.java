@@ -27,6 +27,8 @@ public class CreativeModeTabs {
                         entries.accept(ItemsRegistry.SHRIKE_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.SILVER_SKELETON_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GOLEM_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.ENT_SPAWN_EGG.get());
+                        entries.accept(ItemsRegistry.BIRCH_ENT_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.ICE_GOLEM_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.EVIL_BAT_SPAWN_EGG.get());
                         entries.accept(ItemsRegistry.GHOST_SPAWN_EGG.get());

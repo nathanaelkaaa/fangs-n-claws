@@ -82,6 +82,12 @@ public class GameRuleRegistry {
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_ACID_SKULL =
             GameRules.register("allowSpawnAcidSkull",       GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_ENT =
+            GameRules.register("allowSpawnEnt",             GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
+    public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_BIRCH_ENT =
+            GameRules.register("allowSpawnBirchEnt",        GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
+
     public static final GameRules.Key<GameRules.BooleanValue> ALLOW_SPAWN_MIMIC =
             GameRules.register("allowSpawnMimic",           GameRules.Category.SPAWNING, GameRules.BooleanValue.create(true));
 

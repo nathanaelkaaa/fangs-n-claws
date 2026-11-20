@@ -55,6 +55,75 @@
       }
     ]
   },
+  "ent.ambient": {
+    "subtitle": "subtitles.entity.ent.ambient",
+    "sounds": [
+      {
+        "name": "fangs_n_claws:ent/idle1",
+        "weight": 1
+      },
+      {
+        "name": "fangs_n_claws:ent/idle2",
+        "weight": 1
+      },
+      {
+        "name": "fangs_n_claws:ent/idle3",
+        "weight": 1
+      },
+      {
+        "name": "fangs_n_claws:ent/idle4",
+        "weight": 1
+      }
+    ]
+  },
+  "ent.attack_dig": {
+    "subtitle": "subtitles.entity.ent.attack_dig",
+    "sounds": [
+      {
+        "name": "fangs_n_claws:ent/attack_dig",
+        "weight": 1
+      }
+    ]
+  },
+  "ent.death": {
+    "subtitle": "subtitles.entity.ent.death",
+    "sounds": [
+      {
+        "name": "fangs_n_claws:ent/death",
+        "weight": 1
+      }
+    ]
+  },
+  "ent.hurt": {
+    "subtitle": "subtitles.entity.ent.hurt",
+    "sounds": [
+      {
+        "name": "fangs_n_claws:ent/hurt1",
+        "weight": 1
+      },
+      {
+        "name": "fangs_n_claws:ent/hurt2",
+        "weight": 1
+      },
+      {
+        "name": "fangs_n_claws:ent/hurt3",
+        "weight": 1
+      }
+    ]
+  },
+  "ent.wake_up": {
+    "subtitle": "subtitles.entity.ent.wake_up",
+    "sounds": [
+      {
+        "name": "fangs_n_claws:ent/wake_up1",
+        "weight": 1
+      },
+      {
+        "name": "fangs_n_claws:ent/wake_up2",
+        "weight": 1
+      }
+    ]
+  },
   "generic.backstab_impact": {
     "subtitle": "subtitles.entity.generic.backstab_impact",
     "sounds": [

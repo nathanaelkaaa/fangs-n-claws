@@ -27,6 +27,8 @@ import net.raptorzizi.fangs_n_claws.entity.goblin.GoblinEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.FirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.fire_pitchfork.HellFirePitchforkEntity;
 import net.raptorzizi.fangs_n_claws.entity.imp.ImpEntity;
+import net.raptorzizi.fangs_n_claws.entity.ent.BirchEntEntity;
+import net.raptorzizi.fangs_n_claws.entity.ent.EntEntity;
 import net.raptorzizi.fangs_n_claws.entity.golem.GolemEntity;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleGrubEntity;
 import net.raptorzizi.fangs_n_claws.entity.purple_worm.PurpleWormEntity;
@@ -73,6 +75,20 @@ public class EntityRegistry {
             ENTITIES.register("golem", () -> EntityType.Builder.of(GolemEntity::new, MobCategory.MONSTER)
                     .sized(1.95F, 2.6F)
                     .build("golem"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EntEntity>> ENT =
+            ENTITIES.register("ent", () -> EntityType.Builder.of(EntEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 3.9F)
+                    .spawnDimensionsScale(0.25F)
+                    .clientTrackingRange(10)
+                    .build("ent"));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<BirchEntEntity>> BIRCH_ENT =
+            ENTITIES.register("birch_ent", () -> EntityType.Builder.of(BirchEntEntity::new, MobCategory.CREATURE)
+                    .sized(0.9F, 3.9F)
+                    .spawnDimensionsScale(0.25F)
+                    .clientTrackingRange(10)
+                    .build("birch_ent"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<AcidSplitProjectile>> ACID_SPLIT =
             ENTITIES.register("acid_split", () -> EntityType.Builder

@@ -1,5 +1,7 @@
 package net.raptorzizi.fangs_n_claws.biome;
 
+import net.neoforged.neoforge.common.Tags;
+import net.minecraft.world.level.biome.Biomes;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -70,6 +72,8 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                     EntityRegistry.OGRE.get(),
                     EntityRegistry.CAVE_OGRE.get(),
                     EntityRegistry.GOLEM.get(),
+                    EntityRegistry.ENT.get(),
+                    EntityRegistry.BIRCH_ENT.get(),
                     EntityRegistry.OWLBEAR.get(),
                     EntityRegistry.SHRIKE.get(),
                     EntityRegistry.SILVER_SKELETON.get(),
@@ -180,6 +184,12 @@ public record SpawnWeightsBiomeModifier() implements BiomeModifier {
                 if (CommonConfigs.ALLOW_SPAWN_OWLBEAR.get())
                     add(spawns, MobCategory.MONSTER, EntityRegistry.OWLBEAR.get(), ServerConfigs.OWLBEAR_WEIGHT.get(), 1, 1);
             }
+
+            boolean birchForest = biome.is(Tags.Biomes.IS_BIRCH_FOREST);
+            if (biome.is(IS_FOREST) && !birchForest && CommonConfigs.ALLOW_SPAWN_ENT.get())
+                add(spawns, MobCategory.CREATURE, EntityRegistry.ENT.get(), ServerConfigs.ENT_WEIGHT.get(), 1, 1);
+            if ((birchForest || biome.is(Biomes.FOREST)) && CommonConfigs.ALLOW_SPAWN_BIRCH_ENT.get())
+                add(spawns, MobCategory.CREATURE, EntityRegistry.BIRCH_ENT.get(), ServerConfigs.BIRCH_ENT_WEIGHT.get(), 1, 1);
 
             if (biome.is(IS_SNOWY) && (biome.is(IS_FOREST) || biome.is(IS_TAIGA))) {
                 if (CommonConfigs.ALLOW_SPAWN_SHRIKE.get())

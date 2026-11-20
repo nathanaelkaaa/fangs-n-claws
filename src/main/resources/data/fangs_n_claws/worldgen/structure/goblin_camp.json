@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:jigsaw",
+  "type": "fangs_n_claws:dry_jigsaw",
   "biomes": "#fangs_n_claws:has_structure/goblin_camp",
   "spawn_overrides": {},
   "step": "surface_structures",

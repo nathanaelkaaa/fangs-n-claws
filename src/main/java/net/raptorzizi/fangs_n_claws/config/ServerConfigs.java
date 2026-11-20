@@ -36,6 +36,8 @@ public class ServerConfigs {
     public static final ModConfigSpec.IntValue FIRE_SKULL_WEIGHT;
     public static final ModConfigSpec.IntValue FIRE_SKULL_NETHER_WEIGHT;
     public static final ModConfigSpec.IntValue ACID_SKULL_WEIGHT;
+    public static final ModConfigSpec.IntValue ENT_WEIGHT;
+    public static final ModConfigSpec.IntValue BIRCH_ENT_WEIGHT;
     public static final ModConfigSpec.IntValue SKELETON_HORSE_WEIGHT;
     public static final ModConfigSpec.IntValue ZOMBIE_HORSE_WEIGHT;
 
@@ -136,6 +138,12 @@ public class ServerConfigs {
         ACID_SKULL_WEIGHT        = BUILDER.comment("Acid Skull (swamps) — default: 15")
                                         .translation("fangs_n_claws.configuration.spawn_weights.acid_skull")
                                         .defineInRange("acid_skull",         8, 0, 500);
+        ENT_WEIGHT               = BUILDER.comment("Ent (forests, creature category) - default: 8")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.ent")
+                                        .defineInRange("ent",                8, 0, 500);
+        BIRCH_ENT_WEIGHT         = BUILDER.comment("Birch Ent (birch and mixed forests, creature category) - default: 8")
+                                        .translation("fangs_n_claws.configuration.spawn_weights.birch_ent")
+                                        .defineInRange("birch_ent",          8, 0, 500);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
